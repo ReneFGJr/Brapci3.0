@@ -35,7 +35,7 @@ class Brapci extends BaseController
 			$sx .= '  <link rel="icon" type="image/png" sizes="16x16" href="'.base_url('favicon.ico').'" />'.cr();
 			$sx .= '  <!-- CSS -->'.cr();
 			$sx .= '  <link rel="stylesheet" href="'.base_url('/css/bootstrap.css').'" />'.cr();
-			$sx .= '  <link rel="stylesheet" href="'.base_url('/css/style.css?v0.0.2').'" />'.cr();
+			$sx .= '  <link rel="stylesheet" href="'.base_url('/css/style.css?v0.0.5').'" />'.cr();
 			$sx .= ' '.cr();
 			$sx .= '  <!-- CSS -->'.cr();
 			$sx .= '  <script src="'.base_url('/js/bootstrap.js?v=5.0.2').'"></script>'.cr();
@@ -64,6 +64,15 @@ class Brapci extends BaseController
 			$sx .= '          <a class="nav-link" href="#">Link</a>'.cr();
     		$sx .= '		</li>'.cr();
 			*/
+			$sx .= '        <li class="nav-item dropdown">'.cr();
+			$sx .= '          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">'.cr();
+			$sx .= '            '.lang('brapci.Labs').cr();
+			$sx .= '          </a>'.cr();
+			$sx .= '          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">'.cr();
+			$sx .= '            <li><a class="dropdown-item" href="'.base_url('brapci/labs').'">'.lang('brapci.Labs.Drashboard').'</a></li>'.cr();
+			$sx .= '          </ul>'.cr();
+			$sx .= '        </li>'.cr();
+
 			$sx .= '        <li class="nav-item dropdown">'.cr();
 			$sx .= '          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">'.cr();
 			$sx .= '            '.lang('brapci.Analyse').cr();
@@ -105,4 +114,16 @@ class Brapci extends BaseController
 		
 		return $tela;
 	}
+
+
+	public function labs()
+	{
+		//
+		$tela = $this->cab();
+		$tela .= $this->navbar();
+		$tela .= bs(h('Labs',1),array('fluid'=>0,'g'=>5));
+		$tela .= bs(bsc(bscard('Hello'),4).bsc(bscard('Hello'),4).bsc(bscard('Hello'),4));
+		
+		return $tela;
+	}	
 }

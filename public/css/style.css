@@ -14,6 +14,7 @@
         font-family: 'Handel Gothic';
         font-size: 200%;
         padding: 0px 0px;
+        color: white;
     }
 .navbar
     {
@@ -21,6 +22,6 @@
     }
 .bc
     {
-        background-color:navy;
+        background-color:#0093DD;
     }
 
