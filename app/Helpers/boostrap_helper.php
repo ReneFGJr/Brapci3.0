@@ -7,8 +7,78 @@
 * @category    Helpers
 * @author      Rene F. Gabriel Junior <renefgj@gmail.com>
 * @link        http://www.sisdoc.com.br/CodIgniter
-* @version     v0.21.06.24
+* @version     v0.21.07.27
 */
+
+function cr()
+    {
+        return chr(13).chr(10);
+    }
+
+function bscarousel($d)
+    {
+        $sx = '';
+        $sx .= '<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">'.cr();
+        $sx .= '<div class="carousel-inner">'.cr();
+        for ($r=0;$r < count($d);$r++)
+            {
+                $act = '';
+                if ($r==0) { $act = 'active'; }
+                $line = $d[$r];
+                $img = $line['image'];
+                $sx .= '
+                <div class="carousel-item '.$act.'">
+                    <img class="d-block w-100" src="'.$img.'" alt="Slide '.($r+1).'" style="height: 300px;">
+                </div>'.cr();
+            }
+        $sx .= '</div>'.cr();
+        $sx .= '
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+      </div>';
+
+      $sx = '
+      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">'.cr();
+        for ($r=0;$r < count($d);$r++)
+            {
+                $sx .= '<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="'.$r.'" class="active" aria-current="true" aria-label="Slide '.($r+1).'"></button>'.cr();
+            }
+        $sx .= '</div>
+
+        <div class="carousel-inner">'.cr();
+
+        for ($r=0;$r < count($d);$r++)
+            {
+                $act = '';
+                if ($r==0) { $act = 'active'; }
+                $line = $d[$r];
+                $img = $line['image'];
+                $sx .= '
+                <div class="carousel-item '.$act.'">
+                    <img class="d-block w-100" src="'.$img.'" alt="Slide '.($r+1).'" style="height: 300px;">
+                </div>'.cr();
+            }        
+        $sx .= '
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+        </div>      
+      ';
+      return $sx;
+    }
 
 function bs($t,$dt=array())
     {

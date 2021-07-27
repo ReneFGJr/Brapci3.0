@@ -46,7 +46,7 @@ class Brapci extends BaseController
 
 	private function navbar($dt=array())	
 		{
-			$title = 'BRAPCI';
+			$title = 'BRAPCI Labs';
 			if (isset($dt['title'])) { $title = $dt['title']; } 
 			$sx = '<nav class="navbar navbar-expand-lg navbar-dark bc">'.cr();
 			$sx .= '  <div class="container-fluid">'.cr();
@@ -70,6 +70,7 @@ class Brapci extends BaseController
 			$sx .= '          </a>'.cr();
 			$sx .= '          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">'.cr();
 			$sx .= '            <li><a class="dropdown-item" href="'.base_url('brapci/labs').'">'.lang('brapci.Labs.Drashboard').'</a></li>'.cr();
+			$sx .= '            <li><a class="dropdown-item" href="'.base_url('brapci/ontology').'">'.lang('brapci.Labs.Ontology').'</a></li>'.cr();
 			$sx .= '          </ul>'.cr();
 			$sx .= '        </li>'.cr();
 
@@ -109,6 +110,12 @@ class Brapci extends BaseController
 		//
 		$tela = $this->cab();
 		$tela .= $this->navbar();
+		$dt = array();
+		$d[0] = array('image'=>'http://images.unsplash.com/photo-1492305175278-3b3afaa2f31f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max','link'=>'');
+		$d[1] = array('image'=>'https://images3.alphacoders.com/102/102609.jpg','link'=>'');
+		$d[2] = array('image'=>'https://static.escolakids.uol.com.br/2019/07/paisagem-natural-e-paisagem-cultural.jpg','link'=>'');
+		
+		$tela .= bscarousel($d);
 		$tela .= bs(h('Hello World! Brapci 3.0',1),array('fluid'=>0,'g'=>5));
 		$tela .= bs(bsc(bscard('Hello'),4).bsc(bscard('Hello'),4).bsc(bscard('Hello'),4));
 		
@@ -122,6 +129,17 @@ class Brapci extends BaseController
 		$tela = $this->cab();
 		$tela .= $this->navbar();
 		$tela .= bs(h('Labs',1),array('fluid'=>0,'g'=>5));
+		$tela .= bs(bsc(bscard('Hello'),4).bsc(bscard('Hello'),4).bsc(bscard('Hello'),4));
+		
+		return $tela;
+	}	
+
+	public function ontology()
+	{
+		//
+		$tela = $this->cab();
+		$tela .= $this->navbar();
+		$tela .= bs(h('Ontology',1),array('fluid'=>0,'g'=>5));
 		$tela .= bs(bsc(bscard('Hello'),4).bsc(bscard('Hello'),4).bsc(bscard('Hello'),4));
 		
 		return $tela;
