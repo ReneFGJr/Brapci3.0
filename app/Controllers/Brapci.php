@@ -19,6 +19,16 @@ class Brapci extends BaseController
 {
 	// https://www.richdataservices.com/showcase
 
+	public function __construct()
+	{
+		$this->Socials = new \App\Models\Socials();
+
+		helper(['boostrap','url','']);
+		define("PATH", "");
+		define("LIBRARY", "");
+		define("LIBRARY_NAME", "");
+	}	
+
 	
 
 	private function cab($dt=array())
@@ -105,6 +115,14 @@ class Brapci extends BaseController
 			return $sx;
 		}
 
+	public function social($d1 = '', $id = '')
+	{
+		$cab = $this->MainModel->cab();
+		$dt = $this->request->getPost();
+		$sx = $this->Socials->index($d1,$id,$dt,$cab);
+		return $sx;
+	}		
+
 	public function index()
 	{
 		//
@@ -116,10 +134,19 @@ class Brapci extends BaseController
 		$d[2] = array('image'=>'https://static.escolakids.uol.com.br/2019/07/paisagem-natural-e-paisagem-cultural.jpg','link'=>'');
 		
 		$tela .= bscarousel($d);
-		$tela .= bs(h('Hello World! Brapci 3.0',1),array('fluid'=>0,'g'=>5));
-		$tela .= bs(bsc(bscard('Hello'),4).bsc(bscard('Hello'),4).bsc(bscard('Hello'),4));
 
-		$tela .= bs(bsc(graph_demo(),12));
+		#### Logado
+		if (isset($_SESSION['user']['id']))
+			{
+				$login = 'Welcome';
+			} else {
+				$login = $this->Socials->login(0);
+			}
+
+		$tela .= bs(h('Hello World! Brapci 3.0',1),array('fluid'=>0,'g'=>5));
+		$tela .= bs(bsc(bscard('Hello'),4).bsc(bscard('Hello'),4).bsc($login,4));
+
+		//$tela .= bs(bsc(graph_demo(),12));
 		
 		return $tela;
 	}
