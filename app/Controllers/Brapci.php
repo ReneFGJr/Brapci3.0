@@ -8,7 +8,7 @@ $this->session = \Config\Services::session();
 $language = \Config\Services::language();
 
 
-helper(['boostrap','url','']);
+helper(['boostrap','url','graphs']);
 
 function cr()
 	{
@@ -35,7 +35,7 @@ class Brapci extends BaseController
 			$sx .= '  <link rel="icon" type="image/png" sizes="16x16" href="'.base_url('favicon.ico').'" />'.cr();
 			$sx .= '  <!-- CSS -->'.cr();
 			$sx .= '  <link rel="stylesheet" href="'.base_url('/css/bootstrap.css').'" />'.cr();
-			$sx .= '  <link rel="stylesheet" href="'.base_url('/css/style.css?v0.0.5').'" />'.cr();
+			$sx .= '  <link rel="stylesheet" href="'.base_url('/css/style.css?v0.0.7').'" />'.cr();
 			$sx .= ' '.cr();
 			$sx .= '  <!-- CSS -->'.cr();
 			$sx .= '  <script src="'.base_url('/js/bootstrap.js?v=5.0.2').'"></script>'.cr();
@@ -118,6 +118,8 @@ class Brapci extends BaseController
 		$tela .= bscarousel($d);
 		$tela .= bs(h('Hello World! Brapci 3.0',1),array('fluid'=>0,'g'=>5));
 		$tela .= bs(bsc(bscard('Hello'),4).bsc(bscard('Hello'),4).bsc(bscard('Hello'),4));
+
+		$tela .= bs(bsc(graph_demo(),12));
 		
 		return $tela;
 	}
