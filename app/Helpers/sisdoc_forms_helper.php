@@ -21,6 +21,21 @@ function msg($txt)
         return($txt);
     }
 
+    function get($var)
+        {
+            $vlr = '';
+            if (isset($_GET[$var]))
+                {
+                    $vlr = $_GET[$var];
+                }
+            if (isset($_POST[$var]))
+                {
+                    $vlr = $_POST[$var];
+                }
+            //$vlr = str_replace($vlr,"'","~");
+            return $vlr;
+        }
+
     /* Funcao troca */
     function troca($qutf, $qc, $qt) 
     {

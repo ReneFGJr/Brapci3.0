@@ -10,10 +10,21 @@
 * @version     v0.21.07.27
 */
 
-function cr()
+
+
+function bscontainer($fluid=0)
     {
-        return chr(13).chr(10);
+        $class = "container";
+        if ($fluid == 1) { $class = "container-fluid"; }
+        $sx = '<div class="'.$class.'">';
+        return($sx);
     }
+
+function bsrow()
+    {
+        $sx = '<div class="row">';
+        return($sx);
+    }       
 
 function bscarousel($d)
     {

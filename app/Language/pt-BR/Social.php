@@ -16,4 +16,13 @@ return[
 		'social_subscribe_inf' => "Entre com seu e-mail para podermos enviar nossas últimas novidades",
 		'social_name' => "Informe seu nome",
 		'social_yourmessage' => "Digite sua mensagem",
-]
+		'social_questions' => 'Dúvidas?',
+		'social_message' => 'Erro de acesso',
+		'social_message_inf' => 'mensagem:',
+		'return' => 'voltar',
+		'conecting' => 'conectando, aguarde ...',
+		'enter' => 'Entrar',
+		'user_already' => 'Usuário já cadastrado',
+		'success' => 'Sucesso',
+		'logout' => 'Logout',
+];

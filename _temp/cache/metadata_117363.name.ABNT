@@ -1,0 +1,16 @@
+UR - https://brapci.inf.br/https://brapci.inf.br/index.php/res/v/117363
+TI - ESTUDO PRELIMINAR SOBRE A INFLUÊNCIA DE OUTLIERS NAS MÉTRICAS CIENTÍFICAS PARA DADOS UNIVARIADOS
+AU - LIMA, Luís Fernando Maia
+AU - MAROLDI, Alexandre Masson
+AU - SILVA, Dávilla Vieira Odízio da
+AU - HAYASHI, Carlos Roberto Massao
+AU - HAYASHI, Maria Cristina Piumbato Innocentini
+PY - 2018
+IS - 6
+VL - 6
+T2 - Encontro Brasileiro de Bibliometria e Cientometria
+M3 - 
+AB - Apresenta uma nova fórmula para a detecção de outliers para dados univariados via Análise Exploratória de Dados (AED), e em segundo, quantificar o efeito dos outliers nos cálculos da média e desvio padrão. Aplicou-se esta nova fórmula (levando em conta a assimetria dos dados) detectando 4 outliers superiores nos dados analisados. Os dados originais (sem a remoção dos outliers) apresentaram média de 833,36 e desvio padrão de 507,63. A retirada dos 4 valores discrepantes reduziu a média para 714,47 e o desvio padrão para 349,30. Em termos percentuais, a média foi reduzida em 14,3% e o desvio padrão diminuiu em 31,2%; portanto, o efeito dos outliers na média e no desvio padrão neste caso foi elevado. Alerta-se aos pesquisadores das métricas científicas a identificação, e se for o caso, a quantificação dos efeitos dos outliers em suas análises dos dados.
+KW - Outliers@pt-BR
+KW - Bibliometria@pt-BR
+KW - Cientometria@pt-BR

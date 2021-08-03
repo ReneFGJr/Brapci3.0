@@ -1,0 +1,24 @@
+UR - https://brapci.inf.br/https://brapci.inf.br/index.php/res/v/133245
+TI - Bases ontológicas e conceituais para um modelo do conhecimento científico em artigos biomédicos
+AU - MARCONDES, Carlos Henrique
+AU - MENDONÇA, Marília Alvarenga Rocha
+AU - MALHEIROS, Luciana Reis
+AU - COSTA, Leonardo Cruz
+AU - SANTOS, Tatiana Cristina Paredes
+PY - 2009
+IS - 1
+VL - 3
+T2 - Revista Eletrônica de Comunicação, Informação e Inovação em Saúde
+M3 - 
+AB - Artigos científicos publicados em formato digital se constituem em bases de conhecimento científico, em especial na Medicina. Um obstáculo para o processamento semântico desse conhecimento por computadores é o fato de que, apesar do formato digital, estas bases de conhecimento são voltadas para leitura e processamento do seu conteúdo por pessoas. Propõe-se um modelo de publicação e registro para representar o conhecimento contido em artigos científicos em Medicina em formato “inteligível” por programas. Segundo o modelo, artigos científicos seriam publicados não só em formato textual, legível por pessoas, mas também como ontologias, representando o conhecimento específico contido em cada artigo. O modelo inicial foi obtido a partir de aportes teóricas de Metodologia Científica e Filosofia da Ciência e da análise de 75 artigos científicos em Medicina. O conteúdo de conhecimento científico de um artigo é associado à proposições que caracterizam fenômenos ou que estabelecem relações entre fenômenos. O modelo permite que programas “agentes de software” processem o conteúdo de cada artigo, viabilizando a recuperação semântica de informações, a avaliação da coerência, a identificação de lacunas no conhecimento científico e de novas descobertas
+AB - Scientific articles published in electronic format are knowledge bases, specially in Medicine. An obstacle to semantic processing of this knowledge by computers is that, in spite of their digital format, articles are in text format for human reading and processing. A model is proposed to electronic publishing scientific articles both in textual format and in machine âunderstandableâ format, in ontology format. The model is based in insights from Philosophy and Methodology of Science and in the results of analysis of 75 scientific articles in Medicine. Software agents can process the content of an article thus enabling semantic retrieval, consistence checking and the identification of new discoveries.
+KW - Conhecimento medico@pt-BR
+KW - Representacao do conhecimento@pt-BR
+KW - Ontologia@pt-BR
+KW - Publicacao eletronica@pt-BR
+KW - Comunicacao cientifica@pt-BR
+KW - Medical knowledge@en
+KW - Knowledge representation@en
+KW - Ontologies@en
+KW - Electronic publishing@en
+KW - Scientific communication@en

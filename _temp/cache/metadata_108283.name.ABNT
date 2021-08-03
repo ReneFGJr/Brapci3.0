@@ -1,0 +1,16 @@
+UR - https://brapci.inf.br/https://brapci.inf.br/index.php/res/v/108283
+TI - Análise das comunidades de pesquisadores brasileiros que atuam na área da Filosofia: um estudo a partir da justaposição entre os dados da Plataforma Lattes e Web of Science (2007-2016)
+AU - SILVA, Fábio Mascarenhas e
+AU - LASCURAIN-SáNCHEZ, María Luisa
+AU - LóPEZ, Antonio Eleazar Serrano
+AU - SANZ-CASADO, Elías
+PY - 2018
+IS - 3
+VL - 28
+T2 - Informação & Sociedade: Estudos
+M3 - Relato de Pesquisa
+AB - Analisa se há diferentes populações de pesquisadores brasileiros da Filosofia na justaposição entre os registros das bases Plataforma Lattes (PL) e Web of Science (WoS) no que respeita aos hábitos de publicação. O universo contemplou 6.060 currículos de pesquisadores atuantes na Filosofia, dos quais se extraíram 43.345 artigos publicados entre 2007 a 2016, desses, 1.657 estão indexados na WoS. Os dados da PL foram extraídos com o ScriptLattes. Utilizaram-se pacotes em linguagem de programação R para identificar os idiomas dos artigos e as temáticas (técnica de “Topic Modeling”). Para gerar grafos de coautoria adotou-se o Gephi. Este estudo identificou duas populações distintas: uma que atua e produz majoritariamente na Filosofia ou temas afins às Ciências Humanas e Sociais (a maioria dos currículos) e outra cuja atuação e produção científica estão centradas nas Ciências da Vida (os currículos da justaposição), porém com traços interdisciplinares concentrados em estudos bioéticos e epistemológicos. Os resultados indicam uma produtividade média maior na segunda metade da década para ambas as bases. O idioma português prevalece na PL com 89%, enquanto a língua inglesa domina na WoS com 75,72%. O núcleo de periódicos da PL concentra-se na área da Filosofia enquanto na WoS predominam as Ciências da vida, o mesmo ocorre nos mapas temáticos. Há compatibilidade entre os mapas de tópicos temáticos e os grafos de coautorias, sugerindo boa representação das comunidades analisadas. Conclui-se que a metodologia de justaposição de dados torna visível padrões subjacentes de hábitos de publicação, imperceptíveis nas estratégias metodológicas tradicionais.
+KW - Indicador bibliometrico@pt-BR
+KW - Pesquisador brasileiro da filosofia@pt-BR
+KW - Habito de publicacao@pt-BR
+KW - Ciencia humana@pt-BR

@@ -82,6 +82,9 @@ class Socials extends Model
 	function index($d1, $id, $dt=array(),$cab='')
 	{
 		switch ($d1) {
+			case 'ajax':
+				$sx = $this->ajax($id);
+				break;
 			case 'perfil':
 				$sx = $cab;
 				$sx .= $this->perfil();
@@ -125,7 +128,7 @@ class Socials extends Model
 			case 'logout':
 				return $this->logout();
 				break;
-			case 'login_local':
+			case 'signin':
 				return $this->login_local($dt);
 				break;
 			default:
@@ -139,49 +142,113 @@ class Socials extends Model
 		return $sx;
 	}
 
+	function ajax($cmd)
+		{
+			$rsp = array();
+			$cmd = get("cmd");
+
+			$rsp['status'] = '9';
+			$rsp['message'] = 'service not found';
+			switch($cmd)
+				{
+					case 'test':
+						$rsp['status'] = 1;
+						$rsp['message'] = 'Teste OK';
+						return json_encode($rsp);
+						break;
+					case 'signin':
+						$rsp = $this->signin();
+						return $rsp;
+						break;
+					case 'signup':
+						$rsp = $this->signup();						
+						return redirect()->to('/');
+					default:
+						$sx = 'Command not found - '.$cmd;
+						$sx .= '<span class="singin" onclick="showLogin()">'.lang('social.return').'</span>';
+						return $sx;
+						break;
+				}
+			
+		}
+
 	function perfil()
 		{
-			$id = $_SESSION['user']['id'];
-			$sx = '';
-			$sx .= bscontainer();
-			$sx .= bsrow();
-
-			$dt = $this->find($id);
-			$sx .= bscol(10);
-			/****************** Perfil */
-			$sx .= h('Perfil '.$dt['us_nome'],1);
-			$sx .= '<hr>';
-
-			/****************** Dados **/
-			$sx .= bscontainer(1);
-			$sx .= bsrow();
-			
-			/****************** E-mail **/
-			$sx .= bscol(6);
-			$sx .= '<span clas="small">email</span>: <b>'.$dt['us_email'].'</b>';
-			$sx .= bsdivclose();
-
-			/****************** Login **/
-			$sx .= bscol(6);
-			$sx .= '<span clas="small">login</span>: <b>'.$dt['us_login'].'</b>';
-			$sx .= bsdivclose();
-
-			$sx .= bsdivclose();
-			$sx .= bsdivclose();
-			$sx .= bsdivclose();
-			$sx .= '<hr>';
-
-			/****************** Imagem **/
-			$sx .= bscol(2);
-			$sx .= 'IMAGE';
-			$sx .= bsdivclose();
-
-			$sx .= bsdivclose();
-			$sx .= bsdivclose();
-			$sx .= bsdivclose();
-			//$sx .= '<style> div { border: 1px solid #000000; } </style>';
+			$sx = '<h1>PERFIL</h1>';
 			return $sx;
 		}
+
+	function signin()
+		{
+			$sx = '';
+			$user = get("user");
+			$pwd = get("pwd");
+			$dt = $this->user_exists($user);
+
+			if (isset($dt[0]))
+				{
+					if ($dt[0]['us_password'] == md5($pwd))
+					{
+						$_SESSION['id'] = $dt[0]['id_us'];
+						$_SESSION['user'] = $dt[0]['us_nome'];	
+						$_SESSION['email'] = $dt[0]['us_email'];
+						$sx .= '<h2>'.lang('social.success').'<h2>';
+						$sx .= '<meta http-equiv="refresh" content="1;URL=\''.base_url(PATH).'\'">';
+					} else {
+						$sx .= '<h2>'.lang('ERROR').'<h2>';
+						$sx .= '<span class="singin" onclick="showLogin()">'.lang('social.return').'</span>';						
+					}
+
+				} else {
+					$sx .= '<h2>'.lang('social.user_already').'<h2>';
+					$sx .= '<span class="singin" onclick="showLogin()">'.lang('social.return').'</span>';
+				}
+			return $sx;
+		}		
+
+	function signup()
+		{
+			$sx = '';
+			$user = get("signup_email");
+			$pw1 = get("signup_password");
+			$pw2 = get("signup_retype_password");
+
+			$dt = $this->user_exists($user);
+
+			if (!isset($dt[0]))
+				{
+					echo '==';
+					print_r($dt);
+					exit;
+					$this->user_add($user,$pw1);
+					$sx .= '<h2>'.lang('social.success').'<h2>';
+				} else {
+					$sx .= '<h2>'.lang('social.user_already').'<h2>';
+					$sx .= '<span class="singin" onclick="showLogin()">'.lang('social.return').'</span>';
+				}
+			return $sx;
+		}
+
+	function user_add($user,$pw1)
+		{
+			$data = [
+				'us_email' => $user,
+				'us_password'  => md5($pw1),
+				'us_password_method' => 'MD5'
+			];
+			$this->insert($data);
+		}
+	
+	function user_exists($email='')
+		{
+			$dt = array();
+			if (strlen($email) > 0)
+				{
+					$dt = $this->where('us_email', $email)->findAll();
+				}
+			return $dt;
+		}
+
 
 	function logout()
 	{
@@ -192,42 +259,54 @@ class Socials extends Model
 		return (redirect()->to('/'));
 	}
 
-	function login_local($dt)
-	{
-		$sx = '';
-		$ok = 0;
-		$d = $this->where('us_login', $dt['user_login'])->findAll();
-		if (count($d) > 0) {
-			$d = $d[0];
-			$method = $d['us_password_method'];
-			switch ($method) {
-				default:
-					$pw1 = md5($d['us_password']);
-					$pw2 = md5($dt['user_password']);
-					if ($pw1 == $pw2) {
-						$ok = 1;
-					} else {
-						$sx = $this->login('Erro de Login');
-					}
+	function nav_user()
+		{
+			$sx = '';
+			if ($this->loged())
+			{
+				$email = $_SESSION['email'];
+				$sx = '';
+				$sx .= '<ul class="navbar-nav ml-auto" >';
+				$sx .= '        <li class="nav-item dropdown ml-auto">'.cr();
+				$sx .= '          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">'.cr();
+				$sx .= '            '.$email.cr();
+				$sx .= '          </a>'.cr();
+				$sx .= '          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">'.cr();
+				$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'social/perfil').'">'.lang('social.perfil').'</a></li>'.cr();
+				$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'social/logout').'">'.lang('social.logout').'</a></li>'.cr();
+				$sx .= '          </ul>'.cr();
+				$sx .= '        </li>'.cr();
+				$sx .= '</ul>'.cr();
 			}
-		} else {
-			$sx = $this->login('Erro de Login');
+			return $sx;			
 		}
-		if ($ok == 1) {
-			$_SESSION['user']['id'] = $d['id_us'];
-			$_SESSION['user']['name'] = $d['us_nome'];
-			return (redirect()->to('/'));
+	function loged()
+		{
+			if ((isset($_SESSION['id'])) and ($_SESSION['id'] != ''))
+			{
+				return(1);
+			} else {
+				return(0);
+			}
 		}
-		return ($sx);
-	}
 
 	function login($err = '')
 	{
 		global $msg;
-
-		$sx = '';
+		if ($this->loged())
+			{
+				$sx = '<div>';
+				$sx .= 'LOGADO';
+				$sx .= '</div>';
+				return $sx;
+			}
+		
+		$err = get("erro");
+	
 		$bk = '#0093DD';
 		$bknav = '#FFFFFF';
+		
+		$sx = '';
 		$sx .= '
 		<style>
 		* {
@@ -420,7 +499,7 @@ class Socials extends Model
 		
 		.psw, .signup, .singin {
 		  display: block;
-		  margin: 20px 0;
+		  margin: 10px 0;
 		  font-size: 0.75em;
 		  text-align: center;
 		  color: #42509e;
@@ -446,132 +525,159 @@ class Socials extends Model
 		  if (document.location.search.match(/type=embed/gi)) {
 			window.parent.postMessage("resize", "*");
 		  }
-		</script>
-		';
-		$lg = '		
+		</script>		
 		<ul class="nav center" style="margin: 0% 20%; display: none;">
-		<li onclick="showLogin()">'.lang('socials.social_login').'</li>
-		<li onclick="showSignup()">'.lang('socials.social_sign_up').'</li>
-		<li onclick="showForgotPassword()">'.lang('socials.social_forgot_password').'</li>
-		<li onclick="showSubscribe()">'.lang('socials.social_subscrime').'</li>
-		<li onclick="showContactUs()">'.lang('socials.social_contact_us').'</li>
+		<li onclick="showLogin()">'.lang('social.social_login').'</li>
+		<li onclick="showSignup()">'.lang('social.social_sign_up').'</li>
+		<li onclick="showForgotPassword()">'.lang('social.social_forgot_password').'</li>
+		<li onclick="showSubscribe()">'.lang('social.social_subscrime').'</li>
+		<li onclick="showContactUs()">'.lang('social.social_contact_us').'</li>
 		</ul>
 		
 		<div class="wrapper">
 		  <div class="rec-prism">
+		    <!--- BOARD ----------------------------------------------->
 			<div class="face face-top">
 			  <div class="content">
-				<h2>'.lang('socials.social_subscribe').'</h2>
-				<small>'.lang('socials.social_subscribe_inf').'</small>
-				<form onsubmit="event.preventDefault()">
-				  <div class="field-wrapper">
-					<input type="text" name="email" placeholder="email">
-					<label>e-mail</label>
-				  </div>
-				  <div class="field-wrapper">
-					<input type="submit" onclick="showThankYou()">
-				  </div>
-				</form>
+				<h2>'.lang('social.social_message').'</h2>
+				<small>'.lang('social.social_message_inf').'</small>
+				<h3 style="color: red;">'.$err.'</h3>
+
+				<span class="singin" onclick="showLogin()">'.lang('social.return').'</span>
 			  </div>
 			</div>
+			<!---- SIGN IN-------------------------------------------->
 			<div class="face face-front">
 			  <div class="content">
-				<h2>'.lang('socials.social_sign_in').'</h2>
-				<form action="' . base_url(PATH . 'social/login_local') . '" method="post">
+				<h2>'.lang('social.social_sign_in').'</h2>
 				  <div class="field-wrapper">
-					<input type="text" name="user_login" placeholder="'.lang('socials.user_login').'">
-					<label>'.lang('socials.social_type_login').'</label>
+					<input type="text" id="user_login" placeholder="'.lang('social.user_login').'" value="'.get("user_login").'">
+					<label>'.lang('social.social_type_login').'</label>
 				  </div>
 				  <div class="field-wrapper">
-					<input type="password" name="user_password" placeholder="'.lang('socials.user_password').'" autocomplete="new-password">
-					<label>'.lang('socials.social_type_password').'</label>
+					<input type="password" id="user_password" placeholder="'.lang('social.user_password').'" autocomplete="new-password">
+					<label>'.lang('social.social_type_password').'</label>
 				  </div>
 				  <div class="field-wrapper">
-					<input type="submit" onclick="showThankYou()">
+				    <button class="btn btn-primary" style="width: 100%;" onclick="action_ajax(\'signin\');">'.lang('social.enter').'</button>
 				  </div>
-				  <span class="psw" onclick="showForgotPassword()">'.lang('socials.social_forgot_password').'</span>
-				  <span class="signup" onclick="showSignup()">'.lang('socials.social_not_user').'  '.lang('socials.social_sign_up').'</span>
-				</form>
+				  <span class="psw" onclick="showForgotPassword()">'.lang('social.social_forgot_password').'</span>
+				  <span class="signup" onclick="showSignup()">'.lang('social.social_not_user').'  '.lang('social.social_sign_up').'</span>
+				  <span class="signup" onclick="showContactUs()">'.lang('social.social_questions').'</span>	
 			  </div>
 			</div>
+			<!-- FORGOT --------------------------------------------->
 			<div class="face face-back">
 			  <div class="content">
-				<h2>'.lang('socials.social_forgot_password').'</h2>
-				<small>'.lang('socials.social_forgot_password_info').'</small>
+				<h2>'.lang('social.social_forgot_password').'</h2>
+				<small>'.lang('social.social_forgot_password_info').'</small>
 				<form onsubmit="event.preventDefault()">
 				  <div class="field-wrapper">
 					<input type="text" name="email" placeholder="email">
 					<label>e-mail</label>
 				  </div>
 				  <div class="field-wrapper">
-					<input type="submit" onclick="showThankYou()">
+					<button class="btn btn-primary" style="width: 100%;" onclick="action_ajax(\'signup\');">'.lang('social.enter').'</button>
 				  </div>
+				  <span class="singin" onclick="showLogin()">'.lang('social.social_alread_user').'  '.lang('social.social_sign_in').'</span>				  
 				</form>
 			  </div>
 			</div>
+			<!-- SIGN UP -------------------------------------------->
 			<div class="face face-right">
 			  <div class="content">
-				<h2>'.lang('socials.social_sign_up').'</h2>
-				<form onsubmit="event.preventDefault()">
+				<h2>'.lang('social.social_sign_up').'</h2>				
 				  <div class="field-wrapper">
-					<input type="text" name="email" placeholder="email">
+					<input type="text" id="signup_email" placeholder="email">
 					<label>e-mail</label>
 				  </div>
 				  <div class="field-wrapper">
-					<input type="password" name="password" placeholder="password" autocomplete="new-password">
-					<label>'.lang('socials.social_type_password').'</label>
+					<input type="password" id="signup_password" placeholder="password" autocomplete="new-password">
+					<label>'.lang('social.social_type_password').'</label>
 				  </div>
 				  <div class="field-wrapper">
-					<input type="password" name="password2" placeholder="password" autocomplete="new-password">
-					<label>'.lang('socials.social_retype_password').'</label>
+					<input type="password" id="signup_retype_password" placeholder="password" autocomplete="new-password">
+					<label>'.lang('social.social_retype_password').'</label>
 				  </div>
 				  <div class="field-wrapper">
-					<input type="submit" onclick="showThankYou()">
+					<button class="btn btn-primary" style="width: 100%;" onclick="action_ajax(\'signup\');">'.lang('social.enter').'</button>
 				  </div>
-				  <span class="singin" onclick="showLogin()">'.lang('socials.social_alread_user').'  '.lang('socials.social_sign_in').'</span>
-				</form>
+				  <span class="singin" onclick="showLogin()">'.lang('social.social_alread_user').'  '.lang('social.social_sign_in').'</span>
 			  </div>
 			</div>
+			<!-- Contact US ------------------------------------------>
 			<div class="face face-left">
 			  <div class="content">
-				<h2>'.lang('socials.social_contact_us').'</h2>
+				<h2>'.lang('social.social_contact_us').'</h2>
 				<form onsubmit="event.preventDefault()">
 				  <div class="field-wrapper">
 					<input type="text" name="name" placeholder="name">
-					<label>'.lang('socials.social_name').'</label>
+					<label>'.lang('social.social_name').'</label>
 				  </div>
 				  <div class="field-wrapper">
 					<input type="text" name="email" placeholder="email">
 					<label>e-mail</label>
 				  </div>
 				  <div class="field-wrapper">
-					<textarea placeholder="'.lang('socials.social_yourmessage').'" rows=4></textarea>
-					<label>'.lang('socials.social_yourmessage').'</label>
+					<textarea placeholder="'.lang('social.social_yourmessage').'" rows=3></textarea>
+					<label>'.lang('social.social_yourmessage').'</label>
 				  </div>
 				  <div class="field-wrapper">
 					<input type="submit" onclick="showThankYou()">
 				  </div>
+				  <span class="singin" onclick="showLogin()">'.lang('social.social_alread_user').'  '.lang('social.social_sign_in').'</span>
 				</form>
 			  </div>
 			</div>
+			<!-- Contact US ------------------------------------------>
 			<div class="face face-bottom">
 			  <div class="content">
-				<div class="thank-you-msg">
-		  			REGISTRANDO!<br>
-				  '.lang('socials.thank you').'
+			  		<div id="board">
+					<h2>'.lang('social.conecting').'</h2>
+					</div>
 				</div>
 			  </div>
 			</div>
 		  </div>
-		</div>	
-		';
+		</div>
+			<script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-8216c69d01441f36c0ea791ae2d4469f0f8ff5326f00ae2d00e4bb7d20e24edb.js"></script>
 		
-		$sx .= '
-		<script>
-		  window.HUB_EVENTS={ASSET_ADDED:"ASSET_ADDED",ASSET_DELETED:"ASSET_DELETED",ASSET_DESELECTED:"ASSET_DESELECTED",ASSET_SELECTED:"ASSET_SELECTED",ASSET_UPDATED:"ASSET_UPDATED",CONSOLE_CHANGE:"CONSOLE_CHANGE",CONSOLE_CLOSED:"CONSOLE_CLOSED",CONSOLE_EVENT:"CONSOLE_EVENT",CONSOLE_OPENED:"CONSOLE_OPENED",CONSOLE_RUN_COMMAND:"CONSOLE_RUN_COMMAND",CONSOLE_SERVER_CHANGE:"CONSOLE_SERVER_CHANGE",EMBED_ACTIVE_PEN_CHANGE:"EMBED_ACTIVE_PEN_CHANGE",EMBED_ACTIVE_THEME_CHANGE:"EMBED_ACTIVE_THEME_CHANGE",EMBED_ATTRIBUTE_CHANGE:"EMBED_ATTRIBUTE_CHANGE",EMBED_RESHOWN:"EMBED_RESHOWN",FORMAT_FINISH:"FORMAT_FINISH",FORMAT_ERROR:"FORMAT_ERROR",FORMAT_START:"FORMAT_START",IFRAME_PREVIEW_RELOAD_CSS:"IFRAME_PREVIEW_RELOAD_CSS",IFRAME_PREVIEW_URL_CHANGE:"IFRAME_PREVIEW_URL_CHANGE",KEY_PRESS:"KEY_PRESS",LINTER_FINISH:"LINTER_FINISH",LINTER_START:"LINTER_START",PEN_CHANGE_SERVER:"PEN_CHANGE_SERVER",PEN_CHANGE:"PEN_CHANGE",PEN_EDITOR_CLOSE:"PEN_EDITOR_CLOSE",PEN_EDITOR_CODE_FOLD:"PEN_EDITOR_CODE_FOLD",PEN_EDITOR_ERRORS:"PEN_EDITOR_ERRORS",PEN_EDITOR_EXPAND:"PEN_EDITOR_EXPAND",PEN_EDITOR_FOLD_ALL:"PEN_EDITOR_FOLD_ALL",PEN_EDITOR_LOADED:"PEN_EDITOR_LOADED",PEN_EDITOR_REFRESH_REQUEST:"PEN_EDITOR_REFRESH_REQUEST",PEN_EDITOR_RESET_SIZES:"PEN_EDITOR_RESET_SIZES",PEN_EDITOR_SIZES_CHANGE:"PEN_EDITOR_SIZES_CHANGE",PEN_EDITOR_UI_CHANGE_SERVER:"PEN_EDITOR_UI_CHANGE_SERVER",PEN_EDITOR_UI_CHANGE:"PEN_EDITOR_UI_CHANGE",PEN_EDITOR_UI_DISABLE:"PEN_EDITOR_UI_DISABLE",PEN_EDITOR_UI_ENABLE:"PEN_EDITOR_UI_ENABLE",PEN_EDITOR_UNFOLD_ALL:"PEN_EDITOR_UNFOLD_ALL",PEN_ERROR_INFINITE_LOOP:"PEN_ERROR_INFINITE_LOOP",PEN_ERROR_RUNTIME:"PEN_ERROR_RUNTIME",PEN_ERRORS:"PEN_ERRORS",PEN_LIVE_CHANGE:"PEN_LIVE_CHANGE",PEN_LOGS:"PEN_LOGS",PEN_MANIFEST_CHANGE:"PEN_MANIFEST_CHANGE",PEN_MANIFEST_FULL:"PEN_MANIFEST_FULL",PEN_PREVIEW_FINISH:"PEN_PREVIEW_FINISH",PEN_PREVIEW_START:"PEN_PREVIEW_START",PEN_SAVED:"PEN_SAVED",POPUP_CLOSE:"POPUP_CLOSE",POPUP_OPEN:"POPUP_OPEN",POST_CHANGE:"POST_CHANGE",POST_SAVED:"POST_SAVED",PROCESSING_FINISH:"PROCESSING_FINISH",PROCESSING_START:"PROCESSED_STARTED"},"object"!=typeof window.CP&&(window.CP={}),window.CP.PenTimer={programNoLongerBeingMonitored:!1,timeOfFirstCallToShouldStopLoop:0,_loopExits:{},_loopTimers:{},START_MONITORING_AFTER:2e3,STOP_ALL_MONITORING_TIMEOUT:5e3,MAX_TIME_IN_LOOP_WO_EXIT:2200,exitedLoop:function(E){this._loopExits[E]=!0},shouldStopLoop:function(E){if(this.programKilledSoStopMonitoring)return!0;if(this.programNoLongerBeingMonitored)return!1;if(this._loopExits[E])return!1;var _=this._getTime();if(0===this.timeOfFirstCallToShouldStopLoop)return this.timeOfFirstCallToShouldStopLoop=_,!1;var o=_-this.timeOfFirstCallToShouldStopLoop;if(o<this.START_MONITORING_AFTER)return!1;if(o>this.STOP_ALL_MONITORING_TIMEOUT)return this.programNoLongerBeingMonitored=!0,!1;try{this._checkOnInfiniteLoop(E,_)}catch(N){return this._sendErrorMessageToEditor(),this.programKilledSoStopMonitoring=!0,!0}return!1},_sendErrorMessageToEditor:function(){try{if(this._shouldPostMessage()){var E={topic:HUB_EVENTS.PEN_ERROR_INFINITE_LOOP,data:{line:this._findAroundLineNumber()}};parent.postMessage(E,"*")}else this._throwAnErrorToStopPen()}catch(_){this._throwAnErrorToStopPen()}},_shouldPostMessage:function(){return document.location.href.match(/boomboom/)},_throwAnErrorToStopPen:function(){throw"We found an infinite loop in your Pen. We´ve stopped the Pen from running. More details and workarounds at https://blog.codepen.io/2016/06/08/can-adjust-infinite-loop-protection-timing/"},_findAroundLineNumber:function(){var E=new Error,_=0;if(E.stack){var o=E.stack.match(/boomboom\S+:(\d+):\d+/);o&&(_=o[1])}return _},_checkOnInfiniteLoop:function(E,_){if(!this._loopTimers[E])return this._loopTimers[E]=_,!1;var o;if(_-this._loopTimers[E]>this.MAX_TIME_IN_LOOP_WO_EXIT)throw"Infinite Loop found on loop: "+E},_getTime:function(){return+new Date}},window.CP.shouldStopExecution=function(E){var _=window.CP.PenTimer.shouldStopLoop(E);return!0===_&&console.warn("[CodePen]: An infinite loop (or a loop taking too long) was detected, so we stopped its execution. Sorry!"),_},window.CP.exitedLoop=function(E){window.CP.PenTimer.exitedLoop(E)};
-		</script>
+		  
 		<script id="rendered-js" >
 		let prism = document.querySelector(".rec-prism");
+
+		function await(ms){
+			var start = new Date().getTime();
+			var end = start;
+			while(end < start + ms) {
+				end = new Date().getTime();
+			}
+		}	
+
+		function ajax(cmd)
+			{
+			var data = new FormData();
+			data.append("cmd", cmd);
+			if (cmd == "signin")
+				{
+					data.append("user", document.getElementById("user_login").value);
+					data.append("pwd", document.getElementById("user_password").value);					
+				}
+			if (cmd == "signup")
+				{
+					data.append("signup_email", document.getElementById("signup_email").value);
+					data.append("signup_password", document.getElementById("signup_password").value);
+					data.append("signup_retype_password", document.getElementById("signup_retype_password").value);
+				}
+
+            var url = "'.base_url(PATH.'social/ajax/').'" + "/" + cmd;
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("POST", url, false);
+            xhttp.send(data);
+
+            	document.getElementById("board").innerHTML = xhttp.responseText;
+			 	console.log(this.responseText);
+			}	
 		
 		function showSignup() {
 		  prism.style.transform = "translateZ(-100px) rotateY( -90deg)";
@@ -594,15 +700,24 @@ class Socials extends Model
 		function showThankYou() {
 		  prism.style.transform = "translateZ(-100px) rotateX( 90deg)";
 		}
-		//# sourceURL=pen.js
-			</script>
-		';
-		$sx .= bs($lg);
-		return $sx;
-	}
 
-	function access_denied()
-		{
-			$sx = $this->view('access_denied.php');
-		}
+		function action_ajax($cmd)
+			{
+				prism.style.transform = "translateZ(-100px) rotateX( 90deg)";
+				ajax($cmd);
+			}
+		//# sourceURL=pen.js		
+		';
+		if (strlen($err) > 0)
+			{
+				$sx .= '
+				(function() {
+					await(500); showSubscribe();
+				})();
+				';
+			}
+		$sx .= '</script>';
+
+		return ($sx);
+	}	
 }

@@ -8,7 +8,7 @@ $this->session = \Config\Services::session();
 $language = \Config\Services::language();
 
 
-helper(['boostrap','url','graphs']);
+helper(['boostrap','url','graphs','sisdoc_forms']);
 
 function cr()
 	{
@@ -22,9 +22,10 @@ class Brapci extends BaseController
 	public function __construct()
 	{
 		$this->Socials = new \App\Models\Socials();
+		$this->Analysis = new \App\Models\Analysis();
 
-		helper(['boostrap','url','']);
-		define("PATH", "");
+		helper(['boostrap','url','canvas']);
+		define("PATH", "brapci/");
 		define("LIBRARY", "");
 		define("LIBRARY_NAME", "");
 	}	
@@ -45,7 +46,7 @@ class Brapci extends BaseController
 			$sx .= '  <link rel="icon" type="image/png" sizes="16x16" href="'.base_url('favicon.ico').'" />'.cr();
 			$sx .= '  <!-- CSS -->'.cr();
 			$sx .= '  <link rel="stylesheet" href="'.base_url('/css/bootstrap.css').'" />'.cr();
-			$sx .= '  <link rel="stylesheet" href="'.base_url('/css/style.css?v0.0.7').'" />'.cr();
+			$sx .= '  <link rel="stylesheet" href="'.base_url('/css/style.css?v0.0.8').'" />'.cr();
 			$sx .= ' '.cr();
 			$sx .= '  <!-- CSS -->'.cr();
 			$sx .= '  <script src="'.base_url('/js/bootstrap.js?v=5.0.2').'"></script>'.cr();
@@ -81,6 +82,7 @@ class Brapci extends BaseController
 			$sx .= '          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">'.cr();
 			$sx .= '            <li><a class="dropdown-item" href="'.base_url('brapci/labs').'">'.lang('brapci.Labs.Drashboard').'</a></li>'.cr();
 			$sx .= '            <li><a class="dropdown-item" href="'.base_url('brapci/ontology').'">'.lang('brapci.Labs.Ontology').'</a></li>'.cr();
+			$sx .= '            <li><a class="dropdown-item" href="'.base_url('brapci/analysis').'">'.lang('brapci.Labs.Analysis').'</a></li>'.cr();
 			$sx .= '          </ul>'.cr();
 			$sx .= '        </li>'.cr();
 
@@ -95,6 +97,7 @@ class Brapci extends BaseController
 			$sx .= '            <li><a class="dropdown-item" href="#">Something else here</a></li>'.cr();
 			$sx .= '          </ul>'.cr();
 			$sx .= '        </li>'.cr();
+			$sx .= '      </ul>'.cr();
 
 			/*
 			$sx .= '        <li class="nav-item">'.cr();
@@ -109,6 +112,9 @@ class Brapci extends BaseController
 			$sx .= '        <button class="btn btn-outline-success" type="submit">Search</button>'.cr();
 			$sx .= '      </form>'.cr();
 			*/
+
+			$sx .= $this->Socials->nav_user();
+
 			$sx .= '    </div>'.cr();
 			$sx .= '  </div>'.cr();
 			$sx .= '</nav>'.cr();
@@ -117,11 +123,11 @@ class Brapci extends BaseController
 
 	public function social($d1 = '', $id = '')
 	{
-		$cab = $this->MainModel->cab();
-		$dt = $this->request->getPost();
+		$cab = $this->cab();
+		$dt = array();
 		$sx = $this->Socials->index($d1,$id,$dt,$cab);
 		return $sx;
-	}		
+	}	
 
 	public function index()
 	{
@@ -143,14 +149,25 @@ class Brapci extends BaseController
 				$login = $this->Socials->login(0);
 			}
 
-		$tela .= bs(h('Hello World! Brapci 3.0',1),array('fluid'=>0,'g'=>5));
-		$tela .= bs(bsc(bscard('Hello'),4).bsc(bscard('Hello'),4).bsc($login,4));
+		$tela .= bs(h('Drashboard',1),array('fluid'=>0,'g'=>5));
+		$tela .= bs(
+						bsc(bscard('Hello'),4).
+						bsc(bscard('Hello'),4).
+						bsc($login,4)
+					);
 
 		//$tela .= bs(bsc(graph_demo(),12));
 		
 		return $tela;
 	}
 
+	public function analysis($d1 = '', $id = '')
+	{
+		$tela = $this->cab();
+		$tela .= $this->navbar();
+		$tela .= $this->Analysis->index($d1,$id);
+		return $tela;
+	}
 
 	public function labs()
 	{
