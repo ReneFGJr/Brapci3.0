@@ -1,0 +1,3 @@
+#bash
+cd /var/www/html/Brapci3.0/
+git pull
