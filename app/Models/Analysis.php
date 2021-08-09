@@ -68,7 +68,7 @@ class Analysis extends Model
 						}		
 						break;			
 					default:
-						$sx .= $this->analysis01();
+						$sx .= $this->analysis04();
 						
 				}
 			return $sx;
@@ -169,32 +169,75 @@ class Analysis extends Model
 			$xln = explode(chr(13),$txt);
 
 			$docs = array();
+			$doxs = array();
+			$tab = array();
+			for ($r=0;$r < 98;$r++)
+				{
+					array_push($tab,0);
+				}
+
 			for ($r=1;$r < count($xln);$r++)
 				{
 					$l = $xln[$r];
 					$la = explode(';',$l);
 
-					$ln = trim($la[0]);
-					//echo '<h1>'.$ln.'</h1>';
+					$aut = trim($la[0]);
 
-					for ($q=4;$q < count($la);$q++)
-						{
-							$doc = trim($la[$q]);
-							if (strlen($doc) > 0)
+					if (strlen($aut) > 0)
+					{
+						for ($q=1;$q < count($la);$q++)
 							{
-							if (isset($docs[$doc]))
+								$doc = trim($la[$q]);
+
+								if (strlen($doc) > 0)
 								{
-									$docs[$doc] .= $ln.';';
-								} else {
-									$docs[$doc] = $ln.';';
+									if (!isset($doxs[$doc]))
+										{
+											$doxs[$doc] = count($doxs);
+										}
+
+									$pos = $doxs[$doc];
+
+									if (strlen($doc) > 0)
+									{				
+									if (isset($docs[$aut][$pos]))
+										{
+											$docs[$aut][$pos] = ($docs[$aut][$pos]+1);
+										} else {
+											$docs[$aut][$pos] = 1;
+										}
+									}
 								}
 							}
 						}
-				}
-				foreach($docs as $id => $autho)
-					{
-						echo $autho.'<br>';
 					}
+				$rs = 'Citado;';
+				foreach($doxs as $name => $n)
+					{
+						$rs .= $name.';';
+					}
+				$rs .= '<br>';
+				foreach($docs as $name => $tt)
+					{
+						$rs .= $name.';';
+						$rt = $tab;
+						foreach($tt as $at => $ad)
+							{
+								$rt[$at] = $rt[$at] + $ad;
+							}
+						for ($q=0;$q < count($rt);$q++)
+							{
+								$rs .= $rt[$q].';';
+							}
+						$rs .= chr(13);
+
+					}
+				echo '<pre>';
+				echo $rs;
+
+	
+
+					exit;
 		}
 
 	function analysis03()
@@ -352,7 +395,7 @@ class Analysis extends Model
 	function analysis02()
 		{
 			$sx = 'OK';
-			$file = 'd:/lixo/ad.txt';
+			$file = 'D:/GoogleDrive/Artigos/2021/AnáliseDeDomínio - Leilah/ad.txt';
 			$txt = file_get_contents($file);
 			$ln = explode(chr(13),$txt);
 			$basepq = $this->api_basepq();

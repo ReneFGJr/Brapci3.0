@@ -217,9 +217,6 @@ class Socials extends Model
 
 			if (!isset($dt[0]))
 				{
-					echo '==';
-					print_r($dt);
-					exit;
 					$this->user_add($user,$pw1);
 					$sx .= '<h2>'.lang('social.success').'<h2>';
 				} else {
