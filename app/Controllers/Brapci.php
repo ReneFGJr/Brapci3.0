@@ -30,8 +30,6 @@ class Brapci extends BaseController
 		define("LIBRARY_NAME", "");
 	}	
 
-	
-
 	private function cab($dt=array())
 		{
 			$title = 'Brapci3 - DrashDataBoard';
@@ -53,6 +51,18 @@ class Brapci extends BaseController
 			$sx .= '</head>'.cr();
 			return $sx;
 
+		}
+
+	function gitpull()
+		{
+			$os = php_uname();
+			if (substr($os,0,7) == 'Windows')
+				{
+					echo "Ignored";
+				} else {
+					echo exec('../gitpull');
+				}
+			
 		}
 
 	private function navbar($dt=array())	
