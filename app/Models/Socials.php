@@ -162,7 +162,8 @@ class Socials extends Model
 						break;
 					case 'signup':
 						$rsp = $this->signup();						
-						return redirect()->to('/');
+						return $rsp;
+						break;
 					default:
 						$sx = 'Command not found - '.$cmd;
 						$sx .= '<span class="singin" onclick="showLogin()">'.lang('social.return').'</span>';
@@ -200,7 +201,7 @@ class Socials extends Model
 					}
 
 				} else {
-					$sx .= '<h2>'.lang('social.user_already').'<h2>';
+					$sx .= '<h2>'.lang('social.user_error').'<h2>';
 					$sx .= '<span class="singin" onclick="showLogin()">'.lang('social.return').'</span>';
 				}
 			return $sx;
@@ -218,7 +219,8 @@ class Socials extends Model
 			if (!isset($dt[0]))
 				{
 					$this->user_add($user,$pw1);
-					$sx .= '<h2>'.lang('social.success').'<h2>';
+					$sx .= '<h2>'.lang('social.user_add_success').'<h2>';
+					$sx .= '<span class="singin" onclick="showLogin()">'.lang('social.return').'</span>';
 				} else {
 					$sx .= '<h2>'.lang('social.user_already').'<h2>';
 					$sx .= '<span class="singin" onclick="showLogin()">'.lang('social.return').'</span>';
