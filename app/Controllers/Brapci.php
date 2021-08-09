@@ -66,7 +66,9 @@ class Brapci extends BaseController
 				{
 					$sx .= bsmessage("Ignored",3);
 				} else {
-					$file = "../gitpull";
+					$path = $_SERVER['CONTEXT_DOCUMENT_ROOT'];
+					$path = substr($path,0,strpos($path,'/public'));
+					$file = $path."/gitpull";
 					echo '<pre>';
 					print_r($_SERVER);
 
