@@ -72,11 +72,11 @@ class Brapci extends BaseController
 					echo '<pre>';
 					print_r($_SERVER);
 
-					if (file_exists($file))
+					if (!file_exists($file))
 						{
 							$sx .= '<br>'.lang('File not found');
 						} else {
-							$sx .= exec('../gitpull');
+							$sx .= shell_exec($file);
 						}
 					
 				}
