@@ -69,14 +69,13 @@ class Brapci extends BaseController
 					$path = $_SERVER['CONTEXT_DOCUMENT_ROOT'];
 					$path = substr($path,0,strpos($path,'/public'));
 					$file = $path."/gitpull";
-					echo '<pre>';
-					print_r($_SERVER);
 
 					if (!file_exists($file))
 						{
 							$sx .= '<br>'.lang('File not found');
 						} else {
 							$sx .= shell_exec($file);
+							$sx .= '<br>Shell execute '.$file;
 						}
 					
 				}
