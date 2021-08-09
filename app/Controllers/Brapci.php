@@ -67,9 +67,12 @@ class Brapci extends BaseController
 					$sx .= bsmessage("Ignored",3);
 				} else {
 					$file = "../gitpull";
+					echo '<pre>';
+					print_r($_SERVER);
+
 					if (file_exists($file))
 						{
-							$sx .= lang('File not found');
+							$sx .= '<br>'.lang('File not found');
 						} else {
 							$sx .= exec('../gitpull');
 						}
