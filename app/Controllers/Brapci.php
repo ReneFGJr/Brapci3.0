@@ -57,15 +57,25 @@ class Brapci extends BaseController
 		{
 			$os = php_uname();
 			$cab = $this->cab();
+			$cab .= $this->navbar();
 			$dt = array();
-			$sx = $os;
+			$sx = '<h1>Updating</h1>';
+			$sx .= $os;
 			
 			if (substr($os,0,7) == 'Windows')
 				{
-					$sx .= "Ignored";
+					$sx .= bsmessage("Ignored",3);
 				} else {
-					$sx .= exec('../gitpull');
+					$file = "../gitpull";
+					if (file_exists($file))
+						{
+							$sx .= lang('File not found');
+						} else {
+							$sx .= exec('../gitpull');
+						}
+					
 				}
+			$sx = $cab .= bs(bsc($sx,12));
 			return $sx;			
 		}
 
