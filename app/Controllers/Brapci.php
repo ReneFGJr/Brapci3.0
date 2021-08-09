@@ -25,8 +25,8 @@ class Brapci extends BaseController
 		$this->Analysis = new \App\Models\Analysis();
 
 		helper(['boostrap','url','canvas']);
-		define("PATH", "brapci/");
-		define("LIBRARY", "");
+		define("PATH", "index.php/brapci/");
+		define("LIBRARY", "BRAPCI_LABS");
 		define("LIBRARY_NAME", "");
 	}	
 
