@@ -56,13 +56,17 @@ class Brapci extends BaseController
 	function gitpull()
 		{
 			$os = php_uname();
+			$cab = $this->cab();
+			$dt = array();
+			$sx = $os;
+			
 			if (substr($os,0,7) == 'Windows')
 				{
-					echo "Ignored";
+					$sx .= "Ignored";
 				} else {
-					echo exec('../gitpull');
+					$sx .= exec('../gitpull');
 				}
-			
+			return $sx;			
 		}
 
 	private function navbar($dt=array())	
