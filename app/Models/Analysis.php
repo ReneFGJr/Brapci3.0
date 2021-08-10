@@ -68,7 +68,7 @@ class Analysis extends Model
 						}		
 						break;			
 					default:
-						$sx .= $this->analysis04();
+						$sx .= $this->analysis03();
 						
 				}
 			return $sx;
@@ -118,11 +118,11 @@ class Analysis extends Model
 			$sp = 10;
 			$st = 20*$m;
 
-			$sx .= canvas_open("bc",$m*768,$m*480);	
+			$sx .= canvas_open("bc",$m*635,$m*400);	
 			$n = 0;
 			for ($r=1972;$r <= date("Y");$r++)
 				{
-					$xx = $x + 850 + $n*$m*10;
+					$xx = $x + 650 + $n*$m*10;
 					$yy = 10 * $m;
 					$sx .= canvas_line($xx,$yy+$st,$xx,$yy+430*$m+$st);
 					if (round($r/2) == ($r/2))
@@ -133,11 +133,11 @@ class Analysis extends Model
 				}		
 			foreach($auth as $name=>$datas)
 				{
-					$sx .= canvas_text($x+800,$y+$st,$name,'black',6*$m,'right');
-					$sx .= canvas_line($x+810,$y-8+$st,$x+730*$m,$y-8+$st);
+					$sx .= canvas_text($x+600,$y+$st,$name,'black',6*$m,'right');
+					$sx .= canvas_line($x+610,$y-8+$st,$x+730*$m,$y-8+$st);
 					$y = $y + $sp * $m;
 					$n = 0;
-					$xx = 830;
+					$xx = 630;
 					$yy = 90;
 
 					foreach($datas as $ano => $v)
@@ -145,11 +145,11 @@ class Analysis extends Model
 							if ($v > 0)
 							{
 								$yy = $y-8*$m-8;
-								$xx = $x+840+$sp*$n*$m;
-								$t = log($v)*$m*3;
+								$xx = $x+640+$sp*$n*$m;
+								$t = log($v+1)*$m*3;
 								
 								$sx .= canvas_circle($xx+10,$yy-8+$st,$t,'green');
-								//echo '<br>'.$name.'='.$ano.'-'.$v;
+								//echo '<br>'.$name.'='.$ano.'-'.$v.'--'.$xx.'x'.$yy.'==>'.$t;
 							}
 							$n++;
 						}
@@ -242,19 +242,137 @@ class Analysis extends Model
 
 	function analysis03()
 		{
+			$basepq = array();
+			for ($q=1;$q <= 3;$q++)
+			{
+			$file = 'D:/GoogleDrive/Artigos/2021/AnáliseDeDomínio - Leilah/gr'.$q.'.txt';
+			$gr1x = array();
+			$gr1y = array();
+			$txt = file_get_contents($file);
+			$txt = troca($txt,chr(10),'');
+			$ln = explode(chr(13),$txt.chr(13));			
+			for ($r=0;$r < count($ln);$r++)
+				{
+					$l = explode(';',$ln[$r]);
+					for ($y=1;$y < count($l);$y++)
+						{
+							$a = ascii($l[$y]);
+							$a = trim(troca($a,'. ','.'));
+																					
+							if (strlen($a) > 4)
+							{								
+								if (!isset($basep[$a]))
+									{
+										$basepq[$a] = 1;
+									} else {
+										$basepq[$a] = $basepq[$a] + 1;
+									}								
+							}
+						}
+				}
+			}
+			$ag = deg2rad(266/ (count($basepq)));
+			$nx = 0.36;
+			$side = 0;
+			$aux = array();
+			$auy = array();	
+
 			$sx = '';
 			$m = 4;
 			$sx .= canvas_open("bc",$m*768,$m*1024);
 			/********/
 			$xi = $m*400;
 			$yi = $m*400;
+			ksort($basepq);
 
-			$basepq = $this->api_basepq();
-			$ag = deg2rad(266/ (count($basepq)));
-			$nx = 0.36;
-			$side = 0;
-			$aux = array();
-			$auy = array();
+			foreach($basepq as $name => $q)
+				{
+					$rr = 300;
+					$x = $m*sin($nx)*$rr+$xi;
+					$y = $m*cos($nx)*$rr*1.4+$yi;
+					$nome = nbr_author($name,5);
+					$nome = troca($nome,'. ','.');
+					$nome = trim($nome);
+					//$sx .= canvas_rect($x,$y,150,15,'#00ff00');
+					if ($side == 0)
+					{
+						$sx .= canvas_text($x+$m*8,$y+3,$nome,'black',$m*6);
+					} else {
+						$sx .= canvas_text($x-$m*8,$y+3,$nome,'black',$m*6,'right');
+					}
+					$aux[$nome] = $x;
+					$auy[$nome] = $y;
+					
+					$sx .= canvas_circle($x,$y,$m*3,'red');
+					//$y = $y + 12;
+					$nx = $nx + $ag;
+					if (($nx > 2.65) and ($side == 0)) { $nx = 3.62; $side = 1; }
+				}
+
+			$lns = 0.8;
+			/**************** Arquivo */
+			$cn = 0;
+			$p = array(0,0,$m*400,$m*20*$cn + $m*50,
+							$m*400,$m*20*$cn + $m*50,
+							$m*440,$m*20*$cn + $m*60);
+			$cor = array('','blue','green','red');
+			
+			for ($q=1;$q <= 3;$q++)
+			{			
+			$file = 'D:/GoogleDrive/Artigos/2021/AnáliseDeDomínio - Leilah/gr'.$q.'.txt';
+			$gr1x = array();
+			$gr1y = array();
+			$txt = file_get_contents($file);
+			$txt = troca($txt,chr(10),'');
+			$ln = explode(chr(13),$txt.chr(13));
+
+			for ($r=0;$r < count($ln);$r++)
+				{
+					$l = explode(';',$ln[$r]);
+					$cite = trim($l[0]);
+					if (!isset($gri1x[$cite]))
+						{
+							$idqx = ($q*2);
+							$idqy = ($q*2)+1;
+							$x = $p[$idqx];
+							$y = $p[$idqy]+$cn*20*$m;
+							$sx .= canvas_text($x-$m*20,$y,$cite,'black',$m*12).cr();
+							$gri1x[$cite] = $x;
+							$gri1y[$cite] = $y;							
+							$cn++;
+						}
+
+					for ($z=1;$z < count($l);$z++)
+						{
+							$a = trim(nbr_author(trim($l[$z]),5));
+							if (strlen($a) > 4)
+							{
+								$a = ascii($a);
+								$a = troca($a,'. ','.');
+								$a = trim($a);
+								if ((strlen($a) > 0) and (isset($aux[$a])))
+									{
+											$sx .= canvas_line($gri1x[$cite],$gri1y[$cite],$aux[$a],$auy[$a],$cor[$q],$m*$lns);
+											$sx .= canvas_circle($gri1x[$cite],$gri1y[$cite],$m*8,$cor[$q]);
+									}
+							}
+						}
+				}	
+			}
+
+			$sx .= canvas_close();				
+			return $sx;
+
+
+		}
+
+	function analysis03a()
+		{
+
+
+
+
+
 			foreach($basepq as $id => $name)
 				{
 					$rr = 300;
