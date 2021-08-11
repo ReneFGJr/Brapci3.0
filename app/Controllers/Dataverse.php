@@ -58,6 +58,7 @@ class Dataverse extends BaseController
         {
             //http://dadospreservados.rnp.br/api/datasets/export?exporter=ddi&persistentId=doi%3A10.80102/FK2/CEAQOW
             $url = 'http://dadospreservados.rnp.br/api/datasets/export?exporter=ddi&persistentId=doi%3A10.80102/FK2/CEAQOW';
+			//$url = 'http://dadospreservados.rnp.br/api/datasets/export?exporter=ddi&persistentId=doi%3A10.80102/FK2/MVURLX';
             
             $file = md5($url).'.ddi.xml';
             $file = '../_temp/ddi/'.$file;
@@ -162,17 +163,16 @@ class Dataverse extends BaseController
                                 $ind = $sum['@attributes']['type'];
                                 $vls[$ind] = $vlr;
                             }
-
-                            $cat = array('Mínimo','Máximo','Média',
-                                        'Mediana','Moda','Desvio padrão',
-                                        'Inverso?','Valido');                        
+                       
                             $sv = '<table>';
                             $n = 0;
                             foreach($vls as $vn => $vl)
                                 {
+									if (($vn == 'invd') or ($vn == 'vald')) { $vl = number_format($vl,0,',','.'); }
+									if (($vn == 'stdev') or ($vn == 'mean')) { $vl = number_format($vl,4,',','.'); }
                                     $sv .= '<tr>';
-                                    $sv .= '<td style="text-align: right;">'.$vn.'</td>';
-                                    $sv .= '<td style="text-align: right;">'.$vl.'</td>';
+                                    $sv .= '<td style="text-align: right;" class="px-1">'.lang('dataverse.'.$vn).'</td>';
+                                    $sv .= '<td style="text-align: left;" class="px-1">'.$vl.'</td>';
                                     $sv .= '</tr>';
                                     $n++;
                                 }
