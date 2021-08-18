@@ -175,8 +175,14 @@ class Socials extends Model
 
 	function perfil()
 		{
-			$sx = '<h1>PERFIL</h1>';
-			return $sx;
+			$rsp = 0; 
+			if (isset($_SESSION['id']))
+				{
+					$id = round($_SESSION['id']);
+					if ($id > 0)
+						{ $rsp = 1; }
+				}
+			return $rsp;
 		}
 
 	function signin()
@@ -719,4 +725,6 @@ class Socials extends Model
 
 		return ($sx);
 	}	
+
 }
+
