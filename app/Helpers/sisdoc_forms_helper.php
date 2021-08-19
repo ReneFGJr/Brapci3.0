@@ -260,6 +260,7 @@ function tableview($th)
     {
         $url = base_url($_SERVER['REQUEST_URI']);
         if (strpos($url,'/view')) { $url = substr($url,0,strpos($url,'/view')); }
+        if (strpos($url,'/edit')) { $url = substr($url,0,strpos($url,'/edit')); }
         $fl = $th->allowedFields;
         if (isset($_POST['action']))
             {
@@ -483,15 +484,22 @@ function cr()
     }
 
 
+function stodbr($dt)
+    {
+        $rst = substr($dt,6,2).'/'.substr($dt,4,2).'/'.substr($dt,0,4);
+        return $rst;
+    }
+
 
 function form_fields($typ,$fld,$vlr)
-    {
+    {        
         $td = '<td>'; $tdc = '</td>';
         /*********** Mandatory */
         $sub = 0;
         $mandatory = false;        
         $sx = '<tr>';
         $t = substr($typ,0,2);
+
         switch($t)
                 {
                     case 'up':
@@ -500,6 +508,63 @@ function form_fields($typ,$fld,$vlr)
                     case 'hi':
                         $sx .= '<input type="hidden" id="'.$fld.'" name="'.$fld.'" value="'.$vlr.'">';
                         break;
+                    case 'dt':
+                        $sx .= $td.($fld).$tdc;
+                        $sx .= $td;
+                        $sx .= '<input type="text" id="'.$fld.'" name="'.$fld.'" value="'.$vlr.'" class="form-control" style="width:200px;">';
+                        $sx .= $tdc;
+                        break;       
+                    case 'ur':
+                        $sx .= $td.($fld).$tdc;
+                        $sx .= $td;
+                        $sx .= '<input type="text" id="'.$fld.'" name="'.$fld.'" value="'.$vlr.'" class="form-control">';
+                        $sx .= $tdc;
+                        break;                         
+                    case 'yr':
+                        $sx .= $td.($fld).$tdc;
+                        $sx .= $td;
+                        $op = array();
+                        $opc = array();
+                        for ($r=date("Y")+1;$r > 1900;$r--)
+                            {
+                                array_push($op,$r);
+                                array_push($opc,$r);
+                            }
+                        $sg = '<select id="'.$fld.'" name="'.$fld.'" value="'.$vlr.'" class="form-control" style="width: 200px;">'.cr();
+                        for ($r=0;$r < count($op);$r++)
+                            {
+                                $sel = '';
+                                $sg .= '<option value="'.$op[$r].'" '.$sel.'>'.$opc[$r].'</option>'.cr();
+                            }
+                        $sg .= '</select>'.cr();
+                        $sx .= $sg;
+                        $sx .= $tdc;
+                        break;        
+                    case 'pl':
+                        $sx .= $td.($fld).$tdc;
+                        $sx .= $td;
+                        //$dt = $this->db->query("select * from oa_country where ct_lang = 'pt-BR'").findAll();
+
+                        $sql = "SELECT * FROM some_table WHERE ct_lang = :ct_lang:";
+                        $rlt = $this->db->query($sql, ['ct_lang' => 'pt-BR']);
+                        print_r($dt);
+                        $op = array();
+                        $opc = array();
+                        for ($r=date("Y")+1;$r > 1900;$r--)
+                            {
+                                array_push($op,$r);
+                                array_push($opc,$r);
+                            }
+                        $sg = '<select id="'.$fld.'" name="'.$fld.'" value="'.$vlr.'" class="form-control" style="width: 200px;">'.cr();
+                        for ($r=0;$r < count($op);$r++)
+                            {
+                                $sel = '';
+                                $sg .= '<option value="'.$op[$r].'" '.$sel.'>'.$opc[$r].'</option>'.cr();
+                            }
+                        $sg .= '</select>'.cr();
+                        $sx .= $sg;
+                        $sx .= $tdc;
+                        break;                                                           
                     case 'tx':
                         $rows = 5;
                         $sx .= $td.($fld).$tdc;
@@ -522,6 +587,21 @@ function form_fields($typ,$fld,$vlr)
                         $sx .= $sg;
                         $sx .= $tdc;
                         break;
+                    case 'op':
+                        $sx .= $td.($fld).$tdc;
+                        $sx .= $td;
+                        $op = array(1,0);
+                        $opc = array(msg('YES'),msg('NO'));
+                        $sg = '<select id="'.$fld.'" name="'.$fld.'" value="'.$vlr.'" class="form-control">'.cr();
+                        for ($r=0;$r < count($op);$r++)
+                            {
+                                $sel = '';
+                                $sg .= '<option value="'.$op[$r].'" '.$sel.'>'.$opc[$r].'</option>'.cr();
+                            }
+                        $sg .= '</select>'.cr();
+                        $sx .= $sg;
+                        $sx .= $tdc;
+                        break;                        
                     case 'st':
                         $sx .= $td.($fld).$tdc;
                         $sx .= $td;
@@ -530,6 +610,7 @@ function form_fields($typ,$fld,$vlr)
                         break;
                     default:
                         $sx .= 'OPS - '.$t;
+                        echo '==>'.$t.'<br>';
                 }
             $sx .= '</tr>';
         return($sx);

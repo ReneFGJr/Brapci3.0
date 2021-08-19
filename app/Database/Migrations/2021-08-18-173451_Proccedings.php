@@ -17,6 +17,10 @@ class Proccedings extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '200'
             ],
+            'ep_abrev' => [
+                'type' => 'VARCHAR',
+                'constraint' => '50'
+            ],            
             'ep_url' => [
                 'type' => 'VARCHAR',
                 'constraint' => '200'

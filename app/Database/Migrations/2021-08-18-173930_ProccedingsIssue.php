@@ -48,7 +48,7 @@ class ProccedingsIssue extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '200'
 			],			
-            'epi_spurce' => [
+            'epi_source' => [
                 'type' => 'VARCHAR',
                 'constraint' => '20'
 			],	

@@ -26,6 +26,7 @@ class Eventos extends BaseController
 		$this->Socials = new \App\Models\Socials();
 		$this->EventSearch = new \App\Models\EventSearch();
 		$this->EventProceedings = new \App\Models\EventProceedings();
+		$this->EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
 
 		helper(['boostrap','url','canvas']);
 		define("LIBRARY", "BRAPCI_LABS");
