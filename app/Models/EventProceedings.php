@@ -79,6 +79,20 @@ class EventProceedings extends Model
 				$sx .= bsclose(3);
 				break;
 
+			case 'issue':
+				$sx = $cab;
+				$this->EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
+				$st = $this->EventProceedingsIssue->viewIssue($id);
+				$sx .= bs($st);
+				break;	
+
+			case 'harvesting':
+				$sx = $cab;
+				$this->Oaipmh = new \App\Models\Oaipmh();
+				$st = $this->Oaipmh->harvesting($id);
+				$sx .= bs($st);
+				break;	
+
 			default:
 				$sx = $cab;
 				$st = h("Proceedings - View", 1);
@@ -108,6 +122,15 @@ class EventProceedings extends Model
 			$this->OpenDataLanguage->inport();	
 		}
 
+	function headProceeding($dt)
+		{
+			$sx = '';
+			$sx .= bsc(bssmall(lang('ep_nome')),12);
+			$sx .= bsc('<h4>'.$dt['ep_nome'].'</h4>',12);
+
+			return $sx;
+		}
+
 	function viewid($id)
 		{
 			$this->EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
@@ -118,9 +141,6 @@ class EventProceedings extends Model
 			$sx = bsc(h($dt['ep_nome'],2));
 
 			$sx .= $this->EventProceedingsIssue->issues($id);
-
-			$sx = bs($sx);
-			$sx .= bsclose(3);		
 
 			return $sx;
 		}

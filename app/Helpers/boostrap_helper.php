@@ -11,6 +11,11 @@
 */
 
 
+function bssmall($t)
+    {
+        $sx = '<small>'.$t.'</small>';
+        return $sx;
+    }
 
 function bscontainer($fluid=0)
     {

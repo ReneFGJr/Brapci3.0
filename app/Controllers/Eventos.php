@@ -52,6 +52,11 @@ class Eventos extends BaseController
 			$sx .= '  <!-- CSS -->'.cr();
 			$sx .= '  <script src="'.base_url('/js/bootstrap.js?v=5.0.2').'"></script>'.cr();
 			$sx .= '</head>'.cr();
+
+			if (get("debug") != '')
+				{
+					$sx .= '<style> div { border: 1px solid #000000;"> </style>';
+				}			
 			return $sx;
 
 		}
@@ -93,6 +98,7 @@ class Eventos extends BaseController
 				$sx .= '          </a>'.cr();
 				$sx .= '          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">'.cr();
 				$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'proceedings').'">'.lang('events.proceedings.row').'</a></li>'.cr();
+				$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'rdf').'">'.lang('events.rdf.row').'</a></li>'.cr();
 				$sx .= '          </ul>'.cr();
 				$sx .= '        </li>'.cr();
 			}
@@ -128,6 +134,16 @@ class Eventos extends BaseController
 		return $sx;
 	}	
 
+	public function rdf($d1 = '', $id = '')
+	{
+		$this->RDF = new \App\Models\RDF();
+		$sx = $this->cab();
+		$sx .= $this->navbar();
+		$dt = array();
+		$sx .= $this->RDF->index($d1,$id,$dt);
+		return $sx;
+	}	
+
 	public function index()
 	{
 		//
@@ -154,9 +170,7 @@ class Eventos extends BaseController
 						bsc(bscard('Hello'),4).
 						bsc(bscard('Hello'),4).
 						bsc($login,4)
-					);
-
-		$tela .= '<style> div { border: 1px solid #000000;">';
+					);			
 		
 		return $tela;
 	}
