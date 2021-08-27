@@ -51,9 +51,102 @@ class RDF extends Model
 			return($dt);
 		}
 
+	function info($id)
+		{
+			$sx = '';
+			$id = round($id);
+			$file = '.c/'.round($id).'/.name';
+			
+			if (file_exists(($file)))
+				{
+					return file_get_contents($file);
+				}
+			return '';
+		}
+
 	function export($id)
 		{
+			$sx = '';
+			$id = round($id);
+			if ($id > 0)
+			{
+				$dir = '.c/';
+				if (!is_dir($dir)) { mkdir($dir); }
+				$dir = '.c/'.round($id).'/';
+				if (!is_dir($dir)) { mkdir($dir); }
+			} else {
+				$sx .= 'ID ['.$id.'] inválido<br>';
+			}
+
+			/*************************************************************** EXPORT */
+			$RDFData = new \App\Models\RDFData();
+			$RDFConcept = new \App\Models\RDFConcept();
+
+			$dt = $this->le($id);
+
+			$class = $dt['concept']['c_class'];
+			$txt_name = $dt['concept']['n_name'];
+
+			/******************************************************* ARQUIVOS ********/
+			$file_name = $dir.'.name';
+
+			/********************************************************** VARIÁVEIS ****/
+			$txt_journal = '';
+			$txt_author ='';
+
+			/********************************************************** WORK *********/
+			switch($class)
+				{
+					case 'Work':
+						for ($w=0;$w < count($dt['data']);$w++)
+							{
+								$dd = $dt['data'][$w];
+								$dclass = $dd['c_class'];
+								switch($dclass)
+									{
+										case 'title':
+										$txt_title = $dd['n_name'];
+										break;
+
+										case 'isWorkOf':
+										$x = $this->le($dd['d_r2']);
+										$txt_journal = $x['concept']['n_name'];
+										break;
+
+										case 'creator':
+										$x = $this->le($dd['d_r2']);
+										if (strlen($txt_author) > 0) { $txt_author .= '; '; }
+										$txt_author .= $x['concept']['n_name'];
+										break;										
+									}
+							}
+						/*
+						echo '<pre>';
+						print_r($dt);
+						echo '<hr>';
+						exit;		
+						*/
+						break;	
+				}		
+				
+
+			/*************************************************************** HTTP ****/
+			if (substr($txt_name,0,4) == 'http')
+				{
+					$txt_name = '<a href="'.$txt_name.'" target="_new">'.$txt_name.'</a>';
+				}				
+
+			/******************************************************** JOURNAL NAME  */
+			if (strlen($txt_author) > 0)
+				{
+					$txt_name = $txt_author . $txt_title . '. <b>[Anais...]</b> '.$txt_journal.'.';
+				}
 			
+			/******************************************************* SALVAR ARQUIVOS */
+			if (strlen($txt_name) > 0) { file_put_contents($file_name,$txt_name); }
+
+			$sx = $txt_name.' exported<br>';
+			return $sx;
 		}
 
 	function view_data($dt)

@@ -84,6 +84,10 @@ class EventProceedings extends Model
 				break;			
 			break;
 
+			case 'export':
+				$sx = $this->export($id);
+				break;
+
 			case 'edit':
 				$sx = $cab;
 				$this->id = $id;
@@ -121,9 +125,17 @@ class EventProceedings extends Model
 		return $sx;
 	}	
 
-	function issues_ed()
+	function export($id)
 		{
-
+			$sx = '';
+			$this->RDF = new \App\Models\RDF();
+			for ($q=1;$q <= 200;$q++)
+				{
+					$sx .= $this->RDF->export($q);
+				}
+			
+			$sx = bs(bsc($sx,12));
+			return $sx;
 		}
 
 	function imports()

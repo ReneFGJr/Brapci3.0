@@ -62,6 +62,7 @@ class RDFData extends Model
 
 	function view_data($dt)
 		{
+			$RDF = new \App\Models\RDF();
 			$sx = '';
 			$ID = $dt['concept']['id_cc'];
 			if (isset($dt['data']))
@@ -70,16 +71,29 @@ class RDFData extends Model
 					for ($r=0;$r < count($dtd);$r++)
 						{
 							$line = $dtd[$r];
-							$sx .= bsc(lang($line['prefix_ref'].':'.$line['c_class']),2);
+							$sx .= bsc('<small>'.lang($line['prefix_ref'].':'.$line['c_class'].'</small>'),2);
 							if ($line['d_r2'] != 0)
 							{
 								if ($ID == $line['d_r2'])
 									{
 										$link = base_url(PATH.'v/'.$line['d_r1']);
-										$link = '<a href="'.$link.'">Link Inverso</a>';
+										$txt = $RDF->info($line['d_r1'],1);
+										if (strlen($txt) > 0)
+											{
+												$link = '<a href="'.$link.'">'.$txt.'</a>';
+											} else {
+												$link = '<a href="'.$link.'">Link Inverso</a>';
+											}
+										
 									} else {
 										$link = base_url(PATH.'v/'.$line['d_r2']);
-										$link = '<a href="'.$link.'">Link</a>';
+										$txt = $RDF->info($line['d_r2'],1);
+										if (strlen($txt) > 0)
+											{
+												$link = '<a href="'.$link.'">'.$txt.'</a>';
+											} else {
+												$link = '<a href="'.$link.'">Link</a>';
+											}
 									}
 								$sx .= bsc($link,10);
 							} else {
