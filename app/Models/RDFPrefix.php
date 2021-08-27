@@ -42,6 +42,20 @@ class RDFPrefix extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
+	function prefixo($pre)
+		{
+			$ID = 0;
+			$dt = $this->where('prefix_ref',$pre)->find();
+			if (count($dt) > 0)
+				{
+					$ID = $dt[0]['id_prefix'];
+				} else {
+					echo 'Prefix não localizado';
+					exit;
+				}
+			return $ID;
+		}
+
 	function inport($url='')
 		{
 			$sx = '';

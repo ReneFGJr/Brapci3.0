@@ -44,6 +44,40 @@ class OpenDataCountry extends Model
 
 	/* Source Data: https://github.com/umpirsky/country-list */
 
+	function export()
+		{
+			/* Checar se já nao foi coletado */
+			$dir = '../.temp/';
+			if (!is_dir($dir)) { mkdir($dir); }
+			$dir .= 'oa/';
+			if (!is_dir($dir)) { mkdir($dir); }
+
+			$file = '../.temp/oa/country-$lang.php';
+			$dt = $this->FindAll();
+			$p = array();
+			foreach($dt as $id=>$line)
+				{
+					$lang = $line['ct_lang'];
+					$name = $line['ct_name'];
+					if (!isset($p[$lang])) { $p[$lang] = array(); }
+					array_push($p[$lang],$name);
+				}
+			foreach($p as $dt=>$idx)
+				{
+					$file_save = str_replace('$lang',$dt,$file);
+					$txt = '$country = array(';
+					for ($r=0;$r < count($idx);$r++)
+						{
+							if ($r > 0) { $txt .= ', ';}
+							$txt .= "'".mb_strtolower($idx[$r])."'";
+						}
+					$txt .= ');';
+					echo $file_save;
+					file_put_contents($file_save,$txt);
+				}
+				return TRUE;
+		}	
+
 	function inport($url='')
 		{
 			$url = 'http://cedapdados.ufrgs.br/api/access/datafile/:persistentId?persistentId=hdl:20.500.11959/CedapDados/3/8';

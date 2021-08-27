@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class OACountry extends Migration
+class OALanguage extends Migration
 {
 	public function up()
 	{

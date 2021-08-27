@@ -53,10 +53,34 @@ class EventProceedings extends Model
 	protected $afterDelete          = [];	
 
 	function index($d1, $id, $dt=array(),$cab='')
-	{
-		$sx = '';
-		
+	{	
 		switch ($d1) {
+			case 'gets':
+				$sx = $cab;
+				$st = get("process");
+				$this->Oaipmh = new \App\Models\Oaipmh();
+				switch($st)
+					{
+						case '0':
+							$this->OaiPMHRegister = new \App\Models\OaiPMHRegister();
+							$st = $this->OaiPMHRegister->process_00($id);
+						break;
+
+						case '1':
+							$this->OaiPMHRegister = new \App\Models\OaiPMHRegister();
+							$st = $this->OaiPMHRegister->process_01($id);
+						break;
+
+						default:
+							$this->OaiPMHRegister = new \App\Models\OaiPMHRegister();
+							$st = $this->OaiPMHRegister->process_01($id);
+						break;
+
+					}
+				$sx .= bs($st);
+				break;			
+			break;
+
 			case 'edit':
 				$sx = $cab;
 				$this->id = $id;
@@ -89,9 +113,9 @@ class EventProceedings extends Model
 			case 'harvesting':
 				$sx = $cab;
 				$this->Oaipmh = new \App\Models\Oaipmh();
-				$st = $this->Oaipmh->harvesting($id);
+				$st = $this->Oaipmh->index($id,$dt);
 				$sx .= bs($st);
-				break;	
+				break;					
 
 			default:
 				$sx = $cab;
@@ -120,6 +144,12 @@ class EventProceedings extends Model
 			$this->OpenDataCountry->inport();
 			$this->OpenDataLanguage = new \App\Models\OpenDataLanguage();
 			$this->OpenDataLanguage->inport();	
+		}
+
+	function le($id)
+		{
+			$dt = $this->find($id);
+			return $dt;
 		}
 
 	function headProceeding($dt)

@@ -75,6 +75,12 @@ class EventProceedingsIssue extends Model
 			return $st;
 		}
 
+	function le($id)
+		{
+			$dt = $this->find($id);
+			return $dt;
+		}		
+
 	function viewIssue($id)
 		{
 			$this->EventProceedings = new \App\Models\EventProceedings();
@@ -87,39 +93,41 @@ class EventProceedingsIssue extends Model
 			/* Show Data */
 			$sx = $this->EventProceedings->headProceeding($di);
 			$sx .= $this->headProceedingIssue($dt);
-
 			
-			print_r($dt);
-			echo '<hr>';
-			print_r($di);
-
 			return $sx;
 		}
 
 	function headProceedingIssue($dt)
-		{
+		{		
+			$this->OaiPMHListRecord = new \App\Models\OaiPMHListRecord();
+			$status = $this->OaiPMHListRecord->status(1,1);
+
 			$sx = '';
 			$sx .= bsc(bssmall(lang('epi_edition')),1);
-			$sx .= bsc(bssmall(lang('epi_edition_name')),8);
+			$sx .= bsc(bssmall(lang('epi_edition_name')),5);
 			$sx .= bsc(bssmall(lang('epi_year')),1);
 			$sx .= bsc(bssmall(lang('epi_date')),2);
+			$sx .= bsc(bssmall(lang('status')),3);
+
+
+			/************************************************************** */
 
 			$sx .= bsc(h($dt['epi_edition'],4),1);
-			$sx .= bsc(h($dt['epi_edition_name'],4),7);
+			$sx .= bsc(h($dt['epi_edition_name'],4),4);
 			if ($this->Socials->perfil("#ADM"))
 			{
 				$img = '<img src="'.base_url('img/icones/arrow-repeat.svg').'" class="img-responsive" style="height: 32px;" title="'.lang('Proceeding Harvesting').'">';
 				$img = '<a href="'.base_url(PATH.'proceedings/harvesting/'.$dt['id_epi']).'">'.$img.'</a>';
-				$sx .= bsc($img,1);
+				$imgx = $img;
+				
+				$sx .= bsc($imgx,1);
 			} else {
 				$sx .= bsc('',1);
 			}
 			$sx .= bsc(h($dt['epi_year'],4),1);
 
 			$di = $dt['epi_date_start'];
-			$df = $dt['epi_date_end'];
-
-			
+			$df = $dt['epi_date_end'];			
 
 			if (substr($di,0,6) == substr($df,0,6))
 				{
@@ -128,6 +136,8 @@ class EventProceedingsIssue extends Model
 					$data = stodbr($dt['epi_date_start']).' '.lang('à').' '.stodbr($dt['epi_date_end']);
 				}			
 			$sx .= bsc($data,2);
+			$sx .= bsc($status,3);
+
 
 			return $sx;
 		}		
@@ -136,7 +146,6 @@ class EventProceedingsIssue extends Model
 		{
 			$sx = "";
 			$dt = $this->where('epi_procceding', $id)->findAll();
-			echo '==>'.$id;
 
 			$sx .= '<a href="'.base_url(PATH.'proceedings/ed_issue/?jnl='.$id).'" class="btn btn-primary">'.lang('new').'</a>';
 

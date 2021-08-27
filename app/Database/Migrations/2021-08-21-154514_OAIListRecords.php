@@ -35,8 +35,12 @@ class OAIListRecords extends Migration
             ], 
             'li_process' => [
                 'type' => 'INT',
-				'defaukt' => 0
-            ],	
+				'default' => 0
+            ],
+            'li_rdf' => [
+                'type' => 'INT',
+				'default' => 0
+            ],            	
             'li_local_file' => [
 				'type' => 'VARCHAR',
                 'constraint' => '100'

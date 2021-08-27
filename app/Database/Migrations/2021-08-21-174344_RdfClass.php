@@ -14,14 +14,15 @@ class RdfClass extends Migration
                 'auto_increment' => true
             ],
             'c_class' => [
-                'type' => 'INT',
+                'type' => 'VARCHAR',
+                'constraint' => '80'
             ],            
             'c_prefix' => [
                 'type' => 'INT',
             ],            
             'c_type' => [
                 'type' => 'VARCHAR',
-                'constraint' => '80'
+                'constraint' => '1'
 			],			
             'c_url' => [
                 'type' => 'VARCHAR',

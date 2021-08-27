@@ -1,0 +1,1 @@
+$prep = array('à', 'às', 'aos', 'ao', 'ante', 'após', 'aquele', 'aquelas', 'aquela', 'até', 'com', 'como', 'contra', 'de', 'do', 'dos', 'da', 'das', 'desde', 'disto', 'disse', 'desse', 'deste', 'em', 'entre', 'no', 'na', 'nos', 'nas', 'nele', 'neles', 'nela', 'nelas', 'num', 'numa', 'para', 'perante', 'pelos', 'pelas', 'por', 'per', 'sem', 'sob', 'sobre', 'trás');

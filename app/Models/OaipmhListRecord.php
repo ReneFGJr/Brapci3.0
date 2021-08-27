@@ -89,6 +89,10 @@ class OaiPMHListRecord extends Model
 					if (isset($att['@attributes']))
 						{
 							$data['li_status'] = $att['@attributes']['status'];
+							if ($data['li_status'] == 'deleted')
+								{
+									$data['li_process'] = 9;
+								}
 						}
 					if ($this->register($data))
 						{
@@ -112,5 +116,23 @@ class OaiPMHListRecord extends Model
 					return false;
 				}
 			return true;
-		}		
+		}	
+
+	function status($jnl,$issue)
+		{
+			$sql = "
+			SELECT li_process, count(*) as total FROM `oai_listrecords`
+				where li_journal = $jnl and li_issue = $issue
+				group by li_process
+				order by li_process";
+
+			$query = $this->query($sql);
+			$rlt = $query->getResult();
+			$sx = '';
+			foreach ($rlt as $obj=>$line)				
+				{
+					$sx .= '<a href="'.base_url(PATH.'proceedings/gets/'.$issue.'?issue='.$issue.'&process='.$line->li_process).'">'.lang('status_'.$line->li_process).' ('.$line->total.')</a><br>';
+				}
+			return $sx;
+		}			
 }

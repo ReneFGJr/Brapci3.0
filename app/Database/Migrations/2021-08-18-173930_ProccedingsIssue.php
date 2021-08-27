@@ -38,7 +38,8 @@ class ProccedingsIssue extends Migration
                 'type' => 'int',
             ],
             'epi_place' => [
-                'type' => 'int'
+                'type' => 'VARCHAR',
+                'constraint' => '50'
 			],																				
             'epi_url' => [
                 'type' => 'VARCHAR',

@@ -44,6 +44,11 @@ class OpenDataLanguage extends Model
 
 	/* Source Data: https://github.com/umpirsky/country-list */
 
+	function check($lang)
+		{
+			
+		}
+
 	function inport($url='')
 		{
 			$url = 'http://cedapdados.ufrgs.br/api/access/datafile/:persistentId?persistentId=hdl:20.500.11959/CedapDados/3/7';

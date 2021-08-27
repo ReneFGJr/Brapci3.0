@@ -8,7 +8,7 @@ $this->session = \Config\Services::session();
 $language = \Config\Services::language();
 
 
-helper(['boostrap','url','graphs','sisdoc_forms','form']);
+helper(['boostrap','url','graphs','sisdoc_forms','form','nbr']);
 
 define("PATH","index.php/eventos/");
 
@@ -29,8 +29,8 @@ class Eventos extends BaseController
 		$this->EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
 
 		helper(['boostrap','url','canvas']);
-		define("LIBRARY", "BRAPCI_LABS");
-		define("LIBRARY_NAME", "");
+		define("LIBRARY", "3001");
+		define("LIBRARY_NAME", "BRAPCI_LABS");
 	}	
 
 	private function cab($dt=array())
@@ -58,7 +58,6 @@ class Eventos extends BaseController
 					$sx .= '<style> div { border: 1px solid #000000;"> </style>';
 				}			
 			return $sx;
-
 		}
 
 	private function navbar($dt=array())	
@@ -99,6 +98,7 @@ class Eventos extends BaseController
 				$sx .= '          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">'.cr();
 				$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'proceedings').'">'.lang('events.proceedings.row').'</a></li>'.cr();
 				$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'rdf').'">'.lang('events.rdf.row').'</a></li>'.cr();
+				$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'proceedings/gets').'">'.lang('events.proceedings.gets').'</a></li>'.cr();
 				$sx .= '          </ul>'.cr();
 				$sx .= '        </li>'.cr();
 			}
@@ -124,6 +124,21 @@ class Eventos extends BaseController
 			$sx .= '  </div>'.cr();
 			$sx .= '</nav>'.cr();
 			return $sx;
+		}
+
+	public function v($id)
+		{
+			$RDF = new \App\Models\Rdf();
+
+			$sx = $this->cab();
+			$sx .= $this->navbar();
+
+			$dt = $RDF->le($id);
+
+			$V = new \App\Models\EventView();
+			$sx .= $V->view($dt);
+
+			return $sx;			
 		}
 
 	public function social($d1 = '', $id = '')
