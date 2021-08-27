@@ -124,7 +124,8 @@ class EventProceedings extends Model
 				$dt =
 					[
 						'services' => $this->paginate(3),
-						'pages' => $this->pager
+						'pages' => $this->pager,
+						'path' => 'proceedings'
 					];
 				$sx .= tableview($this,$dt);
 				$sx = bs($sx);
