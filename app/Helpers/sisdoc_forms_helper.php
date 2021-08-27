@@ -124,9 +124,9 @@ function form($th)
             }
         
         
-        $sx .= form_open($url).cr();
+        $sx .= form_open().cr();
 
-        $sx .= '<table class="table">';
+        $sx .= '<table class="table" width="100%">';
         $sx .= '<tr><th width="20%">'.msg('label').'</th>
                     <th width="80%">'.msg('values').'</th></tr>';
         $submit = false;

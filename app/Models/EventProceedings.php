@@ -127,6 +127,7 @@ class EventProceedings extends Model
 						'pages' => $this->pager
 					];
 				$sx .= tableview($this,$dt);
+				$sx = bs($sx);
 				break;
 		}
 		return $sx;
