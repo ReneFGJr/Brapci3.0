@@ -40,5 +40,10 @@ a:hover
     {
         text-decoration: none;
         color: #000;
-    }    
+    }   
+    
+.supersmall
+    {
+        font-size: 60%;
+    }
 

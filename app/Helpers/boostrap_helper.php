@@ -124,10 +124,10 @@ function brow($t,$dt=array())
         return $sx;
     }
 
-function bsc($t,$grid=12)
+function bsc($t,$grid=12,$class='')
     {
         $sx = '';
-        $sx .= bscol($grid);
+        $sx .= bscol($grid,$class);
         $sx .= $t;
         $sx .= '</div>';
         return $sx;

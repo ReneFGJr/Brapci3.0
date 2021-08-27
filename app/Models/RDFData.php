@@ -71,7 +71,7 @@ class RDFData extends Model
 					for ($r=0;$r < count($dtd);$r++)
 						{
 							$line = $dtd[$r];
-							$sx .= bsc('<small>'.lang($line['prefix_ref'].':'.$line['c_class'].'</small>'),2);
+							$sx .= bsc(lang($line['prefix_ref'].':'.$line['c_class']),2,'text-right supersmall');
 							if ($line['d_r2'] != 0)
 							{
 								if ($ID == $line['d_r2'])
