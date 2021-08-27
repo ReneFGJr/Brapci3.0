@@ -65,17 +65,17 @@ class EventProceedings extends Model
 				switch($st)
 					{
 						case '0':
-							$this->OaiPMHRegister = new \App\Models\OaiPMHRegister();
+							$this->OaipmhRegister = new \App\Models\OaipmhRegister();
 							$st = $this->OaiPMHRegister->process_00($id);
 						break;
 
 						case '1':
-							$this->OaiPMHRegister = new \App\Models\OaiPMHRegister();
+							$this->OaipmhRegister = new \App\Models\OaipmhRegister();
 							$st = $this->OaiPMHRegister->process_01($id);
 						break;
 
 						default:
-							$this->OaiPMHRegister = new \App\Models\OaiPMHRegister();
+							$this->OaipmhRegister = new \App\Models\OaipmhRegister();
 							$st = $this->OaiPMHRegister->process_01($id);
 						break;
 
