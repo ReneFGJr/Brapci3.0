@@ -51,6 +51,11 @@ class RDF extends Model
 			return($dt);
 		}
 
+	function export($id)
+		{
+			
+		}
+
 	function view_data($dt)
 		{
 			$concept = $dt['concept'];

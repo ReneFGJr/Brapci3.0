@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class RDF_Section extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'oai_setspec';
+	protected $table                = 'OAI_SetSpec';
 	protected $primaryKey           = 'id_ss';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;

@@ -50,7 +50,7 @@ class RDFPrefix extends Model
 				{
 					$ID = $dt[0]['id_prefix'];
 				} else {
-					echo 'Prefix não localizado';
+					echo 'Prefix não localizado - '.$pre;
 					exit;
 				}
 			return $ID;
