@@ -91,27 +91,12 @@ class EventProceedings extends Model
 				$sx .= bs(bsc($st,12));
 			break;
 
-			case 'ed_issue':
-				$sx = $cab;
-				$this->id = $id;
-				$this->EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
-				$st = $this->EventProceedingsIssue->editar($this);
-				$sx .= bs(bsc($st,12));
-			break;
-
 			case 'viewid':
 				$sx = $cab;
 				$st = $this->viewid($id);
 				$sx .= bs(bsc($st,12));
 				$sx .= bsclose(3);
 				break;
-
-			case 'issue':
-				$sx = $cab;
-				$this->EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
-				$st = $this->EventProceedingsIssue->viewIssue($id);
-				$sx .= bs($st);
-				break;	
 
 			case 'harvesting':
 				$sx = $cab;

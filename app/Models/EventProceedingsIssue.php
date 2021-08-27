@@ -24,7 +24,7 @@ class EventProceedingsIssue extends Model
 
 	protected $typeFields        = [
 		'hi',
-		'hi',
+		'qr id_ep:ep_nome:select * from event_proceedings',
 		'yr*',
 
 		'st20',
@@ -66,6 +66,31 @@ class EventProceedingsIssue extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
+	var $path 				= 'proceedings_issue';
+
+	function index($d1, $id, $dt=array(),$cab='')
+	{	
+		switch ($d1) {
+			case 'edit':
+				$sx = $cab;
+				$this->id = $id;
+				$st = form($this);
+				$sx .= bs(bsc($st,12));
+			break;
+
+			case 'issue':
+				$sx = $cab;
+				$st = $this->viewIssue($id);
+				$sx .= bs($st);
+				break;			
+
+			default:
+				$sx = '';
+				$sx .= metarefresh(base_url(PATH.'proceedings'));
+				break;
+		}
+		return $sx;
+	}
 
 	function editar($o)
 		{
@@ -145,15 +170,13 @@ class EventProceedingsIssue extends Model
 	function issues($id=0)
 		{
 			$sx = "";
-			$dt = $this->where('epi_procceding', $id)->findAll();
-
-			$sx .= '<a href="'.base_url(PATH.'proceedings/ed_issue/?jnl='.$id).'" class="btn btn-primary">'.lang('new').'</a>';
+			$dt = $this->where('epi_procceding', $id)->findAll();			
 
 			for ($r=0;$r < count($dt);$r++)
 				{
 					$line = $dt[$r];
-					$lk = '<a href="'.base_url(PATH.'proceedings/issue/'.$line['id_epi']).'">';
-					$ed = '<a href="'.base_url(PATH.'proceedings/ed_issue/'.$line['id_epi']).'" class="btn-warning p-1">ed</a>';
+					$lk = '<a href="'.base_url(PATH.'proceedings_issue/issue/'.$line['id_epi']).'">';
+					$ed = '<a href="'.base_url(PATH.'proceedings_issue/edit/'.$line['id_epi']).'" class="btn-warning p-1">ed</a>';
 					$lka = '</a>';
 					
 					$sx .= bsc($lk.$line['epi_year'].$lka,1);
@@ -165,6 +188,8 @@ class EventProceedingsIssue extends Model
 					$sx .= bsc($ed,1);
 				}
 
+			$sx .= bsc('<a href="'.base_url(PATH.'proceedings_issue/edit/?jnl='.$id).'" class="btn btn-primary">'.lang('new').'</a>',1);
+			$sx = bs($sx);
 			return $sx;
 		}
 }

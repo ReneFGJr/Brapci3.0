@@ -199,6 +199,15 @@ class Eventos extends BaseController
 		return $tela;
 	}
 
+	public function proceedings_issue($d1 = '', $id = '')
+	{
+		$tela = $this->cab();
+		$dt = array();
+		$tela .= $this->navbar();
+		$tela .= $this->EventProceedingsIssue->index($d1,$id,$dt,'');
+		return $tela;
+	}	
+
 	public function labs()
 	{
 		//

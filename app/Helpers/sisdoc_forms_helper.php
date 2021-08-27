@@ -138,7 +138,7 @@ function form($th)
                 $typ = $tp[$r];
                 $vlr = '';
                 if (isset($dt[$fld])) { $vlr = $dt[$fld]; }
-                $sx .= form_fields($typ,$fld,$vlr);
+                $sx .= form_fields($typ,$fld,$vlr,$th);
             }
 
         /***************************************** BOTAO SUBMIT */
@@ -167,6 +167,12 @@ function dircheck($dir) {
     }
     return ($ok);
 }
+
+function metarefresh($url,$time=0)
+    {
+        $sx = '<meta http-equiv="refresh" content="'.$time.';url='.$url.'" />';
+        return $sx;
+    }
 
 function redireciona($url='/main/service',$time=2)
     {
@@ -204,6 +210,7 @@ function linked($url)
 
 function form_del($th)
     {
+        global $th;
         $sx = '';
         $id = $th->id;
 
@@ -234,8 +241,8 @@ function stodbr($dt)
     }
 
 
-function form_fields($typ,$fld,$vlr)
-    {        
+function form_fields($typ,$fld,$vlr,$th=array())
+    {   
         $td = '<td>'; $tdc = '</td>';
         /*********** Mandatory */
         $sub = 0;
@@ -344,7 +351,30 @@ function form_fields($typ,$fld,$vlr)
                         $sg .= '</select>'.cr();
                         $sx .= $sg;
                         $sx .= $tdc;
-                        break;                        
+                        break;  
+                        /**************************************** Query */                        
+                    case 'qr':
+                        $q = explode(':',trim(substr($typ,2,strlen($typ))));
+                        print_r($q);
+                        $fld1 = $q[0];
+                        $fld2 = $q[1];
+
+                        $sx .= $td.($fld).$tdc;
+                        $sx .= $td;
+                        $query = $th->query($q[2]);
+                        $query = $query->getResult();
+                        
+                        $sg = '<select id="'.$fld.'" name="'.$fld.'" value="'.$vlr.'" class="form-control">'.cr();
+                        for ($r=0;$r < count($query);$r++)
+                            {
+                                $ql = (array)$query[$r];                                
+                                $sel = '';
+                                $sg .= '<option value="'.$ql[$fld1].'" '.$sel.'>'.$ql[$fld2].'</option>'.cr();
+                            }
+                        $sg .= '</select>'.cr();
+                        $sx .= $sg;
+                        $sx .= $tdc;
+                        break;                                               
                     case 'st':
                         $sx .= $td.($fld).$tdc;
                         $sx .= $td;
