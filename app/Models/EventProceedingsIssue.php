@@ -124,8 +124,8 @@ class EventProceedingsIssue extends Model
 
 	function headProceedingIssue($dt)
 		{		
-			$this->OaiPMHListRecord = new \App\Models\OaiPMHListRecord();
-			$status = $this->OaiPMHListRecord->status(1,1);
+			$this->OaipmhListRecord = new \App\Models\OaipmhListRecord();
+			$status = $this->OaipmhListRecord->status(1,1);
 
 			$sx = '';
 			$sx .= bsc(bssmall(lang('epi_edition')),1);
