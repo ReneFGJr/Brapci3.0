@@ -52,6 +52,9 @@ class EventProceedings extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];	
 
+	// Edit Model
+	protected $path 				= 'proceedings';
+
 	function index($d1, $id, $dt=array(),$cab='')
 	{	
 		switch ($d1) {
@@ -125,7 +128,6 @@ class EventProceedings extends Model
 					[
 						'services' => $this->paginate(3),
 						'pages' => $this->pager,
-						'path' => 'proceedings'
 					];
 				$sx .= tableview($this,$dt);
 				$sx = bs($sx);

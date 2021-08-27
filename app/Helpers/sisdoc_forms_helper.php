@@ -106,7 +106,7 @@ function form($th)
         $fl = $th->allowedFields;
         $tp = $th->typeFields;
         $id = round($th->id);
-        $url = base_url($_SERVER['REQUEST_URI']);
+        $url = base_url(PATH.$th->path.'/edit');        
 
         $dt = $_POST;
         if ((count($dt) == 0) and ($id > 0))
@@ -124,7 +124,7 @@ function form($th)
             }
         
         
-        $sx .= form_open().cr();
+        $sx .= form_open($url).cr();
 
         $sx .= '<table class="table" width="100%">';
         $sx .= '<tr><th width="20%">'.msg('label').'</th>
@@ -374,8 +374,9 @@ function form_fields($typ,$fld,$vlr)
 
         function tableview($th,$dt)
         {
-            $url = base_url(PATH.$dt['path']);
+            $url = base_url(PATH.$th->path);
 
+            /********** Campos do formulário */
             $fl = $th->allowedFields;
             if (isset($_POST['action']))
                 {
@@ -459,11 +460,10 @@ function form_fields($typ,$fld,$vlr)
                         {
                             $vlr = $line[$field];
                             if (strlen($vlr) == 0) { $vlr = ' '; }
-                            $sx .= '<td>'.anchor(base_url(PATH.$dt['path'].'/viewid/'.$line[$fl[0]]),$vlr).'</td>';
+                            $sx .= '<td>'.anchor(($url.'/viewid/'.$line[$fl[0]]),$vlr).'</td>';
                         }   
                     /* Botoes */
                     $sx .= '<td>';
-                    $url = base_url(PATH.$dt['path']);
                     $sx .= linked($url.'/edit/'.$line[$fl[0]],'[ed]').'&nbsp;';
                     $sx .= linkdel($url.'/delete/'.$line[$fl[0]],'[x]');
                     $sx .= '</td>';
