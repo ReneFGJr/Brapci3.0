@@ -121,7 +121,7 @@ class OaiPMHListRecord extends Model
 	function status($jnl,$issue)
 		{
 			$sql = "
-			SELECT li_process, count(*) as total FROM `oai_listrecords`
+			SELECT li_process, count(*) as total FROM OAI_listrecords
 				where li_journal = $jnl and li_issue = $issue
 				group by li_process
 				order by li_process";

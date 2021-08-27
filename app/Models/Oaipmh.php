@@ -91,7 +91,7 @@ class Oaipmh extends Model
 						->findAll();
 
 				$sql = "select count(*) as total, li_process 
-							from oai_listrecords
+							from OAI_listrecords
 							where li_journal = ".$data['log_journal']."
 							and li_issue = ".$data['log_issue']."
 							group by li_process";
