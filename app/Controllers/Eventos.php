@@ -128,7 +128,7 @@ class Eventos extends BaseController
 
 	public function v($id)
 		{
-			$RDF = new \App\Models\Rdf();
+			$RDF = new \App\Models\RDF();
 
 			$sx = $this->cab();
 			$sx .= $this->navbar();
