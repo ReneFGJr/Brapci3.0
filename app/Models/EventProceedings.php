@@ -66,17 +66,17 @@ class EventProceedings extends Model
 					{
 						case '0':
 							$this->OaipmhRegister = new \App\Models\OaipmhRegister();
-							$st = $this->OaiPMHRegister->process_00($id);
+							$st = $this->OaipmhRegister->process_00($id);
 						break;
 
 						case '1':
 							$this->OaipmhRegister = new \App\Models\OaipmhRegister();
-							$st = $this->OaiPMHRegister->process_01($id);
+							$st = $this->OaipmhRegister->process_01($id);
 						break;
 
 						default:
 							$this->OaipmhRegister = new \App\Models\OaipmhRegister();
-							$st = $this->OaiPMHRegister->process_01($id);
+							$st = $this->OaipmhRegister->process_01($id);
 						break;
 
 					}
