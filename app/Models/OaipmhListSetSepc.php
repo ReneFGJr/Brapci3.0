@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class OaiPMHListSetSepc extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'OAI_setspec';
+	protected $table                = 'OAI_SetSpec';
 	protected $primaryKey           = 'id_ss';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;

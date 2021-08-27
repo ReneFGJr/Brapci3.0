@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class OaiPMHListRecord extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'OAI_listrecords';
+	protected $table                = 'OAI_ListRecords';
 	protected $primaryKey           = 'id_ls';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
