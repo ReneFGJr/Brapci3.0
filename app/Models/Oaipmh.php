@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class Oaipmh extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'oai_log';
+	protected $table                = 'OAI_log';
 	protected $primaryKey           = 'id_log';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
