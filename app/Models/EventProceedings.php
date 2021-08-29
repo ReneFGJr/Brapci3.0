@@ -167,8 +167,7 @@ class EventProceedings extends Model
 			$RDFConcept = new \App\Models\RDFConcept();
 			$EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
 
-			dircheck('../.temp');			
-
+			dircheck('../.temp');
 			$file = '../.temp/_resume.json';
 	
 			$class = $RDFClass->Class('brapci:Event',False);
@@ -211,6 +210,8 @@ class EventProceedings extends Model
 
 	function export($tp,$id='')
 		{
+			dircheck('tmp');
+			dircheck('tmp/index');			
 			switch($tp)
 				{
 					case 'resume':
