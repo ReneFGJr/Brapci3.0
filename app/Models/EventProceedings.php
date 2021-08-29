@@ -221,7 +221,7 @@ class EventProceedings extends Model
 						$sx .= bsmessage('Exported successful',1);
 						break;	
 
-					case 'authors2':
+					case 'authors':
 						$sx = $this->export_authors($id);
 						$sx .= bsmessage('Exported successful',1);
 						break;						

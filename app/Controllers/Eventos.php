@@ -224,6 +224,30 @@ class Eventos extends BaseController
 		return $tela;
 	}
 
+	public function dropall($tp='')
+		{
+			$sx = $this->cab();
+			$sx .= $this->navbar();
+			$tela = '';
+			$this->RDF = new \App\Models\RDF();
+			$tables = array('OAI_SetSpec','OAI_ListRecords','OAI_log','rdf_concept','rdf_data','rdf_literal','');
+			for ($r=0;$r < count($tables);$r++)
+				{
+					$table = $tables[$r];
+					if (strlen($table) > 0) { $this->RDF->query('TRUNCATE '.$table); $tela .= bsmessage('Truncate '.$table,1); }
+				}
+
+			$dirs = array('.tmp/','.c');
+			for ($r=0;$r < count($dirs);$r++)
+				{
+					$dirn = $dirs[$r];		
+					delTree($dirn);
+					$tela .= bsmessage('Remove '.$dirn,1);
+				}
+			$tela = $sx.bs($tela);
+			return $tela;
+		}
+
 	public function proceedings($d1 = '', $id = '',$id2 = '')
 	{
 		$tela = $this->cab();
