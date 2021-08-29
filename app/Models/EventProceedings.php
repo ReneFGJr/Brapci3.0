@@ -58,7 +58,7 @@ class EventProceedings extends Model
 
 	function resume()
 		{
-			$file = '.tmp/_resume.json';
+			$file = '../.temp/_resume.json';
 			$sx = '';
 
 			if (file_exists($file))
@@ -167,9 +167,9 @@ class EventProceedings extends Model
 			$RDFConcept = new \App\Models\RDFConcept();
 			$EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
 
-			dircheck('.tmp');
+			dircheck('../.temp');			
 
-			$file = '.tmp/_resume.json';
+			$file = '../.temp/_resume.json';
 	
 			$class = $RDFClass->Class('brapci:Event',False);
 			$d['proceedings'] = $RDFConcept->where('cc_class',$class)->where('cc_use',0)->countAllResults();	
