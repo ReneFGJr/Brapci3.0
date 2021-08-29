@@ -210,8 +210,8 @@ class EventProceedings extends Model
 
 	function export($tp,$id='')
 		{
-			dircheck('tmp');
-			dircheck('tmp/index');			
+			dircheck('.tmp');
+			dircheck('.tmp/index');			
 			switch($tp)
 				{
 					case 'resume':
