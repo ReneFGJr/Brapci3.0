@@ -229,7 +229,7 @@ class EventProceedings extends Model
 						$sx .= bsmessage('Exported successful',1);
 						break;						
 
-					case 'all':
+					case 'data':
 						$sx = $this->export_all($id);
 						$sx .= bsmessage('Exported successful',1);
 						break;						
@@ -260,7 +260,7 @@ class EventProceedings extends Model
 				}
 			if ($q > 0)
 				{
-					$sx .= metarefresh(base_url(PATH.'/proceedings/export/all/'.($id+1)),1);
+					$sx .= metarefresh(base_url(PATH.'/proceedings/export/data/'.($id+1)),1);
 				}			
 			$sx = bs(bsc($sx,12));
 			return $sx;
