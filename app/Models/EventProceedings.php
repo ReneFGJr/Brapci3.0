@@ -90,7 +90,7 @@ class EventProceedings extends Model
 			return($sx);
 		}
 
-	function index($d1, $id, $id2, $cab='')
+	function index($d1, $id, $id2, $dt, $cab='')
 	{	
 		switch ($d1) {
 			case 'gets':

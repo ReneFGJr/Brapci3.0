@@ -228,7 +228,8 @@ class Eventos extends BaseController
 	{
 		$tela = $this->cab();
 		$tela .= $this->navbar();
-		$tela .= $this->EventProceedings->index($d1,$id,$id2);
+		$dt = $this->EventProceedings->le($id);
+		$tela .= $this->EventProceedings->index($d1,$id,$id2,$dt);
 		return $tela;
 	}
 
