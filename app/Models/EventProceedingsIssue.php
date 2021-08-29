@@ -92,6 +92,53 @@ class EventProceedingsIssue extends Model
 		return $sx;
 	}
 
+	function next_events()
+		{
+			$where = 'epi_date_end >= '.date('Ymd');
+			$sx = '';
+			$dt = $this
+					->join('event_proceedings', 'epi_procceding = id_ep', 'LEFT')
+					->where($where)
+					->orderBy("epi_date_start")
+					->limit(10)
+					->findAll();
+			$sx .= '<div class="row">';
+			for ($r=0;$r < count($dt);$r++)
+				{
+					$line = $dt[$r];
+					
+					$st = '<div class="card-body shadow p-3 mb-5 bg-white rounded">';
+					/* URL */
+					$url = $line['epi_url'];					
+					$st .= '<a href="'.$url.'" target="new_'.$line['id_epi'].'">';
+					$logo = $line['epi_logo'];
+					if (strlen($logo) > 0)
+						{
+							$st .= '<img src="'.base_url($logo).'" style="float: right; max-width: 200px; max-height: 80px;">';
+						}
+					$st .= '<h3>';
+					$st .= $line['epi_edition'].' ';
+					$st .= $line['ep_abrev'];
+					$st .= '</h3>';
+
+					$st .= '<h6>';
+					$st .= $line['epi_place'].' ';
+					$st .= '</h6>';
+
+					$st .= '<p>'.$this->formata_data($line).'</p>';
+					$st .= '</a>';
+					$st .= '</div>';
+					$sx .= bsc($st,6);
+				}
+			if (count($dt) > 0)
+			{
+				$sx = '<h3>'.lang('next_events').'</h3>'.'<div class="container">'.$sx.'</div>';
+			}
+			$sx .= '</div>';
+			
+			return($sx);
+		}	
+
 	function editar($o)
 		{
 			$sx = 'x';
@@ -110,23 +157,40 @@ class EventProceedingsIssue extends Model
 		{
 			$this->EventProceedings = new \App\Models\EventProceedings();
 			$this->Socials = new \App\Models\Socials();
-			$sx = 'OK';
-			/* Read data */
-			$dt = $this->find($id);
-			$di = $this->EventProceedings->find($dt['epi_procceding']);
+			$sx = '';
+
+			/* Read data */			
+			$this->where('epi_procceding',$id);
+			$this->orderBy('epi_year DESC');
+			$dt = $this->findAll();
 
 			/* Show Data */
-			$sx = $this->EventProceedings->headProceeding($di);
+			$dp = $this->EventProceedings->where('id_ep',$id)->first();
+			$sx = $this->EventProceedings->headProceeding($dp);
 			$sx .= $this->headProceedingIssue($dt);
+
+			$sx .= bsc('<a href="'.base_url(PATH.'proceedings_issue/edit/?jnl='.$id).'" class="btn btn-primary">'.lang('new').'</a>',1);
 			
 			return $sx;
 		}
 
-	function headProceedingIssue($dt)
+	function formata_data($dt)
+		{
+			$di = $dt['epi_date_start'];
+			$df = $dt['epi_date_end'];			
+
+			if (substr($di,0,6) == substr($df,0,6))
+				{
+					$data = substr($di,6,2).' '.lang('à').' '.stodbr($df);
+				} else {
+					$data = stodbr($dt['epi_date_start']).' '.lang('à').' '.stodbr($dt['epi_date_end']);
+				}
+			return($data);
+		}
+
+	function headProceedingIssue($dtt)
 		{		
 			$this->OaipmhListRecord = new \App\Models\OaipmhListRecord();
-			$status = $this->OaipmhListRecord->status(1,1);
-
 			$sx = '';
 			$sx .= bsc(bssmall(lang('epi_edition')),1);
 			$sx .= bsc(bssmall(lang('epi_edition_name')),5);
@@ -136,38 +200,45 @@ class EventProceedingsIssue extends Model
 
 
 			/************************************************************** */
-
-			$sx .= bsc(h($dt['epi_edition'],4),1);
-			$sx .= bsc(h($dt['epi_edition_name'],4),4);
-			if ($this->Socials->perfil("#ADM"))
+			for ($r=0;$r < count($dtt);$r++)
 			{
-				$img = '<img src="'.base_url('img/icones/arrow-repeat.svg').'" class="img-responsive" style="height: 32px;" title="'.lang('Proceeding Harvesting').'">';
-				$img = '<a href="'.base_url(PATH.'proceedings/harvesting/'.$dt['id_epi']).'">'.$img.'</a>';
-				$imgx = $img;
-				
-				$sx .= bsc($imgx,1);
-			} else {
-				$sx .= bsc('',1);
-			}
-			$sx .= bsc(h($dt['epi_year'],4),1);
+				$dt = $dtt[$r];
+				$status = $this->OaipmhListRecord->status($dt['epi_procceding'],$dt['id_epi']);
 
-			$di = $dt['epi_date_start'];
-			$df = $dt['epi_date_end'];			
+				$sx .= bsc(h($dt['epi_edition'],4),1);
+				$sx .= bsc(h($dt['epi_edition_name'],4),4);
 
-			if (substr($di,0,6) == substr($df,0,6))
+				$sx .= bsc(h($dt['epi_year'],4),1);
+
+				/***************** Formata datas do evento */
+				$data = $this->formata_data($dt);	
+
+				$sx .= bsc($data,2);
+
+				if ($this->Socials->perfil("#ADM"))
 				{
-					$data = substr($di,6,2).' '.lang('à').' '.stodbr($df);
-				} else {
-					$data = stodbr($dt['epi_date_start']).' '.lang('à').' '.stodbr($dt['epi_date_end']);
-				}			
-			$sx .= bsc($data,2);
-			$sx .= bsc($status,3);
+					$btns = '';
 
+					$btn = bsicone('harversting');
+					$btns .= '<a href="'.base_url(PATH.'proceedings/harvesting/'.$dt['id_epi']).'" target="Harvesting Metadata">'.$btn.'</a> ';
+
+					$btn = bsicone('edit'); 
+					$btns .= '<a href="'.base_url(PATH.'proceedings_issue/edit/'.$dt['id_epi']).'" target="Edit">'.$btn.'</a> ';
+
+					$sx .= bsc($status,3);	
+					$sx .= bsc($btns,1);
+				} else {
+					$sx .= bsc('',1);
+					$sx .= bsc('',3);
+				}
+
+				
+			}
 
 			return $sx;
 		}		
 
-	function issues($id=0)
+	function issuesx_remove($id=0)
 		{
 			$sx = "";
 			$dt = $this->where('epi_procceding', $id)->findAll();			
@@ -188,7 +259,7 @@ class EventProceedingsIssue extends Model
 					$sx .= bsc($ed,1);
 				}
 
-			$sx .= bsc('<a href="'.base_url(PATH.'proceedings_issue/edit/?jnl='.$id).'" class="btn btn-primary">'.lang('new').'</a>',1);
+			
 			$sx = bs($sx);
 			return $sx;
 		}

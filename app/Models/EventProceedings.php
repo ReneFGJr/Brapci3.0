@@ -55,7 +55,42 @@ class EventProceedings extends Model
 	// Edit Model
 	protected $path 				= 'proceedings';
 
-	function index($d1, $id, $dt=array(),$cab='')
+
+	function resume()
+		{
+			$file = '.tmp/_resume.json';
+			$sx = '';
+
+			if (file_exists($file))
+			{
+				$dt = (array)json_decode(file_get_contents($file));
+
+				foreach($dt as $value=>$total)
+					{
+					$sx .= bsc('
+						<div style="border-right: 2px #888 solid; width: 100%" class="p-3">
+						<h1 class="resume_h1">'.$total.'</h1>
+						<h5 class="resume_h5">'.lang($value).'</h5>
+						</div>'
+						,2);
+					}
+			}
+			
+			$sx = bs($sx);
+
+			$sx .= '
+			<link rel="preconnect" href="https://fonts.googleapis.com">
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+			<link href="https://fonts.googleapis.com/css2?family=Hina+Mincho&display=swap" rel="stylesheet">
+			<style>
+			 .resume_h1 { font-family: \'Hina Mincho\', serif; font-size: 250%; font-weight: bold; }
+			 .resume_h5 { font-family: \'Hina Mincho\', serif; font-size: 120%;  }
+			</style>
+			';
+			return($sx);
+		}
+
+	function index($d1, $id, $id2, $cab='')
 	{	
 		switch ($d1) {
 			case 'gets':
@@ -85,7 +120,7 @@ class EventProceedings extends Model
 			break;
 
 			case 'export':
-				$sx = $this->export($id);
+				$sx = $this->export($id,$id2);
 				break;
 
 			case 'edit':
@@ -96,10 +131,10 @@ class EventProceedings extends Model
 			break;
 
 			case 'viewid':
+				$EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
 				$sx = $cab;
-				$st = $this->viewid($id);
-				$sx .= bs(bsc($st,12));
-				$sx .= bsclose(3);
+				$st = $EventProceedingsIssue->viewIssue($id);
+				$sx .= bs($st);
 				break;
 
 			case 'harvesting':
@@ -123,17 +158,107 @@ class EventProceedings extends Model
 				break;
 		}
 		return $sx;
-	}	
+	}
 
-	function export($id)
+	function export_resume()	
 		{
+			$RDFData = new \App\Models\RDFData();
+			$RDFClass = new \App\Models\RDFClass();		
+			$RDFConcept = new \App\Models\RDFConcept();
+			$EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
+
+			$file = '.tmp/_resume.json';
+	
+			$class = $RDFClass->Class('brapci:Event',False);
+			$d['proceedings'] = $RDFConcept->where('cc_class',$class)->where('cc_use',0)->countAllResults();	
+
+			$class = $RDFClass->Class('brapci:EventIssue',False);
+			$d['issues'] = $RDFConcept->where('cc_class',$class)->where('cc_use',0)->countAllResults();							
+
+			$class = $RDFClass->Class('frbr:Work',False);
+			$d['works'] = $RDFConcept->where('cc_class',$class)->where('cc_use',0)->countAllResults();		
+
+			$class = $RDFClass->Class('foaf:Person',False);
+			$d['authors'] = $RDFConcept->where('cc_class',$class)->where('cc_use',0)->countAllResults();				
+
+			file_put_contents($file,json_encode($d));
+			return True;
+		}
+
+	function next_events()
+		{
+			$EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
+			$sx = $EventProceedingsIssue->next_events();
+			return $sx;
+		}
+	function export_authors()
+		{
+			$RDF = new \App\Models\RDF();
+			$dir = '.tmp/index/';
+			if (!is_dir($dir)) { mkdir($dir); }
+			$RDF->export_index('foaf:Person',$dir.'authors.php');
+		}
+
+	function export_events()
+		{
+			$RDF = new \App\Models\RDF();
+			$dir = '.tmp/index/';
+			if (!is_dir($dir)) { mkdir($dir); }
+			$RDF->export_index('brapci:EventIssue',$dir.'events.php');
+		}		
+
+	function export($tp,$id='')
+		{
+			switch($tp)
+				{
+					case 'resume':
+						$sx = $this->export_resume();
+						$sx .= bsmessage('Exported successful',1);
+						break;
+
+					case 'events':
+						$sx = $this->export_events($id);
+						$sx .= bsmessage('Exported successful',1);
+						break;	
+
+					case 'authors2':
+						$sx = $this->export_authors($id);
+						$sx .= bsmessage('Exported successful',1);
+						break;						
+
+					case 'all':
+						$sx = $this->export_all($id);
+						$sx .= bsmessage('Exported successful',1);
+						break;						
+					default:
+						$sx = bsmessage('OPS '.$tp,2);
+						break;
+				}
+			return $sx;
+		}
+
+	function export_all($id='')
+		{
+			$id = round($id);			
+
 			$sx = '';
 			$this->RDF = new \App\Models\RDF();
-			for ($q=1;$q <= 200;$q++)
+			$RDFConcept = new \App\Models\RDFConcept();
+
+			$limit = 200;
+			$offset = $limit * $id;
+
+			$dt = $RDFConcept->select('id_cc')->orderBy('id_cc')->limit($limit,$offset)->findAll($limit,$offset);
+			for ($q=0;$q < count($dt);$q++)
 				{
-					$sx .= $this->RDF->export($q);
+					$line = $dt[$q];
+					$sx .= $line['id_cc'].' - ';
+					$sx .= $this->RDF->export($line['id_cc']);
 				}
-			
+			if ($q > 0)
+				{
+					$sx .= metarefresh(base_url(PATH.'/proceedings/export/all/'.($id+1)),1);
+				}			
 			$sx = bs(bsc($sx,12));
 			return $sx;
 		}

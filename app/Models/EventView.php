@@ -42,19 +42,18 @@ class EventView extends Model
 
 	function view($dt)
 		{
-			$RDF = new \App\Models\RDFData();			
+			$RDFData = new \App\Models\RDFData();			
 			$class = $dt['concept']['prefix_ref'].':'.$dt['concept']['c_class'];
 			switch($class)
 				{
 					case 'frbr:Work':
 						$sx = $this->viewWork($dt);
-						$sx .= $RDF->view_data($dt);						
+						$sx .= $RDFData->view_data($dt);						
 					break;
 
 					default:
-					$RDF = new \App\Models\RDFData();
 					$sx = $this->viewWork($dt);
-					$sx .= $RDF->view_data($dt);
+					$sx .= $RDFData->view_data($dt);
 				}
 			return $sx;
 		}

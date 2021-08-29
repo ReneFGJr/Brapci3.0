@@ -71,7 +71,8 @@ class RDFData extends Model
 					for ($r=0;$r < count($dtd);$r++)
 						{
 							$line = $dtd[$r];
-							$sx .= bsc(lang($line['prefix_ref'].':'.$line['c_class']),2,'text-right supersmall');
+							$sx .= bsc(lang($line['prefix_ref'].':'.$line['c_class']),2,
+									'supersmall border-top border-1 border-secondary my-2');
 							if ($line['d_r2'] != 0)
 							{
 								if ($ID == $line['d_r2'])
@@ -95,9 +96,9 @@ class RDFData extends Model
 												$link = '<a href="'.$link.'">Link</a>';
 											}
 									}
-								$sx .= bsc($link,10);
+								$sx .= bsc($link,		   10,'border-top border-1 border-secondary my-2');
 							} else {
-								$sx .= bsc($line['n_name'],10);
+								$sx .= bsc($line['n_name'],10,'border-top border-1 border-secondary my-2');
 							}
 							
 						}

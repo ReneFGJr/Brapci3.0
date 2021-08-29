@@ -89,6 +89,16 @@ class Eventos extends BaseController
 			$sx .= '          </ul>'.cr();
 			$sx .= '        </li>'.cr();
 
+			$sx .= '        <li class="nav-item dropdown">'.cr();
+			$sx .= '          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">'.cr();
+			$sx .= '            '.lang('brapci.Index').cr();
+			$sx .= '          </a>'.cr();
+			$sx .= '          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">'.cr();
+			$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'indexes/authors').'">'.lang('proceedings.Menu.IndexAuthors').'</a></li>'.cr();
+			$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'indexes/events').'">'.lang('proceedings.Menu.IndexEvents').'</a></li>'.cr();
+			$sx .= '          </ul>'.cr();
+			$sx .= '        </li>'.cr();			
+
 			if ($this->Socials->perfil("#ADM"))
 			{
 				$sx .= '        <li class="nav-item dropdown">'.cr();
@@ -99,7 +109,10 @@ class Eventos extends BaseController
 				$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'proceedings').'">'.lang('events.proceedings.row').'</a></li>'.cr();
 				$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'rdf').'">'.lang('events.rdf.row').'</a></li>'.cr();
 				$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'proceedings/gets').'">'.lang('events.proceedings.gets').'</a></li>'.cr();
-				$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'proceedings/export').'">'.lang('events.proceedings.export').'</a></li>'.cr();
+				$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'proceedings/export/data').'">'.lang('events.proceedings.export_data').'</a></li>'.cr();
+				$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'proceedings/export/resume').'">'.lang('events.proceedings.export_resume').'</a></li>'.cr();
+				$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'proceedings/export/authors').'">'.lang('events.proceedings.export_authors').'</a></li>'.cr();
+				$sx .= '            <li><a class="dropdown-item" href="'.base_url(PATH.'proceedings/export/events').'">'.lang('events.proceedings.export_events').'</a></li>'.cr();
 				$sx .= '          </ul>'.cr();
 				$sx .= '        </li>'.cr();
 			}
@@ -136,8 +149,8 @@ class Eventos extends BaseController
 
 			$dt = $RDF->le($id);
 
-			$V = new \App\Models\EventView();
-			$sx .= $V->view($dt);
+			$EventView = new \App\Models\EventView();
+			$sx .= $EventView->view($dt);
 
 			return $sx;			
 		}
@@ -149,6 +162,21 @@ class Eventos extends BaseController
 		$sx = $this->Socials->index($d1,$id,$dt,$cab);
 		return $sx;
 	}	
+
+	function indexes($name)
+		{
+			$sx = $this->cab();
+			$sx .= $this->navbar();				
+			$file = '.tmp/index/'.$name.'.php';
+			if (file_exists($file))
+				{
+
+					$sx .= bs(file_get_contents($file));
+				} else {
+					$sx .= bsmessage('OPS '.$file,2);
+				}
+			return $sx;
+		}
 
 	public function rdf($d1 = '', $id = '')
 	{
@@ -174,29 +202,33 @@ class Eventos extends BaseController
 				$login = $this->Socials->login(0);
 			}
 
-		$tela .= bs(h('Drashboard',1),array('fluid'=>0,'g'=>5));			
+		$tela .= bs(h('Drashboard',1),array('fluid'=>0,'g'=>5));	
 
 		$tela .= bs(
 					bsc($this->EventSearch->form(),8) .
 					bsc($this->EventSearch->logo(),4)
 					);
 
-		
+
+		/* Next Events *************************************/
+		$events = $this->EventProceedings->next_events();		
+
+
 		$tela .= bs(
-						bsc(bscard('Hello'),4).
-						bsc(bscard('Hello'),4).
+						bsc($events,8).
 						bsc($login,4)
-					);			
+					);	
+
+		$tela .= $this->EventProceedings->resume();		
 		
 		return $tela;
 	}
 
-	public function proceedings($d1 = '', $id = '')
+	public function proceedings($d1 = '', $id = '',$id2 = '')
 	{
 		$tela = $this->cab();
-		$dt = array();
 		$tela .= $this->navbar();
-		$tela .= $this->EventProceedings->index($d1,$id,$dt,'');
+		$tela .= $this->EventProceedings->index($d1,$id,$id2);
 		return $tela;
 	}
 

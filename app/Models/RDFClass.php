@@ -42,7 +42,7 @@ class RDFClass extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function class($c)
+	function class($c,$force=True)
 		{
 			$this->Prefix = new \App\Models\RDFPrefix();
 			if (strpos($c,':'))
@@ -67,8 +67,13 @@ class RDFClass extends Model
 					if (substr($Class,0,1) == strtolower(substr($Class,0,1))) { $data['c_type'] = 'P'; }
 					
 					$data['c_url'] = $Class;
-					$this->insert($data);
-					$ID = $this->where('c_prefix',$Prefix)->where('c_class',$Class)->first();					
+					if ($force == True)
+					{
+						$this->insert($data);
+						$ID = $this->where('c_prefix',$Prefix)->where('c_class',$Class)->first();					
+					} else {
+						return (-1);
+					}
 				}
 			return $ID['id_c'];
 		}

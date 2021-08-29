@@ -168,6 +168,11 @@ function dircheck($dir) {
     return ($ok);
 }
 
+function sonumero($t)
+    {
+        return preg_replace('/[^0-9]/', '', $t);
+    }
+
 function metarefresh($url,$time=0)
     {
         $sx = '<meta http-equiv="refresh" content="'.$time.';url='.$url.'" />';

@@ -40,7 +40,11 @@ class ProccedingsIssue extends Migration
             'epi_place' => [
                 'type' => 'VARCHAR',
                 'constraint' => '50'
-			],																				
+			],	
+            'epi_logo' => [
+                'type' => 'VARCHAR',
+                'constraint' => '100'
+			],            																			
             'epi_url' => [
                 'type' => 'VARCHAR',
                 'constraint' => '200'

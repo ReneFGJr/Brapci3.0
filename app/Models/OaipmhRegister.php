@@ -242,7 +242,8 @@ class OaiPMHRegister extends Model
 							{
 								$attr = (array)$value->attributes();
 								$lang = $attr['@attributes']['lang'];
-								if (round($lang) == $lang)
+								
+								if (sonumero($lang) == $lang)
 									{
 										$lang = $language[$lang];
 									}

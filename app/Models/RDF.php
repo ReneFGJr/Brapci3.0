@@ -64,6 +64,68 @@ class RDF extends Model
 			return '';
 		}
 
+	function export_index($class_name,$file='')
+		{
+			$RDFData = new \App\Models\RDFData();
+			$RDFClass = new \App\Models\RDFClass();		
+			$RDFConcept = new \App\Models\RDFConcept();
+			$EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
+
+			$class = $RDFClass->Class($class_name);
+			$rlt = $RDFConcept
+						->join('rdf_literal', 'cc_pref_term = rdf_literal.id_n', 'LEFT')
+						->select('id_cc, n_name, cc_use')
+						->where('cc_class',$class)
+						->where('cc_library',LIBRARY)
+						->orderBy('n_name')						
+						->findAll();
+			
+			$flx = 0;
+			$fi = array();
+			for ($r=0;$r < count($rlt);$r++)
+				{
+					$line = $rlt[$r];
+					$name = $line['n_name'];
+
+					$upper = ord(substr(mb_strtoupper(ascii($name)),0,1));
+					if ($flx != $upper)
+						{
+							$flx = $upper;
+							$fi[$flx] = '';
+							
+						}
+					$link = '<a href="'.base_url(PATH.'v/'.$line['id_cc']).'">';
+					$linka = '</a>';
+					$fi[$flx] .= $link.$name.$linka.'<br>';
+				}
+				$s_menu = '<div id="list-example" class=""  style="position: fixed;">';
+				$s_menu .= '<h5>'.lang($class_name).'</h5>';
+				$s_cont = '<div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example">';
+				$cols = 0;
+				foreach($fi as $id_fi=>$content)
+					{
+						//$s_menu .= '<a class="list-group-item list-group-item-action" href="#list-item-'.$id_fi.'">'.chr($id_fi).'</a>';
+						//$s_menu .= '<a class="border-left" href="#list-item-'.$id_fi.'">'.chr($id_fi).'</a> ';
+
+						$s_menu .= '<a class="border-left" href="#list-item-'.$id_fi.'"><tt>'.chr($id_fi).'</tt></a> ';
+						if (($cols++) > 6)
+							{
+								$cols = 0;
+								$s_menu .= '<br>';
+							}
+
+						$s_cont .= '<h4 id="list-item-'.$id_fi.'">'.chr($id_fi).'</h4>
+						<p>'.$content.'</p>';
+					}
+				$s_menu .= '</div>';
+				$s_cont .= '</div>';
+
+				$sx = bsc('<div style="width: 100%;">'.$s_menu.'</div>',1);
+				$sx .= bsc($s_cont,11);
+				$sx .= '<style> body {  position: relative; } </style>';
+				file_put_contents($file,$sx);
+		}
+
 	function export($id)
 		{
 			$sx = '';
@@ -139,7 +201,7 @@ class RDF extends Model
 			/******************************************************** JOURNAL NAME  */
 			if (strlen($txt_author) > 0)
 				{
-					$txt_name = $txt_author . $txt_title . '. <b>[Anais...]</b> '.$txt_journal.'.';
+					$txt_name = $txt_author .'. '. $txt_title . '. <b>[Anais...]</b> '.$txt_journal.'.';
 				}
 			
 			/******************************************************* SALVAR ARQUIVOS */
