@@ -167,6 +167,8 @@ class EventProceedings extends Model
 			$RDFConcept = new \App\Models\RDFConcept();
 			$EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
 
+			dircheck('.tmp');
+
 			$file = '.tmp/_resume.json';
 	
 			$class = $RDFClass->Class('brapci:Event',False);

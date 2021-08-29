@@ -237,7 +237,7 @@ class Eventos extends BaseController
 					if (strlen($table) > 0) { $this->RDF->query('TRUNCATE '.$table); $tela .= bsmessage('Truncate '.$table,1); }
 				}
 
-			$dirs = array('.tmp/','.c');
+			$dirs = array('.tmp/','.c','../.temp/oai','../.temp/ddi');
 			for ($r=0;$r < count($dirs);$r++)
 				{
 					$dirn = $dirs[$r];		
