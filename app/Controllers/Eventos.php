@@ -155,6 +155,20 @@ class Eventos extends BaseController
 			return $sx;			
 		}
 
+		function export($d1='',$d2='',$d3='',$d4='')	
+		{
+			$RDF = new \App\Models\RDF();
+
+			$sx = $this->cab();
+			$sx .= $this->navbar();
+			$sx .= $this->FindSearch->banner();	
+			
+			/* Export Command */
+			$sx .= $RDF->export($d1,$d2);
+
+			return $sx;
+		}
+
 	public function social($d1 = '', $id = '')
 	{
 		$cab = $this->cab();
