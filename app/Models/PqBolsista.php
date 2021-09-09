@@ -4,19 +4,26 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class RDFLiteral extends Model
+class PqBolsista extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'rdf_name';
-	protected $primaryKey           = 'id_n';
+	protected $table                = 'brapci_pq.bolsistas';
+	protected $primaryKey           = 'id_bs';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'id_n','n_name','n_lock','n_lang'
+		'bs_nome','bs_rdf_id','bs_lattes'
 	];
+
+	protected $typeFields        = [
+		'hi',
+		'st100*',
+		'I10',
+		'st100'
+	];		
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -42,18 +49,20 @@ class RDFLiteral extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function name($name,$lg='pt-BR')
+	function index($d1='',$d2='',$d3='')
 		{
-			$dt = $this->where('n_name',$name)->First();
-			if (!is_array($dt))
+			switch ($d1)
 				{
-					$data['n_name'] = $name;
-					$data['n_lock'] = 0;
-					$data['n_lang'] = $lg;
-					$this->insert($data);
-					$dt = $this->where('n_name',$name)->First();
-					return $dt['id_n'];
+					case '1':
+					break;
+
+					default:
+					$sx = tableview($this);
+					break;
+
 				}
-			return $dt['id_n'];
+			$sx = bs($sx);
+
+			return $sx;
 		}
 }

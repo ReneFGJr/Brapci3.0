@@ -17,16 +17,15 @@ function cr()
 		return chr(13).chr(10);
 	}
 
-class Eventos extends BaseController
+class Pq extends BaseController
 {
 	// https://www.richdataservices.com/showcase
 
 	public function __construct()
 	{
 		$this->Socials = new \App\Models\Socials();
-		$this->EventSearch = new \App\Models\EventSearch();
-		$this->EventProceedings = new \App\Models\EventProceedings();
-		$this->EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
+		$this->PqBolsista = new \App\Models\PqBolsista();
+
 
 		helper(['boostrap','url','canvas']);
 		define("LIBRARY", "3001");
@@ -35,7 +34,7 @@ class Eventos extends BaseController
 
 	private function cab($dt=array())
 		{
-			$title = 'Brapci Proceedings';
+			$title = 'Brapci - Base PQ';
 			if (isset($dt['title'])) { $title = $dt['title']; } 
 			$sx = '<!doctype html>'.cr();
 			$sx .= '<html>'.cr();
@@ -62,7 +61,7 @@ class Eventos extends BaseController
 
 	private function navbar($dt=array())	
 		{
-			$title = 'BRAPCI Proceedings';
+			$title = 'BRAPCI - Base PQ';
 			if (isset($dt['title'])) { $title = $dt['title']; } 
 			$sx = '<nav class="navbar navbar-expand-lg navbar-dark bc">'.cr();
 			$sx .= '  <div class="container-fluid">'.cr();
@@ -76,10 +75,12 @@ class Eventos extends BaseController
 			$sx .= '        <li class="nav-item">'.cr();
 			$sx .= '          <a class="nav-link active" aria-current="page" href="#">Home</a>'.cr();
 			$sx .= '        </li>'.cr();
-			$sx .= '        <li class="nav-item">'.cr();
-			$sx .= '          <a class="nav-link" href="#">Link</a>'.cr();
-    		$sx .= '		</li>'.cr();
 			*/
+
+			$sx .= '        <li class="nav-item">'.cr();
+			$sx .= '          <a class="nav-link" href="#">'.lang('pq.researchs').'</a>'.cr();
+    		$sx .= '		</li>'.cr();
+			
 			$sx .= '        <li class="nav-item dropdown">'.cr();
 			$sx .= '          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">'.cr();
 			$sx .= '            '.lang('brapci.Labs').cr();
@@ -155,20 +156,6 @@ class Eventos extends BaseController
 			return $sx;			
 		}
 
-		function export($d1='',$d2='',$d3='',$d4='')	
-		{
-			$RDF = new \App\Models\RDF();
-
-			$sx = $this->cab();
-			$sx .= $this->navbar();
-			$sx .= $this->FindSearch->banner();	
-			
-			/* Export Command */
-			$sx .= $RDF->export($d1,$d2);
-
-			return $sx;
-		}
-
 	public function social($d1 = '', $id = '')
 	{
 		$cab = $this->cab();
@@ -184,8 +171,7 @@ class Eventos extends BaseController
 			$file = '.tmp/index/'.$name.'.php';
 			if (file_exists($file))
 				{
-
-					$sx .= bs(file_get_contents($file));
+					$sx .= bs(file_get_contents($file));					
 				} else {
 					$sx .= bsmessage('OPS '.$file,2);
 				}
@@ -217,23 +203,12 @@ class Eventos extends BaseController
 			}
 
 		$tela .= bs(h('Drashboard',1),array('fluid'=>0,'g'=>5));	
-
+		/*
 		$tela .= bs(
-					bsc($this->EventSearch->form(),8) .
-					bsc($this->EventSearch->logo(),4)
+					bsc($this->EventSearch->form(),12)
 					);
-
-
-		/* Next Events *************************************/
-		$events = $this->EventProceedings->next_events();		
-
-
-		$tela .= bs(
-						bsc($events,8).
-						bsc($login,4)
-					);	
-
-		$tela .= $this->EventProceedings->resume();		
+		*/
+		$tela .= $this->PqBolsista->index();	
 		
 		return $tela;
 	}

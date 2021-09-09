@@ -229,7 +229,7 @@ class EventProceedings extends Model
 						$sx .= bsmessage('Exported successful',1);
 						break;						
 
-					case 'data':
+					case 'concepts':
 						$sx = $this->export_all($id);
 						$sx .= bsmessage('Exported successful',1);
 						break;						
@@ -256,11 +256,12 @@ class EventProceedings extends Model
 				{
 					$line = $dt[$q];
 					$sx .= $line['id_cc'].' - ';
-					$sx .= $this->RDF->export($line['id_cc']);
+					//echo '1.'.$line['id_cc'].'<br>';
+					$sx .= $this->RDF->export_id($line['id_cc']);
 				}
 			if ($q > 0)
 				{
-					$sx .= metarefresh(base_url(PATH.'/proceedings/export/data/'.($id+1)),1);
+					$sx .= metarefresh(base_url(PATH.'/proceedings/export/concepts/'.($id+1)),5);
 				}			
 			$sx = bs(bsc($sx,12));
 			return $sx;
