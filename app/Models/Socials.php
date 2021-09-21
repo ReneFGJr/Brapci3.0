@@ -225,7 +225,7 @@ class Socials extends Model
 			if (!isset($dt[0]))
 				{
 					$this->user_add($user,$pw1);
-					$sx .= '<h2>'.lang('social.user_add_success').'<h2>';
+					$sx .= '<h2>'.lang('social.social_user_add_success').'<h2>';
 					$sx .= '<span class="singin" onclick="showLogin()">'.lang('social.return').'</span>';
 				} else {
 					$sx .= '<h2>'.lang('social.user_already').'<h2>';

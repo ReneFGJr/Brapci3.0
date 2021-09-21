@@ -16,7 +16,6 @@ function bt_submit($t='save')
 function form($th)
     {
         $sx = '';
-        
         /* Arquivo para tradução - language ************************/
         if (!isset($th->lib)) { $th->lib = ''; }
         $fl = $th->allowedFields;
@@ -24,11 +23,11 @@ function form($th)
         $id = round($th->id);
 
         /* Sem PATH */
-        if (!isset($th->path))
+        if (isset($th->path))
         {
-            $url = base_url(PATH.$th->path.'/edit/'.$id);        
+            $url = base_url($th->path.'/edit/'.$id);        
         } else {
-            $url = $th->path;
+            $url = base_url($th);
         }        
 
         /********************************* Salvar *****************/
@@ -113,15 +112,13 @@ function form($th)
                 $t = $typ;
             }
         
-
+        echo '===>'.$t.'<br>';
+        if ($t == 'index') { $t = 'hidden'; }
         /************************************* Formulários */
         switch($t)
                 {
                     case 'up':
                         $sx .= '<input type="hidden" id="'.$fld.'" name="'.$fld.'" value="'.date("YmdHi").'">';
-                        break;
-                    case 'hi':
-                        $sx .= '<input type="hidden" id="'.$fld.'" name="'.$fld.'" value="'.$vlr.'">';
                         break;
                     case 'dt':
                         $sx .= $td.($fld).$tdc;
@@ -262,13 +259,6 @@ function form($th)
                         $sx .= '</div>';
                         break;
 
-                    case 'password':
-                         $sx .= '<div class="form-group" style="margin-bottom: 20px;">'.cr();
-                         $sx .= '<label for="'.$fld.'">'.lang($lib.$fld).'</label>
-                                 <input type="password" class="form-control" id="'.$fld.'" name="'.$fld.'" value="'.$vlr.'" placeholder="'.lang($lib.$fld).'">                                
-                                 '.cr();
-                         $sx .= '</div>';
-                         break;
 
                     case 'email':
                         $sx .= '<div class="form-group" style="margin-bottom: 20px;">'.cr();
@@ -278,6 +268,18 @@ function form($th)
                         $sx .= '</div>';
                         break;
 
+                    case 'hidden':
+                        $sx .= '<input type="hidden" id="'.$fld.'" name="'.$fld.'" value="'.$vlr.'">';
+                        break;                        
+
+                    case 'password':
+                         $sx .= '<div class="form-group" style="margin-bottom: 20px;">'.cr();
+                         $sx .= '<label for="'.$fld.'">'.lang($lib.$fld).'</label>
+                                 <input type="password" class="form-control" id="'.$fld.'" name="'.$fld.'" value="'.$vlr.'" placeholder="'.lang($lib.$fld).'">                                
+                                 '.cr();
+                         $sx .= '</div>';
+                         break;
+
                     case 'st':
                         $sx .= '<div class="form-group" style="margin-bottom: 20px;">'.cr();
                         $sx .= '<label for="'.$fld.'">'.lang($lib.$fld).'</label>
@@ -285,9 +287,16 @@ function form($th)
                                 '.cr();
                         $sx .= '</div>';
                         break;
+
+                    case 'text':
+                        $rows = 5;
+                        $sx .= '<label for="'.$fld.'">'.lang($lib.$fld).'</label>'.cr();
+                        $sx .= '<textarea id="'.$fld.'" rows="'.$rows.'" name="'.$fld.'" class="form-control">'.$vlr.'</textarea>';
+                        $sx .= $tdc;
+                        break;                        
+
                     default:
-                        $sx .= 'OPS - '.$t;
-                        echo '==>'.$t.'<br>';
+                        $sx .= bsmessage('OPS - '.$t,1);
                 }
             $sx .= '</tr>';
         return($sx);
