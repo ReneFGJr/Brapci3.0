@@ -1,5 +1,17 @@
 <?php
 
+/* Recupera IP
+* @author Rene F. Gabriel Junior <renefgj@gmail.com>
+* @versao v0.15.23
+*/
+function ip() {
+    $ip = trim($_SERVER['REMOTE_ADDR']);
+    if ($ip == '::1') { $ip = '127.0.0.1';
+    }
+    return ($ip);
+}
+
+
 function bt_cancel($url)
     {
         if (strpos($url,'/edit')) { $url = substr($url,0,strpos($url,'/edit')); }

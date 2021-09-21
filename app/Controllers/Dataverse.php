@@ -280,5 +280,6 @@ class Dataverse extends BaseController
 		$tela .= $this->Analysis->index($d1,$id);
 		return $tela;
 	}
+
 	
 }
