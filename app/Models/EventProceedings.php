@@ -21,11 +21,11 @@ class EventProceedings extends Model
 	];
 
 	protected $typeFields        = [
-		'hi',
-		'st100*',
-		'st50*',
-		'st100*',
-		'st100*',
+		'hidden',
+		'st:100*',
+		'st:50*',
+		'st:100*',
+		'st:100*',
 	];	
 
 	// Dates
@@ -92,6 +92,8 @@ class EventProceedings extends Model
 
 	function index($d1, $id, $id2, $dt, $cab='')
 	{	
+		$this->path = base_url(PATH.'proceedings');
+		$this->path_back = base_url(PATH.'proceedings');
 		switch ($d1) {
 			case 'gets':
 				$sx = $cab;
@@ -147,7 +149,7 @@ class EventProceedings extends Model
 			default:
 				$sx = $cab;
 				$st = h("Proceedings - View", 1);
-				$this->id = $id;
+				$this->id = $id;				
 				$dt =
 					[
 						'services' => $this->paginate(3),

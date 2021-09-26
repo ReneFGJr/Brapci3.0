@@ -254,6 +254,15 @@ function h($t='',$s=1,$class='')
         return($sx);
     }  
 
+function small($text)
+    {
+        $sx = '';
+        $sx .= '<div>';
+        $sx .= '<small id="emailHelp" class="form-text text-muted">'.$text.'</small>';
+        $sx .= '</div>';
+        return $sx;
+    }
+
 function bscol($c,$class='')
     {
         switch($c)
