@@ -71,7 +71,15 @@ class EventProceedingsIssue extends Model
 	function index($d1, $id, $dt=array(),$cab='')
 	{	
 		$this->path = base_url(PATH.'proceedings_issue');
-		$this->path_back = base_url(PATH.'proceedings/viewid/'.$d1);
+		echo "->$d1,$id";
+		print_r($dt);
+		if (round($id) > 0)
+			{
+				$this->path_back = base_url(PATH.'proceedings/viewid/');
+			} else {
+				$this->path_back = base_url(PATH.'proceedings/');
+			}
+		
 		switch ($d1) {
 			case 'edit':
 				$sx = $cab;
