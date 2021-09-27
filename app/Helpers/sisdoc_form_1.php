@@ -37,9 +37,9 @@ function form($th)
         /* Sem PATH */
         if (isset($th->path))
         {
-            $url = base_url($th->path.'/edit/'.$id);        
+            $url = ($th->path.'/edit/'.$id);        
         } else {
-            $url = base_url($th);
+            $url = ($th);
         }        
 
         /********************************* Salvar *****************/
