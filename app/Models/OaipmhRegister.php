@@ -168,6 +168,13 @@ class OaiPMHRegister extends Model
 
 				$sx = '';
 				$di = $this->next($id,1);
+				echo '===>'.$di;
+				if (strlen($di) == '')
+					{
+						$tela = metarefresh(base_url());
+						return $tela;
+					}
+
 				$jnl = $di['li_journal'];
 
 
