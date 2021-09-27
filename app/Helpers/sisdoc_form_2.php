@@ -1,7 +1,7 @@
 <?php
   function tableview($th,$dt=array())
         {
-            $url = base_url($th->path);
+            $url = $th->path;
 
             /********** Campos do formulário */
             $fl = $th->allowedFields;
@@ -61,7 +61,7 @@
 
             /*********** NEW */
             $st .= '<td align="right">';
-            $st .= anchor($url.'/edit/',lang('new'),'class="btn btn-primary"');
+            $st .= anchor($url.'/edit/',lang('brapci.new'),'class="btn btn-primary"');
             $st .= '</td></tr>';
             $st .= '</table>';
 

@@ -94,7 +94,7 @@ class EventProceedings extends Model
 	{	
 		$this->path = base_url(PATH.'proceedings');
 		$this->path_back = base_url(PATH.'proceedings');
-		echo '===>'.$this->path;
+
 		switch ($d1) {
 			case 'gets':
 				$sx = $cab;
