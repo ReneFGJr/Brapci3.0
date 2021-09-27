@@ -50,8 +50,13 @@ class RDFPrefix extends Model
 				{
 					$ID = $dt[0]['id_prefix'];
 				} else {
+					$data['prefix_ref'] = $pre;
+					$this->insert($data);
+
+					$dt = $this->where('prefix_ref',$pre)->find();
 					echo 'Prefix não localizado - '.$pre;
-					exit;
+					sleep(1);
+					$dt = $this->where('prefix_ref',$pre)->find();
 				}
 			return $ID;
 		}

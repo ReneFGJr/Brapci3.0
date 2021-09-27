@@ -24,22 +24,22 @@ class EventProceedingsIssue extends Model
 
 	protected $typeFields        = [
 		'hi',
-		'qr id_ep:ep_nome:select * from event_proceedings',
+		'qr:id_ep:ep_nome:event_proceedings',
 		'yr*',
 
-		'st20',
-		'st100',
+		'st:20',
+		'st:100',
 		'tx:5:10',
 
 		'dt',
 		'dt',
-		'st50',
+		'st:50',
 
 		'url',
 		'url',
 		'url',
 
-		'op 1:1&2:2'
+		'op:1&2:2'
 	];	
 	
 	// Dates
@@ -70,6 +70,8 @@ class EventProceedingsIssue extends Model
 
 	function index($d1, $id, $dt=array(),$cab='')
 	{	
+		$this->path = base_url(PATH.'proceedings_issue');
+		$this->path_back = base_url(PATH.'proceedings/viewid/'.$d1);
 		switch ($d1) {
 			case 'edit':
 				$sx = $cab;

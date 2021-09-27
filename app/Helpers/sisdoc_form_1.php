@@ -124,8 +124,8 @@ function form($th)
                 $t = $typ;
             }
         
-        echo '===>'.$t.'<br>';
         if ($t == 'index') { $t = 'hidden'; }
+        if ($t == 'hi') { $t = 'hidden'; }
         /************************************* Formulários */
         switch($t)
                 {
@@ -154,10 +154,11 @@ function form($th)
                                 array_push($op,$r);
                                 array_push($opc,$r);
                             }
-                        $sg = '<select id="'.$fld.'" name="'.$fld.'" value="'.$vlr.'" class="form-control" style="width: 200px;">'.cr();
+                        $sg = '<select id="'.$fld.'" name="'.$fld.'" class="form-control" style="width: 200px;">'.cr();
                         for ($r=0;$r < count($op);$r++)
                             {
                                 $sel = '';
+                                if ($vlr == $op[$r] ) { $sel = 'selected '; }
                                 $sg .= '<option value="'.$op[$r].'" '.$sel.'>'.$opc[$r].'</option>'.cr();
                             }
                         $sg .= '</select>'.cr();
@@ -210,6 +211,7 @@ function form($th)
                         $sx .= $sg;
                         $sx .= $tdc;
                         break;
+
                     case 'op':
                         $sx .= $td.($fld).$tdc;
                         $sx .= $td;
@@ -228,13 +230,15 @@ function form($th)
                         /**************************************** Query */                        
                     case 'qr':
                         $q = explode(':',trim(substr($typ,2,strlen($typ))));
-                        print_r($q);
-                        $fld1 = $q[0];
-                        $fld2 = $q[1];
+                        $fld1 = $q[1];
+                        $fld2 = $q[2];
 
                         $sx .= $td.($fld).$tdc;
                         $sx .= $td;
-                        $query = $th->query($q[2]);
+                        $sql = 'select * from '.$q[3];
+                        if (isset($q[4])) { $sql .= ' where '.$q[4]; }
+
+                        $query = $th->query($sql);
                         $query = $query->getResult();
                         
                         $sg = '<select id="'.$fld.'" name="'.$fld.'" value="'.$vlr.'" class="form-control">'.cr();
@@ -248,6 +252,7 @@ function form($th)
                         $sx .= $sg;
                         $sx .= $tdc;
                         break; 
+
                     case 'in':
                         $sx .= '<div class="form-group">'.cr();
                         $sx .= '<small id="emailHelp" class="form-text text-muted">'.lang($lib.$fld).'</small>';
@@ -305,7 +310,15 @@ function form($th)
                         $sx .= '<label for="'.$fld.'">'.lang($lib.$fld).'</label>'.cr();
                         $sx .= '<textarea id="'.$fld.'" rows="'.$rows.'" name="'.$fld.'" class="form-control">'.$vlr.'</textarea>';
                         $sx .= $tdc;
-                        break;                        
+                        break;
+
+                    case 'url':
+                        $sx .= '<div class="form-group" style="margin-bottom: 20px;">'.cr();
+                        $sx .= '<label for="'.$fld.'">'.lang($lib.$fld).'</label>
+                                <input type="string" class="form-control" id="'.$fld.'" name="'.$fld.'" value="'.$vlr.'" placeholder="'.lang($lib.$fld).'">                                
+                                '.cr();
+                        $sx .= '</div>';
+                        break;                                            
 
                     default:
                         $sx .= bsmessage('OPS - '.$t,1);
