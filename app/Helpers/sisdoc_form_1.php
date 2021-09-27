@@ -64,7 +64,7 @@ function form($th)
                         $sx .= bsmessage('SALVO');
                         if (isset($th->path_back))
                             {
-                                $sx .= metarefresh(base_url($th->path_back),0);
+                                $sx .= metarefresh($th->path_back,0);
                             } else {
                                 $sx .= bsmessage('$th->path_back não foi informado! - '.$th->table,3);
                             }
