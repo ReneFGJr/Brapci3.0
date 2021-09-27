@@ -56,6 +56,12 @@ class OaiPMHRegister extends Model
 					->where('li_process',$st)
 					->where('li_issue',$id)
 					->first();
+			if ((strlen($di) == '') or (count($di) == 0))
+				{
+					$tela = metarefresh(base_url());
+					echo $tela;
+					exit;
+				}					
 			return $di;
 		}	
 
@@ -138,6 +144,13 @@ class OaiPMHRegister extends Model
 				}
 			}
 
+		function process_02($id)
+			{			
+				$di = $this->next($id,2);
+
+				/* Reload page */
+				$sx .= '<meta http-equiv="refresh" content="1">';
+			}
 
 		function process_01($id)
 			{
@@ -167,21 +180,12 @@ class OaiPMHRegister extends Model
 				$EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
 
 				$sx = '';
-				$di = $this->next($id,1);
-				echo '===>'.$di;
-				if (strlen($di) == '')
-					{
-						$tela = metarefresh(base_url());
-						return $tela;
-					}
-
+				$di = $this->next($id);
 				$jnl = $di['li_journal'];
-
 
 				/*************************************************************************************** JOURNAL AND ISSUE */
 				/***********************************************************************************************************/
 				/***********************************************************************************************************/						
-
 
 				if (isset($di['id_ls']))
 					{

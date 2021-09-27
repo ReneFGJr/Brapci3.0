@@ -112,6 +112,11 @@ class EventProceedings extends Model
 							$st = $this->OaipmhRegister->process_01($id);
 						break;
 
+						case '1':
+							$this->OaipmhRegister = new \App\Models\OaipmhRegister();
+							$st = $this->OaipmhRegister->process_02($id);
+						break;						
+
 						default:
 							$this->OaipmhRegister = new \App\Models\OaipmhRegister();
 							$st = $this->OaipmhRegister->process_01($id);

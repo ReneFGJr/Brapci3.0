@@ -5,4 +5,5 @@ return [
     'date' => 'Data',
     'Analyse' => 'Análise',
     'Analyse.Drashboard' => 'Drashboard',
+    'New'=> 'Novo',
 ];
