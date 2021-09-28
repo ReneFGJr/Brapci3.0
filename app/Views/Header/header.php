@@ -22,4 +22,3 @@ void 0===window.kintMicrotimeInitialized&&(window.kintMicrotimeInitialized=1,win
   <script src="<?php echo base_url('js/bootstrap.js?v=5.0.2');?>"></script>
 </head>
 <body>
-HEAD<hr>

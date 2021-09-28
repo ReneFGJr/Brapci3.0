@@ -21,7 +21,7 @@ CI_ENVIRONMENT = development
 # APP
 #--------------------------------------------------------------------
 
-app.baseURL = 'https://brapci.inf.br/eventos/'
+app.baseURL = 'http://brapci3/'
 # app.forceGlobalSecureRequests = false
 
 # app.sessionDriver = 'CodeIgniter\Session\Handlers\FileHandler'
@@ -46,12 +46,19 @@ database.default.password =
 database.default.DBDriver = MySQLi
 database.default.DBPrefix =
 
-# database.tests.hostname = localhost
-# database.tests.database = ci4
-# database.tests.username = root
-# database.tests.password = root
-# database.tests.DBDriver = MySQLi
-# database.tests.DBPrefix =
+database.auth.hostname = localhost
+database.auth.database = brapci_authority
+database.auth.username = root
+database.auth.password = root
+database.auth.DBDriver = MySQLi
+database.auth.DBPrefix =
+
+database.main.hostname = localhost
+database.main.database = brapci_main
+database.main.username = root
+database.main.password = 
+database.main.DBDriver = MySQLi
+database.main.DBPrefix =
 
 #--------------------------------------------------------------------
 # CONTENT SECURITY POLICY

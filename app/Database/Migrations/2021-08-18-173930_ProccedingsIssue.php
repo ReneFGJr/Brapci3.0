@@ -27,7 +27,11 @@ class ProccedingsIssue extends Migration
             'epi_edition_name' => [
                 'type' => 'VARCHAR',
                 'constraint' => '20'
-            ],			
+            ],	
+            'epi_logo' => [
+                'type' => 'VARCHAR',
+                'constraint' => '200'
+            ],            		
             'epi_about' => [
                 'type' => 'TEXT',
             ],			

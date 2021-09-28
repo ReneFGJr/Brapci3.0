@@ -27,11 +27,13 @@ function bt_submit($t='save')
 
 function form($th)
     {
+        $table = $th->table;
         $sx = '';
         /* Arquivo para tradução - language ************************/
         if (!isset($th->lib)) { $th->lib = ''; }
         $fl = $th->allowedFields;
         $tp = $th->typeFields;
+
         $id = round($th->id);
 
         /* Sem PATH */
@@ -39,11 +41,12 @@ function form($th)
         {
             $url = ($th->path.'/edit/'.$id);        
         } else {
-            $url = ($th);
+            echo 'Erro $th->path não informado';
+            exit;
         }        
 
         /********************************* Salvar *****************/
-        $dt = $_POST;    
+        $dt = $_POST;                    
 
         /* Load Data from registrer *******************************/
         if ((count($dt) == 0) and ($id > 0))
@@ -127,6 +130,7 @@ function form($th)
         if ($t == 'index') { $t = 'hidden'; }
         if ($t == 'hi') { $t = 'hidden'; }
         /************************************* Formulários */
+        echo '<br>'.$t;
         switch($t)
                 {
                     case 'up':

@@ -1,70 +1,53 @@
 <?php
-//https://www.tandfonline.com/doi/full/10.1080/01639374.2021.1881009
-//https://www.librarianshipstudies.com/2016/06/authority-control.html
+
 namespace App\Controllers;
+
+//define("PATH", 'Authoriry');
+define("PATH",$_SERVER['app.baseURL'].'/authority');
+helper(['boostrap', 'url', 'graphs', 'sisdoc_forms', 'form', 'nbr']);
 
 use App\Controllers\BaseController;
 
-helper(['url']);
-
-define('PATH','authority/');
+$hd = new \App\Models\Header\Header();
 
 class Authority extends BaseController
 {
-
-	private function cab($dt=array())
-		{
-			$view = \Config\Services::renderer();
-			return  $view->setVar('title','Brapci - Authority')
-							->render('Header/header');
+	private function cab($tp = '')
+	{
+		$hd = new \App\Models\Header\Header();
+		$tela = '';
+		$dt['title'] = 'Authoriry';
+		switch ($tp) {
+			case 'footer':
+				$tela .= $hd->footer($dt);
+				break;
+			case 'menu':
+				$tela .= $hd->footer($dt);
+				break;				
+			default:
+				$tela .= $hd->cab($dt);
+				$tela .= $hd->navbar($dt);
+				$tela .= $hd->menu($dt);
+				break;
 		}
-	private function navbar()
-		{
-			$view = \Config\Services::renderer();
-			return  $view->setVar('title','Brapci - Authority')
-							->render('Header/navbar_authority');			
-		}
-	private function footer()
-		{
-			$view = \Config\Services::renderer();
-			return  $view->setVar('title','Brapci - Authority')
-							->render('Header/footer');			
-		}		
-	
+		return $tela;
+	}
 	public function index()
 	{
-		$tela = $this->cab();
-		$tela .= $this->navbar();
-		$tela .= $this->footer();
-		$this->db = \Config\Database::connect('auth', false);
+		$tela = $this->cab('all');
+		$tela .= $this->cab('footer');
+
 		return $tela;
 	}
 
-	public function api()
+	public function import($d1='',$d2='',$d3='')
 	{
-		$tela = $this->cab();
-		$tela .= "<h1>API</h1>";
-		return $tela;
-	}	
+		$app = new \App\Models\Authority\Import();
+		$tela = $this->cab('all');
 
-	public function admin()
-	{
-		$view = \Config\Services::renderer();
+		$tela .= $app->index($d1,$d2,$d3);
+		$tela .= $this->cab('footer');
 
-		$tela = $this->cab();
-		$tela .= "<h1>Admin</h1>";
-
-		$tela .= $view->render('authority/card');
-		return $tela;
-	}	
-
-	public function doc()
-	{
-		$tela = $this->cab();
-		$tela .= $this->navbar();
-		$tela .= "<h1>DOCUMMENTATION</h1>";
-		$tela .= $this->footer();		
-		
 		return $tela;
 	}	
 }

@@ -15,7 +15,7 @@ class AuthorityNames extends Migration
                 'type' => 'INT',
                 'auto_increment' => true
             ],
-            'a_class' => [
+            'a_type' => [
                 'type' => 'INT',
             ],   
             'a_rdf' => [
