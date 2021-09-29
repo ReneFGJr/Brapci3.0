@@ -1,0 +1,15 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix skosxl: <http://www.w3.org/2008/05/skos-xl#> .
+@prefix brapci: <https://brapci.inf.br/index.php/res/owl#> .
+@prefix brapci_v: <https://brapci.inf.br/index.php/res/v#> .
+
+<https://brapci.inf.br/index.php/res/v/123002>
+	a	owl:class ;
+	foaf:class 	Person ;
+	skos:prefLabel	"NUNES, Lúcia A. Nunes de Oliveira" ;
+	dc:affiliatedWith	brapci_v:41742 #Universidade Federal do Rio Grande do Sul ;
+	brapci:hasAuthor	brapci_v:123000 #oai:ocsbu.sites.ufsc.br:paper/831#00075 ;
+	dc:hasGender	brapci_v:99568 #Feminino ;

@@ -1,0 +1,16 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix skosxl: <http://www.w3.org/2008/05/skos-xl#> .
+@prefix brapci: <https://brapci.inf.br/index.php/res/owl#> .
+@prefix brapci_v: <https://brapci.inf.br/index.php/res/v#> .
+
+<https://brapci.inf.br/index.php/res/v/28652>
+	a	owl:class ;
+	foaf:class 	Person ;
+	skos:prefLabel	"SANTOS, Daiane Barrili dos" ;
+	brapci:hasAuthor	brapci_v:40881 #oai:revistas.usp.br:article/90059#00022 ;
+	brapci:hasAuthor	brapci_v:82376 #oai:www.bad.pt/publicacoes:article/1210#00064 ;
+	brapci:hasAuthor	brapci_v:91023 #oai:periodicos.ufpb.br:article/38558#00019 ;
+	dc:hasGender	brapci_v:99568 #Feminino ;

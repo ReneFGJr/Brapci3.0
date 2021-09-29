@@ -30,11 +30,30 @@ class Main extends BaseController
 		define("LIBRARY_NAME", "BRAPCI_LABS");
 	}	
 
-	
+	private function cab($tp = '')
+	{
+		$hd = new \App\Models\Header\Header();
+		$tela = '';
+		$dt['title'] = 'Main';
+		switch ($tp) {
+			case 'footer':
+				$tela .= $hd->footer($dt);
+				break;
+			case 'menu':
+				$tela .= $hd->footer($dt);
+				break;				
+			default:
+				$tela .= $hd->cab($dt);
+				$tela .= $hd->navbar($dt);
+				$tela .= $hd->menu($dt);
+				break;
+		}
+		return $tela;
+	}	
 
 	public function social($d1 = '', $id = '')
 	{
-		$cab = $this->cab();
+		$cab = $this->cab('all');
 		$dt = array();
 		$sx = $this->Socials->index($d1,$id,$dt,$cab);
 		return $sx;
@@ -43,8 +62,7 @@ class Main extends BaseController
 	public function index()
 	{
 		//
-		$tela = $this->cab();
-		$tela .= $this->navbar();
+		$tela = $this->cab('all');
 
 		#### Logado
 		if (isset($_SESSION['user']['id']))
@@ -87,8 +105,7 @@ class Main extends BaseController
 
 	public function dropall($tp='')
 		{
-			$sx = $this->cab();
-			$sx .= $this->navbar();
+			$sx = $this->cab('all');
 			$tela = '';
 			$this->RDF = new \App\Models\RDF();
 			$tables = array('OAI_SetSpec','OAI_ListRecords','OAI_log','rdf_concept','rdf_data','rdf_literal','');
@@ -107,17 +124,5 @@ class Main extends BaseController
 				}
 			$tela = $sx.bs($tela);
 			return $tela;
-		}
-    
-        public function authority($d1='',$d2='',$d3='',$d4='')
-            {
-				$this->Authority = new \App\Models\Authority\Index();
-				$dt['title'] = 'Authority';
-                $tela = $this->cab($dt);
-                $tela .= $this->navbar($dt);
-				$tela .= $this->Authority->index($d1,$d2,$d3,$d4);
-                $tela .= $this->footer();
-
-                return $tela;
-            }
+		}    
 }

@@ -1,0 +1,51 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix skosxl: <http://www.w3.org/2008/05/skos-xl#> .
+@prefix brapci: <https://brapci.inf.br/index.php/res/owl#> .
+@prefix brapci_v: <https://brapci.inf.br/index.php/res/v#> .
+
+<https://brapci.inf.br/index.php/res/v/9570>
+	a	owl:class ;
+	foaf:class 	Person ;
+	skos:prefLabel	"ROCKEMBACH, Moisés" ;
+	dc:affiliatedWith	brapci_v:41040 #Universidade do Porto / Universidade de Aveiro, Portugal ;
+	dc:affiliatedWith	brapci_v:41742 #Universidade Federal do Rio Grande do Sul ;
+	dc:affiliatedWith	brapci_v:41742 #Universidade Federal do Rio Grande do Sul ;
+	dc:affiliatedWith	brapci_v:104867 #Universidade Federal do Rio Grande do Sul (UFRGS) ;
+	dc:affiliatedWith	brapci_v:103632 #Universidade Federal do Rio Grande do Sul (ufrgs) ;
+	brapci:hasAuthor	brapci_v:9566 #oai:seer.ufrgs.br:article/59430#00002 ;
+	brapci:hasAuthor	brapci_v:10394 #oai:seer.ufrgs.br:article/70025#00002 ;
+	brapci:hasAuthor	brapci_v:15999 #oai:periodicos.ufpb.br:article/34242#00007 ;
+	brapci:hasAuthor	brapci_v:33792 #oai:ojs.www.uel.br:article/26432#00020 ;
+	brapci:hasAuthor	brapci_v:38324 #oai:periodicos.ufsc.br:article/57627#00016 ;
+	brapci:hasAuthor	brapci_v:39277 #oai:periodicos.ufsc.br:article/46419#00016 ;
+	brapci:hasAuthor	brapci_v:41038 #oai:ojs.www.aaerj.org.br:article/18#00025 ;
+	brapci:hasAuthor	brapci_v:41739 #oai:ojs.www.aaerj.org.br:article/95#00025 ;
+	brapci:hasAuthor	brapci_v:67398 #oai:ojs.letras.up.pt:article/3931#00056 ;
+	brapci:hasAuthor	brapci_v:69304 #oai:ojs.letras.up.pt:article/2001#00056 ;
+	brapci:hasAuthor	brapci_v:69358 #oai:ojs.letras.up.pt:article/3927#00056 ;
+	brapci:hasAuthor	brapci_v:69967 #oai:ojs.portalseer.ufba.br:article/12258#00055 ;
+	brapci:hasAuthor	brapci_v:71582 #oai:ojs.letras.up.pt:article/1975#00056 ;
+	brapci:hasAuthor	brapci_v:76603 #oai:ojs.pkp.sfu.ca:article/8473#00040 ;
+	brapci:hasAuthor	brapci_v:90940 #oai:ojs.www.aaerj.org.br:article/210#00025 ;
+	brapci:hasAuthor	brapci_v:91023 #oai:periodicos.ufpb.br:article/38558#00019 ;
+	brapci:hasAuthor	brapci_v:101466 #oai:agora.periodicos.emnuvens.com.br:article/687#00003 ;
+	brapci:hasAuthor	brapci_v:105088 #oai:ocs.enancib.marilia.unesp.br:paper/442#00075 ;
+	brapci:hasAuthor	brapci_v:40173 #oai:ojs.periodicos.sbu.unicamp.br:article/8648747#00017 ;
+	brapci:hasAuthor	brapci_v:118698 #oai:ojs.revista.ibict.br:article/4578#00051 ;
+	brapci:hasAuthor	brapci_v:120818 #oai:ojs.letras.up.pt:article/6277#00056 ;
+	brapci:hasAuthor	brapci_v:122912 #oai:ocsbu.sites.ufsc.br:paper/566#00075 ;
+	brapci:hasAuthor	brapci_v:122920 #oai:ocsbu.sites.ufsc.br:paper/645#00075 ;
+	brapci:hasAuthor	brapci_v:123000 #oai:ocsbu.sites.ufsc.br:paper/831#00075 ;
+	brapci:hasAuthor	brapci_v:142149 #oai:ojs.c3sl.ufpr.br:article/71333#00006 ;
+	brapci:hasAuthor	brapci_v:145210 #oai:revistas.ufpr.br:article/71333#00006 ;
+	brapci:hasAuthor	brapci_v:145611 #oai:ojs.letras.up.pt:article/8578#00056 ;
+	brapci:hasAuthor	brapci_v:145798 #oai:"revista.arquivonacional.gov.br":article/1554#00062 ;
+	brapci:hasAuthor	brapci_v:146669 #oai:ojs.reciis.icict.fiocruz.br:article/2116#00086 ;
+	brapci:hasAuthor	brapci_v:147144 #oai:ocs.c3sl.ufpr.br:paper/1467#00089 ;
+	brapci:hasAuthor	brapci_v:147496 #oai:ocs.c3sl.ufpr.br:paper/1467#00090 ;
+	brapci:hasAuthor	brapci_v:159532 #oai:ojs.periodicos.sbu.unicamp.br:article/8663680#00017 ;
+	brapci:hasAuthor	brapci_v:160923 #oai:ojs.revista.ibict.br:article/5713#00051 ;
+	dc:hasGender	brapci_v:99567 #Masculino ;

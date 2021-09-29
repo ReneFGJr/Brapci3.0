@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class RDFConcept extends Model
 {
-	protected $DBGroup              = 'default';
+	var $DBGroup              = 'default';
 	protected $table                = 'rdf_concept';
 	protected $primaryKey           = 'id_cc';
 	protected $useAutoIncrement     = true;
@@ -63,9 +63,13 @@ class RDFConcept extends Model
 		{			
 			/* Definição da Classe */
 			$Class = new \App\Models\RDFClass();			
+			$Class->DBGroup = $this->DBGroup;
 			$RDFdata = new \App\Models\RDFdata();
+			$RDFdata->DBGroup = $this->DBGroup;
 			$RDFLiteral = new \App\Models\RDFLiteral();
+			$RDFLiteral->DBGroup = $this->DBGroup;
 			$Property = new \App\Models\RDFClassProperty();
+			$Property->DBGroup = $this->DBGroup;
 
 			$cl = $dt['Class'];
 			$id_class = $Class->class($cl);

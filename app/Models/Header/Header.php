@@ -52,8 +52,9 @@ class Header extends Model
 			$it['home'] = base_url(PATH);
 			switch($nm)
 				{
-					case 'Authoriry':
-						$it['import'] = base_url(PATH.'/import');
+					case 'Authority':
+						$it['list'] = base_url(PATH.'/index/list');
+						$it['import'] = base_url(PATH.'/index/import');
 						break;
 				}
 			/************* Mostra Menu */
@@ -96,7 +97,9 @@ class Header extends Model
 			url("' . base_url('css/fonts/HandelGothic/handel_gothic.woff') . '") format("woff"), /* chrome firefox */
 			url("' . base_url('css/fonts/HandelGothic/handel_gothic.ttf') . '") format("truetype"), /* chrome firefox opera Safari, Android, iOS 4.2+*/
 			url("' . base_url('css/fonts/HandelGothic/handel_gothic.svg#Handel Gothic') . '") format("svg"); /* iOS 4.1- */
+			url("' . base_url('css/fonts/Roboto/Roboto-Thin.ttf') . '") format("truetype"), /* chrome firefox opera Safari, Android, iOS 4.2+*/
 		}
+		@import url(\'https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap\');
 		</style>';
 		$sx .= '</head>' . cr();
 
@@ -128,6 +131,16 @@ class Header extends Model
 		$sx .= '</nav>' . cr();
 		return $sx;
 	}
+
+	function typing($name='',$sub='')
+		{
+			$sx = '<div class="text-center">';
+			$sx .= '<h1 style="font-family: Roboto, Tahoma, Arial; font-size: 400%;">';
+			$sx .= $name;
+			$sx .= '</h1>';
+			$sx .= '</div>';
+			return $sx;
+		}
 
 	function footer()
 	{

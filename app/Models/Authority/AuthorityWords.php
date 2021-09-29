@@ -1,21 +1,24 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Authority;
 
 use CodeIgniter\Model;
 
-class RDFLiteral extends Model
+class AuthorityWords extends Model
 {
-	var $DBGroup              = 'default';
-	protected $table                = 'rdf_name';
-	protected $primaryKey           = 'id_n';
+	protected $DBGroup              = 'default';
+	protected $table                = 'brapci_authority.authoritywords';
+	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'id_n','n_name','n_lock','n_lang'
+		'id_w','w_term','w_term_o'
+	];
+	protected $typeFields        = [
+		'hidden','string:40','string:40'
 	];
 
 	// Dates
@@ -42,18 +45,34 @@ class RDFLiteral extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function name($name,$lg='pt-BR')
+	function prepare_text($fr='')
 		{
-			$dt = $this->where('n_name',$name)->First();
-			if (!is_array($dt))
+			$ft = strip_tags($fr);
+			$ft = troca($ft,'(',' ( ');
+			$ft = troca($ft,')',' ) ');
+			$ft = troca($ft,'-',' - ');
+			$ft = troca($ft,'[',' [ ');
+			$ft = troca($ft,']',' ] ');			
+			return $ft;
+		}
+
+	function process($fr='')
+		{		
+			$fr = $this->prepare_text($fr);
+			$wds = explode(' ',$fr);
+
+			for ($r=0;$r < count($wds);$r++)
 				{
-					$data['n_name'] = $name;
-					$data['n_lock'] = 0;
-					$data['n_lang'] = $lg;
-					$this->insert($data);
-					$dt = $this->where('n_name',$name)->First();
-					return $dt['id_n'];
+					$term = ascii(mb_strtolower($wds[$r]));
+					$term_o = $wds[$r];
+					$this->where('w_term',$term);
+					$dt = $this->findAll();
+					if (count($dt) == 0)
+						{
+							$dt['w_term'] = $term;
+							$dt['w_term_o'] = $term_o;
+							$this->insert($dt);
+						}
 				}
-			return $dt['id_n'];
 		}
 }

@@ -1,0 +1,25 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix skosxl: <http://www.w3.org/2008/05/skos-xl#> .
+@prefix brapci: <https://brapci.inf.br/index.php/res/owl#> .
+@prefix brapci_v: <https://brapci.inf.br/index.php/res/v#> .
+
+<https://brapci.inf.br/index.php/res/v/4615>
+	a	owl:class ;
+	foaf:class 	Person ;
+	skos:prefLabel	"ARBOIT, Aline Elis" ;
+	dc:affiliatedWith	brapci_v:116313 #Tribunal de Contas do Estado do Paraná Coordenadoria de Jurisprudência e Biblioteca ;
+	brapci:hasAuthor	brapci_v:4614 #oai:ojs.revista.ibict.br:article/2339#00013 ;
+	brapci:hasAuthor	brapci_v:14099 #oai:agora.periodicos.emnuvens.com.br:article/470#00003 ;
+	brapci:hasAuthor	brapci_v:20182 #oai:ojs.revista.ibict.br:article/1307#00010 ;
+	brapci:hasAuthor	brapci_v:32231 #oai:ojs.revista.ibict.br:article/4129#00052 ;
+	brapci:hasAuthor	brapci_v:35425 #oai:ojs.testes.eci.ufmg.br:article/948#00029 ;
+	brapci:hasAuthor	brapci_v:36670 #oai:ojs.testes.eci.ufmg.br:article/879#00029 ;
+	brapci:hasAuthor	brapci_v:37739 #oai:ojs.testes.eci.ufmg.br:article/1099#00029 ;
+	brapci:hasAuthor	brapci_v:92597 #oai:periodicos.ufpb.br:article/9584#00019 ;
+	brapci:hasAuthor	brapci_v:116311 #oai:scielo:S0103-37862011000300003#00027 ;
+	brapci:hasAuthor	brapci_v:122110 #issue:120809-20190916072937 ;
+	brapci:hasAuthor	brapci_v:135192 #issue:120808-20200126032012 ;
+	dc:hasGender	brapci_v:99568 #Feminino ;

@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class RDFPrefix extends Model
 {
-	protected $DBGroup              = 'default';
+	var $DBGroup             		= 'default';
 	protected $table                = 'rdf_prefix';
 	protected $primaryKey           = 'id_prefix ';
 	protected $useAutoIncrement     = true;
@@ -44,8 +44,9 @@ class RDFPrefix extends Model
 
 	function prefixo($pre)
 		{
-			$ID = 0;
+			$ID = 0;	
 			$dt = $this->where('prefix_ref',$pre)->find();
+
 			if (count($dt) > 0)
 				{
 					$ID = $dt[0]['id_prefix'];
@@ -54,9 +55,10 @@ class RDFPrefix extends Model
 					$this->insert($data);
 
 					$dt = $this->where('prefix_ref',$pre)->find();
-					echo 'Prefix não localizado - '.$pre;
-					sleep(1);
+					//echo 'Prefix não localizado - '.$pre;
+					sleep(0.1);
 					$dt = $this->where('prefix_ref',$pre)->find();
+					$ID = $dt[0]['id_prefix'];
 				}
 			return $ID;
 		}

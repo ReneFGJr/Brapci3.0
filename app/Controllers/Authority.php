@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 //define("PATH", 'Authoriry');
 define("PATH",$_SERVER['app.baseURL'].'/authority');
+define("LIBRARY", "202101");
 helper(['boostrap', 'url', 'graphs', 'sisdoc_forms', 'form', 'nbr']);
 
 use App\Controllers\BaseController;
@@ -16,8 +17,11 @@ class Authority extends BaseController
 	{
 		$hd = new \App\Models\Header\Header();
 		$tela = '';
-		$dt['title'] = 'Authoriry';
+		$dt['title'] = 'Authority';
 		switch ($tp) {
+			case 'typping':
+				$tela .= $hd->typing('authority.'.$dt['title'],'authority.'.$dt['title'].'_sub');
+				break;
 			case 'footer':
 				$tela .= $hd->footer($dt);
 				break;
@@ -32,15 +36,23 @@ class Authority extends BaseController
 		}
 		return $tela;
 	}
-	public function index()
+	public function index($d1='',$d2='',$d3='',$d4='')
 	{
+		$Authority = new \App\Models\Authority\Index();
+
 		$tela = $this->cab('all');
+		if ($d1=='')
+			{
+				$tela .= $this->cab('typping');
+			} else {
+				$tela .= $Authority->index($d1,$d2,$d3,$d4);
+			}
 		$tela .= $this->cab('footer');
 
 		return $tela;
 	}
 
-	public function import($d1='',$d2='',$d3='')
+	public function import2($d1='',$d2='',$d3='')
 	{
 		$app = new \App\Models\Authority\Import();
 		$tela = $this->cab('all');

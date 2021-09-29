@@ -4,22 +4,26 @@ namespace App\Models\Authority;
 
 use CodeIgniter\Model;
 
-class Import extends Model
+class AuthorityNames extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'aa';
-	protected $primaryKey           = 'id';
+	protected $table                = 'brapci_authority.authoritynames';
+	protected $primaryKey           = 'id_a';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = 
-		[ '','url'];
+	protected $allowedFields        = [
+		'id_a','a_prefTerm','a_class','a_uri','a_use'
+	];
 
 	protected $typeFields        = [
 		'hidden',
-		'url*'
+		'string:100',
+		'hidden',
+		'string:100',
+		'string:1'
 	];
 
 	// Dates
@@ -44,22 +48,5 @@ class Import extends Model
 	protected $beforeFind           = [];
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
-	protected $afterDelete          = [];	
-
-	function index($d1,$d2,$d3)
-		{
-			$tela = bsc(h(lang('Import'),1),12);
-			$tela = bs($tela);
-
-			$tela .= $this->form_url();
-			return $tela;
-		}
-	
-	private function form_url()
-		{
-			$this->id = 0;
-			$this->path = base_url(PATH.'import');
-			$tela = bs(bsc(form($this),12));
-			return $tela;
-		}
+	protected $afterDelete          = [];
 }

@@ -15,11 +15,13 @@ class AuthorityNames extends Migration
                 'type' => 'INT',
                 'auto_increment' => true
             ],
-            'a_type' => [
-                'type' => 'INT',
+            'a_class' => [
+				'type' => 'VARCHAR',   
+                'constraint' => '1' 
             ],   
-            'a_rdf' => [
-				'type' => 'INT',            
+            'a_uri' => [
+				'type' => 'VARCHAR',   
+                'constraint' => '120'         
 			],
             'a_use' => [
                 'type' => 'INT',

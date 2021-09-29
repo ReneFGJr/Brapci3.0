@@ -1,0 +1,91 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix skosxl: <http://www.w3.org/2008/05/skos-xl#> .
+@prefix brapci: <https://brapci.inf.br/index.php/res/owl#> .
+@prefix brapci_v: <https://brapci.inf.br/index.php/res/v#> .
+
+<https://brapci.inf.br/index.php/res/v/8956>
+	a	owl:class ;
+	foaf:class 	Person ;
+	skos:prefLabel	"VANZ, Samile Andréa de Souza" ;
+	dc:affiliatedWith	brapci_v:103632 #Universidade Federal do Rio Grande do Sul (ufrgs) ;
+	dc:affiliatedWith	brapci_v:41742 #Universidade Federal do Rio Grande do Sul ;
+	dc:affiliatedWith	brapci_v:104415 #Universidade Federal do Rio Grande do Sul - UFRGS ;
+	dc:affiliatedWith	brapci_v:41742 #Universidade Federal do Rio Grande do Sul ;
+	brapci:hasAuthor	brapci_v:8955 #oai:seer.ufrgs.br:article/85996#00002 ;
+	brapci:hasAuthor	brapci_v:10061 #oai:seer.ufrgs.br:article/12921#00002 ;
+	brapci:hasAuthor	brapci_v:10645 #oai:seer.ufrgs.br:article/58357#00002 ;
+	brapci:hasAuthor	brapci_v:11154 #oai:seer.ufrgs.br:article/50350#00002 ;
+	brapci:hasAuthor	brapci_v:11636 #oai:seer.ufrgs.br:article/61#00002 ;
+	brapci:hasAuthor	brapci_v:11712 #oai:seer.ufrgs.br:article/75#00002 ;
+	brapci:hasAuthor	brapci_v:11954 #oai:seer.ufrgs.br:article/68049#00002 ;
+	brapci:hasAuthor	brapci_v:24199 #oai:furg.emnuvens.com.br:article/731#00011 ;
+	brapci:hasAuthor	brapci_v:31360 #oai:periodicos.ufsc.br:article/53133#00016 ;
+	brapci:hasAuthor	brapci_v:33040 #oai:ojs.testes.eci.ufmg.br:article/322#00029 ;
+	brapci:hasAuthor	brapci_v:33103 #oai:ojs.www.uel.br:article/26154#00020 ;
+	brapci:hasAuthor	brapci_v:35103 #oai:ojs.testes.eci.ufmg.br:article/1915#00029 ;
+	brapci:hasAuthor	brapci_v:36486 #oai:periodicos.ufsc.br:article/19600#00016 ;
+	brapci:hasAuthor	brapci_v:38885 #oai:ojs.testes.eci.ufmg.br:article/1105#00029 ;
+	brapci:hasAuthor	brapci_v:39657 #oai:periodicos.ufsc.br:article/44464#00016 ;
+	brapci:hasAuthor	brapci_v:41890 #oai:revistas.usp.br:article/124459#00022 ;
+	brapci:hasAuthor	brapci_v:42124 #oai:revistas.usp.br:article/137741#00022 ;
+	brapci:hasAuthor	brapci_v:45238 #oai:brapci.inf.br:article/14321#00018 ;
+	brapci:hasAuthor	brapci_v:45261 #oai:brapci.inf.br:article/14325#00018 ;
+	brapci:hasAuthor	brapci_v:45412 #oai:brapci.inf.br:article/14368#00018 ;
+	brapci:hasAuthor	brapci_v:45472 #oai:brapci.inf.br:article/14376#00018 ;
+	brapci:hasAuthor	brapci_v:45523 #oai:brapci.inf.br:article/14384#00018 ;
+	brapci:hasAuthor	brapci_v:45590 #oai:brapci.inf.br:article/14405#00018 ;
+	brapci:hasAuthor	brapci_v:46159 #oai:brapci.inf.br:article/19999#00018 ;
+	brapci:hasAuthor	brapci_v:46253 #oai:brapci.inf.br:article/20010#00018 ;
+	brapci:hasAuthor	brapci_v:46381 #oai:brapci.inf.br:article/20027#00018 ;
+	brapci:hasAuthor	brapci_v:46511 #oai:brapci.inf.br:article/27831#00018 ;
+	brapci:hasAuthor	brapci_v:47090 #oai:brapci.inf.br:article/27899#00018 ;
+	brapci:hasAuthor	brapci_v:47242 #oai:brapci.inf.br:article/27916#00018 ;
+	brapci:hasAuthor	brapci_v:70158 #oai:revistaacb.emnuvens.com.br:article/390#00046 ;
+	brapci:hasAuthor	brapci_v:70242 #oai:ojs.portalseer.ufba.br:article/4707#00055 ;
+	brapci:hasAuthor	brapci_v:73975 #oai:ojs.letras.up.pt:article/3925#00056 ;
+	brapci:hasAuthor	brapci_v:83760 #oai:ojs.aprendeenlinea.udea.edu.co:article/19503#00070 ;
+	brapci:hasAuthor	brapci_v:89182 #oai:seer.ufrgs.br:article/54247#00002 ;
+	brapci:hasAuthor	brapci_v:91719 #oai:periodicos.ufsc.br:article/359#00016 ;
+	brapci:hasAuthor	brapci_v:92958 #oai:periodicos.ufpb.br:article/38383#00019 ;
+	brapci:hasAuthor	brapci_v:93245 #oai:periodicos.ufpb.br:article/21864#00019 ;
+	brapci:hasAuthor	brapci_v:94160 #oai:ojs.revista.ibict.br:article/3430#00051 ;
+	brapci:hasAuthor	brapci_v:104291 #oai:ocs.enancib.marilia.unesp.br:paper/130#00075 ;
+	brapci:hasAuthor	brapci_v:107063 #oai:ojs.pkp.sfu.ca:article/19527#00040 ;
+	brapci:hasAuthor	brapci_v:107161 #oai:seer.ufrgs.br:article/88895#00002 ;
+	brapci:hasAuthor	brapci_v:108430 #oai:ojs.testes.eci.ufmg.br:article/3302#00029 ;
+	brapci:hasAuthor	brapci_v:113783 #oai:seer.ufrgs.br:article/91988#00002 ;
+	brapci:hasAuthor	brapci_v:115012 #oai:revistas.usp.br:article/153029#00022 ;
+	brapci:hasAuthor	brapci_v:116761 #oai:scielo:S0103-37862015000300209#00027 ;
+	brapci:hasAuthor	brapci_v:117462 #oai:ocs.ebbc.inf.br:paper/83#00018 ;
+	brapci:hasAuthor	brapci_v:117480 #oai:ocs.ebbc.inf.br:paper/87#00018 ;
+	brapci:hasAuthor	brapci_v:117513 #oai:ocs.ebbc.inf.br:paper/104#00018 ;
+	brapci:hasAuthor	brapci_v:119503 #oai:brapci.inf.br:article/16088#00015 ;
+	brapci:hasAuthor	brapci_v:120510 #oai:seer.ufrgs.br:article/95318#00002 ;
+	brapci:hasAuthor	brapci_v:123078 #oai:ocsbu.sites.ufsc.br:paper/592#00075 ;
+	brapci:hasAuthor	brapci_v:125551 #oai:scielo:S0103-37862019000100306#00027 ;
+	brapci:hasAuthor	brapci_v:126889 #oai:ojs.revista.ibict.br:article/4771#00051 ;
+	brapci:hasAuthor	brapci_v:127039 #oai:seer.ufrgs.br:article/98781#00002 ;
+	brapci:hasAuthor	brapci_v:135641 #oai:periodicos.ufsc.br:article/65382#00016 ;
+	brapci:hasAuthor	brapci_v:136453 #oai:ojs.revista.ibict.br:article/4958#00010 ;
+	brapci:hasAuthor	brapci_v:137381 #oai:ojs.reciis.icict.fiocruz.br:article/1756#00086 ;
+	brapci:hasAuthor	brapci_v:139438 #oai:seer.ufrgs.br:article/101918#00002 ;
+	brapci:hasAuthor	brapci_v:142215 #oai:periodicos.ufsc.br:article/71677#00016 ;
+	brapci:hasAuthor	brapci_v:145840 #oai:www.seer.ufal.br:article/9643#00033 ;
+	brapci:hasAuthor	brapci_v:146077 #oai:seer.ufrgs.br:article/107545#00002 ;
+	brapci:hasAuthor	brapci_v:148940 #article:148847-540a7c3a428c4071b18d477fe3f31392 ;
+	brapci:hasAuthor	brapci_v:151624 #oai:ojs.pkp.sfu.ca:article/332#00015 ;
+	brapci:hasAuthor	brapci_v:151815 #oai:seer.ufrgs.br:article/110084#00002 ;
+	brapci:hasAuthor	brapci_v:153185 #oai:revistas.ufpr.br:article/76894#00006 ;
+	brapci:hasAuthor	brapci_v:153313 #oai:ojs.pkp.sfu.ca:article/31979#00040 ;
+	brapci:hasAuthor	brapci_v:155608 #oai:periodicos.ufpb.br:article/57345#00019 ;
+	brapci:hasAuthor	brapci_v:156646 #oai:seer.ufrgs.br:article/111420#00002 ;
+	brapci:hasAuthor	brapci_v:158308 #oai:seer.ufrgs.br:article/112045#00002 ;
+	brapci:hasAuthor	brapci_v:160963 #oai:febab.periodicos.emnuvens.com.br:article/1572#00001 ;
+	brapci:hasAuthor	brapci_v:161421 #oai:seer.ufrgs.br:article/116281#00002 ;
+	brapci:hasAuthor	brapci_v:70242 #oai:ojs.portalseer.ufba.br:article/4707#00055 ;
+	brapci:hasAuthor	brapci_v:162747 #oai:ojs.emnuvens.com.br:article/11515#00011 ;
+	dc:hasGender	brapci_v:99568 #Feminino ;
+	brapci:hasEditor	brapci_v:47 #Em Questão ;

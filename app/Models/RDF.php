@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class RDF extends Model
 {
-	protected $DBGroup              = 'default';
+	var $DBGroup              = 'default';
 	protected $table                = 'rdf_concept';
 	protected $primaryKey           = 'id_cc';
 	protected $useAutoIncrement     = true;
@@ -294,7 +294,9 @@ class RDF extends Model
 			return $sx;
 		}
 
+
 	function index($d1,$d2,$d3='',$cab='')
+	
 		{
 			$sx = '';
 			$type = get("type");
@@ -327,4 +329,18 @@ class RDF extends Model
 			$sx = bs($sx);
 			return $sx;
 		}
-}
+
+
+
+	function RDP_concept($name,$class)
+		{
+			$RDPConcept = new \App\Models\RDFConcept();
+			$RDPConcept->DBGroup = 'auth';
+
+			$dt['Class'] = $class;
+			$dt['Literal']['skos:prefLabel'] = $name;
+			$idc = $RDPConcept->concept($dt);
+			$tela = $idc;
+			return $tela;
+		}
+	}
