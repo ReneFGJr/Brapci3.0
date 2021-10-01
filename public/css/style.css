@@ -4,7 +4,7 @@
 
 body
     {
-        background-color: #F0F0F0;
+        /* background-color: #F0F0F0; 
     }
 
 .navbar-brand
@@ -12,7 +12,7 @@ body
         font-family: 'Handel Gothic';
         font-size: 200%;
         padding: 0px 0px;
-        color: white;
+        /* color: white; */
     }
 .navbar
     {
@@ -26,13 +26,11 @@ body
 a, a::after
     {
         text-decoration: none;
-        color: #888;
     }
 
 a:hover
     {
         text-decoration: none;
-        color: #000;
     }   
     
 .supersmall

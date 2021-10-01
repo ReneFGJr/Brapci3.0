@@ -7,6 +7,9 @@ define("PATH",$_SERVER['app.baseURL'].'/authority');
 define("LIBRARY", "202101");
 helper(['boostrap', 'url', 'graphs', 'sisdoc_forms', 'form', 'nbr']);
 
+$this->session = \Config\Services::session();
+$language = \Config\Services::language();
+
 use App\Controllers\BaseController;
 
 $hd = new \App\Models\Header\Header();
@@ -18,15 +21,16 @@ class Authority extends BaseController
 		$hd = new \App\Models\Header\Header();
 		$tela = '';
 		$dt['title'] = 'Authority';
+		$title = lang('authority.'.$dt['title']);
 		switch ($tp) {
 			case 'typping':
-				$tela .= $hd->typing('authority.'.$dt['title'],'authority.'.$dt['title'].'_sub');
+				$tela .= $hd->typing($title,'authority.'.$dt['title'].'_sub');
 				break;
 			case 'footer':
 				$tela .= $hd->footer($dt);
 				break;
 			case 'menu':
-				$tela .= $hd->footer($dt);
+				$tela .= $hd->menu($dt);
 				break;				
 			default:
 				$tela .= $hd->cab($dt);

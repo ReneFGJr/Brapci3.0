@@ -71,6 +71,8 @@ class Header extends Model
 
 	function cab($dt = array())
 	{
+		$thema = '/css/bootstrap.css';
+		$thema = '/css/bootstrap-cyborg.min.css';
 		$title = 'Brapci Proceedings';
 		if (isset($dt['title'])) {
 			$title = 'Brapci ' . lang($dt['title']);
@@ -84,8 +86,8 @@ class Header extends Model
 		$sx .= '  <link rel="icon" type="image/png" sizes="32x32" href="' . base_url('favicon.ico') . '" />' . cr();
 		$sx .= '  <link rel="icon" type="image/png" sizes="16x16" href="' . base_url('favicon.ico') . '" />' . cr();
 		$sx .= '  <!-- CSS -->' . cr();
-		$sx .= '  <link rel="stylesheet" href="' . base_url('/css/bootstrap.css') . '" />' . cr();
-		$sx .= '  <link rel="stylesheet" href="' . base_url('/css/style.css?v0.0.12') . '" />' . cr();
+		$sx .= '  <link rel="stylesheet" href="' . base_url($thema) . '" />' . cr();
+		$sx .= '  <link rel="stylesheet" href="' . base_url('/css/style.css?v0.0.15') . '" />' . cr();
 		$sx .= ' ' . cr();
 		$sx .= '  <!-- CSS -->' . cr();
 		$sx .= '  <script src="' . base_url('/js/bootstrap.js?v=5.0.2') . '"></script>' . cr();

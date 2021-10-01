@@ -60,10 +60,14 @@ class Index extends Model
 					case 'list':
 						$tela .= $this->tableview();
 						break;
+					case 'import_api_brapci':
+						$tela .= $this->import_api_brapci($d2);
+						break;						
 					case 'import':
 						$this->id = 0;
 						$this->path = base_url(PATH.'/index/import');
 						$tela .= form($this);
+						$tela .= $this->import_buttons();
 						$url = get('authority_url');
 						$tela .= '';
 						if ($url != '')
@@ -97,8 +101,103 @@ class Index extends Model
 
 			return $tela;
 		}
+	
+	/******************************************************************************************/
+	function import_buttons()
+		{
+			$sx = h(lang('External_tools'),3);
+			$sx .= '<a href="'.base_url(PATH.'/index/import_api_brapci').'" class="btn btn-outline-primary">'.lang('Brapci').' - API</a>';
+			$sx = bsc(bsc($sx,12));
+
+			return $sx;
+		}
+
+	function import_api_brapci($ini=0)
+		{
+			$tela = '';
+			$file = '.tmp/authors/authors_api_brapci.csv';
+			if (!file_exists($file))
+			{
+				$url = 'https://brapci.inf.br/ws/api/?verb=authors';
+				$txt = file_get_contents($url);
+				dircheck('.tmp');
+				dircheck('.tmp/authors');
+				file_put_contents($file,$txt);
+			}
+
+			$tela .= h(lang('Processing').' '.$file,5);
+			if (file_exists($file))
+			{
+				$txt = file_get_contents($file);
+				$lns = explode(chr(10),$txt);
+				$tot = 0;
+				$ini = round($ini);
+				echo '<h1>'.$ini.'</h1>';
+				for ($r=($ini+1);$r < count($lns);$r++)
+					{
+						$tot++;
+						if ($tot > 30)
+							{
+								$tela .= metarefresh(base_url(PATH.'/index/import_api_brapci/'.$r));
+								break;
+							}
+						$l = $lns[$r];
+						$l = explode(';',$l);
+
+						if (count($l) == 2)
+						{
+							$idp = $this->author($l[0],$l[1],0);
+							$tela .= '<br>'.$l[0].' - '.$idp;
+						} 
+					}
+			}
+			return $tela;		
+
+		}
 
 	/******************************************************************************************/
+	function author($name,$URI,$up=1)
+		{
+			$tela = '';
+			$RDF = new \App\Models\RDF();
+			$name = nbr_author($name,7);
+			$AuthorityWords = new \App\Models\Authority\AuthorityWords();
+			$AuthorityWords->process($name);
+			$idp = $RDF->RDP_concept($name,'foad:Person');
+
+			if (strlen($name))
+				{
+					$tela .= '<h2>'.$name.'</h2>';
+					$AuthorityNames = new \App\Models\Authority\AuthorityNames();
+					$AuthorityNames->where('a_uri',$URI);
+					$dt = $AuthorityNames->findAll();
+					if ((count($dt) == 0) and ($URI != ''))
+						{					
+							$dt['id_a'] = '';
+							$dt['a_uri'] = $URI;
+							$dt['a_use'] = '';
+							$dt['a_class'] = 'P';
+							$dt['a_prefTerm'] = $name;
+							$AuthorityNames->insert($dt);								
+							$tela.= '<h5>'.lang('authority.appended').'</h5>';
+						} else {
+							if ($up == 1)
+							{
+								$dt = $dt[0];
+								if ($dt['a_prefTerm'] != $name)
+									{
+										$AuthorityNames->set('a_prefTerm', $name);
+										$AuthorityNames->where('id_a', $dt['id_a']);
+										$AuthorityNames->update();
+										$tela.= '<h5>'.lang('authority.updated').'</h5>';
+									} else {
+										$tela.= '<h5>'.lang('authority.already_insired').'</h5>';
+									}
+							}
+						}
+				}			
+			return $idp;
+		}
 	function inport_brapci($url)
 		{			
 
@@ -164,35 +263,7 @@ class Index extends Model
 				}
 				$taff .= '</ul>';
 
-			if (strlen($name))
-				{
-					$tela .= '<h2>'.$name.'</h2>';
-					$AuthorityNames = new \App\Models\Authority\AuthorityNames();
-					$AuthorityNames->where('a_uri',$URI);
-					$dt = $AuthorityNames->findAll();
-					if ((count($dt) == 0) and ($URI != ''))
-						{					
-							$dt['id_a'] = '';
-							$dt['a_uri'] = $URI;
-							$dt['a_use'] = '';
-							$dt['a_class'] = 'P';
-							$dt['a_prefTerm'] = $name;
-							$AuthorityNames->insert($dt);								
-							$tela.= '<h5>'.lang('authority.appended').'</h5>';
-						} else {
-							$dt = $dt[0];
-							if ($dt['a_prefTerm'] != $name)
-								{
-									$AuthorityNames->set('a_prefTerm', $name);
-									$AuthorityNames->where('id_a', $dt['id_a']);
-									$AuthorityNames->update();
-									$tela.= '<h5>'.lang('authority.updated').'</h5>';
-								} else {
-									$tela.= '<h5>'.lang('authority.already_insired').'</h5>';
-								}
-							
-						}
-				}
+			
 			$tela .= $taff;
 			return $tela;
 		}

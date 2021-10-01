@@ -1,5 +1,7 @@
 <?php
     if (!isset($title)) { $title = 'none'; }
+    $thema = 'css/bootstrap-cyborg.min.css';
+    $themaz = 'css/bootstrap.css';
 ?><!doctype html>
 <html>
 <head>
@@ -15,7 +17,7 @@ void 0===window.kintMicrotimeInitialized&&(window.kintMicrotimeInitialized=1,win
   <link rel="icon" type="image/png" sizes="32x32" href="<?php echo base_url('favicon.ico');?>" />
   <link rel="icon" type="image/png" sizes="16x16" href="<?php echo base_url('favicon.ico');?>" />
   <!-- CSS -->
-  <link rel="stylesheet" href="<?php echo base_url('css/bootstrap.css');?>" />
+  <link rel="stylesheet" href="<?php echo base_url($thema);?>" />
   <link rel="stylesheet" href="<?php echo base_url('css/style.css?v0_0_12');?>" />
  
   <!-- CSS -->

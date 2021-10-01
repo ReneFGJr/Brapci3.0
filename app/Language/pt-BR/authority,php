@@ -1,0 +1,6 @@
+<?php
+
+return [
+    'Authority' => 'Bem Vindo!',
+    'import' => 'Importar',
+];
