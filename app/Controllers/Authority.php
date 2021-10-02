@@ -3,7 +3,8 @@
 namespace App\Controllers;
 
 //define("PATH", 'Authoriry');
-define("PATH",$_SERVER['app.baseURL'].'/authority');
+define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix'].'authority');
+
 define("LIBRARY", "202101");
 helper(['boostrap', 'url', 'graphs', 'sisdoc_forms', 'form', 'nbr']);
 

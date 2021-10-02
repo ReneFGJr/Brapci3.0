@@ -10,9 +10,7 @@ $language = \Config\Services::language();
 
 helper(['boostrap','url','graphs','sisdoc_forms','form','nbr']);
 
-define("PATH",$_SERVER['app.baseURL']);
-
-
+define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix']);
 
 class Main extends BaseController
 {
