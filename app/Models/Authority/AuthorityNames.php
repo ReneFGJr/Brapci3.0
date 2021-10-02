@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class AuthorityNames extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'brapci_authority.authoritynames';
+	protected $table                = 'brapci_authority.AuthorityNames';
 	protected $primaryKey           = 'id_a';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
