@@ -64,7 +64,7 @@ class RDFConcept extends Model
 			/* Definição da Classe */
 			$Class = new \App\Models\RDFClass();			
 			$Class->DBGroup = $this->DBGroup;
-			$RDFdata = new \App\Models\RDFdata();
+			$RDFdata = new \App\Models\RDFData();
 			$RDFdata->DBGroup = $this->DBGroup;
 			$RDFLiteral = new \App\Models\RDFLiteral();
 			$RDFLiteral->DBGroup = $this->DBGroup;
