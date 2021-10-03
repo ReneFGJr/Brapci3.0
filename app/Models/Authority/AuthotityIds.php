@@ -57,7 +57,7 @@ class AuthotityIds extends Model
 					$dtc = $dta['result'];
 					if (count($dtc) == 1)
 						{
-							$data['id_a'] = $dtc['id_a'];
+							$data['id_a'] = $dt['id_a'];
 							foreach($dtc as $name=>$idc)
 								{
 									$data['a_lattes'] = $idc;
