@@ -65,15 +65,15 @@ class AuthotityIds extends Model
 							foreach($dtc as $name=>$id_lattes)
 								{
 									$data['a_lattes'] = $id_lattes;
-									$this->where('id_a', $dt['id_a']);
-									$this->update($data);
+									$sql = "update ".$this->table." set a_lattes = '".$id_lattes."' where id_a = ".$dt['id_a'];
+									echo $sql;
+									exit;
 									echo '<pre>';
 									print_r($data);
 									echo '</pre>';									
 								}
 						}
 				}
-
 			return $tela;
 		}
 }
