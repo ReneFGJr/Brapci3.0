@@ -44,6 +44,7 @@ class AuthotityIds extends Model
 
 	function LattesFindID($id)
 		{
+			$tela = '';
 			$Api = new \App\Models\Api\Endpoints();
 			$AuthorityNames = new \App\Models\Authority\AuthorityNames();
 
@@ -68,11 +69,7 @@ class AuthotityIds extends Model
 									$sql = "update ".$this->table." set a_lattes = '".$id_lattes."' where id_a = ".$dt['id_a'];
 
 									$this->query($sql);
-									echo $sql;
-									exit;
-									echo '<pre>';
-									print_r($data);
-									echo '</pre>';									
+									metarefresh(base_url(PATH.'index/viewid/'.$dt['id_a']));
 								}
 						}
 				}
