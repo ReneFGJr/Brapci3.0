@@ -56,10 +56,6 @@ class AuthotityIds extends Model
 			if (isset($dta['result']))
 				{
 					$dtc = $dta['result'];
-					echo '<pre>';
-					print_r($dtc);
-					echo '</pre>';
-
 					if (count($dtc) == 1)
 						{
 							$data['id_a'] = $dt['id_a'];
@@ -69,7 +65,7 @@ class AuthotityIds extends Model
 									$sql = "update ".$this->table." set a_lattes = '".$id_lattes."' where id_a = ".$dt['id_a'];
 
 									$this->query($sql);
-									metarefresh(base_url(PATH.'index/viewid/'.$dt['id_a']));
+									$tela .= metarefresh(base_url(PATH.'index/viewid/'.$dt['id_a']));
 								}
 						}
 				}
