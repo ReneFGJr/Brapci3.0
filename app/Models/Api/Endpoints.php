@@ -68,9 +68,25 @@ class Endpoints extends Model
 
 	function LattexID($q='Name for query')
 	{
-		$dt = array();
-		$file = '/home/cedap/CVlattes.csv';
+		$file = '/home/cedap/CVlattes.csv';		
+		$file2 = '/home/cedap/CVlattesASCII.csv';		
 		$handle = fopen($file, "r");
+		$handle2 = fopen($file2, "w");
+		if ($handle) {
+			while (($line = fgets($handle)) !== false) {
+				$line = mb_strtoupper(ascii($line));
+				fwrite($handle2,$line);
+			}
+		}
+		fclose($handle);
+		fclose($handle2);
+
+
+		$dt = array();
+		$file = '/home/cedap/CVlattesASCII.csv';		
+		$handle = fopen($file, "r");
+		$q = mb_strtoupper(ascii($q));
+		$dt['query'] = $q;
 		$tot = 0;
 		if ($handle) {
 			while (($line = fgets($handle)) !== false) {
