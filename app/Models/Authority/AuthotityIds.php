@@ -50,14 +50,14 @@ class AuthotityIds extends Model
 			$dt = $AuthorityNames->find($id);
 			$name = trim($dt['a_prefTerm']);
 
-			$dt = $Api->LattesFindID($name);
+			$dta = $Api->LattesFindID($name);
 
 			if (isset($dt['result']))
 				{
-					$dtc = $dt['result'];
+					$dtc = $dta['result'];
 					if (count($dtc) == 1)
 						{
-							$data['id_a'] = $dt['id_a'];
+							$data['id_a'] = $dtc['id_a'];
 							foreach($dtc as $name=>$idc)
 								{
 									$data['a_lattes'] = $idc;
