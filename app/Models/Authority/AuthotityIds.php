@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models\Api;
+namespace App\Models\Authority;
 
 use CodeIgniter\Model;
 
-class Endpoints extends Model
+class AuthotityIds extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'endpoints';
+	protected $table                = '';
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -40,57 +40,18 @@ class Endpoints extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function index($d1, $d2, $d3, $d4)
-	{
+	function LattesFindID($id)
+		{
+			$Api = new \App\Models\Api\Endpoints();
+			$AuthorityNames = new \App\Models\Authority\AuthorityNames();
 
-		$q = get("q");
-		$v = get("verb");
-		if (strlen($v) > 0) { $d1 = $v; }
+			$dt = $AuthorityNames->find($id);
+			$name = trim($dt['a_prefTerm']);
 
-		switch($d1)
-			{
-				case 'LattesId':
-					$dt = $this->LattesFindID($q);
-			}
+			$dt = $Api->LattesFindID($name);
 
-		$dt['verb'] = $d1;
-		if (!isset($dt['erro']))
-			{
-				$dt['erro'] = '0';
-				$dt['descript'] = 'Successful';
-			}
-		
-		$dt['date'] = date("Y-m-d H:m:s");			
-		
-		$tela = json_encode($dt);
-		return $tela;
-	}
-
-	function LattesFindID($q='Name for query')
-	{
-		$dt = array();
-		$file = '/home/cedap/CVlattesASCII.csv';		
-		$handle = fopen($file, "r");
-		$q = mb_strtoupper(ascii($q));
-		$dt['query'] = $q;
-		$tot = 0;
-		if ($handle) {
-			while (($line = fgets($handle)) !== false) {
-				// process the line read.
-				if (strpos(' ' . $line, $q)) {
-					$d = explode(';', $line);
-					$dt['result'][$d[0]] = $d[1];
-					$tot++;
-					if ($tot > 10)
-						{
-							$dt = array();
-							$dt['erro'] = 101;
-							$dt['descript'] = lang('api.multiple_results');
-						}
-				}
-			}
-			fclose($handle);
+			echo '<pre style="color: white;">';
+			$tela = var_dump($dt);
+			return $tela;
 		}
-		return $dt;
-	}
 }

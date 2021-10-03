@@ -54,6 +54,10 @@ class Index extends Model
 			$tela = '';
 			switch($d1)
 				{
+					case 'LattedFindId':
+						$AuthotityIds = new \App\Models\Authority\AuthotityIds();
+						$tela .= $AuthotityIds->LattesFindID($d2);
+						break;
 					case 'viewid':
 						$tela .= $this->viewid($d2);
 						break;
@@ -91,6 +95,7 @@ class Index extends Model
 			$dt = $AuthorityNames->find($id);
 			$tela = h($dt['a_prefTerm'],1);
 			$tela .= anchor($dt['a_uri']);
+			$tela .= anchor(base_url(PATH.'/index/LattedFindId/'.$dt['id_a']));
 			return $tela;
 		}
 	function tableview()
