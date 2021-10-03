@@ -52,9 +52,13 @@ class AuthotityIds extends Model
 
 			$dta = $Api->LattesFindID($name);
 
-			if (isset($dt['result']))
+			if (isset($dta['result']))
 				{
 					$dtc = $dta['result'];
+					echo '<pre>';
+					print_r($dtc);
+					echo '</pre>';
+
 					if (count($dtc) == 1)
 						{
 							$data['id_a'] = $dt['id_a'];
