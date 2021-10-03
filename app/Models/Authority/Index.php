@@ -96,6 +96,11 @@ class Index extends Model
 			$tela = h($dt['a_prefTerm'],1);
 			$tela .= anchor($dt['a_uri']);
 			$tela .= anchor(base_url(PATH.'/index/LattedFindId/'.$dt['id_a']));
+
+			if (strlen($dt['a_lattes']) > 0)
+				{
+					$tela .= bsc('Lattes:'.$dt['a_lattes'],12);
+				}
 			return $tela;
 		}
 	function tableview()
