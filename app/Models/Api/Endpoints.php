@@ -49,7 +49,7 @@ class Endpoints extends Model
 
 		switch($d1)
 			{
-				case 'LattedId':
+				case 'LattesId':
 					$dt = $this->LattexID($q);
 			}
 
@@ -79,7 +79,7 @@ class Endpoints extends Model
 				// process the line read.
 				if (strpos(' ' . $line, $q)) {
 					$d = explode(';', $line);
-					$dt['result'][$d[0]] = $d[1];
+					$dt['result']cu[$d[0]] = $d[1];
 					$tot++;
 					if ($tot > 10)
 						{
