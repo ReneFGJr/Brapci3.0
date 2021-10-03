@@ -94,12 +94,17 @@ class Index extends Model
 			$AuthorityNames = new \App\Models\Authority\AuthorityNames();
 			$dt = $AuthorityNames->find($id);
 			$tela = h($dt['a_prefTerm'],1);
-			$tela .= anchor($dt['a_uri']);
-			$tela .= anchor(base_url(PATH.'/index/LattedFindId/'.$dt['id_a']));
+			$tela .= anchor($dt['a_uri']);			
 
 			if (strlen($dt['a_lattes']) > 0)
 				{
-					$tela .= bsc('Lattes:'.$dt['a_lattes'],12);
+					$link = 'http://lattes.cnpq.br/'.trim($dt['a_lattes']);
+					$link = '<a href="'.$link.'" target="_new'.$dt['a_lattes'].'">';
+					$link .= '<img src="'.base_url('img/icones/lattes.png').'" style="height: 50px";>';
+					$link .= '</a>';
+					$tela .= bsc('<small>'.lang('Link do Lattes').'</small><br>'.$link,12);
+				} else {
+					$tela .= anchor(base_url(PATH.'/index/LattedFindId/'.$dt['id_a']));
 				}
 			return $tela;
 		}
