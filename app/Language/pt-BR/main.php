@@ -6,4 +6,5 @@ return [
     'Journals' => 'Publicações em Revistas',
     'Proceedings' => 'Base de dados de Eventos',
     'Thesis'=> 'Banco de Teses e Dissertações',
+    'Api'=> 'API Inteoperabilidade',
 ];

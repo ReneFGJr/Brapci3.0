@@ -75,8 +75,9 @@ class Main extends BaseController
         $menu['authority'] = array('',lang("main.Authority"),lang("main.Authority_desc"));
         $menu['books'] = array('',lang("main.Books"),lang("main.Books_desc"));
         $menu['journals'] = array('',lang("main.Journals"),lang("main.Journals_desc"));
-        $menu['proceedings'] = array('',lang("main.Proceedings"),lang("main.Proceedings"));
-        $menu['thesis'] = array('',lang("main.Thesis"),lang("main.Thesis"));
+        $menu['proceedings'] = array('',lang("main.Proceedings"),lang("main.Proceedings_desc"));
+        $menu['thesis'] = array('',lang("main.Thesis"),lang("main.Thesis_info_desc"));
+		$menu['api/doc'] = array('',lang("main.Api"),lang("main.Api_desc"));
         
         foreach($menu as $url => $dt)
             {
