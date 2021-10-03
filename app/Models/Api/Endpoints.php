@@ -79,7 +79,7 @@ class Endpoints extends Model
 				// process the line read.
 				if (strpos(' ' . $line, $q)) {
 					$d = explode(';', $line);
-					$dt['result']cu[$d[0]] = $d[1];
+					$dt['result'][$d[0]] = $d[1];
 					$tot++;
 					if ($tot > 10)
 						{
