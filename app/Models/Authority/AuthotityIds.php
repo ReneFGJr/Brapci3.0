@@ -66,6 +66,8 @@ class AuthotityIds extends Model
 								{
 									$data['a_lattes'] = $id_lattes;
 									$sql = "update ".$this->table." set a_lattes = '".$id_lattes."' where id_a = ".$dt['id_a'];
+
+									$this->query($sql);
 									echo $sql;
 									exit;
 									echo '<pre>';
