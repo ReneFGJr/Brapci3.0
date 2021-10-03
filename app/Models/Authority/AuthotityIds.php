@@ -62,9 +62,11 @@ class AuthotityIds extends Model
 					if (count($dtc) == 1)
 						{
 							$data['id_a'] = $dt['id_a'];
-							foreach($dtc as $name=>$idc)
+							foreach($dtc as $name=>$id_lattes)
 								{
-									$data['a_lattes'] = $idc;
+									$data['a_lattes'] = $id_lattes;
+									$this->where('id_a', $dt['id_a']);
+									$this->update($data);
 									echo '<pre>';
 									print_r($data);
 									echo '</pre>';									
