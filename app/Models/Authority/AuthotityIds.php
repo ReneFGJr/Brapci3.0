@@ -7,14 +7,16 @@ use CodeIgniter\Model;
 class AuthotityIds extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = '';
-	protected $primaryKey           = 'id';
+	protected $table                = 'brapci_authority.AuthorityNames';
+	protected $primaryKey           = 'id_a';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [];
+	protected $allowedFields        = [
+		'id_a','a_lattes','a_ordid'
+	];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -50,8 +52,22 @@ class AuthotityIds extends Model
 
 			$dt = $Api->LattesFindID($name);
 
-			echo '<pre style="color: white;">';
-			$tela = var_dump($dt);
+			if (isset($dt['result']))
+				{
+					$dtc = $dt['result'];
+					if (count($dtc) == 1)
+						{
+							$data['id_a'] = $dt['id_a'];
+							foreach($dtc as $name=>$idc)
+								{
+									$data['a_lattes'] = $idc;
+									echo '<pre>';
+									print_r($data);
+									echo '</pre>';									
+								}
+						}
+				}
+
 			return $tela;
 		}
 }
