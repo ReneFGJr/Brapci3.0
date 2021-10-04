@@ -7,4 +7,5 @@ return [
     'Proceedings' => 'Base de dados de Eventos',
     'Thesis'=> 'Banco de Teses e Dissertações',
     'Api'=> 'API Inteoperabilidade',
+    'Brapci'=> 'Base de Dados Pesquisa',
 ];

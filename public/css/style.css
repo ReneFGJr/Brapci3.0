@@ -14,6 +14,13 @@ body
         padding: 0px 0px;
         /* color: white; */
     }
+.pagination li
+    {
+        border: 1px solid #808080;
+        padding: 2px 4px;
+        margin-right: 3px;
+        border-radius: 3px;
+    }
 .navbar
     {
         padding: 0px 0px;

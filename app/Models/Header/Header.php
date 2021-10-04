@@ -87,7 +87,7 @@ class Header extends Model
 		$sx .= '  <link rel="icon" type="image/png" sizes="16x16" href="' . base_url('favicon.ico') . '" />' . cr();
 		$sx .= '  <!-- CSS -->' . cr();
 		$sx .= '  <link rel="stylesheet" href="' . base_url($thema) . '" />' . cr();
-		$sx .= '  <link rel="stylesheet" href="' . base_url('/css/style.css?v0.0.15') . '" />' . cr();
+		$sx .= '  <link rel="stylesheet" href="' . base_url('/css/style.css?v0.0.20') . '" />' . cr();
 		$sx .= ' ' . cr();
 		$sx .= '  <!-- CSS -->' . cr();
 		$sx .= '  <script src="' . base_url('/js/bootstrap.js?v=5.0.2') . '"></script>' . cr();

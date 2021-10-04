@@ -1,32 +1,20 @@
 <?php
 
-namespace App\Models\Authority;
+namespace App\Models\Brapci;
 
 use CodeIgniter\Model;
 
-class AuthorityNames extends Model
+class Search extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'brapci_authority.AuthorityNames';
-	protected $primaryKey           = 'id_a';
+	protected $table                = 'searches';
+	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [
-		'id_a','a_prefTerm','a_class','a_lattes','a_orcid','a_uri','a_use'
-	];
-
-	protected $typeFields        = [
-		'hidden',
-		'string:100',
-		'hidden',
-		'string:100',
-		'string:100',
-		'string:100',
-		'string:1'
-	];
+	protected $allowedFields        = [];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -52,10 +40,36 @@ class AuthorityNames extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function summaryCreate()
+	function formSearch()
 		{
-			$this->select('count(*) as total');
-			$dt = $this->findAll();
-			print_r($dt);
+			$tela = '';
+			$tela .= $this->formSearchTitle();
+			$tela .= $this->formSearchField();
+			return $tela;
 		}
+
+	function formSearchTitle()
+		{
+			$tela = '';
+			$tela .= bsc(h(lang('What_are_you_looking?'),3),12,'text-center');
+			return $tela;
+		}
+
+	function formSearchField()
+		{
+			$tela = '';
+			$tela .= '
+				<div class="input-group">
+  					<input type="text" class="form-control" placeholder="Recipient\'s username" aria-label="Recipient\'s username with two button addons">
+					<select id="type" class="form-control" style="width: 40px; margin: 0px 10px;" >
+						<option value="">All Collections</option>
+					</select>
+  					<button class="btn btn-primary" type="button">Button</button>
+  					</div>			
+			';
+			$tela = bsc($tela,12);
+			$tela = bs($tela);
+			return $tela;
+		}
+
 }

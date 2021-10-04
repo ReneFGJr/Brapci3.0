@@ -72,6 +72,7 @@ class Main extends BaseController
 	
         $MENU = bsc('Menu',12);
         $menu = array();
+		$menu['res'] = array('',lang("main.Brapci"),lang("main.Brapci_desc"));
         $menu['authority'] = array('',lang("main.Authority"),lang("main.Authority_desc"));
         $menu['books'] = array('',lang("main.Books"),lang("main.Books_desc"));
         $menu['journals'] = array('',lang("main.Journals"),lang("main.Journals_desc"));
@@ -85,7 +86,7 @@ class Main extends BaseController
                 $title .= $dt[1];
                 $link = '<a href="'.base_url(PATH.$url).'">';
                 $linka = '</a>';
-                $MENU .= bsc($link.bscard($title,$dt[2]).$linka,4,'p-2');
+                $MENU .= bsc($link.bscard($title,$dt[2]).$linka,4,'p-2" style="min-height: 150px');
             }
     
         $MENU = bs($MENU);

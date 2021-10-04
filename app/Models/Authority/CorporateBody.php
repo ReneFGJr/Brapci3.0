@@ -4,7 +4,7 @@ namespace App\Models\Authority;
 
 use CodeIgniter\Model;
 
-class AuthorityNames extends Model
+class CorporateBody extends Model
 {
 	protected $DBGroup              = 'default';
 	protected $table                = 'brapci_authority.AuthorityNames';
@@ -51,11 +51,4 @@ class AuthorityNames extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
-
-	function summaryCreate()
-		{
-			$this->select('count(*) as total');
-			$dt = $this->findAll();
-			print_r($dt);
-		}
 }
