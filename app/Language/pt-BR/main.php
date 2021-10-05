@@ -8,4 +8,15 @@ return [
     'Thesis'=> 'Banco de Teses e Dissertações',
     'Api'=> 'API Inteoperabilidade',
     'Brapci'=> 'Base de Dados Pesquisa',
+    'Search'=>'PESQUISAR',
+    'What do you looking?' => 'O que você está procurando?',
+    'All Collections' => 'Todas as coleções',
+    'Articles' => 'Artigos',
+    'Proceedings' => 'Eventos',
+    'Books' => 'Livros',
+    'Authorities' => 'Autores',
+    'Thesis' => 'Teses e Dissertações',
+    '' => '',
+    '' => '',
+
 ];

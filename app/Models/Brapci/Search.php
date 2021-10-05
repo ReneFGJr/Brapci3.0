@@ -51,7 +51,7 @@ class Search extends Model
 	function formSearchTitle()
 		{
 			$tela = '';
-			$tela .= bsc(h(lang('What_are_you_looking?'),3),12,'text-center');
+			$tela .= bsc(h(lang('main.What do you looking?'),3),12,'text-center');
 			return $tela;
 		}
 
@@ -59,12 +59,17 @@ class Search extends Model
 		{
 			$tela = '';
 			$tela .= '
-				<div class="input-group">
-  					<input type="text" class="form-control" placeholder="Recipient\'s username" aria-label="Recipient\'s username with two button addons">
-					<select id="type" class="form-control" style="width: 40px; margin: 0px 10px;" >
-						<option value="">All Collections</option>
+				<div class="input-group input-group-lg mb-0 p-3" style="border: 0px solid #0093DD;">
+  					<input type="text" class="form-control shadow" placeholder="'.lang('main.What do you looking?').'">
+					<select id="type" class="form-control-2 shadow" style="border: 1px solid #ccc; font-size: 130%; line-hight: 150%; width: 250px; margin: 0px 10px;" >
+						<option value="">'.lang('main.All Collections').'</option>
+						<option value="">'.lang('main.Articles').'</option>
+						<option value="">'.lang('main.Proceedings').'</option>
+						<option value="">'.lang('main.Books').'</option>
+						<option value="">'.lang('main.Authorities').'</option>
+						<option value="">'.lang('main.Thesis').'</option>
 					</select>
-  					<button class="btn btn-primary" type="button">Button</button>
+  					<button class="btn btn-primary shadow" type="button">'.lang('main.Search').'</button>
   					</div>			
 			';
 			$tela = bsc($tela,12);
