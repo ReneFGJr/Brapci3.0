@@ -210,9 +210,9 @@ function bsc($t,$grid=12,$class='')
         return $sx;
     }
 
-function bscard($title='Title',$desc='Desc')
+function bscard($title='Title',$desc='Desc',$class='',$style='')
     {
-        $sx = '<div class="card mt-1">
+        $sx = '<div class="card mt-1 '.$class.'" style="'.$style.'">
         <!--
         <img class="card-img-top" src="..." alt="Card image cap">
         -->

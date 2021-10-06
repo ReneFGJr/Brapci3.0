@@ -14,6 +14,7 @@ return [
     'Articles' => 'Artigos',
     'Proceedings' => 'Eventos',
     'Books' => 'Livros',
+    'Patents' => 'Patentes',
     'Authorities' => 'Autores',
     'Thesis' => 'Teses e Dissertações',
     '' => '',

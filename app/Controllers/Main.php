@@ -74,10 +74,11 @@ class Main extends BaseController
         $menu = array();
 		$menu['res'] = array('',lang("main.Brapci"),lang("main.Brapci_desc"));
         $menu['authority'] = array('',lang("main.Authority"),lang("main.Authority_desc"));
-        $menu['books'] = array('',lang("main.Books"),lang("main.Books_desc"));
-        $menu['journals'] = array('',lang("main.Journals"),lang("main.Journals_desc"));
-        $menu['proceedings'] = array('',lang("main.Proceedings"),lang("main.Proceedings_desc"));
-        $menu['thesis'] = array('',lang("main.Thesis"),lang("main.Thesis_info_desc"));
+        $menu['book'] = array('',lang("main.Books"),lang("main.Books_desc"));
+        $menu['journal'] = array('',lang("main.Journals"),lang("main.Journals_desc"));
+        $menu['proceeding'] = array('',lang("main.Proceedings"),lang("main.Proceedings_desc"));
+		$menu['patent'] = array('',lang("main.Patents"),lang("main.Patents"));
+        $menu['thesi'] = array('',lang("main.Thesis"),lang("main.Thesis_info_desc"));
 		$menu['api/doc'] = array('',lang("main.Api"),lang("main.Api_desc"));
         
         foreach($menu as $url => $dt)
@@ -86,7 +87,7 @@ class Main extends BaseController
                 $title .= $dt[1];
                 $link = '<a href="'.base_url(PATH.$url).'">';
                 $linka = '</a>';
-                $MENU .= bsc($link.bscard($title,$dt[2]).$linka,4,'p-2" style="min-height: 150px');
+                $MENU .= bsc($link.bscard($title,$dt[2],'shadow-lg p-3 mb-5','min-height: 150px').$linka,4);
             }
     
         $MENU = bs($MENU);

@@ -5,6 +5,14 @@
 
             /********** Campos do formulário */
             $fl = $th->allowedFields;
+            if (isset($th->viewFields))
+                {
+                    $fld = implode(",", $th->viewFields);
+                    echo $fld;
+                    $th->select($fld);
+                    $fl = $th->viewFields;
+                }
+            
             if (isset($_POST['action']))
                 {
                     $search = $_POST["search"];
@@ -26,7 +34,9 @@
                             $th->like($fl[$search_field],$search);
                         }
                 }            
+            if ($fl[$search_field]==0) { $search_field = 1; }
             $th->orderBy($fl[$search_field]);
+            
 
             $v = $th->paginate(15);
             $p = $th->pager;
@@ -75,7 +85,10 @@
             $sx .= '<th>#</th>';
             for($h=1;$h < count($heads);$h++)
                 {
-                    $sx .= '<th>'.lang($heads[$h]).'</th>';
+                    if (strpos($fl[0],'#'))
+                    {                    
+                        $sx .= '<th>'.lang($heads[$h]).'</th>';
+                    }
                 }            
             $sx .= '</tr>'.cr();
     
@@ -85,7 +98,7 @@
                     $line = $v[$r];
                     $sx .= '<tr>';
                     foreach($fl as $field)
-                        {
+                        {                            
                             $vlr = $line[$field];
                             if (strlen($vlr) == 0) { $vlr = ' '; }
                             $sx .= '<td>'.anchor(($url.'/viewid/'.$line[$fl[0]]),$vlr).'</td>';

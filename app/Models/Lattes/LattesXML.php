@@ -4,7 +4,7 @@ namespace App\Models\Lattes;
 
 use CodeIgniter\Model;
 
-class Xml extends Model
+class LattesXML extends Model
 {
 	protected $DBGroup              = 'default';
 	protected $table                = 'xmls';
@@ -48,12 +48,13 @@ class Xml extends Model
 				{
 					$xml = simplexml_load_file($file);
 					$this->vinculo($xml,$id);
-				}			
+				} else {
+					$this->LattesLoad($id);
+				}	
 		}
 		
-	function Lattes($id)
+	function LattesLoad($id)
 		{
-		$Lattes = new \App\Models\Lattes\Xml();
 		$url = 'https://brapci.inf.br/ws/api/?verb=lattes&q=' . $d1;
 
 		$dir = '.tmp';

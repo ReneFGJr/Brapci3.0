@@ -72,7 +72,7 @@ class Header extends Model
 	function cab($dt = array())
 	{
 		$thema = '/css/bootstrap.css';
-		//$thema = '/css/bootstrap-cyborg.min.css';
+		$thema = '/css/bootstrap-cyborg.min.css';
 		$title = 'Brapci Proceedings';
 		if (isset($dt['title'])) {
 			$title = 'Brapci ' . lang($dt['title']);
