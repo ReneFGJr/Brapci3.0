@@ -94,6 +94,12 @@ class Journals extends Model
 				}
 			return $tela;
 		}
+	function openaccess($dt)
+		{
+			$tela = '';
+			$tela .= '<img src="'.base_url(URL.'/img/icones/open_access.png?v0.').'" class="img-fluid" title="'.lang('brapci.icone_open_access').'">';
+			return $tela;
+		}
 	function active($dt)
 		{
 			
@@ -161,6 +167,8 @@ class Journals extends Model
 			$img = '<img src="'.$this->Cover->image($id).'" class="img-fluid">';
 			$tela = '';
 			$jnl = h($dt['jnl_name'],3);
+
+			$openaccess = $this->openaccess($dt);
 			
 			$jnl .= '<div class="row">';
 			$jnl .= bsc($this->start_end($dt),4);
@@ -169,7 +177,8 @@ class Journals extends Model
 			$jnl .= bsc($this->active($dt),8);
 			$jnl .= '</div>';
 			
-			$tela = bsc($jnl,10);
+			$tela = bsc($jnl,9);
+			$tela .= bsc($openaccess,1);
 			$tela .= bsc($img,2);
 			$tela = bs($tela);
 			return $tela;

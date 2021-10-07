@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 //define("PATH", 'Authoriry');
 define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix'].'journal');
+define("URL",$_SERVER['app.baseURL']);
 
 define("LIBRARY", "202101");
 helper(['boostrap', 'url', 'graphs', 'sisdoc_forms', 'form', 'nbr']);
