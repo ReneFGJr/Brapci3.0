@@ -69,6 +69,9 @@ class Journals extends Model
 			$this->path_back = base_url(PATH.'/index/');
 			switch ($d1)
 				{
+					case 'edit':
+						$tela = $this->editar($d2);
+						break;
 					case 'viewid':
 						$tela = $this->viewid($d2);
 						break;
@@ -78,6 +81,12 @@ class Journals extends Model
 						$tela = $this->tableview();
 						break;
 				}
+			return $tela;
+		}
+	function editar($id)
+		{
+			$form = new form;
+			$tela = $form->editar($this);
 			return $tela;
 		}
 	function start_end($dt)
