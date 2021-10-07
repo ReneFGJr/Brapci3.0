@@ -6,4 +6,6 @@ return [
     'Analyse' => 'Análise',
     'Analyse.Drashboard' => 'Drashboard',
     'New'=> 'Novo',
+    'Actual'=>'Atual',
+    'journal_site'=>'Site da Revista'
 ];
