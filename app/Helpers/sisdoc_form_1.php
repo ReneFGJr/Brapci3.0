@@ -136,6 +136,9 @@ function form_fields($typ, $fld, $vlr, $th = array())
     if ($t == 'hi') {
         $t = 'hidden';
     }
+    if ($t == 'string') {
+        $t = 'st';
+    }    
     /************************************* Formulários */
     //echo '<br>' . $t;
     switch ($t) {
