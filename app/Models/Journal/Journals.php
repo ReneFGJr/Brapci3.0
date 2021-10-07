@@ -85,6 +85,7 @@ class Journals extends Model
 		}
 	function editar($id)
 		{
+			$this->id = $id;
 			$tela = form($this);
 			return $tela;
 		}
