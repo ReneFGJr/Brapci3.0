@@ -87,6 +87,7 @@ class Journals extends Model
 		{
 			$this->id = $id;
 			$tela = form($this);
+			$tela = bs(bsc($tela,12));
 			return $tela;
 		}
 	function start_end($dt)
