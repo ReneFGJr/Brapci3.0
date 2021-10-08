@@ -139,24 +139,30 @@ function form_fields($typ, $fld, $vlr, $th = array())
     if ($t == 'string') {
         $t = 'st';
     }    
+    if ($t == 'year') {
+        $t = 'yr';
+    }    
     /************************************* Formulários */
     //echo '<br>' . $t;
     switch ($t) {
         case 'up':
             $sx .= '<input type="hidden" id="' . $fld . '" name="' . $fld . '" value="' . date("YmdHi") . '">';
             break;
+
         case 'dt':
             $sx .= $td . ($fld) . $tdc;
             $sx .= $td;
             $sx .= '<input type="text" id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '" class="form-control" style="width:200px;">';
             $sx .= $tdc;
             break;
+
         case 'ur':
             $sx .= $td . ($fld) . $tdc;
             $sx .= $td;
             $sx .= '<input type="text" id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '" class="form-control">';
             $sx .= $tdc;
             break;
+
         case 'yr':
             $sx .= $td . ($fld) . $tdc;
             $sx .= $td;
@@ -167,6 +173,7 @@ function form_fields($typ, $fld, $vlr, $th = array())
                 array_push($opc, $r);
             }
             $sg = '<select id="' . $fld . '" name="' . $fld . '" class="form-control" style="width: 200px;">' . cr();
+            $sg .= '<option value="0">' . '- - -' . '</option>' . cr();
             for ($r = 0; $r < count($op); $r++) {
                 $sel = '';
                 if ($vlr == $op[$r]) {
@@ -178,6 +185,7 @@ function form_fields($typ, $fld, $vlr, $th = array())
             $sx .= $sg;
             $sx .= $tdc;
             break;
+
         case 'pl':
             $sx .= $td . ($fld) . $tdc;
             $sx .= $td;
@@ -200,6 +208,7 @@ function form_fields($typ, $fld, $vlr, $th = array())
             $sx .= $sg;
             $sx .= $tdc;
             break;
+
         case 'tx':
             $rows = 5;
             $sx .= $td . ($fld) . $tdc;
@@ -207,6 +216,7 @@ function form_fields($typ, $fld, $vlr, $th = array())
             $sx .= '<textarea id="' . $fld . '" rows="' . $rows . '" name="' . $fld . '" class="form-control">' . $vlr . '</textarea>';
             $sx .= $tdc;
             break;
+
         case 'sn':
             $sx .= $td . ($fld) . $tdc;
             $sx .= $td;
@@ -225,12 +235,14 @@ function form_fields($typ, $fld, $vlr, $th = array())
         case 'op':
             $sx .= $td . ($fld) . $tdc;
             $sx .= $td;
-            $op = array(1, 0);
-            $opc = array(msg('YES'), msg('NO'));
+            $op = array(1, 0);            
+            $opt = substr($typ, strpos($typ, ':') + 1, strlen($typ));
+            $opc = explode(':', $opt);
             $sg = '<select id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '" class="form-control">' . cr();
-            for ($r = 0; $r < count($op); $r++) {
+            for ($r = 0; $r < count($opc); $r++) {
                 $sel = '';
-                $sg .= '<option value="' . $op[$r] . '" ' . $sel . '>' . $opc[$r] . '</option>' . cr();
+                $opx = explode('&',$opc[$r]);
+                $sg .= '<option value="' . $opx[0] . '" ' . $sel . '>' . $opx[1] . '</option>' . cr();
             }
             $sg .= '</select>' . cr();
             $sx .= $sg;
