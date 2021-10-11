@@ -148,7 +148,9 @@ class Header extends Model
 	function footer()
 	{
 		$tela = '<hr>';
+		$tela .= '<div style="height: 200px">';
 		$tela .= 'Footer';
+		$tela .= '</div>';
 		return $tela;
 	}
 }

@@ -42,7 +42,7 @@
             $p = $th->pager;
 
             /**************************************************************** TABLE NAME */
-            $sx = bsc('<h1>'.$th->table.'</h1>',12);
+            $sx = bsc('<h1>'.lang($th->table).'</h1>',12);
     
             $st = '<table width="100%" border=1>';
             $st .= '<tr><td>';
@@ -59,7 +59,7 @@
             $st .= '</td><td>';
             $st .= '<input type="text" class="form-control" name="search" value="'.$search.'">';
             $st .= '</td><td>';
-            $st .= '<input type="submit" class="btn btn-primary" name="action" value="FILTER">';
+            $st .= '<input type="submit" class="btn btn-primary" name="action" value="'.lang('sisdoc.filter').'">';
             $st .= form_close();
             $st .= '</td><td align="right">';
             $st .=  $th->pager->links();
@@ -71,7 +71,7 @@
 
             /*********** NEW */
             $st .= '<td align="right">';
-            $st .= anchor($url.'/edit/',lang('brapci.new'),'class="btn btn-primary"');
+            $st .= anchor($url.'/edit/',lang('sisdoc.new'),'class="btn btn-primary"');
             $st .= '</td></tr>';
             $st .= '</table>';
 

@@ -30,13 +30,11 @@ class Journals extends Model
 
 	protected $typeFields        = [
 		'hidden','string:100:#','string:20:#',
-		'string:20:#','string:20','string:20',
+		'string:20:#','string:20','op: & :Q&Quadrimestral:S&Semestral:A&Anual:F&Continuos FLuxo',
+		'year','year','string:20',
 		'string:20','string:20','string:20',
-		'string:20','string:20','string:20',
-		'string:20','string:20','string:20',
-		'string:20','string:20','string:20',
-		'string:20','string:20','string:20',
-		'string:20','string:20','string:20'
+		'sn','string:20','sn',
+		'sn','string:20'
 	];
 
 	// Dates
@@ -86,7 +84,15 @@ class Journals extends Model
 	function editar($id)
 		{
 			$this->id = $id;
-			$tela = form($this);
+			if ($id > 0)
+				{
+					$dt = $this->find($id);					
+					$tela = h($dt['jnl_name'],1);
+				} else {
+					$tela = h(lang('Editar'),1);
+				}
+			
+			$tela .= form($this);
 			$tela = bs(bsc($tela,12));
 			return $tela;
 		}
