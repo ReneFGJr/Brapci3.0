@@ -27,7 +27,7 @@ class Res extends BaseController
 				$tela .= $hd->footer($dt);
 				break;
 			case 'menu':
-				$tela .= $hd->footer($dt);
+				$tela .= $hd->menu($dt);
 				break;				
 			default:
 				$tela .= $hd->cab($dt);
@@ -45,4 +45,31 @@ class Res extends BaseController
 		$tela .= $this->Search->formSearch();
 		return $tela;
 	}
+
+	function v($id)
+		{
+			$RDF = new \App\Models\RDF\RDF();
+
+			$tela = $this->cab();			
+			$dt = $RDF->le($id,1,'brapci');
+
+			$class = $dt['concept']['c_class'];
+			$name = $dt['concept']['n_name'];
+
+			switch ($class)
+				{
+					case 'Issue':
+						$JournalIssue = new \App\Models\Journal\JournalIssue();
+						$tela .= $JournalIssue->view_issue_articles($id);
+						break;
+					default:
+						$sx = h($name,4);
+						$sx .= h(lang('rdf.class').': '.$class,6);
+						$tela .= bs(bsc($sx,12));
+					break;
+				}
+
+			$tela .= $this->cab('footer');
+			return $tela;
+		}
 }

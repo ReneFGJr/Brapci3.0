@@ -191,11 +191,18 @@ class Journals extends Model
 			$tela .= bsc($openaccess,1);
 			$tela .= bsc($img,2);
 			$tela = bs($tela);
+
+			/************** ISSUES */
+			$JournalIssue = new \App\Models\Journal\JournalIssue();
+			$jn_rdf = $dt['jnl_frbr'];
+			$tela .= $JournalIssue->view_issue($jn_rdf);
+
 			return $tela;
 		}
 
 	function tableview()
 		{			
+			$this->where("jnl_collection = 'JA'");
 			$tela = tableview($this);
 			$tela = bs(bsc($tela,12));
 			return $tela;

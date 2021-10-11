@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\RDF;
 
 use CodeIgniter\Model;
 
@@ -40,16 +40,92 @@ class RDF extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function le($id)
+	function recovery($dt,$fclass='')
 		{
-			$RDFConcept = new \App\Models\RDFConcept();
+			$rsp = array();
+			for ($r=0;$r < count($dt);$r++)
+				{
+					$line = $dt[$r];
+					$class = trim($line['c_class']);
+					/* echo '<br>==>'.$class; */
+					if ($class == $fclass)
+						{							
+							array_push($rsp,array($line['d_r1'],$line['d_r2'],$line['n_name']));
+						}
+					
+				}
+			return $rsp;
+		}
+
+	function directory($id)
+		{
+			
+			$file = str_pad($id,9,'0',STR_PAD_LEFT);
+			$dir[0] = '_c';
+			$dir[1] = substr($file,0,3);
+			$dir[2] = substr($file,3,3);
+			$dir[3] = substr($file,6,3);
+			$dr = '';
+			for ($r=0;$r < count($dir);$r++)
+				{
+					$dr .= $dir[$r].'/';
+					dircheck($dr);
+				}
+			return $dr;
+		}
+
+	function content($id)
+		{
+			$dir = $this->directory($id);
+			$file = $dir.'name.nm';
+			if (file_exists($file))
+				{
+					$tela = file_get_contents($file);
+				} else {
+					$tela = 'Content not found: '.$id.'=='.$file.'<br>';
+					$RDFExport = new \App\Models\RDF\RDFExport();
+					$RDFExport->export($id);
+					$tela = file_get_contents($file);
+				}				
+			return $tela;
+		}
+
+	function le_content($id)
+		{
+			$RDFConcept = new \App\Models\RDF\RDFConcept();
+			$dt = $RDFConcept->le($id);
+			$name = $dt['n_name'];
+			return $name;
+		}		
+
+	function le($id,$simple=0,$base='')
+		{
+			$RDFConcept = new \App\Models\RDF\RDFConcept();
+
+			if ($base != '')
+				{
+					$this->setDatabase($base);
+				}
+			
+
 			$dt['concept'] = $RDFConcept->le($id);
 						
-			$RDFData = new \App\Models\RDFData();
-			$dt['data'] = $RDFData->le($id);
+			if ($simple == 0)
+			{
+				$RDFData = new \App\Models\RDF\RDFData();
+				$dt['data'] = $RDFData->le($id);
+			}
 
 			return($dt);
 		}
+
+	function le_data($id)
+		{
+			$RDFData = new \App\Models\RDF\RDFData();
+			$dt['data'] = $RDFData->le($id);
+
+			return($dt);
+		}		
 
 	function recover($dt=array(),$class='')
 		{
@@ -87,10 +163,9 @@ class RDF extends Model
 
 	function export_index($class_name,$file='')
 		{
-			$RDFData = new \App\Models\RDFData();
-			$RDFClass = new \App\Models\RDFClass();		
-			$RDFConcept = new \App\Models\RDFConcept();
-			$EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
+			$RDFData = new \App\Models\RDF\RDFData();
+			$RDFClass = new \App\Models\RDF\RDFClass();		
+			$RDFConcept = new \App\Models\RDF\RDFConcept();
 
 			$class = $RDFClass->Class($class_name);
 			$rlt = $RDFConcept
@@ -149,7 +224,7 @@ class RDF extends Model
 
 	function export($d1='',$d2=0,$d3='')
 	{
-		$RDFConcept = new \App\Models\RDFConcept();
+		$RDFConcept = new \App\Models\RDF\RDFConcept();
 
 		$sx = '';
 		$d2 = round($d2);		
@@ -196,8 +271,8 @@ class RDF extends Model
 			}
 
 			/*************************************************************** EXPORT */
-			$RDFData = new \App\Models\RDFData();
-			$RDFConcept = new \App\Models\RDFConcept();
+			$RDFData = new \App\Models\RDF\RDFData();
+			$RDFConcept = new \App\Models\RDF\RDFConcept();
 
 			$dt = $this->le($id);
 
@@ -334,7 +409,7 @@ class RDF extends Model
 
 	function RDP_concept($name,$class)
 		{
-			$RDPConcept = new \App\Models\RDFConcept();
+			$RDPConcept = new \App\Models\RDF\RDFConcept();
 			$RDPConcept->DBGroup = 'auth';
 
 			$dt['Class'] = $class;

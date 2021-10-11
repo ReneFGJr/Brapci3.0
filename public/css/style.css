@@ -4,8 +4,10 @@
 
 body
     {
-        /* background-color: #F0F0F0; 
+        /* background-color: #F0F0F0; */
     }
+/******************************************************************* A Personalization */
+ 
 
 .navbar-brand
     {
@@ -14,6 +16,14 @@ body
         padding: 0px 0px;
         /* color: white; */
     }
+.bw
+    {
+        border: 1px solid #888;
+    }
+.bw:hover
+    {
+        border: 1px solid #fff;
+    }    
 .pagination li
     {
         border: 1px solid #808080;
