@@ -21,7 +21,7 @@ class Res extends BaseController
 	{
 		$hd = new \App\Models\Header\Header();
 		$tela = '';
-		$dt['title'] = ' - Base de Dados em Ciência da Informação';
+		$dt['title'] = '';
 		switch ($tp) {
 			case 'footer':
 				$tela .= $hd->footer($dt);
@@ -72,4 +72,22 @@ class Res extends BaseController
 			$tela .= $this->cab('footer');
 			return $tela;
 		}
+
+		function painel($p='')
+			{
+				//$tela = view('Pages/virtual-reality');
+				switch($p)
+					{
+						default:
+						$tela = view('Pages/_head');
+						$tela .= view('Pages/_aside');
+						$tela .= view('Pages/_main_00');
+						$tela .= view('Pages/_navbar');
+						$tela .= view('Pages/dashboard');
+						$tela .= view('Pages/_footer');
+						break;
+					}
+				
+				return $tela;
+			}
 }

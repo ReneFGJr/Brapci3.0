@@ -7,15 +7,6 @@ body
         /* background-color: #F0F0F0; */
     }
 /******************************************************************* A Personalization */
- 
-
-.navbar-brand
-    {
-        font-family: 'Handel Gothic';
-        font-size: 200%;
-        padding: 0px 0px;
-        /* color: white; */
-    }
 .bw
     {
         border: 1px solid #888;
@@ -35,9 +26,10 @@ body
     {
         padding: 0px 0px;
     }
-.bc
+.bc, .bc a, .bc a:hover,
     {
-        background-color:#0093DD;
+        background-color:#000;
+        color:#0093DD;
     }
 
 a, a::after

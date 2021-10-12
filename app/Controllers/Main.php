@@ -73,6 +73,7 @@ class Main extends BaseController
         $MENU = bsc('Menu',12);
         $menu = array();
 		$menu['res'] = array('',lang("main.Brapci"),lang("main.Brapci_desc"));
+		$menu['res/painel'] = array('',lang("main.BrapciPainel"),lang("main.Brapci_desc"));
         $menu['authority'] = array('',lang("main.Authority"),lang("main.Authority_desc"));
         $menu['book'] = array('',lang("main.Books"),lang("main.Books_desc"));
         $menu['journal'] = array('',lang("main.Journals"),lang("main.Journals_desc"));
