@@ -1,34 +1,27 @@
 <?php
 
-namespace App\Models\Authority;
+namespace App\Models\Admin;
 
 use CodeIgniter\Model;
 
-class AuthorityNames extends Model
+class News extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'brapci_authority.AuthorityNames';
-	protected $primaryKey           = 'id_a';
+	protected $table                = 'brapci_news';
+	protected $primaryKey           = 'id_news';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'id_a','a_prefTerm','a_class','a_lattes','a_brapci','a_orcid','a_uri','a_use'
+		'id_news','news_title','news_content',
+		'n_lock','n_lang','n_version',
 	];
-
-	protected $typeFields        = [
-		'hidden',
-		'string:100',
-		'hidden',
-		'string:100',
-		'string:100',
-		'string:100',
-		'string:100',
-		'string:1'
+	protected $typeFields        = [	
+		'hidden','string:100*','text',
+		'sn','string:5','version'
 	];
-
 	// Dates
 	protected $useTimestamps        = false;
 	protected $dateFormat           = 'datetime';
@@ -53,10 +46,19 @@ class AuthorityNames extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function summaryCreate()
+	function edit($id=0)
 		{
-			$this->select('count(*) as total');
-			$dt = $this->findAll();
-			print_r($dt);
+			$this->id = $id;
+			$this->path = base_url(PATH.'main/news');
+			$tela = form($this);
+
+			return $tela;
 		}
+	function list($cmd='',$id='')
+		{
+			$this->path = base_url(PATH.MODULE.'/news/');
+			$tela = tableView($this);
+			return $tela;
+		}
+	
 }

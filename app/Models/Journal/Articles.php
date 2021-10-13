@@ -1,33 +1,20 @@
 <?php
 
-namespace App\Models\Authority;
+namespace App\Models\Journal;
 
 use CodeIgniter\Model;
 
-class AuthorityNames extends Model
+class Articles extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'brapci_authority.AuthorityNames';
-	protected $primaryKey           = 'id_a';
+	protected $table                = 'articles';
+	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [
-		'id_a','a_prefTerm','a_class','a_lattes','a_brapci','a_orcid','a_uri','a_use'
-	];
-
-	protected $typeFields        = [
-		'hidden',
-		'string:100',
-		'hidden',
-		'string:100',
-		'string:100',
-		'string:100',
-		'string:100',
-		'string:1'
-	];
+	protected $allowedFields        = [];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -53,10 +40,42 @@ class AuthorityNames extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function summaryCreate()
+	function view_articles($id)
 		{
-			$this->select('count(*) as total');
-			$dt = $this->findAll();
-			print_r($dt);
+			$RDF = new \App\Models\RDF\RDF();
+			$RDFData = new \App\Models\RDF\RDFData();			
+			$dt = $RDF->le($id);
+			$dados = $RDFData->view_data($dt);
+
+
+
+			$tela = '';
+			$data = $dt['data'];
+			$d = array();
+			for ($r=0;$r < count($data);$r++)
+				{
+					$line = $data[$r];
+					$class = $line['c_class'];
+					$txt = $line['n_name'];
+					$lang = $line['n_lang'];
+					switch($class)
+						{
+							case 'hasTitle':
+								$d['title'][$lang] = $txt;
+								break;
+							default:
+								$tela .= $class.'<br>';
+								break;
+						}
+				}
+			/* CHECK */
+			if (isset($d['title']))
+			{
+				$IA_title = new \App\Models\AI\Title();
+				$IA_title->check($d['title'],$id);
+			}
+			$tela .= $dados;
+
+			return $tela;
 		}
 }

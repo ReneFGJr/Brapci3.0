@@ -117,6 +117,12 @@ function form_fields($typ, $fld, $vlr, $th = array())
     if (strlen($lib) > 0) {
         $lib .= '.';
     }
+    if (substr($typ,0,1) == '[')
+        {
+            $typ = 'seq:'.substr($typ,1,strlen($typ)-2);
+            $typ = troca($typ,'-',':');
+
+        }
     $td = '<div class="form-group">';
     $tdc = '</div>';
     /*********** Mandatory */
@@ -217,6 +223,24 @@ function form_fields($typ, $fld, $vlr, $th = array())
             $sx .= $tdc;
             break;
 
+        case 'seq':
+            $sx .= $td . ($fld) . $tdc;
+            $sx .= $td;
+            $op = array(1, 0);            
+            $opt = substr($typ, strpos($typ, ':') + 1, strlen($typ));
+            $opc = explode(':', $opt);
+            $sg = '<select id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '" class="form-control">' . cr();
+            for ($r = $opc[0]; $r <= $opc[1]; $r++) {
+                $sel = '';
+                $vll = strzero($r,2);
+                if ($vlr == $r) { $sel = 'selected'; }
+                $sg .= '<option value="' . $vll . '" ' . strzero($r,2) . '>' . $vll . '</option>' . cr();
+            }
+            $sg .= '</select>' . cr();
+            $sx .= $sg;
+            $sx .= $tdc;
+            break;            
+
         case 'sn':
             $sx .= $td . ($fld) . $tdc;
             $sx .= $td;
@@ -297,6 +321,15 @@ function form_fields($typ, $fld, $vlr, $th = array())
             }
             $sx .= '</select>';
             $sx .= '</div>';
+            break;
+
+        case 'version':
+            if (strlen($vlr) == 0) { $vlr = version(); }
+            $sx .= '<div class="form-group" style="margin-bottom: 20px;">' . cr();
+            $sx .= '<label for="' . $fld . '">' . lang($lib . $fld) . '</label>
+                        <input type="text" class="form-control" id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '" placeholder="' . lang($lib . $fld) . '">                                
+                        ' . cr();
+            $sx .= '</div>';            
             break;
 
 

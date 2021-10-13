@@ -337,36 +337,9 @@ class RDF extends Model
 
 	function view_data($dt)
 		{
-			$concept = $dt['concept'];
-			$class = $dt['concept']['prefix_ref'].':'.$dt['concept']['c_class'];
-
-			$sx = '';
-			$sx .= '<h2>'.$dt['concept']['n_name'];
-			$sx .= '<h5>'.$class.'</h5>';
-
-			$sx .= bsc(lang('created_at'),2);
-			$sx .= bsc(lang('updated_at'),2);
-			$sx .= bsc(lang('cc_library'),1);
-			$sx .= bsc(lang('prefix_url'),7);
-
-			$url = $dt['concept']['prefix_url'].'#'.$dt['concept']['c_url'];
-			$url = '<a href="'.$url.'" target="_new">'.$url.'</a>';
-			$sx .= bsc($dt['concept']['created_at'],2);
-			$sx .= bsc($dt['concept']['updated_at'],2);
-			$sx .= bsc($dt['concept']['cc_library'],1);
-			$sx .= bsc($url,7);
-
-			$sx .= var_dump($dt,false);
-
-			if (isset($dt['data']))
-				{
-					$dts = $dt['data'];
-					print_r($dts);
-				}
-			
-
-			$sx = bs($sx);
-			return $sx;
+			$RDFdata = new \App\Models\RDF\RDFData();
+			$tela = $RDFdata->view_data($dt);
+			return $tela;
 		}
 
 

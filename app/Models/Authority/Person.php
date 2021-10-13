@@ -7,8 +7,8 @@ use CodeIgniter\Model;
 class Person extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'people';
-	protected $primaryKey           = 'id';
+	protected $table                = 'brapci_authority.AuthorityNames';
+	protected $primaryKey           = 'id_a';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
@@ -62,6 +62,29 @@ function viewid($id)
 		} else {
 			$tela .= anchor(base_url(PATH . '/index/LattedFindId/' . $dt['id_a']));
 		}
+
+		/*************************************************** BRAPCI */
+		if (($dt['a_brapci'] == 0) and (strpos($dt['a_uri'],'brapci.inf.br')))
+			{
+				$txt = $dt['a_uri'];
+				while (strpos(' '.$txt,'/') > 0)
+					{
+						$pos = strpos($txt,'/');
+						$txt = substr($txt,$pos+1,strlen($txt));
+					}
+				$sql = "update ".$this->table." set a_brapci = $txt where id_a = ".$id;
+				$this->query($sql);
+				$dt['a_brapci'] = $txt;
+			}
+		$tela .= $this->PersonPublications($dt['a_brapci']);
 		return $tela;
-	}	
+	}
+
+	function PersonPublications($id)	
+		{
+			$RDF = new \App\Models\RDF\RDF();
+			$dt = $RDF->le($id,0,'brapci');
+			$tela = $RDF->view_data($dt);
+			return $tela;
+		}
 }

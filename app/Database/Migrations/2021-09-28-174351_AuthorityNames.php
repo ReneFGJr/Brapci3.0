@@ -33,7 +33,11 @@ class AuthorityNames extends Migration
             'a_lattes' => [
                 'type' => 'VARCHAR',
                 'constraint' => '24'
-			],            
+			],         
+            'a_brapci' => [
+                'type' => 'INT',
+                'default' => '0'
+			],                
             'a_orcid' => [
                 'type' => 'VARCHAR',
                 'constraint' => '30'

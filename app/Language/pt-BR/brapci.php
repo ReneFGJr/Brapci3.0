@@ -12,6 +12,8 @@ return [
     'new'=>'novo',
     'source_source'=>'Revistas Científicas',
     'filter'=>'filtrar',
-    ''=>'',
-    ''=>'',
+    'configurations'=>'Configurações',
+    'configurations_see_options'=>'Veja suas opções de personalização',
+    'search_message'=>'O que procura?',
+    
 ];

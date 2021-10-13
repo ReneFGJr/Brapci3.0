@@ -62,7 +62,7 @@ class RDFData extends Model
 
 	function view_data($dt)
 		{
-			$RDF = new \App\Models\RDF();
+			$RDF = new \App\Models\RDF\RDF();
 			$sx = '';
 			$ID = $dt['concept']['id_cc'];
 			if (isset($dt['data']))
@@ -98,7 +98,18 @@ class RDFData extends Model
 									}
 								$sx .= bsc($link,		   10,'border-top border-1 border-secondary my-2');
 							} else {
-								$sx .= bsc($line['n_name'],10,'border-top border-1 border-secondary my-2');
+								$txt = $line['n_name'];
+								$lang = $line['n_lang'];
+								if (strlen($lang) > 0)
+									{
+										$txt .= ' <sup>('.$lang.')</sup>';
+									}
+								if (substr($txt,0,4) == 'http')
+									{
+										$txt = '<a href="'.$line['n_name'].'" target="_blank">'.$txt.'</a>';
+									}
+								
+								$sx .= bsc($txt,10,'border-top border-1 border-secondary my-2');
 							}
 							
 						}

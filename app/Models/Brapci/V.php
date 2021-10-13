@@ -1,33 +1,20 @@
 <?php
 
-namespace App\Models\Authority;
+namespace App\Models\Brapci;
 
 use CodeIgniter\Model;
 
-class AuthorityNames extends Model
+class V extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'brapci_authority.AuthorityNames';
-	protected $primaryKey           = 'id_a';
+	protected $table                = 'vs';
+	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [
-		'id_a','a_prefTerm','a_class','a_lattes','a_brapci','a_orcid','a_uri','a_use'
-	];
-
-	protected $typeFields        = [
-		'hidden',
-		'string:100',
-		'hidden',
-		'string:100',
-		'string:100',
-		'string:100',
-		'string:100',
-		'string:1'
-	];
+	protected $allowedFields        = [];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -53,10 +40,34 @@ class AuthorityNames extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function summaryCreate()
+	function index($th,$id)
 		{
-			$this->select('count(*) as total');
-			$dt = $this->findAll();
-			print_r($dt);
+			$RDF = new \App\Models\RDF\RDF();
+
+			$tela = $th->cab();			
+			$dt = $RDF->le($id,1,'brapci');
+
+			$class = $dt['concept']['c_class'];
+			$name = $dt['concept']['n_name'];
+
+			switch ($class)
+				{
+					case 'Article':
+						$Articles = new \App\Models\Journal\Articles();
+						$tela .= $Articles->view_articles($id);
+						break;					
+					case 'Issue':
+						$JournalIssue = new \App\Models\Journal\JournalIssue();
+						$tela .= $JournalIssue->view_issue_articles($id);
+						break;
+					default:
+						$sx = h($name,4);
+						$sx .= h(lang('rdf.class').': '.$class,6);
+						$tela .= bs(bsc($sx,12));
+					break;
+				}
+
+			$tela .= $th->cab('footer');
+			return $tela;
 		}
 }

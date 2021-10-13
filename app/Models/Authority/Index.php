@@ -51,7 +51,7 @@ class Index extends Model
 	{
 		$this->setDatabase('brapci_authority');
 
-		$tela = '===>'.$d1;
+		$tela = '';
 		switch ($d1) {
 			case 'import_lattes':
 				$tela .= $this->import_lattes($d2, $d3);

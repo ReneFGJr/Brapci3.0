@@ -61,6 +61,13 @@ database.main.password =
 database.main.DBDriver = MySQLi
 database.main.DBPrefix =
 
+database.ia.hostname = localhost
+database.ia.database = brapci_main
+database.ia.username = root
+database.ia.password = 
+database.ia.DBDriver = MySQLi
+database.ia.DBPrefix =
+
 #--------------------------------------------------------------------
 # CONTENT SECURITY POLICY
 #--------------------------------------------------------------------

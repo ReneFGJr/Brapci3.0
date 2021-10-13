@@ -1,33 +1,20 @@
 <?php
 
-namespace App\Models\Authority;
+namespace App\Models\AI;
 
 use CodeIgniter\Model;
 
-class AuthorityNames extends Model
+class APIGoogleTranlate extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'brapci_authority.AuthorityNames';
-	protected $primaryKey           = 'id_a';
+	protected $table                = 'apigoogletranlates';
+	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [
-		'id_a','a_prefTerm','a_class','a_lattes','a_brapci','a_orcid','a_uri','a_use'
-	];
-
-	protected $typeFields        = [
-		'hidden',
-		'string:100',
-		'hidden',
-		'string:100',
-		'string:100',
-		'string:100',
-		'string:100',
-		'string:1'
-	];
+	protected $allowedFields        = [];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -53,10 +40,6 @@ class AuthorityNames extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function summaryCreate()
-		{
-			$this->select('count(*) as total');
-			$dt = $this->findAll();
-			print_r($dt);
-		}
+	// $str = str_replace(" ", "%20", $str);
+	//$content = file_get_contents("https://translation.googleapis.com/language/translate/v2/detect?key=YOUR_API_KEY&q=".$str);
 }

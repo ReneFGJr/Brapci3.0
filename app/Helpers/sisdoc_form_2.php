@@ -1,4 +1,15 @@
 <?php
+function strzero($id,$z)
+    {
+        $txt = str_pad($id,$z,'0',STR_PAD_LEFT);
+        return $txt;
+    }
+
+function version()
+    {
+        $v = 'v0.'.date("y.m.d");
+        return ($v);
+    }
   function tableview($th,$dt=array())
         {
             $url = $th->path;

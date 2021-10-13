@@ -26,24 +26,35 @@ class Main extends BaseController
 		helper(['boostrap','url','canvas']);
 		define("LIBRARY", "3001");
 		define("LIBRARY_NAME", "BRAPCI_LABS");
+		define("MODULE", "main");
 	}	
 
 	private function cab($tp = '')
 	{
 		$hd = new \App\Models\Header\Header();
 		$tela = '';
-		$dt['title'] = 'Main';
+		$dt['title'] = 'Authority';
+		$dt['menu'][''] = 'main';
+		$dt['menu']['index/list'] = 'list';
+		
+		$title = lang(MODULE.'.'.$dt['title']);
 		switch ($tp) {
+			case 'typping':
+				$tela .= $hd->typing($title,lang(MODULE.'.'.$dt['title'].'_sub'));
+				break;
 			case 'footer':
-				$tela .= $hd->footer($dt);
+				$tela .= view('Pages/_footer');
 				break;
 			case 'menu':
-				$tela .= $hd->footer($dt);
+				$tela .= $hd->menu($dt);
 				break;				
 			default:
-				$tela .= $hd->cab($dt);
-				$tela .= $hd->navbar($dt);
-				$tela .= $hd->menu($dt);
+				$tela = view('Pages/_head');
+				$tela .= view('Pages/_aside');
+				$tela .= view('Pages/_main_00');
+				$tela .= view('Pages/_navbar');
+				$tela .= view('Pages/_menu_top',$dt);
+
 				break;
 		}
 		return $tela;
@@ -105,6 +116,26 @@ class Main extends BaseController
 		return $tela;
 	}
 
+	public function news($cmd='',$id='')
+		{
+			$News = new \App\Models\Admin\News();
+			$tela = $this->cab('All');
+			switch($cmd)
+				{
+					case 'edit':
+						$tela .= $News->edit($id);
+					break;
+
+					default:
+					$tela .= $News->list();
+					break;
+				}
+
+			$tela .= $this->cab('footer');
+
+			return $tela;
+		}
+
 	public function dropall($tp='')
 		{
 			$sx = $this->cab('all');
@@ -126,5 +157,20 @@ class Main extends BaseController
 				}
 			$tela = $sx.bs($tela);
 			return $tela;
-		}    
+		}   
+
+		function painel($p='')
+			{
+				$Main = new \App\Models\Admin\Main();
+				$NEWS = new \App\Models\Admin\News();
+				//$tela = view('Pages/virtual-reality');
+				$tela = view('Pages/_head');
+				$tela .= view('Pages/_aside');
+				$tela .= view('Pages/_main_00');
+				$tela .= view('Pages/_navbar');
+				$tela .= $Main->index();
+				$tela .= view('Pages/dashboard');
+				$tela .= view('Pages/_footer');
+				return $tela;
+			}		 
 }

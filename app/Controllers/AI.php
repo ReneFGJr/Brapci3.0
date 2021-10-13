@@ -2,27 +2,20 @@
 
 namespace App\Controllers;
 
-//define("PATH", 'Authoriry');
-define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix'].'journal');
-define("URL",$_SERVER['app.baseURL']);
-define("MODULE",'journal');
-
-define("LIBRARY", "202101");
-helper(['boostrap', 'url', 'graphs', 'sisdoc_forms', 'form', 'nbr']);
-
 use App\Controllers\BaseController;
 
-class Journal extends BaseController
+helper(['boostrap','url','graphs','sisdoc_forms','form','nbr']);
+
+define("LIBRARY", "3001");
+define("LIBRARY_NAME", "BRAPCI_RESEARCH");
+define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix']);
+define("MODULE",'ai');
+
+
+class AI extends BaseController
 {
-
-	private function cab($tp = '')
+	function cab($tp = '')
 	{
-		/*						
-						$tela .= view('Pages/_navbar');
-						$tela .= view('Pages/dashboard');
-						
-		*/
-
 		$hd = new \App\Models\Header\Header();
 		$tela = '';
 		$dt['title'] = 'Authority';
@@ -46,20 +39,24 @@ class Journal extends BaseController
 				$tela .= view('Pages/_main_00');
 				$tela .= view('Pages/_navbar');
 				$tela .= view('Pages/_menu_top',$dt);
-
 				break;
 		}
 		return $tela;
 	}
-	
-	public function index($d1='',$d2='',$d3='',$d4='')
+
+	public function index()
 	{
-		$Journals = new \App\Models\Journal\Journals();
+		$NLP = new \App\Models\AI\NLP();
+		$tela = $this->cab();
+		$tela .= $NLP->index();
+		return $tela;
+	}
 
-		$tela = $this->cab('all');
-		$tela .= $Journals->index($d1,$d2,$d3,$d4);
-		$tela .= $this->cab('footer');
-
+	public function nlp($d1='',$d2='',$d3='')
+	{
+		$NLP = new \App\Models\AI\NLP();
+		$tela = $this->cab();
+		$tela .= $NLP->index($d1,$d2,$d3);
 		return $tela;
 	}
 }
