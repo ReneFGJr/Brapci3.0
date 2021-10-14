@@ -47,8 +47,6 @@ class Articles extends Model
 			$dt = $RDF->le($id);
 			$dados = $RDFData->view_data($dt);
 
-
-
 			$tela = '';
 			$data = $dt['data'];
 			$d = array();
@@ -60,11 +58,15 @@ class Articles extends Model
 					$lang = $line['n_lang'];
 					switch($class)
 						{
+							case 'hasAuthor':
+							$txt = $RDF->le_content($line['d_r2']);
+								$d['author'][$txt] = $line['d_r2'];
+								break;
 							case 'hasTitle':
 								$d['title'][$lang] = $txt;
 								break;
 							default:
-								$tela .= $class.'<br>';
+								$tela .= $class.'--<br>';
 								break;
 						}
 				}
@@ -72,8 +74,39 @@ class Articles extends Model
 			if (isset($d['title']))
 			{
 				$IA_title = new \App\Models\AI\Title();
+
+				if (isset($d['title']['pt-BR'])) { $title = $d['title']['pt-BR']; }				
 				$IA_title->check($d['title'],$id);
 			}
+
+			/********************************************************************* TITLE *****/
+			$pref = array('pt-BR','es','en');
+			$cl = 'h3';
+			for ($r=0;$r < count($pref);$r++)
+				{
+					$lg = $pref[$r];
+					if (isset($d['title'][$lg]))
+						{
+							$tela .= '<div class="title text-center '.$cl.' p-1 m-1">'.$d['title'][$lg].'</div>';
+							$cl = 'h4 fst-italic';
+						}
+				}
+
+			/********************************************************************* ABSTRACT **/
+			$abs[$lang] = '';
+		
+			/********************************************************************* AUTHOR ****/
+			$auth = '';
+			foreach($d['author'] as $name => $id)
+				{
+					$link = '<a href="'.base_url(PATH.'res/v/'.$id).'" class="form-control h5 link-primary">';
+					$linka = '<a>';
+					$auth .= $link.$name.$linka;
+				}
+			$tela .= bsc($auth,12,'text-end');
+			$tela .= '</div>';
+
+
 			$tela .= $dados;
 
 			return $tela;
