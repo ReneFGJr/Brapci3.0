@@ -14,7 +14,7 @@ if (!isset($subtitle)) { $subtitle = 'DRASHBOARD'; }
 <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0 text-center" href="<?php echo base_url($_SERVER['app.baseURL'].'res/painel');?>">
+      <a class="navbar-brand m-0 text-center" href="<?php echo base_url($_SERVER['app.baseURL'].$_SERVER['app.sufix'].'res/painel');?>">
         <!-- <img src="../assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo"> -->
         <span style="font-family: 'Handel Gothic'; color: #0093DD; font-size: 2.75em; line-height: 100%; padding: 0px;">BRAPCI</span>
         <br/>
