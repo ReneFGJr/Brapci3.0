@@ -9,7 +9,7 @@ if (!isset($subtitle)) { $subtitle = 'DRASHBOARD'; }
    $items['patent'] = 'Patent';
    $items['these'] = 'Thesis';
    $items['api'] = 'Api';
-   $items['ai'] = 'AI';
+   $items['AI'] = 'AI';
 ?>
 <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 " id="sidenav-main">
     <div class="sidenav-header">
