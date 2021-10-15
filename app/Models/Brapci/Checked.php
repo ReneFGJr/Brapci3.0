@@ -4,17 +4,21 @@ namespace App\Models\Brapci;
 
 use CodeIgniter\Model;
 
-class V extends Model
+class Checked extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'vs';
-	protected $primaryKey           = 'id';
+	protected $table                = 'brapci3.checked';
+	protected $primaryKey           = 'id_at';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [];
+	protected $allowedFields        = [
+			'id_at','at_chapter','at_portuguese',
+			'at_english','at_spanish','at_pdf',
+
+	];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -40,36 +44,14 @@ class V extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function index($th,$id)
+	function check($id,$tpy=0)
 		{
-			$Checked = new \App\Models\Brapci\Checked();
-			$RDF = new \App\Models\RDF\RDF();
-
-			$tela = $th->cab();			
-			$dt = $RDF->le($id,1,'brapci');
-
-			$class = $dt['concept']['c_class'];
-			$name = $dt['concept']['n_name'];
-
-			switch ($class)
+			$dt = $this->where('at_rdf',$id)->FindAll();
+			if (count($dt) == 0)
 				{
-					case 'Article':
-						$Checked->check($id,100);
-						$Articles = new \App\Models\Journal\Articles();
-						$tela .= $Articles->view_articles($id);
-						break;					
-					case 'Issue':
-						$JournalIssue = new \App\Models\Journal\JournalIssue();
-						$tela .= $JournalIssue->view_issue_articles($id);
-						break;
-					default:
-						$sx = h($name,4);
-						$sx .= h(lang('rdf.class').': '.$class,6);
-						$tela .= bs(bsc($sx,12));
-					break;
+					$sql = "insert into ".$this->table." (at_rdf,at_type) values ($id,$tpy)";
+					$this->query($sql);
 				}
-
-			$tela .= $th->cab('footer');
-			return $tela;
+			return 0;
 		}
 }

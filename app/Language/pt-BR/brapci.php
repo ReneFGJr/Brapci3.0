@@ -15,5 +15,12 @@ return [
     'configurations'=>'Configurações',
     'configurations_see_options'=>'Veja suas opções de personalização',
     'search_message'=>'O que procura?',
-    
+    'abstract_pt-BR' => 'Resumo',
+    'abstract_en' => 'Abstract',
+    'abstract_pt-BR' => 'Resumo',
+    'abstract_es-ES' => 'Abstracta',
+    'keyword_pt-BR' => 'Palavras-chave',
+    'keyword_en' => 'Keywords',
+    'keyword_es' => 'Palabras-clave',    
+    'keyword_es-ES' => 'Palabras-clave',   
 ];

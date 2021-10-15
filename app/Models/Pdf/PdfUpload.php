@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models\Brapci;
+namespace App\Models\PDF;
 
 use CodeIgniter\Model;
 
-class V extends Model
+class Upload extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'vs';
+	protected $table                = 'uploads';
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -40,36 +40,20 @@ class V extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function index($th,$id)
-		{
-			$Checked = new \App\Models\Brapci\Checked();
-			$RDF = new \App\Models\RDF\RDF();
+	function upload($id = '')
+	{
+		$RDF = new \App\Model\RDF();
+		$data = $RDF->le_data($id);
+		
+		for ($r = 0; $r < count($data); $r++) {
+			$attr = trim($data[$r]['c_class']);
+			$vlr = trim($data[$r]['n_name']);
 
-			$tela = $th->cab();			
-			$dt = $RDF->le($id,1,'brapci');
-
-			$class = $dt['concept']['c_class'];
-			$name = $dt['concept']['n_name'];
-
-			switch ($class)
-				{
-					case 'Article':
-						$Checked->check($id,100);
-						$Articles = new \App\Models\Journal\Articles();
-						$tela .= $Articles->view_articles($id);
-						break;					
-					case 'Issue':
-						$JournalIssue = new \App\Models\Journal\JournalIssue();
-						$tela .= $JournalIssue->view_issue_articles($id);
-						break;
-					default:
-						$sx = h($name,4);
-						$sx .= h(lang('rdf.class').': '.$class,6);
-						$tela .= bs(bsc($sx,12));
-					break;
-				}
-
-			$tela .= $th->cab('footer');
-			return $tela;
-		}
+			if ($attr == 'prefLabel') {
+				$file = trim($vlr);
+				$file = troca($file, '/', '_');
+				$file = troca($file, '.', '_');
+				$file = troca($file, ':', '_');
+			}
+		}	
 }

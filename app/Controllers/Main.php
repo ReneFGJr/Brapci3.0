@@ -68,6 +68,15 @@ class Main extends BaseController
 		return $sx;
 	}	
 
+	public function pdf($d1 = '', $id = '')
+	{
+		$pdf = new \App\Models\Pdf\Pdf();
+		$cab = $this->cab('all');
+		$dt = array();
+		$sx = $pdf->index($d1,$id,$dt,$cab);
+		return $sx;
+	}	
+
 	public function index()
 	{
 		//
