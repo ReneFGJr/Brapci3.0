@@ -56,7 +56,7 @@ class RDF extends Model
 
 	function directory($id)
 	{
-		$IO = new \App\Models\Io\Files();
+		$IO = new \App\Models\IO\Files();
 		return $IO->directory($id);
 	}
 
