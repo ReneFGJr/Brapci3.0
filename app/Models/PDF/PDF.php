@@ -90,8 +90,9 @@ class Pdf extends Model
 	function btn_inport($id)
 		{
 			$sx = '';
-			$url = base_url(PATH.'main/pdf/inport/'.$id);
-			$sx .= '<a href="'.$url.'">o</a>';
+			$link = onclick(base_url(PATH.'main/pdf/inport/'.$id),100,50,'btn btn-outline-primary');
+			$linka = '</a>';
+			$sx .= $link.'import'.$linka;
 			return $sx;
 		}
 
