@@ -186,7 +186,7 @@ class Articles extends Model
 		$tela .= '</div>';
 
 		/***************************************************************************************/		
-		$right_side = $PDF->Download($id);
+		$right_side = $PDF->pdf_download($id);
 		$tela = bs(bsc($tela,11).bsc($right_side,1,'mt-6'));
 
 		$tela .= $dados;

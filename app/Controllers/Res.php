@@ -63,6 +63,11 @@ class Res extends BaseController
 			$tela = $V->index($this,$id);
 			return $tela;
 		}
+	
+	function download($id=0)
+		{
+			echo 'Download:'.$id;
+		}
 
 		function painel($p='')
 			{

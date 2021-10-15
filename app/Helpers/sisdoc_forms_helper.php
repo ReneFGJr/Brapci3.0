@@ -12,15 +12,8 @@
 //$sx .= form($url,$dt,$this);
 require('sisdoc_form_1.php');
 require('sisdoc_form_2.php');
-function msg($txt)
-    {
-        global $msg;
-        if (isset($msg[$txt]))
-            {
-                $txt = $msg[$txt];
-            }
-        return($txt);
-    }
+require('sisdoc_form_js.php');
+
 
     function get($var)
         {
@@ -79,13 +72,13 @@ function msg($txt)
     }
 
     function UpperCase($d) {
-        $d = strtoupper($d);
+        $d = mb_strtoupper($d);
         return $d;
     }    
     
     function UpperCaseSQL($d) {
         $d = ascii($d);
-        $d = strtoupper($d);
+        $d = mb_strtoupper($d);
         return $d;
     }
     

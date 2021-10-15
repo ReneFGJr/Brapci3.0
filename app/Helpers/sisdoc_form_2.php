@@ -19,7 +19,6 @@ function version()
             if (isset($th->viewFields))
                 {
                     $fld = implode(",", $th->viewFields);
-                    echo $fld;
                     $th->select($fld);
                     $fl = $th->viewFields;
                 }

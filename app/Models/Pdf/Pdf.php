@@ -49,6 +49,11 @@ class Pdf extends Model
 						$sx = $this->harvesting_proceedings($d2);
 					break;
 
+					case 'download':
+						$d2 = get("id");
+						$sx = $this->download($d2);
+					break;					
+
 					case 'inport':
 						$sx = $this->inport($d2);
 						break;
@@ -64,14 +69,16 @@ class Pdf extends Model
 			return $sx;
 		}
 
-	function download($id)
+	function pdf_download($id)
 		{
 			$sx = '';
 			$pdf = $this->pdf_file($id);
 
 			if (file_exists($pdf))
 				{
-					$img = '<img src="'.base_url(URL.'img/icones/pdf.png').'" class="img-fluid">';
+					$link = onclick(base_url(URL.'download/'.$id),800,800);
+					$linka = '</a>';
+					$img = $link.'<img src="'.base_url(URL.'img/icones/pdf.png').'" class="img-fluid">'.$linka;
 					$sx .= $img;
 				} else {
 					$img = '<img src="'.base_url(URL.'img/icones/pdf_off.png').'" class="img-fluid">';

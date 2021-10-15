@@ -70,7 +70,7 @@ class RDFExport extends Model
 						break;
 					case 'dc:Journal':
 						$name = $dt['concept']['n_name'];
-						$name = '<a href="'.base_url(PATH.'res/v/'.$id).'" class="journal">'.$name.'</a>';
+						$name = '<a href="'.base_url(URL.'v/'.$id).'" class="journal">'.$name.'</a>';
 						$this->saveRDF($id,$name,'name.nm');
 						break;
 					case 'brapci:Article':
@@ -105,7 +105,7 @@ class RDFExport extends Model
 
 						/****************************************************** SAVE */
 						$name = strip_tags($auths.'. '.$title.'. $b$'.$publisher. '$/b$'.$issue);
-						$name = '<a href="'.base_url(PATH.'/res/v/'.$id).'" class="article">'.$name.'</a>';
+						$name = '<a href="'.base_url(URL.'v/'.$id).'" class="article">'.$name.'</a>';
 						$name = troca($name,'$b$','<b>');
 						$name = troca($name,'$/b$','</b>');
 						$this->saveRDF($id,$name,'name.nm');
@@ -114,7 +114,7 @@ class RDFExport extends Model
 					case 'foaf:Person':
 						$tela .= 'ARTICLE';	
 						$name = nbr_author($dt['concept']['n_name'],1);
-						$name = '<a href="'.base_url(PATH.'res/v/'.$id).'" class="author">'.$name.'</a>';
+						$name = '<a href="'.base_url(URL.'v/'.$id).'" class="author">'.$name.'</a>';
 						$this->saveRDF($id,$name,'name.nm');
 						break;
 
