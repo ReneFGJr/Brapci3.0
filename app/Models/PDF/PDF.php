@@ -97,7 +97,7 @@ class Pdf extends Model
 
 	function pdf_file($id)
 		{
-			$IO = new \App\Models\Io\Files();
+			$IO = new \App\Models\IO\Files();
 			$dir = $IO->directory($id);
 			$file = $dir.strzero($id,8).'.pdf';
 			return $file;
