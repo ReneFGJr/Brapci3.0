@@ -14,6 +14,11 @@ require('sisdoc_form_1.php');
 require('sisdoc_form_2.php');
 require('sisdoc_form_js.php');
 
+    function msg($var)
+        {
+            return lang($var);
+        }
+
 
     function get($var)
         {
