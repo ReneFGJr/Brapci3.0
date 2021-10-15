@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Pdf;
+namespace App\Models\PDF;
 
 use CodeIgniter\Model;
 
@@ -106,7 +106,7 @@ class Pdf extends Model
 	function inport($id)
 		{			
 			$RDF = new \App\Models\RDF\RDF();			
-			$Pdf_ojs = new \App\Models\Pdf\Pdf_ojs();
+			$Pdf_ojs = new \App\Models\PDF\Pdf_ojs();
 			$dt = $RDF->le($id,0,'brapci');
 			$urls = $Pdf_ojs->urls($dt);
 
