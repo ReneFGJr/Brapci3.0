@@ -36,7 +36,7 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Main::index');
 $routes->add('/social/ajax/', 'Main::social/');
 $routes->add('/social/', 'Main::social/');
-$routes->add('/v/(:num)', 'Res::v/$1');
+//$routes->add('/v/(:num)', 'Res::v/$1');
 $routes->add('/download/(:num)', 'Res::download/$1');
 //$routes->add('/res/v/', 'Main::v');
 
