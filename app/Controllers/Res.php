@@ -66,7 +66,8 @@ class Res extends BaseController
 	
 	function download($id=0)
 		{
-			echo 'Download:'.$id;
+			$PDF = new \App\Models\PDF\PDF();
+			$PDF->download($id);
 		}
 
 		function painel($p='')

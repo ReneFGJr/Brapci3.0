@@ -41,3 +41,9 @@
 </head>
 <?php require("_css_fonts.php");?>
 <body class="g-sidenav-show  bg-gray-100">
+<?php		
+if (get("debug") != '')
+			{
+				$tela .= '<style> div { border: 1px solid #000; }</style>';
+			}
+?>

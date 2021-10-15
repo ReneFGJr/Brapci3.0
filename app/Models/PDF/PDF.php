@@ -103,14 +103,28 @@ class Pdf extends Model
 			return $file;
 		}
 
+	function download($id)
+		{
+			$Files = new \App\Models\IO\Files();
+			$file = $Files->directory($id);
+			$file .= strzero($id,8).'.pdf';
+			if (file_exists($file))			
+				{
+					header('Content-type: application/pdf');
+					readfile($file);		
+					exit;			
+				} else {
+					echo "FILE ERROR!";
+					exit;
+				}
+		}
+
 	function inport($id)
 		{			
 			$RDF = new \App\Models\RDF\RDF();			
 			$Pdf_ojs = new \App\Models\PDF\Pdf_ojs();
 			$dt = $RDF->le($id,0,'brapci');
 			$urls = $Pdf_ojs->urls($dt);
-
-
 
 			/* Identifica método do PDF */			
 			for ($r=0;$r < count($urls);$r++)

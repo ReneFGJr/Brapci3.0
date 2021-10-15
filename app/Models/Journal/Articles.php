@@ -191,8 +191,6 @@ class Articles extends Model
 
 		$tela .= $dados;
 		$tela .= $telax;
-		
-		$tela .= '<style> div { border: 1px solid #000; }</style>';
 
 		/************ PDF */
 		return $tela;
