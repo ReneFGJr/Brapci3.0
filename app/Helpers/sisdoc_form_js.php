@@ -18,4 +18,5 @@ function wclose()
 	            close(); 		
             </script>
  	        ';
+        return $a;
     }
