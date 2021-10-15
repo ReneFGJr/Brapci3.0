@@ -136,12 +136,11 @@ class Pdf extends Model
 							if (strlen($url[$z] != ''))
 								{
 									$this->save_file($id,$url[$z]);
+									return wclose();
+									exit;
 								}
 						}
 				}
-			exit;			
-
-			return $sx;
 		}
 
 		function save_file($id,$url)

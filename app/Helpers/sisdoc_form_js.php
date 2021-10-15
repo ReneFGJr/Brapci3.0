@@ -9,3 +9,13 @@ function onclick($url,$x=800,$y=800,$class="")
     $a .= '">';
     return $a;
 }
+
+function wclose()
+    {
+        $a = '
+            <script>
+	            window.opener.location.reload();
+	            close(); 		
+            </script>
+ 	        ';
+    }
