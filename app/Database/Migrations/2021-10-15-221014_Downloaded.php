@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Downloaded extends Migration
+class Downloaded2 extends Migration
 {
 	protected $DBGroup = 'click';
 
@@ -18,16 +18,18 @@ class Downloaded extends Migration
                 'type' => 'INT',
                 'auto_increment' => true
             ],
+            'dw_ip' => [
+                'type' => 'VARCHAR',
+                'constraint' => '20'
+            ], 
             'dw_rdf' => [
                 'type' => 'INT',
 				'default' => 0
             ], 			
-
             'dw_download' => [
                 'type' => 'INT',
 				'default' => 0
             ], 			
-
             'dw_type' => [
                 'type' => 'INT',
 				'default' => 0

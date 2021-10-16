@@ -111,6 +111,13 @@ class Pdf extends Model
 			$file .= strzero($id,8).'.pdf';
 			if (file_exists($file))			
 				{
+					$Click = new \App\Models\PDF\Click();
+					$data['dw_rdf'] = $id;
+					$data['dw_ip'] = ip();
+					$daat['dw_download'] = 1;
+					$data['dw_type'] = 1;
+					echo $Click->Insert($data);
+
 					header('Content-type: application/pdf');
 					readfile($file);		
 					exit;			
