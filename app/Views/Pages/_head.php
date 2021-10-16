@@ -24,9 +24,7 @@
   <link rel="icon" href="<?php echo base_url($_SERVER['app.baseURL'].'/img/favicon.png');?>" type="image/x-icon" />
 	<link rel="shortcut icon" href="<?php echo base_url($_SERVER['app.baseURL'].'/img/favicon.png');?>" type="image/x-icon" />
 
-  <title>
-    BRAPCI
-  </title>
+  <title>BRAPCI</title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
   <!-- Nucleo Icons -->
@@ -40,6 +38,7 @@
   <link id="pagestyle" href="<?php echo base_url($_SERVER['app.baseURL'].'assets/css/soft-ui-dashboard.css?v=1.0.4d');?>" rel="stylesheet" />
 </head>
 <?php require("_css_fonts.php");?>
+
 <body class="g-sidenav-show  bg-gray-100">
 <?php		
 if (get("debug") != '')

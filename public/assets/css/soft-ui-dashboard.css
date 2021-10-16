@@ -2872,11 +2872,6 @@ textarea.form-control-lg {
   font-weight: 400;
   line-height: 1.4rem;
   color: #495057;
-  background-color: #fff;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  background-size: 16px 12px;
   border: 1px solid #d2d6da;
   border-radius: 0.5rem;
   transition: box-shadow 0.15s ease, border-color 0.15s ease;
@@ -2979,14 +2974,6 @@ textarea.form-control-lg {
 .form-check-input:checked {
   background-color: transparent;
   border-color: transparent;
-}
-
-.form-check-input:checked[type="checkbox"] {
-  background-image: linear-gradient(310deg, #141727 0%, #3A416F 100%);
-}
-
-.form-check-input:checked[type="radio"] {
-  background-image: linear-gradient(310deg, #141727 0%, #3A416F 100%);
 }
 
 .form-check-input[type="checkbox"]:indeterminate {
@@ -18636,37 +18623,6 @@ fieldset:disabled .btn {
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-.alert-primary {
-  background-image: linear-gradient(310deg, #7928CA 0%, #d6006c 100%);
-}
-
-.alert-secondary {
-  background-image: linear-gradient(310deg, #627594 0%, #8ca1cb 100%);
-}
-
-.alert-success {
-  background-image: linear-gradient(310deg, #17ad37 0%, #84dc14 100%);
-}
-
-.alert-info {
-  background-image: linear-gradient(310deg, #2152ff 0%, #02c6f3 100%);
-}
-
-.alert-warning {
-  background-image: linear-gradient(310deg, #f53939 0%, #fac60b 100%);
-}
-
-.alert-danger {
-  background-image: linear-gradient(310deg, #ea0606 0%, #ff3d59 100%);
-}
-
-.alert-light {
-  background-image: linear-gradient(310deg, #CED4DA 0%, #d1dae6 100%);
-}
-
-.alert-dark {
-  background-image: linear-gradient(310deg, #141727 0%, #2c3154 100%);
-}
 
 .btn-close:focus {
   box-shadow: none;
@@ -23256,30 +23212,6 @@ p {
   z-index: 1;
 }
 
-.text-gradient.text-primary {
-  background-image: linear-gradient(310deg, #7928CA, #FF0080);
-}
-
-.text-gradient.text-info {
-  background-image: linear-gradient(310deg, #2152FF, #21D4FD);
-}
-
-.text-gradient.text-success {
-  background-image: linear-gradient(310deg, #17AD37, #C1E823);
-}
-
-.text-gradient.text-warning {
-  background-image: linear-gradient(310deg, #F53939, #FBCF33);
-}
-
-.text-gradient.text-danger {
-  background-image: linear-gradient(310deg, #D60808, #FF6690);
-}
-
-.text-gradient.text-dark {
-  background-image: linear-gradient(310deg, #141727, #3A416F);
-}
-
 .blockquote {
   border-left: 3px solid #6c757d;
 }
@@ -24462,10 +24394,6 @@ span.flatpickr-weekday {
 
 .noUi-connects {
   border-radius: 3px;
-}
-
-.noUi-connect {
-  background-image: linear-gradient(310deg, #7928CA 0%, #FF0080 100%);
 }
 
 /* Handles and cursors;

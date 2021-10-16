@@ -75,8 +75,11 @@ class Books extends Model
 			$tela = '';
 			switch($d1)
 				{
+					case 'upload_ajax':
+						$tela .= $this->ajax();
+					break;					
 					case 'upload':
-						$tela .= upload();
+						$tela .= $this->upload();
 					break;
 					case 'noagree':
 						$tela .= $this->noagree();
@@ -91,6 +94,36 @@ class Books extends Model
 				}
 			return $tela;
 		}
+
+	function upload()
+		{
+			$url = base_url(PATH.'book/index/self/upload_ajax');
+			$tela = upload($url);
+			return $tela;
+		}
+
+	function ajax()
+		{
+			$dir = '.tmp/';
+			dircheck($dir);
+			$dir = '.tmp/.tmp_books/';
+			dircheck($dir);
+
+			$arr_file_types = ['image/png', 'image/gif', 'image/jpg', 'image/jpeg','application/pdf'];
+
+			$file = $_FILES['file']['name'];
+			$type = $_FILES['file']['type'];
+
+			if (ajax($dir,$arr_file_types))
+				{
+					//print_r($_FILES);
+					$tela = bs(bsc(bsmessage(lang('bacpci.saved '.$file. ' - '.$type),1),12));
+				} else {
+					$tela = bs(bsc(bsmessage(lang('bacpci.save_save_error - '.$type),3),12));
+				}
+			echo $tela;
+			exit;
+		}		
 
 	function noagree()
 		{

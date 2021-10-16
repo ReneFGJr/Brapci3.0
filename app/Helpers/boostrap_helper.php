@@ -253,8 +253,16 @@ function bsclose($n=0)
     }
 function bsmessage($txt,$t=0)
     {
+        $class="alert-primary";
+
+        switch($t)
+            {
+                case 3:
+                    $class="alert-warning";
+                    break;
+            }
         $sx = '
-            <div class="alert alert-primary" role="alert">
+            <div class="alert '.$class.'" role="alert">
             '.$txt.'
             </div>';      
         $sx .= cr();

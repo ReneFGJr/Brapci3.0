@@ -1,67 +1,93 @@
 <?php
-function upload()
+
+function ajax($dir, $arr_file_types = ['image/png', 'image/gif', 'image/jpg', 'image/jpeg'])
+    {
+        if (!(in_array($_FILES['file']['type'], $arr_file_types))) {
+        return false;
+        }
+        move_uploaded_file($_FILES['file']['tmp_name'], $dir. $_FILES['file']['name']);
+
+        return true;         
+    }
+
+function upload($url='')
 {
-    $sx = '
-            <div id="drop-area">
-            <form class="my-form">
-                <p>Upload multiple files with the file dialog or by dragging and dropping images onto the dashed region</p>
-                <input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
-                <label class="button" for="fileElem">Select some files</label>
-            </form>
+    //https://stackoverflow.com/questions/53950415/how-to-upload-multiple-files-with-drag-drop-and-browse-with-ajax
+    $sx = '';
+    $sx .= '
+    <script>
+        var fileobj;
+        function upload_file(e) {
+            e.preventDefault();
+            fileobj = e.dataTransfer.files[0];
+            ajax_file_upload(fileobj);
+        }
+        
+        function file_explorer() {
+            document.getElementById(\'selectfile\').click();
+            document.getElementById(\'selectfile\').onchange = function() {
+                fileobj = document.getElementById(\'selectfile\').files[0];
+                ajax_file_upload(fileobj);
+            };
+        }
+        
+        function ajax_file_upload(file_obj) {
+            if(file_obj != undefined) {
+                var form_data = new FormData();                  
+                form_data.append(\'file\', file_obj);
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", "'.$url.'", true);
+                xhttp.onload = function(event) {
+                    oOutput = document.querySelector(\'.img-content\');
+                    if (xhttp.status == 200) {
+                        oOutput.innerHTML = "\'"+ this.responseText +"\'";
+                    } else {
+                        oOutput.innerHTML = "Error " + xhttp.status + " occurred when trying to upload your file.";
+                    }
+                }
+        
+                xhttp.send(form_data);
+            }
+        }               
+    </script>'
+    ;
+
+    $sx .= '
+        <div id="drop_file_zone" ondrop="upload_file(event)" ondragover="return false">
+            <div id="drag_upload_file">
+                <p>Drop file here</p>
+                <p>or</p>
+                <p><input type="button" value="Select File" onclick="file_explorer();" /></p>
+                <input type="file" id="selectfile" />
             </div>
+        </div>
+        <div class="img-content"></div>
         ';
 
     $sx .= '
         <style>
-            .box__dragndrop,
-            .box__uploading,
-            .box__success,
-            .box__error {
+            #drop_file_zone {
+                background-color: #EEE;
+                border: #999 5px dashed;
+                height: 200px;
+                padding-left: 100px 10px;
+                margin: 0px 100px 0px 100px;
+                font-size: 18px;
+            }
+            #drag_upload_file {
+            width:50%;
+            margin:0 auto;
+            }
+            #drag_upload_file p {
+            text-align: center;
+            }
+            #drag_upload_file #selectfile {
             display: none;
             }
-
-            #drop-area {
-  border: 2px dashed #ccc;
-  border-radius: 20px;
-  width: 480px;
-  font-family: sans-serif;
-  margin: 100px auto;
-  padding: 20px;
-}
-#drop-area.highlight {
-  border-color: purple;
-}
-p {
-  margin-top: 0;
-}
-.my-form {
-  margin-bottom: 10px;
-}
-#gallery {
-  margin-top: 10px;
-}
-#gallery img {
-  width: 150px;
-  margin-bottom: 10px;
-  margin-right: 10px;
-  vertical-align: middle;
-}
-.button {
-  display: inline-block;
-  padding: 10px;
-  background: #ccc;
-  cursor: pointer;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-.button:hover {
-  background: #ddd;
-}
-#fileElem {
-  display: none;
-}
-
-        </syle>
+        }
+        </style>
         ';
+
+    
     return $sx;
 }
