@@ -6,6 +6,13 @@ function ajax($dir, $arr_file_types = ['image/png', 'image/gif', 'image/jpg', 'i
             return false;
         }
         $file = $dir. $_FILES['file']['name'];
+        $xfile = $file;
+        $id = 1;
+        while (file_exists($file))
+            {
+                $file = $xfile.'.'.$id;
+                $id++;
+            }
         move_uploaded_file($_FILES['file']['tmp_name'], $file);
 
         return true;         
