@@ -113,7 +113,6 @@ class Books extends Model
 
 			echo '<pre>';
 			print_r($_FILES);
-			exit;
 
 			$file = $_FILES['file']['name'];
 			$type = $_FILES['file']['type'];
