@@ -23,4 +23,5 @@ return [
     'keyword_en' => 'Keywords',
     'keyword_es' => 'Palabras-clave',    
     'keyword_es-ES' => 'Palabras-clave',   
+    'return'=>'Retornar',
 ];
