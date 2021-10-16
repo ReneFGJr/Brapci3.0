@@ -65,7 +65,7 @@ class Res extends BaseController
 		}
 	
 	function download($id=0)
-		{
+		{			
 			$PDF = new \App\Models\PDF\PDF();
 			$PDF->download($id);
 		}
