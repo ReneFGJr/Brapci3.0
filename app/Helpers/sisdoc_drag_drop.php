@@ -3,9 +3,12 @@
 function ajax($dir, $arr_file_types = ['image/png', 'image/gif', 'image/jpg', 'image/jpeg'])
     {
         if (!(in_array($_FILES['file']['type'], $arr_file_types))) {
-        return false;
+            return false;
         }
-        move_uploaded_file($_FILES['file']['tmp_name'], $dir. $_FILES['file']['name']);
+        $file = $dir. $_FILES['file']['name'];
+        echo "Saving ...".$file;
+        exit;
+        move_uploaded_file($_FILES['file']['tmp_name'], $file);
 
         return true;         
     }
