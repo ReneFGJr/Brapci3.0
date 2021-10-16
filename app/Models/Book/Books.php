@@ -111,6 +111,10 @@ class Books extends Model
 
 			$arr_file_types = ['image/png', 'image/gif', 'image/jpg', 'image/jpeg','application/pdf'];
 
+			echo '<pre>';
+			print_r($_FILES);
+			exit;
+
 			$file = $_FILES['file']['name'];
 			$type = $_FILES['file']['type'];
 
