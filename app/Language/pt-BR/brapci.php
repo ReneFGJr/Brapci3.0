@@ -24,4 +24,14 @@ return [
     'keyword_es' => 'Palabras-clave',    
     'keyword_es-ES' => 'Palabras-clave',   
     'return'=>'Retornar',
+    'drag_drop_erro_1'=>'erro ao gravar o arquivo.',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+
 ];

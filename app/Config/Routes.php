@@ -18,7 +18,7 @@ if (file_exists(SYSTEMPATH . 'Config/Routes.php'))
  * --------------------------------------------------------------------
  */
 $routes->setDefaultNamespace('App\Controllers');
-$routes->setDefaultController('Main');
+$routes->setDefaultController('Res');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
@@ -33,9 +33,9 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Main::index');
-$routes->add('/social/ajax/', 'Main::social/');
-$routes->add('/social/', 'Main::social/');
+$routes->get('/', 'Res::index');
+//$routes->get('/social/ajax/', 'Main::social/');
+//$routes->add('/main/social/', 'Main::social/');
 //$routes->add('/v/(:num)', 'Res::v/$1');
 //$routes->add('/download/(:num)', 'Res::download/$1');
 //$routes->add('/res/v/', 'Main::v');

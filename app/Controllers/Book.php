@@ -12,6 +12,8 @@ define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix']);
 define("MODULE",'book');
 define("URL",$_SERVER['app.baseURL']);
 
+$session = \Config\Services::session();
+
 class Book extends BaseController
 {
 		private function cab($tp = '')

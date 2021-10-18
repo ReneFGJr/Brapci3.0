@@ -47,13 +47,13 @@ function upload($url='')
                 xhttp.open("POST", "'.$url.'", true);
                 xhttp.onload = function(event) {
                     oOutput = document.querySelector(\'.img-content\');
+                    old = oOutput.innerHTML;
                     if (xhttp.status == 200) {
-                        oOutput.innerHTML = "\'"+ this.responseText +"\'";
+                        oOutput.innerHTML = "\'"+ this.responseText + old + "\'"
                     } else {
-                        oOutput.innerHTML = "Error " + xhttp.status + " occurred when trying to upload your file.";
+                        oOutput.innerHTML = "Error " + xhttp.status + " '.lang('brapci.drag_drop_erro_1').'";
                     }
-                }
-        
+                }        
                 xhttp.send(form_data);
             }
         }               

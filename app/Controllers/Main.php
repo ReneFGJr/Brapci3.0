@@ -60,14 +60,6 @@ class Main extends BaseController
 		return $tela;
 	}	
 
-	public function social($d1 = '', $id = '')
-	{
-		$cab = $this->cab('all');
-		$dt = array();
-		$sx = $this->Socials->index($d1,$id,$dt,$cab);
-		return $sx;
-	}	
-
 	public function pdf($d1 = '', $id = '')
 	{
 		$pdf = new \App\Models\PDF\PDF();

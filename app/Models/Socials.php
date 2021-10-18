@@ -79,13 +79,19 @@ class Socials extends Model
 			return($sx);
 		}
 
-	function index()
+	function index($cmd='',$id='', $dt='', $cab='')
 	{
-		
 		$sx = '';
-		$cmd = get("cmd");		
-		echo '<h1>'.$cmd.'</h1>';
+		if (strlen($cmd) == 0)
+			{
+				$cmd = get("cmd");
+			}
+		
 		switch ($cmd) {
+			case 'login':
+				$sx = $cab;
+				$sx .= $this->login();
+				break;
 			case 'ajax':
 				$sx = $this->ajax($id);
 				break;
@@ -98,6 +104,10 @@ class Socials extends Model
 			case 'perfil':
 				$sx .= $this->perfil();
 				break;
+			case 'profile':
+				$sx .= $cab;
+				$sx .= $this->perfil();
+				break;				
 			case 'view':
 				$sx .= h("Usuários - View", 1);
 				$this->id = $id;
@@ -115,10 +125,7 @@ class Socials extends Model
 				$sx .= form($this);
 				$sx .= bsdivclose(3);
 				break;
-			
-			case 'access_denied':
-				$sx = view('access_denied');
-				break;				
+		
 			case 'delete':
 				$sx .= h("Serviços - Excluir", 1);
 				$this->Social->id = $id;
@@ -128,10 +135,16 @@ class Socials extends Model
 				$sx = $this->logout();		
 				break;
 			default:
-				$sx .= bs(12);
-				$sx .= h('Service not found - [' . $cmd.']', 1);
-				$sx .= anchor("main/social/access_denied","Acesso Negado (Page)",["class"=>"btn btn-outline-primary"]);
-				$sx .= bsclose(3);
+				$sx = $cab;
+				$st =  h(lang('Social'),1);
+				if ($cmd == '')
+					 	{
+							$st .= h('Service not informed', 5);
+						 } else {
+							$st .= h('Service not found - [' . $cmd.']', 5);
+						 }					 
+				$st .= anchor(PATH,"Acesso Negado (Page)",["class"=>"btn btn-outline-primary"]);
+				$sx .= bs(bsc($st,12));
 				break;
 		}
 		return $sx;
@@ -175,7 +188,12 @@ class Socials extends Model
 				{
 					$id = round($_SESSION['id']);
 					if ($id > 0)
-						{ $rsp = 1; }
+					{
+						$dt = $this->Find($id);
+						$rsp = view('Pages/profile.php',$dt);
+					} else {
+						$rsp = metarefresh(base_url());
+					}
 				}
 			return $rsp;
 		}
@@ -277,6 +295,13 @@ class Socials extends Model
 				$sx .= '          </ul>'.cr();
 				$sx .= '        </li>'.cr();
 				$sx .= '</ul>'.cr();
+			} else {
+				$sx .= '<li class="nav-item d-flex align-items-center">';
+              	$sx .= '
+              		<a href="'.base_url(PATH.'res/social/login').'" class="nav-link text-body font-weight-bold px-0">
+                	<i class="fa fa-user me-sm-1"></i>
+                	<span class="d-sm-inline d-none">'.lang('social.social_sign_in').'</span></a>';
+				$sx .= '</li>';
 			}
 			return $sx;			
 		}
@@ -284,7 +309,8 @@ class Socials extends Model
 		{
 			if ((isset($_SESSION['id'])) and ($_SESSION['id'] != ''))
 			{
-				return(1);
+				$id = $_SESSION['id'];
+				return($id);
 			} else {
 				return(0);
 			}
@@ -640,7 +666,7 @@ class Socials extends Model
 			</div>
 		  </div>
 		</div>
-			<script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-8216c69d01441f36c0ea791ae2d4469f0f8ff5326f00ae2d00e4bb7d20e24edb.js"></script>
+		<script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-8216c69d01441f36c0ea791ae2d4469f0f8ff5326f00ae2d00e4bb7d20e24edb.js"></script>
 		
 		  
 		<script id="rendered-js" >

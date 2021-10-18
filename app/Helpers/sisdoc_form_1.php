@@ -88,6 +88,7 @@ function form($th)
     $submit = false;
 
     /* Formulario */
+
     for ($r = 0; $r < count($fl); $r++) {
         $fld = $fl[$r];
         $typ = $tp[$r];
@@ -340,6 +341,22 @@ function form_fields($typ, $fld, $vlr, $th = array())
                                 ' . cr();
             $sx .= '</div>';
             break;
+
+        case 'session':
+            $opt = substr($typ, strpos($typ, ':') + 1, strlen($typ));
+            if (isset($_SESSION[$opt]))
+                {
+                    $opt = $_SESSION[$opt];
+                } else {
+                    $opt = '-1';
+                }
+            $sx .= '<input type="hidden" id="' . $fld . '" name="' . $fld . '" value="' . $opt . '">';
+            break;            
+
+        case 'set':
+            $opt = substr($typ, strpos($typ, ':') + 1, strlen($typ));
+            $sx .= '<input type="hidden" id="' . $fld . '" name="' . $fld . '" value="' . $opt . '">';
+            break;            
 
         case 'hidden':
             $sx .= '<input type="hidden" id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '">';
