@@ -10,7 +10,7 @@ return [
     'journal_site'=>'Site da Revista',
     'icone_open_access' => 'Icone de Acesso Aberto',
     'new'=>'novo',
-    'source_source'=>'Revistas Científicas',
+    'source_source'=>'Revistas Científicas/Eventos',
     'filter'=>'filtrar',
     'configurations'=>'Configurações',
     'configurations_see_options'=>'Veja suas opções de personalização',

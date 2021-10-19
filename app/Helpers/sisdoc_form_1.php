@@ -353,6 +353,9 @@ function form_fields($typ, $fld, $vlr, $th = array())
             $sx .= '<input type="hidden" id="' . $fld . '" name="' . $fld . '" value="' . $opt . '">';
             break;            
 
+        case 'none':
+            break;
+            
         case 'set':
             $opt = substr($typ, strpos($typ, ':') + 1, strlen($typ));
             $sx .= '<input type="hidden" id="' . $fld . '" name="' . $fld . '" value="' . $opt . '">';

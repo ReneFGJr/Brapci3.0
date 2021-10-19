@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Oaipmh;
 
 use CodeIgniter\Model;
 
-class OpenDataCountry extends Model
+class OpenDataPreposition extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'OA_Country';
-	protected $primaryKey           = 'id';
+	protected $table                = 'OA_Preposition';
+	protected $primaryKey           = 'id_prep';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'id_ct','ct_code','ct_name','ct_lang'
+		'id_prep','prep_name','prep_lang'
 	];
 
 	// Dates
@@ -42,8 +42,6 @@ class OpenDataCountry extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	/* Source Data: https://github.com/umpirsky/country-list */
-
 	function export()
 		{
 			/* Checar se já nao foi coletado */
@@ -52,20 +50,20 @@ class OpenDataCountry extends Model
 			$dir .= 'oa/';
 			if (!is_dir($dir)) { mkdir($dir); }
 
-			$file = '../.temp/oa/country-$lang.php';
+			$file = '../.temp/oa/prepositions-$lang.php';
 			$dt = $this->FindAll();
 			$p = array();
 			foreach($dt as $id=>$line)
 				{
-					$lang = $line['ct_lang'];
-					$name = $line['ct_name'];
+					$lang = $line['prep_lang'];
+					$name = $line['prep_name'];
 					if (!isset($p[$lang])) { $p[$lang] = array(); }
 					array_push($p[$lang],$name);
 				}
 			foreach($p as $dt=>$idx)
 				{
 					$file_save = str_replace('$lang',$dt,$file);
-					$txt = '$country = array(';
+					$txt = '$prep = array(';
 					for ($r=0;$r < count($idx);$r++)
 						{
 							if ($r > 0) { $txt .= ', ';}
@@ -76,15 +74,16 @@ class OpenDataCountry extends Model
 					file_put_contents($file_save,$txt);
 				}
 				return TRUE;
-		}	
+		}
 
 	function inport($url='')
 		{
-			$url = 'http://cedapdados.ufrgs.br/api/access/datafile/:persistentId?persistentId=hdl:20.500.11959/CedapDados/3/8';
+			$url = 'http://cedapdados.ufrgs.br/api/access/datafile/19';
 			$lang = 'pt-BR';
 			$dir = '.tmp';
 			$file = md5($url);
 			$filename = $dir.'/'.$file;
+			echo $file;
 
 			if (!is_dir($dir))
 				{
@@ -113,8 +112,8 @@ class OpenDataCountry extends Model
 							}
 
 						$dz = $this->
-									where('ct_code',$dt[$hd[0]])->
-									where('ct_lang',$dt[$hd[2]])->
+									where('prep_name',$dt['prep_name'])->
+									where('prep_lang',$dt['prep_lang'])->
 									findAll();
 						
 						if (isset($dz[0]))
@@ -125,5 +124,5 @@ class OpenDataCountry extends Model
 							}					
 					}
 				}
-		}
+		}	
 }

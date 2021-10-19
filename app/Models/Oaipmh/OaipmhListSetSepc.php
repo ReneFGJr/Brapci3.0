@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Oaipmh;
 
 use CodeIgniter\Model;
 
 class OaiPMHListSetSepc extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'OAI_SetSpec';
+	protected $table                = 'brapci.source_listsets';
 	protected $primaryKey           = 'id_ss';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -15,7 +15,7 @@ class OaiPMHListSetSepc extends Model
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'ss_journal','ss_issue','ss_ref','ss_group','ss_name'
+		'id_ls','ls_setSpec','ls_description','ls_journal','ls_setName'
 	];
 
 	// Dates
@@ -43,11 +43,20 @@ class OaiPMHListSetSepc extends Model
 	protected $afterDelete          = [];
 
 
-	function harvesting($dt)
+	function harvesting($dt,$tp='JA')
 		{
-			$data['ss_journal'] = $dt['epi_procceding'];
-			$data['ss_issue'] = $dt['id_epi'];
-			$url = trim($dt['epi_url_oai']).'?verb=ListSets';
+			switch($tp)
+				{
+					case 'EV':
+						$url = trim($dt['is_url_oai']).'?verb=ListSets';
+						break;
+					case 'JA':
+						$data['ss_journal'] = $dt['epi_procceding'];
+						$data['ss_issue'] = $dt['id_epi'];			
+						$url = trim($dt['epi_url_oai']).'?verb=ListSets';
+						break;
+				}
+			
 			$xml = file_get_contents($url);
 			$xml = simplexml_load_string($xml);
 
@@ -57,13 +66,14 @@ class OaiPMHListSetSepc extends Model
 			$sx .= '<ul>';
 			foreach($ls->set as $id => $reg)
 				{
-					$data['ss_ref'] = (string)$reg->setSpec;
-					$data['ss_name'] = (string)$reg->setName;
-					$data['ss_description'] = (string)$reg->setDescription;
+					$data['ls_setSpec'] = (string)$reg->setSpec;
+					$data['ls_setName'] = (string)$reg->setName;
+					$data['ls_description'] = (string)$reg->setDescription;
+					$data['ls_journal'] = $dt['is_source_rdf'];
 					
 					if ($this->register($data))
 						{
-						$sx .= '<li>'.$data['ss_ref'];
+						$sx .= '<li>'.$data['ls_setName'] . ' <sup>('.$data['ls_setSpec'].')</sup>';
 						$sx .= '</li>';
 						}
 				}			
@@ -72,9 +82,9 @@ class OaiPMHListSetSepc extends Model
 		}
 	function register($data)
 		{
-			$dt = $this->where('ss_ref',$data['ss_ref'])
-				->where('ss_journal',$data['ss_journal'])
-				->where('ss_issue',$data['ss_issue'])
+			//ls_description
+			$dt = $this->where('ls_setSpec',$data['ls_setSpec'])
+				->where('ls_journal',$data['ls_journal'])
 				->findAll();
 			if (!isset($dt[0]))
 				{

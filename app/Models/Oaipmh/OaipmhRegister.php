@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Oaipmh;
 
 use CodeIgniter\Model;
 
 class OaiPMHRegister extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'OAI_ListRecords';
-	protected $primaryKey           = 'id_ls';
+	protected $table                = 'brapci.source_listidentifier';
+	protected $primaryKey           = 'id_li';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
@@ -53,7 +53,7 @@ class OaiPMHRegister extends Model
 	function next($id,$st=0)
 		{
 			$di = $this
-					->where('li_process',$st)
+					->where('li_s',$st)
 					->where('li_issue',$id)
 					->first();
 			if ((strlen($di) == '') or (count($di) == 0))
@@ -67,7 +67,7 @@ class OaiPMHRegister extends Model
 
 	function process_00($id)
 		{
-			$this->OaipmhListSetSepc = new \App\Models\OaipmhListSetSepc();
+			$OaipmhListSetSepc = new \App\Models\Oaipmh\OaipmhListSetSepc();
 			$sx = '';
 			/* recupera proximo */
 			$di = $this->next($id,0);

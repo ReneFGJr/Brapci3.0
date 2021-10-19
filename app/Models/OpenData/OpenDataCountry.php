@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\OpenData;
 
 use CodeIgniter\Model;
 
-class OpenDataLanguage extends Model
+class OpenDataCountry extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'OA_Language';
-	protected $primaryKey           = 'id_lg';
+	protected $table                = 'OA_Country';
+	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'id_lg','lg_code','lg_name','lg_lang'
+		'id_ct','ct_code','ct_name','ct_lang'
 	];
 
 	// Dates
@@ -44,14 +44,43 @@ class OpenDataLanguage extends Model
 
 	/* Source Data: https://github.com/umpirsky/country-list */
 
-	function check($lang)
+	function export()
 		{
-			
-		}
+			/* Checar se já nao foi coletado */
+			$dir = '../.temp/';
+			if (!is_dir($dir)) { mkdir($dir); }
+			$dir .= 'oa/';
+			if (!is_dir($dir)) { mkdir($dir); }
+
+			$file = '../.temp/oa/country-$lang.php';
+			$dt = $this->FindAll();
+			$p = array();
+			foreach($dt as $id=>$line)
+				{
+					$lang = $line['ct_lang'];
+					$name = $line['ct_name'];
+					if (!isset($p[$lang])) { $p[$lang] = array(); }
+					array_push($p[$lang],$name);
+				}
+			foreach($p as $dt=>$idx)
+				{
+					$file_save = str_replace('$lang',$dt,$file);
+					$txt = '$country = array(';
+					for ($r=0;$r < count($idx);$r++)
+						{
+							if ($r > 0) { $txt .= ', ';}
+							$txt .= "'".mb_strtolower($idx[$r])."'";
+						}
+					$txt .= ');';
+					echo $file_save;
+					file_put_contents($file_save,$txt);
+				}
+				return TRUE;
+		}	
 
 	function inport($url='')
 		{
-			$url = 'http://cedapdados.ufrgs.br/api/access/datafile/:persistentId?persistentId=hdl:20.500.11959/CedapDados/3/7';
+			$url = 'http://cedapdados.ufrgs.br/api/access/datafile/:persistentId?persistentId=hdl:20.500.11959/CedapDados/3/8';
 			$lang = 'pt-BR';
 			$dir = '.tmp';
 			$file = md5($url);
@@ -84,8 +113,8 @@ class OpenDataLanguage extends Model
 							}
 
 						$dz = $this->
-									where('lg_code',$dt['lg_code'])->
-									where('lg_lang',$dt['lg_lang'])->
+									where('ct_code',$dt[$hd[0]])->
+									where('ct_lang',$dt[$hd[2]])->
 									findAll();
 						
 						if (isset($dz[0]))

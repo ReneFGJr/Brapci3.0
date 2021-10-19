@@ -67,6 +67,12 @@ class Journals extends Model
 			$this->path_back = base_url(PATH.'/index/');
 			switch ($d1)
 				{
+					case 'edit_issue':
+						$tela = $this->editar_issue($d2,$d3);
+						break;	
+					case 'oai_check':				
+						$tela = $this->oai_check();
+						break;	
 					case 'edit':
 						$tela = $this->editar($d2);
 						break;
@@ -79,6 +85,19 @@ class Journals extends Model
 						$tela = $this->tableview();
 						break;
 				}
+			return $tela;
+		}
+	function oai_check()
+		{
+			$JournalIssue = new \App\Models\Journal\JournalIssue();
+			$tela = $JournalIssue->oai_check();
+			return $tela;
+
+		}
+	function editar_issue($id,$jnl)
+		{
+			$JournalIssue = new \App\Models\Journal\JournalIssue();
+			$tela = $JournalIssue->edit($id,$jnl);
 			return $tela;
 		}
 	function editar($id)
@@ -203,12 +222,23 @@ class Journals extends Model
 			$jn_rdf = $dt['jnl_frbr'];
 			$tela .= $JournalIssue->view_issue($jn_rdf);
 
+			$tela .= $JournalIssue->btn_new_issue($dt);
+
 			return $tela;
 		}
 
 	function tableview()
-		{			
-			$this->where("jnl_collection = 'JA'");
+		{	
+			switch(MODULE)
+				{
+				case 'proceeding':
+					$this->where("jnl_collection = 'EV'");
+					break;
+				default:
+					$this->where("jnl_collection = 'JA'");
+					break;
+				}	
+			$this->path = base_url(PATH.MODULE.'/index/');
 			$tela = tableview($this);
 			$tela = bs(bsc($tela,12));
 			return $tela;

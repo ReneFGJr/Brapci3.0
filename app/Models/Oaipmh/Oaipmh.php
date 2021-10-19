@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Oaipmh;
 
 use CodeIgniter\Model;
 
@@ -48,8 +48,7 @@ class Oaipmh extends Model
 		{
 			switch($d1)
 				{
-					case 'get':
-						$d2 = get("issue");
+					case 'get_proceedings':
 						$sx = $this->harvesting_proceedings($d2);
 					break;
 
@@ -68,12 +67,12 @@ class Oaipmh extends Model
 				$dt = $this->EventProceedingsIssue->find($id);
 
 				/* Load ListSets */
-				$this->OaipmhListSetSepc = new \App\Models\OaipmhListSetSepc();
-				$sx = $this->OaipmhListSetSepc->harvesting($dt);
+				$OaipmhListSetSepc = new \App\Models\Oaipmh\OaipmhListSetSepc();
+				$sx = $OaipmhListSetSepc->harvesting($dt);
 
 				/* Load ListSets */
-				$this->OaipmhListRecord = new \App\Models\OaipmhListRecord();
-				$sx .= $this->OaipmhListRecord->harvesting($dt);
+				$OaipmhListRecord = new \App\Models\Oaipmh\OaipmhListRecord();
+				$sx .= $OaipmhListRecord->harvesting($dt);
 
 				$id = date("YmdHis");
 
@@ -115,16 +114,14 @@ class Oaipmh extends Model
 		{
 			$sx = '';
 
-			$this->EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
-			$dt = $this->EventProceedingsIssue->find($id);
-			if (!is_array($dt))
-			{
-				$sx = bsmessage('Erro na identificação da coleção =>'.$id);
-				return $sx;
-			}
-			/* Load ListSets */
-			$this->OaipmhRegister = new \App\Models\OaipmhRegister();
-			$sx .= $this->OaipmhRegister->process_00($dt);	
+			$JournalIssue = new \App\Models\Journal\JournalIssue();
+			$dt = $JournalIssue->find($id);
+			
+			$OaipmhListSetSepc = new \App\Models\Oaipmh\OaiPMHListSetSepc();
+			$sx .= $OaipmhListSetSepc->harvesting($dt,'EV');
+
+			$OaipmhListRecord = new \App\Models\Oaipmh\OaipmhListRecord();
+			$sx .= $OaipmhListRecord->harvesting($dt,'EV');			
 
 			return $sx;
 		}

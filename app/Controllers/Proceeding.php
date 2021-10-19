@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 //define("PATH", 'Authoriry');
 define("URL",$_SERVER['app.baseURL']);
-define("MODULE",'journal');
+define("MODULE",'proceeding');
 define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix']);
 
 define("LIBRARY", "202101");
@@ -12,7 +12,7 @@ helper(['boostrap', 'url', 'graphs', 'sisdoc_forms', 'form', 'nbr']);
 
 use App\Controllers\BaseController;
 
-class Journal extends BaseController
+class Proceeding extends BaseController
 {
 
 	private function cab($tp = '')
@@ -25,7 +25,7 @@ class Journal extends BaseController
 
 		$hd = new \App\Models\Header\Header();
 		$tela = '';
-		$dt['title'] = lang('Journal');
+		$dt['title'] = lang('Proceeding');
 		$dt['menu'][''] = 'main';
 		$dt['menu']['index/list'] = 'list';
 		

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Oaipmh;
 
 use CodeIgniter\Model;
 
 class OaiPMHListRecord extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'OAI_ListRecords';
+	protected $table                = 'brapci.source_listrecords';
 	protected $primaryKey           = 'id_ls';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -15,9 +15,8 @@ class OaiPMHListRecord extends Model
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'id_ls','li_journal','li_issue',
-		'li_ref','li_datestamp','li_setspec',
-		'li_status','li_process','li_local_file'
+		'id_lr','lr_identifier','lr_datestamp',
+		'lr_setSpec','lr_status','lr_jnl'
 	];
 
 	// Dates
@@ -44,59 +43,70 @@ class OaiPMHListRecord extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function harvesting($dt)
+	function harvesting($dt,$tp='JA')
 		{
-			$this->OaipmhListSetSepc = new \App\Models\OaipmhListSetSepc();
+			$OaipmhListSetSepc = new \App\Models\Oaipmh\OaipmhListSetSepc();
 
-			$data['li_journal'] = $dt['epi_procceding'];
-			$data['li_issue'] = $dt['id_epi'];
-			$url = trim($dt['epi_url_oai']).'?verb=ListIdentifiers';
-			$url .= '&metadataPrefix=oai_dc';
+			switch($tp)
+				{
+					case 'EV':
+						$url = trim($dt['is_url_oai']).'?verb=ListIdentifiers';
+						$url .= '&metadataPrefix=oai_dc';
+						$d['lr_jnl'] = $dt['is_source_rdf'];
+					break;
+
+					default:
+						$data['li_journal'] = $dt['epi_procceding'];
+						$data['li_issue'] = $dt['id_epi'];
+						$url = trim($dt['epi_url_oai']).'?verb=ListIdentifiers';
+						$url .= '&metadataPrefix=oai_dc';
+					break;
+				}
 
 			/* Load Url */
 			$xml = file_get_contents($url);
 			$xml = simplexml_load_string($xml);
 			//$xml = simplexml_load_file('d:/lixo/xml.xml');
-
 			$ls = $xml->ListIdentifiers;
 
 			$sx = '';
 			$sx .= h(lang('ListIdentifiers'),1);
 			$sx .= '<ul>';
 			$xsetspec = '';
+			$setspec_id = 0;
 			foreach($ls->header as $id => $reg)
 				{
 
-					$data['li_ref'] = (string)$reg->identifier;
+					$data['lr_identifier'] = (string)$reg->identifier;					
+					$data['lr_status'] = 'active';
+					$data['lr_datestamp'] = str_replace(array('T','Z'),' ',(string)$reg->datestamp);
+					$data['lr_procees'] = 0;
+					$data['lr_jnl'] = $dt['is_source_rdf'];
+
 					$setspec = (string)$reg->setSpec;
 					if ($xsetspec != $setspec)
 						{
-							$dtss = $this->OaipmhListSetSepc
-								->where('ss_journal',$data['li_journal'])
-								->where('ss_issue',$data['li_issue'])
-								->where('ss_ref',$setspec)
+							$dts = $OaipmhListSetSepc
+								->where('ls_setSpec',$setspec)
+								->where('ls_journal',$data['lr_jnl'])
 								->findAll();
-							if (count($dtss) > 0)
-							{
-								$data['li_setspec'] = $dtss[0]['id_ss'];
-							}
-						}					
-					$data['li_status'] = 'active';
-					$data['li_datestamp'] = str_replace(array('T','Z'),' ',(string)$reg->datestamp);
-					$data['li_procees'] = 0;
-					$data['li_local_file'] = '';
+							$setspec_id = $dts[0]['id_ls'];
+							$xsetspec = $setspec;
+						}
+					$data['lr_setSpec'] = $setspec_id;				
 					$att = (array)$reg;
 					if (isset($att['@attributes']))
 						{
-							$data['li_status'] = $att['@attributes']['status'];
-							if ($data['li_status'] == 'deleted')
+							$data['lr_status'] = $att['@attributes']['status'];
+							if ($data['lr_status'] == 'deleted')
 								{
-									$data['li_process'] = 9;
+									$data['lr_procees'] = 9;
 								}
 						}
+
 					if ($this->register($data))
 						{
-						$sx .= '<li>'.$data['li_ref'];
+						$sx .= '<li>'.$data['lr_identifier'];
 						$sx .= '</li>';
 						}
 				}			
@@ -105,9 +115,9 @@ class OaiPMHListRecord extends Model
 		}	
 	function register($data)
 		{
-			$dt = $this->where('li_ref',$data['li_ref'])
-				->where('li_journal',$data['li_journal'])
-				->where('li_issue',$data['li_issue'])
+			$dt = $this->where('lr_identifier',$data['lr_identifier'])
+				->where('lr_jnl',$data['lr_jnl'])
+				->where('lr_setSpec',$data['lr_setSpec'])
 				->findAll();
 			if (!isset($dt[0]))
 				{

@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Oaipmh;
 
 use CodeIgniter\Model;
 
-class OpenDataPreposition extends Model
+class OpenDataLanguage extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'OA_Preposition';
-	protected $primaryKey           = 'id_prep';
+	protected $table                = 'OA_Language';
+	protected $primaryKey           = 'id_lg';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'id_prep','prep_name','prep_lang'
+		'id_lg','lg_code','lg_name','lg_lang'
 	];
 
 	// Dates
@@ -42,48 +42,20 @@ class OpenDataPreposition extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function export()
-		{
-			/* Checar se já nao foi coletado */
-			$dir = '../.temp/';
-			if (!is_dir($dir)) { mkdir($dir); }
-			$dir .= 'oa/';
-			if (!is_dir($dir)) { mkdir($dir); }
+	/* Source Data: https://github.com/umpirsky/country-list */
 
-			$file = '../.temp/oa/prepositions-$lang.php';
-			$dt = $this->FindAll();
-			$p = array();
-			foreach($dt as $id=>$line)
-				{
-					$lang = $line['prep_lang'];
-					$name = $line['prep_name'];
-					if (!isset($p[$lang])) { $p[$lang] = array(); }
-					array_push($p[$lang],$name);
-				}
-			foreach($p as $dt=>$idx)
-				{
-					$file_save = str_replace('$lang',$dt,$file);
-					$txt = '$prep = array(';
-					for ($r=0;$r < count($idx);$r++)
-						{
-							if ($r > 0) { $txt .= ', ';}
-							$txt .= "'".mb_strtolower($idx[$r])."'";
-						}
-					$txt .= ');';
-					echo $file_save;
-					file_put_contents($file_save,$txt);
-				}
-				return TRUE;
+	function check($lang)
+		{
+			
 		}
 
 	function inport($url='')
 		{
-			$url = 'http://cedapdados.ufrgs.br/api/access/datafile/19';
+			$url = 'http://cedapdados.ufrgs.br/api/access/datafile/:persistentId?persistentId=hdl:20.500.11959/CedapDados/3/7';
 			$lang = 'pt-BR';
 			$dir = '.tmp';
 			$file = md5($url);
 			$filename = $dir.'/'.$file;
-			echo $file;
 
 			if (!is_dir($dir))
 				{
@@ -112,8 +84,8 @@ class OpenDataPreposition extends Model
 							}
 
 						$dz = $this->
-									where('prep_name',$dt['prep_name'])->
-									where('prep_lang',$dt['prep_lang'])->
+									where('lg_code',$dt['lg_code'])->
+									where('lg_lang',$dt['lg_lang'])->
 									findAll();
 						
 						if (isset($dz[0]))
@@ -124,5 +96,5 @@ class OpenDataPreposition extends Model
 							}					
 					}
 				}
-		}	
+		}
 }

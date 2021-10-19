@@ -14,7 +14,19 @@ class JournalIssue extends Model
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [];
+	protected $allowedFields        = [
+		'id_is','is_source','is_source_rdf',
+		'is_source_issue','is_year',
+		'is_issue','is_vol','is_nr','is_place',
+		'is_edition','is_thema','is_cover','is_url_oai'
+	];
+
+	var $typeFields        = [	
+		'hidden','set','hidden',
+		'hidden','year',
+		'string:10','string:10','string:10','string:100',
+		'string:100','string:100','hidden','string:100'
+	];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -40,6 +52,57 @@ class JournalIssue extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
+	function oai_check()
+		{
+			$dt = $this->where('is_source_issue',0)->FindAll();
+			for ($r=0;$r < count($dt);$r++)
+				{
+					$d = $dt[$r];
+					$Oaipmh = new \App\Models\Oaipmh\Oaipmh();
+					$tela = $Oaipmh->index('get_proceedings',$d['id_is']);
+				}
+			return $tela;		
+		}
+
+	function edit($reg,$id=0)
+		{
+			$this->id = $id;
+			if ($reg > 0)
+				{
+					$dt = $this->find($id);					
+					$tela = h($dt['jnl_name'],1);
+				} else {
+					$tela = h(lang('Editar'),1);
+					$Journal = new \App\Models\Journal\Journals();
+					$dt = $Journal->find($id);
+					$this->typeFields        = [	
+						'hidden','set','hidden',
+						'hidden','none',
+						'none','none','none','none',
+						'none','none','none','string:100'
+					];					
+					$this->typeFields[1] = 'set:'.$id;
+					$this->typeFields[2] = 'set:'.$dt['jnl_frbr'];
+				}
+			$this->path = base_url(PATH.MODULE.'/index/edit_issue/');
+			$this->path_back = base_url(PATH.MODULE.'/index/oai_check/');
+			$tela .= form($this);
+			$tela = bs(bsc($tela,12));
+			return $tela;
+		}
+
+	function btn_new_issue($dt)
+		{
+			$id_rdf = $dt['jnl_frbr'];
+			$id = $dt['id_jnl'];
+			$url = base_url(URL.MODULE.'/index/edit_issue/0/'.$id.'/'.$id_rdf);
+			$tela = '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_issue_new').'</a>';
+			
+			$tela .= ' ';
+			$url = base_url(URL.MODULE.'/index/oai_check/');
+			$tela .= '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_issue_harvesting').'</a>';			
+			return $tela;
+		}
 	function view_issue_articles($id)
 		{
 			$tela = '';
