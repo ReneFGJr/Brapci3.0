@@ -115,6 +115,7 @@ class BooksSelf extends Model
 
 	function ajax()
 		{
+			$Social = new \App\Models\Socials();
 			$ids = $_SESSION['book_self_id'];
 			$user = $Social->loged();
 			$dir = '.tmp/';
@@ -166,6 +167,7 @@ class BooksSelf extends Model
 
 	function mySubmit()
 		{
+			$Social = new \App\Models\Socials();
 			$user = $Social->loged();
 			$BooksSelf = new \App\Models\Book\BooksSelf();
 			$tela = h(lang('book.myself_deposit'),1);
