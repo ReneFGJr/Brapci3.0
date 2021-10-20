@@ -6,8 +6,9 @@ use CodeIgniter\Database\Migration;
 
 class SourceListsets extends Migration
 {
+    protected $DBGroup = 'brapci';
 	public function up()
-	{
+	{       
 		$this->forge->addField([
             'id_ls' => [
                 'type' => 'INT',
