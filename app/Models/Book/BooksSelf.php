@@ -229,7 +229,26 @@ class BooksSelf extends Model
 			if (count($dt) == 0)
 				{
 					$tela .= bsmessage(lang('book.submission_not_found'),3);
-				}
+				} else {
+					$tela = '<table class="table">';
+				for ($r=0;$r < count($dt);$r++)
+					{
+						$d = $dt[$r];
+						$tela .= '<tr>';
+						$tela .= '<td>';
+						$tela .= $d['bs_title'];
+						$tela .= '</td>';
+						$tela .= '<td>';
+						$tela .= lang('book.submit_status_'.$d['bs_status']);
+						$tela .= '</td>';
+						$tela .= '<td>';
+						$tela .= stodbr($d['updated_at']);
+						$tela .= '</td>';
+						
+						$tela .= '</tr>';
+					}
+					$tela .= '</table>;
+			}
 			return $tela;
 		}
 
