@@ -117,7 +117,7 @@ class Oaipmh extends Model
 			$JournalIssue = new \App\Models\Journal\JournalIssue();
 			$dt = $JournalIssue->find($id);
 			
-			$OaipmhListSetSepc = new \App\Models\Oaipmh\OaiPMHListSetSepc();
+			$OaipmhListSetSepc = new \App\Models\Oaipmh\OaipmhListSetSepc();
 			$sx .= $OaipmhListSetSepc->harvesting($dt,'EV');
 
 			$OaipmhListRecord = new \App\Models\Oaipmh\OaipmhListRecord();
