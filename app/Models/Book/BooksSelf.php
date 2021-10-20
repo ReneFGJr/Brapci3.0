@@ -231,7 +231,7 @@ class BooksSelf extends Model
 					$tela .= bsmessage(lang('book.submission_not_found'),3);
 				} else {
 					$tela = '<table class="table">';
-					$tela .= '<tr>';
+					$tela .= '<tr class="small">';
 					$tela .= '<th>'.lang('book.bs_title').'</th>';
 					$tela .= '<th>'.lang('book.bs_status').'</th>';
 					$tela .= '</tr>';
