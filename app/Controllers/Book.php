@@ -8,7 +8,7 @@ helper(['boostrap','url','graphs','sisdoc_forms','form','nbr']);
 
 define("LIBRARY", "3001");
 define("LIBRARY_NAME", "BRAPCI_RESEARCH");
-define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix']);
+define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix'].'book/');
 define("MODULE",'book');
 define("URL",$_SERVER['app.baseURL']);
 
