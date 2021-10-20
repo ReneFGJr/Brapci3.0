@@ -32,7 +32,11 @@ class SourceListsets extends Migration
             'created_at datetime default current_timestamp',
             'updated_at datetime default current_timestamp on update current_timestamp'
         ]);
+        $this->forge->addKey('id_ls', true);
+        $this->forge->createTable('source_listsets');    
+    
 	}
+
 
 	public function down()
 	{
