@@ -234,6 +234,7 @@ class BooksSelf extends Model
 					$tela .= '<tr class="small">';
 					$tela .= '<th>'.lang('book.bs_title').'</th>';
 					$tela .= '<th>'.lang('book.bs_status').'</th>';
+					$tela .= '<th>'.lang('brapci.action').'</th>';
 					$tela .= '</tr>';
 				for ($r=0;$r < count($dt);$r++)
 					{
@@ -247,7 +248,20 @@ class BooksSelf extends Model
 						$tela .= '</td>';
 						$tela .= '<td>';
 						$tela .= stodbr($d['updated_at']);
-						$tela .= '</td>';						
+						$tela .= '</td>';
+						
+						if (d['bs_status'] == 0)
+							{
+								$link = '<a href="'.base_url(PATH.'selft/'.$d['id_bs']).'">'.lang('book.selft_action_'.$d['bs_status']).'</a>';
+							} else {
+								$link ='-';
+							}
+						
+
+						$tela .= '<td>';
+						$tela .= $link;
+						$tela .= '</td>';
+
 						$tela .= '</tr>';
 					}
 					$tela .= '</table>';
