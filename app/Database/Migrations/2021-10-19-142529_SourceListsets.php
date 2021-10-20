@@ -23,7 +23,7 @@ class SourceListsets extends Migration
             ],             
             'ls_description' => [
                 'type' => 'TEXT',
-				'default' => 0
+				'default' => ''
             ], 			
             'ls_journal' => [
                 'type' => 'INT',
