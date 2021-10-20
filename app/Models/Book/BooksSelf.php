@@ -116,7 +116,7 @@ class BooksSelf extends Model
 	function ajax()
 		{
 			$ids = $_SESSION['book_self_id'];
-			$user = 1;
+			$user = $Social->loged();
 			$dir = '.tmp/';
 			dircheck($dir);
 			$dir = '.tmp/.tmp_books/';
@@ -166,7 +166,7 @@ class BooksSelf extends Model
 
 	function mySubmit()
 		{
-			$user = 1;
+			$user = $Social->loged();
 			$BooksSelf = new \App\Models\Book\BooksSelf();
 			$tela = h(lang('book.myself_deposit'),1);
 			$tela .= $BooksSelf->myTableView($user);
@@ -214,7 +214,8 @@ class BooksSelf extends Model
 	function metadata($user)
 		{
 			$tela = '';
-			$this->path = base_url(PATH.'index/self/metadata');
+			$this->path_back = base_url(PATH.'index/	self/end');
+			$this->path = base_url(PATH.'index/	self/metadata');
 			$tela = form($this);
 			return $tela;
 		}

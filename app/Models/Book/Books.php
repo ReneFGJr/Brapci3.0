@@ -58,7 +58,7 @@ class Books extends Model
 		}	
 	function menu()
 		{
-			$mn = array('book/index/self'=>'book.self_submit');
+			$mn = array('/index/self'=>'book.self_submit');
 			$tela ='<h1>MENU</h1>';
 			$tela .= '<ul>';
 			foreach($mn as $url=>$label)
