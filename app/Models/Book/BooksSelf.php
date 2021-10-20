@@ -252,7 +252,7 @@ class BooksSelf extends Model
 						
 						if ($d['bs_status'] == 0)
 							{
-								$link = '<a href="'.base_url(PATH.'selft/'.$d['id_bs']).'">'.lang('book.selft_action_'.$d['bs_status']).'</a>';
+								$link = '<a href="'.base_url(PATH.'selft/'.$d['id_bs']).'" class="btn btn-outline-primary">'.lang('book.selft_action_'.$d['bs_status']).'</a>';
 							} else {
 								$link ='-';
 							}
