@@ -61,7 +61,7 @@ class Oaipmh extends Model
 
 	function resume($id)
 		{
-			$OaipmhListRecord = new \App\Models\Oaipmh\OaiPMHListRecord();
+			$OaipmhListRecord = new \App\Models\Oaipmh\OaipmhListRecord();
 			$tela = $OaipmhListRecord->resume($id);
 			return $tela;
 		}
