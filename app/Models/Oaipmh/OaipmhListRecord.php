@@ -115,10 +115,6 @@ class OaiPMHListRecord extends Model
 		}	
 	function register($data)
 		{
-			echo '<pre>';
-			print_r($data);
-			echo '</pre>';
-			echo '<hr>';
 			$dt = $this->where('lr_identifier',$data['lr_identifier'])
 				->where('lr_jnl',$data['lr_jnl'])
 				->where('lr_setSpec',$data['lr_setSpec'])
