@@ -59,6 +59,13 @@ class Oaipmh extends Model
 			return $sx;
 		}
 
+	function resume($id)
+		{
+			$OaipmhListRecord = new \App\Models\Oaipmh\OaiPMHListRecord();
+			$tela = $OaipmhListRecord->resume($id);
+			return $tela;
+		}
+
 
 
 	function harvesting($id)

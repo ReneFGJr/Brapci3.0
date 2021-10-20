@@ -79,6 +79,9 @@ class Journals extends Model
 					case 'viewid':
 						$tela = $this->viewid($d2);
 						break;
+					case 'oai':
+						$tela = $this->oai($d2,$d3);
+						break;						
 					case 'edit':
 						break;						
 					default:
@@ -86,6 +89,13 @@ class Journals extends Model
 						break;
 				}
 			return $tela;
+		}
+	function oai($id,$jnl)
+		{
+			$OaipmhRegister = new \App\Models\Oaipmh\OaiPMHListRecord();
+			
+			echo '==>'.$id;
+			echo '==>'.$jnl;
 		}
 	function oai_check()
 		{
@@ -210,6 +220,13 @@ class Journals extends Model
 			$jnl .= bsc($this->issn($dt),8);
 			$jnl .= bsc($this->url($dt),4);
 			$jnl .= bsc($this->active($dt),8);
+			$jnl .= '</div>';
+
+			$Oaipmh = new \App\Models\Oaipmh\Oaipmh();
+			$idj = $dt['jnl_frbr'];
+			$jnl .= '<div class="row">';
+			$jnl .= bsc('<img src="'.base_url('img/icones/oaipmh.png').'" class="img-fluid">',2);
+			$jnl .= $Oaipmh->resume($idj);
 			$jnl .= '</div>';
 			
 			$tela = bsc($jnl,9);

@@ -43,6 +43,31 @@ class OaiPMHListRecord extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
+	function resume($id)
+		{
+			$tela = '';
+			$sql = "select count(*) as total, lr_procees 
+					from ".$this->table."
+					where lr_jnl = $id";
+
+			$dt = $this->query($sql)->getResult();
+			$v = array(0,0,0,0);
+
+			for ($r=0;$r < count($dt);$r++)
+				{
+					$d = (array)$dt[$r];
+					if ($d['lr_procees'] == 0) { $v[0] = number_format($d['total'],0,',','.'); }
+					if ($d['lr_procees'] == 1) { $v[1] = number_format($d['total'],0,',','.'); }
+					if ($d['lr_procees'] == 2) { $v[2] = number_format($d['total'],0,',','.'); }
+					if ($d['lr_procees'] == 9) { $v[9] = number_format($d['total'],0,',','.'); }
+				}
+			$tela .= bsc(lang('brapci.oai_status_0').'<h1><a href="'.base_url(PATH.MODULE.'/index/oai/'.$id.'/0').'">'.$v[0].'</a></h1>',2,'border');
+			$tela .= bsc(lang('brapci.oai_status_1').'<h1><a href="'.base_url(PATH.MODULE.'/index/oai/'.$id.'/1').'">'.$v[1].'</h1>',2,'border');
+			$tela .= bsc(lang('brapci.oai_status_2').'<h1><a href="'.base_url(PATH.MODULE.'/index/oai/'.$id.'/2').'">'.$v[2].'</h1>',2,'border');
+			$tela .= bsc(lang('brapci.oai_status_9').'<h1><a href="'.base_url(PATH.MODULE.'/index/oai/'.$id.'/9').'">'.$v[3].'</h1>',2,'border');
+			return $tela;
+		}
+
 	function harvesting($dt,$tp='JA')
 		{
 			$OaipmhListSetSepc = new \App\Models\Oaipmh\OaipmhListSetSepc();
