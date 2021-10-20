@@ -48,7 +48,8 @@ class OaiPMHListRecord extends Model
 			$tela = '';
 			$sql = "select count(*) as total, lr_procees 
 					from ".$this->table."
-					where lr_jnl = $id";
+					where lr_jnl = $id
+					group by lr_procees";
 
 			$dt = $this->query($sql)->getResult();
 			$v = array(0,0,0,0);
