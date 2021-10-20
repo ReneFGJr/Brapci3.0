@@ -96,11 +96,11 @@ class JournalIssue extends Model
 		{
 			$id_rdf = $dt['jnl_frbr'];
 			$id = $dt['id_jnl'];
-			$url = base_url(URL.MODULE.'/index/edit_issue/0/'.$id.'/'.$id_rdf);
+			$url = base_url(PATH.MODULE.'/index/edit_issue/0/'.$id.'/'.$id_rdf);
 			$tela = '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_issue_new').'</a>';
 			
 			$tela .= ' ';
-			$url = base_url(URL.MODULE.'/index/oai_check/');
+			$url = base_url(PATH.MODULE.'/index/oai_check/');
 			$tela .= '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_issue_harvesting').'</a>';			
 			return $tela;
 		}
