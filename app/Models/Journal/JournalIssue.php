@@ -54,6 +54,7 @@ class JournalIssue extends Model
 
 	function oai_check()
 		{
+			$tela = '';
 			$dt = $this->where('is_source_issue',0)->FindAll();
 			for ($r=0;$r < count($dt);$r++)
 				{
