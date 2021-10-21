@@ -16,7 +16,8 @@ class OaiPMHListRecord extends Model
 	protected $protectFields        = true;
 	protected $allowedFields        = [
 		'id_lr','lr_identifier','lr_datestamp',
-		'lr_setSpec','lr_status','lr_jnl'
+		'lr_setSpec','lr_status','lr_jnl',
+		'lr_issue'
 	];
 
 	// Dates
@@ -84,6 +85,7 @@ class OaiPMHListRecord extends Model
 					default:
 						$data['li_journal'] = $dt['epi_procceding'];
 						$data['li_issue'] = $dt['id_epi'];
+						$dt['id_is'] = 0;
 						$url = trim($dt['epi_url_oai']).'?verb=ListIdentifiers';
 						$url .= '&metadataPrefix=oai_dc';
 					break;
@@ -108,6 +110,7 @@ class OaiPMHListRecord extends Model
 					$data['lr_datestamp'] = str_replace(array('T','Z'),' ',(string)$reg->datestamp);
 					$data['lr_procees'] = 0;
 					$data['lr_jnl'] = $dt['is_source_rdf'];
+					$data['lr_issue'] = $dt['id_is'];
 
 					$setspec = (string)$reg->setSpec;
 					if ($xsetspec != $setspec)
@@ -139,12 +142,14 @@ class OaiPMHListRecord extends Model
 			$sx .= '</ul>';
 			return $sx;
 		}	
+
 	function register($data)
 		{
 			$dt = $this->where('lr_identifier',$data['lr_identifier'])
 				->where('lr_jnl',$data['lr_jnl'])
 				->where('lr_setSpec',$data['lr_setSpec'])
 				->findAll();
+
 			if (!isset($dt[0]))
 				{
 					$this->insert($data);

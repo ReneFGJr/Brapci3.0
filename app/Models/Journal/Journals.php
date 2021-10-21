@@ -90,12 +90,13 @@ class Journals extends Model
 				}
 			return $tela;
 		}
-	function oai($id,$jnl)
+	function oai($jnl,$id)
 		{
-			$OaipmhRegister = new \App\Models\Oaipmh\OaiPMHListRecord();
-			
-			echo '==>'.$id;
-			echo '==>'.$jnl;
+			$tela = '';
+			$OaipmhRegister = new \App\Models\Oaipmh\OaipmhRegister();
+			$idr = $OaipmhRegister->process_00($jnl);
+			$tela .= '==>'.$idr;
+			return $tela;
 		}
 	function oai_check()
 		{
@@ -215,7 +216,7 @@ class Journals extends Model
 
 			$openaccess = $this->openaccess($dt);
 			
-			$jnl .= '<div class="row">';
+			$jnl .= '<div class="row ">';
 			$jnl .= bsc($this->start_end($dt),4);
 			$jnl .= bsc($this->issn($dt),8);
 			$jnl .= bsc($this->url($dt),4);
@@ -224,7 +225,7 @@ class Journals extends Model
 
 			$Oaipmh = new \App\Models\Oaipmh\Oaipmh();
 			$idj = $dt['jnl_frbr'];
-			$jnl .= '<div class="row">';
+			$jnl .= '<div class="row mt-5">';
 			$jnl .= bsc('<img src="'.base_url('img/icones/oaipmh.png').'" class="img-fluid">',2);
 			$jnl .= $Oaipmh->resume($idj);
 			$jnl .= '</div>';
