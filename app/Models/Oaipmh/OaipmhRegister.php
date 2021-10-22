@@ -8,7 +8,7 @@ class OaipmhRegister extends Model
 {
 	protected $DBGroup              = 'default';
 	protected $table                = 'brapci.source_listrecords';
-	protected $primaryKey           = 'id_li';
+	protected $primaryKey           = 'id_lr';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
@@ -57,6 +57,11 @@ class OaipmhRegister extends Model
 			->where('lr_procees', $st)
 			->where('lr_jnl', $id)
 			->first();
+
+		if ($this->db->resultID->num_rows == 0)
+			{
+				return 0;
+			}
 		if (count($di) == 0) {
 			return 0;
 		}
@@ -173,16 +178,18 @@ class OaipmhRegister extends Model
 				$country->export();
 				*/
 
-		$RDF = new \App\Models\RDF();
-		$RDFData = new \App\Models\RDFData();
-		$RDFClass = new \App\Models\RDFClass();
-		$RDF_Date = new \App\Models\RDF_Date();
-		$RDFClass = new \App\Models\RDFClass();
+		$RDF = new \App\Models\RDF\RDF();
+		$RDFData = new \App\Models\RDF\RDFData();
+		$RDFClass = new \App\Models\RDF\RDFClass();
+		$RDFLiteral = new \App\Models\RDF\RDFLiteral();
+		$RDFConcept = new \App\Models\RDF\RDFConcept();
+
+		$RDFClass = new \App\Models\RDF\RDFClass();
 		$RDF_Work = new \App\Models\RDF_Work();
+		$RDF_Date = new \App\Models\RDF_Date();
 		$RDF_Place = new \App\Models\RDF_Place();
-		$RDF_Issue = new \App\Models\RDF_Issue();
-		$RDFLiteral = new \App\Models\RDFLiteral();
-		$RDFConcept = new \App\Models\RDFConcept();
+		$RDF_Issue = new \App\Models\RDF_Issue();		
+		
 		$RDF_Section = new \App\Models\RDF_Section();
 		$RDF_Journal = new \App\Models\RDF_Journal();
 
@@ -190,14 +197,18 @@ class OaipmhRegister extends Model
 		$EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
 
 		$sx = '';
-		$di = $this->next($id);
-		$jnl = $di['li_journal'];
+		$di = $this->next($id,1);
+		if ($di == 0)
+			{
+				return 'FIM';
+			}
+		$dt = $this->find($di);
 
 		/*************************************************************************************** JOURNAL AND ISSUE */
 		/***********************************************************************************************************/
 		/***********************************************************************************************************/
 
-		if (isset($di['id_ls'])) {
+		if (isset($di['id_lr'])) {
 			/************************************************** Journal Publication */
 			$djnl = $EventProceedings->le($di['li_journal']);
 			$dt = array();
@@ -231,6 +242,9 @@ class OaipmhRegister extends Model
 			$dt['Relation']['brapci:isEventYear'] = $IDY;
 			$dt['Relation']['brapci:isEventPlace'] = $IDPlace;
 			$sx .= 'Issue: ' . $djnl['ep_nome'] . '<br>';
+			echo '<pre>';
+			print_r($dt);
+			exit;
 			$IDISSUE = $RDFConcept->concept($dt);
 
 			$xml = $this->le_xml($di);

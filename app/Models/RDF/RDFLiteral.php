@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\RDF;
+namespace App\Models\RDF;
 
 use CodeIgniter\Model;
 

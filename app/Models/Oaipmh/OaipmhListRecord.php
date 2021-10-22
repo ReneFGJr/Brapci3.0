@@ -149,7 +149,6 @@ class OaiPMHListRecord extends Model
 				->where('lr_jnl',$data['lr_jnl'])
 				->where('lr_setSpec',$data['lr_setSpec'])
 				->findAll();
-
 			if (!isset($dt[0]))
 				{
 					$this->insert($data);

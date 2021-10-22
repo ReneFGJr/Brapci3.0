@@ -94,8 +94,19 @@ class Journals extends Model
 		{
 			$tela = '';
 			$OaipmhRegister = new \App\Models\Oaipmh\OaipmhRegister();
-			$idr = $OaipmhRegister->process_00($jnl);
-			$tela .= '==>'.$idr;
+			switch ($id)
+				{
+					case '0':
+					$idr = $OaipmhRegister->process_00($jnl);
+					$tela .= '==>'.$idr;
+
+					case '1':
+					$idr = $OaipmhRegister->process_01($jnl);
+					$tela .= '==>'.$idr;
+					break;
+				}
+			
+			
 			return $tela;
 		}
 	function oai_check()
