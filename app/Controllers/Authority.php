@@ -59,12 +59,7 @@ class Authority extends BaseController
 		$Authority = new \App\Models\Authority\Index();
 
 		$tela = $this->cab('all');
-		if ($d1=='')
-			{
-				$tela .= $this->cab('typping');
-			} else {
-				$tela .= $Authority->index($d1,$d2,$d3,$d4);
-			}
+		$tela .= $Authority->index($d1,$d2,$d3,$d4);
 		$tela .= $this->cab('footer');
 
 		return $tela;

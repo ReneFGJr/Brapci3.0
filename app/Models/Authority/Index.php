@@ -51,7 +51,7 @@ class Index extends Model
 	{
 		$this->setDatabase('brapci_authority');
 
-		$tela = '';
+		$tela = '<h1>'.$d1.'</h1>';
 		switch ($d1) {
 			case 'import_lattes':
 				$tela .= $this->import_lattes($d2, $d3);
@@ -87,7 +87,7 @@ class Index extends Model
 				break;
 
 			default:
-				$tela .= '==>' . $d1;
+				$tela .= $this->tableview();
 				break;
 		}
 		$tela = bs($tela);
@@ -169,13 +169,7 @@ class Index extends Model
 	function author($name, $URI, $up = 1)
 	{
 		$tela = '';
-		$RDF = new \App\Models\RDF();
-		$name = nbr_author($name, 7);
-		$AuthorityWords = new \App\Models\Authority\AuthorityWords();
-		$AuthorityWords->process($name);
-		$idp = $RDF->RDP_concept($name, 'foad:Person');
-
-		if (strlen($name)) {
+		if (strlen($name) > 0) {
 			$tela .= '<h2>' . $name . '</h2>';
 			$AuthorityNames = new \App\Models\Authority\AuthorityNames();
 			$AuthorityNames->where('a_uri', $URI);
@@ -202,7 +196,7 @@ class Index extends Model
 				}
 			}
 		}
-		return $idp;
+		return '';
 	}
 	function inport_brapci($url)
 	{
