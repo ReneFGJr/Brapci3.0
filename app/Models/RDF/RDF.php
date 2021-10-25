@@ -109,7 +109,16 @@ class RDF extends Model
 
 		return ($dt);
 	}
-
+	
+	function find($sr='', $class = '')
+		{
+			echo '<h1>'.$class.'</h1>';
+			$RDFClass = new \App\Models\RDF\RDFClass();
+			$RDFLiteral = new \App\Models\RDF\RDFLiteral();
+			$prop = $RDFClass->class($class);
+			$id = $RDFLiteral->name($sr);
+			return $id;
+		}
 	function recover($dt = array(), $class = '')
 	{
 		$rst = array();
@@ -170,7 +179,7 @@ class RDF extends Model
 				$flx = $upper;
 				$fi[$flx] = '';
 			}
-			$link = '<a href="' . base_url(PATH . 'v/' . $line['id_cc']) . '">';
+			$link = '<a href="' . base_url(URL . 'v/' . $line['id_cc']) . '">';
 			$linka = '</a>';
 			$fi[$flx] .= $link . $name . $linka . '<br>';
 		}

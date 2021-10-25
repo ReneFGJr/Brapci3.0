@@ -69,7 +69,12 @@ class Endpoints extends Model
 	function LattesFindID($q='Name for query')
 	{
 		$dt = array();
-		$file = '/home/cedap/CVlattesASCII.csv';		
+		$file = '/home/cedap/CVlattesASCII.csv';
+		if (!file_exists(($file)))		
+			{
+				echo 'File no found - '.$file;
+				exit;
+			}
 		$handle = fopen($file, "r");
 		$q = mb_strtoupper(ascii($q));
 		$dt['query'] = $q;

@@ -51,7 +51,7 @@ class Index extends Model
 	{
 		$this->setDatabase('brapci_authority');
 
-		$tela = '<h1>'.$d1.'</h1>';
+		$tela = '';
 		switch ($d1) {
 			case 'import_lattes':
 				$tela .= $this->import_lattes($d2, $d3);
@@ -94,11 +94,11 @@ class Index extends Model
 		return $tela;
 	}
 
-	function import_lattes($d1, $d2)
+	function import_lattes($d1, $ida)
 	{
 		$tela = '';
 		$Lattes = new \App\Models\Lattes\LattesXML();
-		$tela = $Lattes->xml($d1);
+		$tela = $Lattes->xml($d1,$ida);
 		return $tela;
 	}
 

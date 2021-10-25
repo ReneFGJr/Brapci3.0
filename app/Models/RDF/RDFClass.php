@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class RDFClass extends Model
 {
-	var $DBGroup              = 'default';
+	var $DBGroup              = 'brapci';
 	protected $table                = 'rdf_class';
 	protected $primaryKey           = 'id_c';
 	protected $useAutoIncrement     = true;
@@ -44,7 +44,7 @@ class RDFClass extends Model
 
 	function class($c,$force=True)
 		{
-			$this->Prefix = new \App\Models\RDFPrefix();
+			$this->Prefix = new \App\Models\RDF\RDFPrefix();
 			$this->Prefix->DBGroup = $this->DBGroup;
 			
 			if (strpos($c,':'))

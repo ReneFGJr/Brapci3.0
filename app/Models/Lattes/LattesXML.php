@@ -40,7 +40,7 @@ class LattesXML extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function xml($id='')
+	function xml($id='',$rdf='')
 		{
 			$dir = '.tmp/lattes/';
 			$file = $dir . '/' . $id . '.xml';
@@ -49,21 +49,24 @@ class LattesXML extends Model
 					$xml = simplexml_load_file($file);
 					$this->vinculo($xml,$id);
 				} else {
-					$this->LattesLoad($id);
+					$this->LattesLoad($id,$rdf);
+					$xml = simplexml_load_file($file);
+					$this->vinculo($xml,$id);
 				}	
+			return $xml;
 		}
 		
 	function LattesLoad($id)
 		{
-		$url = 'https://brapci.inf.br/ws/api/?verb=lattes&q=' . $d1;
+		$url = 'https://brapci.inf.br/ws/api/?verb=lattes&q=' . $id;
 
 		$dir = '.tmp';
 		dircheck($dir);
 		$dir = '.tmp/lattes';
 		dircheck($dir);
 
-		$file = $dir . '/' . $d1 . '.zip';
-		$file2 = $dir . '/' . $d1 . '.xml';
+		$file = $dir . '/' . $id . '.zip';
+		$file2 = $dir . '/' . $id . '.xml';
 
 		if (!file_exists(($file2))) {
 			$txt = file_get_contents($url);
@@ -77,17 +80,27 @@ class LattesXML extends Model
 				unlink($file);
 			}			
 		}
-		$tela .= $Lattes->xml($d1);
+		$tela .= $this->xml($id);
 		return $tela;
 		}
+
 	function vinculo($xml,$id)
 		{
+			$RDF = new \App\Models\RDF\RDF();
 			$xml = (array)$xml;
 			$xml = (array)$xml['DADOS-GERAIS'];
 			$xml = (array)$xml['ENDERECO'];
 			$xml = (array)$xml['ENDERECO-PROFISSIONAL'];
 			$dados = $xml['@attributes'];
 
+			$inst_cod = $dados['CODIGO-INSTITUICAO-EMPRESA'];
+
+			echo '===>'.$inst_cod;
+			$lang = 'pt-BR';
+			$force = 0;
+			$class = 'brapci:isCNPqInstCode';
+
+			echo '<br>===>'.$RDF->find($inst_cod,$class,$force);
 					echo '<pre>';
 					print_r($dados);					
 					exit;

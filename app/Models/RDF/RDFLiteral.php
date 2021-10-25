@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class RDFLiteral extends Model
 {
 	var $DBGroup              = 'default';
-	protected $table                = 'rdf_name';
+	protected $table                = 'brapci.rdf_name';
 	protected $primaryKey           = 'id_n';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -42,17 +42,22 @@ class RDFLiteral extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function name($name,$lg='pt-BR')
+	function name($name,$lg='pt-BR',$force = 1)
 		{
 			$dt = $this->where('n_name',$name)->First();
 			if (!is_array($dt))
 				{
-					$data['n_name'] = $name;
-					$data['n_lock'] = 0;
-					$data['n_lang'] = $lg;
-					$this->insert($data);
-					$dt = $this->where('n_name',$name)->First();
-					return $dt['id_n'];
+					if ($force == 1)
+					{
+						$data['n_name'] = $name;
+						$data['n_lock'] = 0;
+						$data['n_lang'] = $lg;
+						$this->insert($data);
+						$dt = $this->where('n_name',$name)->First();
+						return $dt['id_n'];
+					} else {
+						return 0;
+					}
 				}
 			return $dt['id_n'];
 		}

@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class RDFPrefix extends Model
 {
 	var $DBGroup             		= 'default';
-	protected $table                = 'rdf_prefix';
+	protected $table                = 'brapci.rdf_prefix';
 	protected $primaryKey           = 'id_prefix ';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -53,11 +53,11 @@ class RDFPrefix extends Model
 				} else {
 					$data['prefix_ref'] = $pre;
 					$this->insert($data);
-
-					$dt = $this->where('prefix_ref',$pre)->find();
 					//echo 'Prefix não localizado - '.$pre;
 					sleep(0.1);
+					
 					$dt = $this->where('prefix_ref',$pre)->find();
+					print_r($dt);
 					$ID = $dt[0]['id_prefix'];
 				}
 			return $ID;

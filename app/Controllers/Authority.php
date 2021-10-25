@@ -5,6 +5,7 @@ namespace App\Controllers;
 //define("PATH", 'Authoriry');
 define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix'].'authority/');
 define("MODULE",'authority');
+define("URL",$_SERVER['app.baseURL']);
 
 define("LIBRARY", "202101");
 helper(['boostrap', 'url', 'graphs', 'sisdoc_forms', 'form', 'nbr']);
@@ -18,7 +19,7 @@ $hd = new \App\Models\Header\Header();
 
 class Authority extends BaseController
 {
-	private function cab($tp = '')
+	function cab($tp = '')
 	{
 		/*						
 						$tela .= view('Pages/_navbar');
@@ -73,6 +74,12 @@ class Authority extends BaseController
 		$tela .= $app->index($d1,$d2,$d3);
 		$tela .= $this->cab('footer');
 
+		return $tela;
+	}	
+	function v($id)
+	{
+		$V = new \App\Models\Brapci\V();
+		$tela = $V->index($this, $id);
 		return $tela;
 	}	
 }
