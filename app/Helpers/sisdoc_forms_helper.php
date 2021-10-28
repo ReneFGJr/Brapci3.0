@@ -15,6 +15,15 @@ require('sisdoc_form_2.php');
 require('sisdoc_form_js.php');
 require('sisdoc_drag_drop.php');
 
+    function clog($msg)
+        {
+            $time = date("Y-m-d H:i:s");
+            $tela = '<script>';
+            $tela .= " console.log('$time - $msg');";
+            $tela .= '</script>';
+            echo $tela;
+        }
+
     function msg($var)
         {
             return lang($var);

@@ -7,7 +7,7 @@
       <div class="row gx-4">
         <div class="col-auto">
           <div class="avatar avatar-xl position-relative">
-            <img src="../assets/img/bruce-mars.jpg" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+            <img src="<?php echo URL;?>/assets/img/bruce-mars.jpg" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
           </div>
         </div>
         <div class="col-auto my-auto">
@@ -171,7 +171,7 @@
             <ul class="list-group">
               <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
                 <div class="avatar me-3">
-                  <img src="../assets/img/kal-visuals-square.jpg" alt="kal" class="border-radius-lg shadow">
+                  <img src="<?php echo URL;?>/assets/img/kal-visuals-square.jpg" alt="kal" class="border-radius-lg shadow">
                 </div>
                 <div class="d-flex align-items-start flex-column justify-content-center">
                   <h6 class="mb-0 text-sm">Sophie B.</h6>
@@ -181,7 +181,7 @@
               </li>
               <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
                 <div class="avatar me-3">
-                  <img src="../assets/img/marie.jpg" alt="kal" class="border-radius-lg shadow">
+                  <img src="<?php echo URL;?>/assets/img/marie.jpg" alt="kal" class="border-radius-lg shadow">
                 </div>
                 <div class="d-flex align-items-start flex-column justify-content-center">
                   <h6 class="mb-0 text-sm">Anne Marie</h6>
@@ -191,7 +191,7 @@
               </li>
               <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
                 <div class="avatar me-3">
-                  <img src="../assets/img/ivana-square.jpg" alt="kal" class="border-radius-lg shadow">
+                  <img src="<?php echo URL;?>/assets/img/ivana-square.jpg" alt="kal" class="border-radius-lg shadow">
                 </div>
                 <div class="d-flex align-items-start flex-column justify-content-center">
                   <h6 class="mb-0 text-sm">Ivanna</h6>
@@ -201,7 +201,7 @@
               </li>
               <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
                 <div class="avatar me-3">
-                  <img src="../assets/img/team-4.jpg" alt="kal" class="border-radius-lg shadow">
+                  <img src="<?php echo URL;?>/assets/img/team-4.jpg" alt="kal" class="border-radius-lg shadow">
                 </div>
                 <div class="d-flex align-items-start flex-column justify-content-center">
                   <h6 class="mb-0 text-sm">Peterson</h6>
@@ -211,7 +211,7 @@
               </li>
               <li class="list-group-item border-0 d-flex align-items-center px-0">
                 <div class="avatar me-3">
-                  <img src="../assets/img/team-3.jpg" alt="kal" class="border-radius-lg shadow">
+                  <img src="<?php echo URL;?>/assets/img/team-3.jpg" alt="kal" class="border-radius-lg shadow">
                 </div>
                 <div class="d-flex align-items-start flex-column justify-content-center">
                   <h6 class="mb-0 text-sm">Nick Daniel</h6>
@@ -235,7 +235,7 @@
                 <div class="card card-blog card-plain">
                   <div class="position-relative">
                     <a class="d-block shadow-xl border-radius-xl">
-                      <img src="../assets/img/home-decor-1.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
+                      <img src="<?php echo URL;?>/assets/img/home-decor-1.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
                     </a>
                   </div>
                   <div class="card-body px-1 pb-0">
@@ -252,16 +252,16 @@
                       <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button>
                       <div class="avatar-group mt-2">
                         <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison">
-                          <img alt="Image placeholder" src="../assets/img/team-1.jpg">
+                          <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/team-1.jpg">
                         </a>
                         <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Milly">
-                          <img alt="Image placeholder" src="../assets/img/team-2.jpg">
+                          <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/"<?php echo URL;?>">
                         </a>
                         <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nick Daniel">
-                          <img alt="Image placeholder" src="../assets/img/team-3.jpg">
+                          <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/team-3.jpg">
                         </a>
                         <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson">
-                          <img alt="Image placeholder" src="../assets/img/team-4.jpg">
+                          <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/team-4.jpg">
                         </a>
                       </div>
                     </div>
@@ -272,7 +272,7 @@
                 <div class="card card-blog card-plain">
                   <div class="position-relative">
                     <a class="d-block shadow-xl border-radius-xl">
-                      <img src="../assets/img/home-decor-2.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-lg">
+                      <img src="<?php echo URL;?>/assets/img/home-decor-2.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-lg">
                     </a>
                   </div>
                   <div class="card-body px-1 pb-0">
@@ -289,16 +289,16 @@
                       <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button>
                       <div class="avatar-group mt-2">
                         <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nick Daniel">
-                          <img alt="Image placeholder" src="../assets/img/team-3.jpg">
+                          <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/team-3.jpg">
                         </a>
                         <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson">
-                          <img alt="Image placeholder" src="../assets/img/team-4.jpg">
+                          <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/team-4.jpg">
                         </a>
                         <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison">
-                          <img alt="Image placeholder" src="../assets/img/team-1.jpg">
+                          <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/team-1.jpg">
                         </a>
                         <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Milly">
-                          <img alt="Image placeholder" src="../assets/img/team-2.jpg">
+                          <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/"<?php echo URL;?>">
                         </a>
                       </div>
                     </div>
@@ -309,7 +309,7 @@
                 <div class="card card-blog card-plain">
                   <div class="position-relative">
                     <a class="d-block shadow-xl border-radius-xl">
-                      <img src="../assets/img/home-decor-3.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
+                      <img src="<?php echo URL;?>/assets/img/home-decor-3.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
                     </a>
                   </div>
                   <div class="card-body px-1 pb-0">
@@ -326,16 +326,16 @@
                       <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button>
                       <div class="avatar-group mt-2">
                         <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson">
-                          <img alt="Image placeholder" src="../assets/img/team-4.jpg">
+                          <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/team-4.jpg">
                         </a>
                         <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nick Daniel">
-                          <img alt="Image placeholder" src="../assets/img/team-3.jpg">
+                          <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/team-3.jpg">
                         </a>
                         <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Milly">
-                          <img alt="Image placeholder" src="../assets/img/team-2.jpg">
+                          <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/"<?php echo URL;?>">
                         </a>
                         <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison">
-                          <img alt="Image placeholder" src="../assets/img/team-1.jpg">
+                          <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/team-1.jpg">
                         </a>
                       </div>
                     </div>
@@ -367,7 +367,7 @@
         <div class="row gx-4">
           <div class="col-auto">
             <div class="avatar avatar-xl position-relative">
-              <img src="../assets/img/bruce-mars.jpg" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+              <img src="<?php echo URL;?>/assets/img/bruce-mars.jpg" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
             </div>
           </div>
           <div class="col-auto my-auto">
@@ -531,7 +531,7 @@
               <ul class="list-group">
                 <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
                   <div class="avatar me-3">
-                    <img src="../assets/img/kal-visuals-square.jpg" alt="kal" class="border-radius-lg shadow">
+                    <img src="<?php echo URL;?>/assets/img/kal-visuals-square.jpg" alt="kal" class="border-radius-lg shadow">
                   </div>
                   <div class="d-flex align-items-start flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">Sophie B.</h6>
@@ -541,7 +541,7 @@
                 </li>
                 <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
                   <div class="avatar me-3">
-                    <img src="../assets/img/marie.jpg" alt="kal" class="border-radius-lg shadow">
+                    <img src="<?php echo URL;?>/assets/img/marie.jpg" alt="kal" class="border-radius-lg shadow">
                   </div>
                   <div class="d-flex align-items-start flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">Anne Marie</h6>
@@ -551,7 +551,7 @@
                 </li>
                 <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
                   <div class="avatar me-3">
-                    <img src="../assets/img/ivana-square.jpg" alt="kal" class="border-radius-lg shadow">
+                    <img src="<?php echo URL;?>/assets/img/ivana-square.jpg" alt="kal" class="border-radius-lg shadow">
                   </div>
                   <div class="d-flex align-items-start flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">Ivanna</h6>
@@ -561,7 +561,7 @@
                 </li>
                 <li class="list-group-item border-0 d-flex align-items-center px-0 mb-2">
                   <div class="avatar me-3">
-                    <img src="../assets/img/team-4.jpg" alt="kal" class="border-radius-lg shadow">
+                    <img src="<?php echo URL;?>/assets/img/team-4.jpg" alt="kal" class="border-radius-lg shadow">
                   </div>
                   <div class="d-flex align-items-start flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">Peterson</h6>
@@ -571,7 +571,7 @@
                 </li>
                 <li class="list-group-item border-0 d-flex align-items-center px-0">
                   <div class="avatar me-3">
-                    <img src="../assets/img/team-3.jpg" alt="kal" class="border-radius-lg shadow">
+                    <img src="<?php echo URL;?>/assets/img/team-3.jpg" alt="kal" class="border-radius-lg shadow">
                   </div>
                   <div class="d-flex align-items-start flex-column justify-content-center">
                     <h6 class="mb-0 text-sm">Nick Daniel</h6>
@@ -595,7 +595,7 @@
                   <div class="card card-blog card-plain">
                     <div class="position-relative">
                       <a class="d-block shadow-xl border-radius-xl">
-                        <img src="../assets/img/home-decor-1.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
+                        <img src="<?php echo URL;?>/assets/img/home-decor-1.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
                       </a>
                     </div>
                     <div class="card-body px-1 pb-0">
@@ -612,16 +612,16 @@
                         <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button>
                         <div class="avatar-group mt-2">
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison">
-                            <img alt="Image placeholder" src="../assets/img/team-1.jpg">
+                            <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/team-1.jpg">
                           </a>
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Milly">
-                            <img alt="Image placeholder" src="../assets/img/team-2.jpg">
+                            <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/"<?php echo URL;?>">
                           </a>
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nick Daniel">
-                            <img alt="Image placeholder" src="../assets/img/team-3.jpg">
+                            <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/team-3.jpg">
                           </a>
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson">
-                            <img alt="Image placeholder" src="../assets/img/team-4.jpg">
+                            <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/team-4.jpg">
                           </a>
                         </div>
                       </div>
@@ -632,7 +632,7 @@
                   <div class="card card-blog card-plain">
                     <div class="position-relative">
                       <a class="d-block shadow-xl border-radius-xl">
-                        <img src="../assets/img/home-decor-2.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-lg">
+                        <img src="<?php echo URL;?>/assets/img/home-decor-2.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-lg">
                       </a>
                     </div>
                     <div class="card-body px-1 pb-0">
@@ -649,16 +649,16 @@
                         <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button>
                         <div class="avatar-group mt-2">
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nick Daniel">
-                            <img alt="Image placeholder" src="../assets/img/team-3.jpg">
+                            <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/team-3.jpg">
                           </a>
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson">
-                            <img alt="Image placeholder" src="../assets/img/team-4.jpg">
+                            <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/team-4.jpg">
                           </a>
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison">
-                            <img alt="Image placeholder" src="../assets/img/team-1.jpg">
+                            <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/team-1.jpg">
                           </a>
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Milly">
-                            <img alt="Image placeholder" src="../assets/img/team-2.jpg">
+                            <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/"<?php echo URL;?>">
                           </a>
                         </div>
                       </div>
@@ -669,7 +669,7 @@
                   <div class="card card-blog card-plain">
                     <div class="position-relative">
                       <a class="d-block shadow-xl border-radius-xl">
-                        <img src="../assets/img/home-decor-3.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
+                        <img src="<?php echo URL;?>/assets/img/home-decor-3.jpg" alt="img-blur-shadow" class="img-fluid shadow border-radius-xl">
                       </a>
                     </div>
                     <div class="card-body px-1 pb-0">
@@ -686,16 +686,16 @@
                         <button type="button" class="btn btn-outline-primary btn-sm mb-0">View Project</button>
                         <div class="avatar-group mt-2">
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Peterson">
-                            <img alt="Image placeholder" src="../assets/img/team-4.jpg">
+                            <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/team-4.jpg">
                           </a>
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Nick Daniel">
-                            <img alt="Image placeholder" src="../assets/img/team-3.jpg">
+                            <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/team-3.jpg">
                           </a>
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Ryan Milly">
-                            <img alt="Image placeholder" src="../assets/img/team-2.jpg">
+                            <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/"<?php echo URL;?>">
                           </a>
                           <a href="javascript:;" class="avatar avatar-xs rounded-circle" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Elena Morison">
-                            <img alt="Image placeholder" src="../assets/img/team-1.jpg">
+                            <img alt="Image placeholder" src="<?php echo URL;?>/assets/img/team-1.jpg">
                           </a>
                         </div>
                       </div>

@@ -19,21 +19,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon"  href="<?php echo base_url('/img/favicon.png');?>" sizes="76x76">
-  <link rel="icon" href="<?php echo base_url('/img/favicon.png');?>" type="image/png">
-  <link rel="icon" href="<?php echo base_url($_SERVER['app.baseURL'].'/img/favicon.png');?>" type="image/x-icon" />
+  <link rel="apple-touch-icon"  href="<?php echo URL.'/img/favicon.png';?>" sizes="76x76">
+  <link rel="icon" href="<?php echo URL.'/img/favicon.png';?>" type="image/png">
+  <link rel="icon" href="<?php echo URL.'/img/favicon.png';?>" type="image/x-icon" />
 	<link rel="shortcut icon" href="<?php echo base_url($_SERVER['app.baseURL'].'/img/favicon.png');?>" type="image/x-icon" />
 
   <title>BRAPCI</title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
   <!-- Nucleo Icons -->
-  <link href="<?php echo base_url($_SERVER['app.baseURL'].'assets/css/nucleo-icons.css');?>" rel="stylesheet" />
-  <link href="<?php echo base_url($_SERVER['app.baseURL'].'assets/css/nucleo-svg.css');?>" rel="stylesheet" />
-
-  <!-- Font Awesome Icons -->
-  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  <link href="<?php echo $_SERVER['app.baseURL']; ?>assets/css/nucleo-svg.css" rel="stylesheet" />
+  <link href="<?php echo URL.'assets/css/nucleo-icons.css'; ?>" rel="stylesheet" />
+  <link href="<?php echo URL.'assets/css/nucleo-svg.css'; ?>" rel="stylesheet" />
   <!-- CSS Files -->
   <link id="pagestyle" href="<?php echo base_url($_SERVER['app.baseURL'].'assets/css/soft-ui-dashboard.css?v=1.0.4d');?>" rel="stylesheet" />
 </head>

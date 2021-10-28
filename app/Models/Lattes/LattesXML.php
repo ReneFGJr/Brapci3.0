@@ -42,21 +42,26 @@ class LattesXML extends Model
 
 	function xml($id='',$rdf=0)
 		{
+			clog('Harvesting XML');
 			$dir = '.tmp/lattes/';
-			$file = $dir . '/' . $id . '.xml';
+			$file = $dir . '/' . $id . '.xml';			
 			if (file_exists($file))
 				{
+					clog('Harvesting XML - Load File');
 					$xml = simplexml_load_file($file);
 				} else {
+					clog('Harvesting XML - Import from CNPq');
 					$this->LattesLoad($id,$rdf);
 					$xml = simplexml_load_file($file);
 				}	
-			$this->vinculo($xml,$rdf);				
+			clog('Harvesting XML - End');
+			$this->vinculo($xml,$rdf);	
 			return $xml;
 		}
 		
 	function LattesLoad($id)
 		{
+		$tela = '';
 		$url = 'https://brapci.inf.br/ws/api/?verb=lattes&q=' . $id;
 
 		$dir = '.tmp';
@@ -80,6 +85,7 @@ class LattesXML extends Model
 			}			
 		}
 		$tela .= $this->xml($id);
+		clog('Lattes Load - End');
 		return $tela;
 		}
 
@@ -95,18 +101,22 @@ class LattesXML extends Model
 			$xml = (array)$xml['ENDERECO-PROFISSIONAL'];
 			$dados = $xml['@attributes'];
 			$class = 'brapci:isCNPqInstCode';
+			
 
 			/* Instituição */
 			$inst = $dados['NOME-INSTITUICAO-EMPRESA'];			
 			$class = 'frbr:CorporateBody';			
 			$idc = $RDF->RDP_concept($inst,$class);
-			
+			clog('Lattes - Instrituicao');
+
 			/* Codigo */
 			$prop = 'brapci:isCNPqInstCode';			
 			$codo = $dados['CODIGO-INSTITUICAO-EMPRESA'];
 			$idl = $RDFData->literal($idc,$prop,$codo);
 
 			/* Instituição */
+			clog('Lattes - Lugar');
+
 			$inst = $dados['PAIS'];			
 			if (strlen($inst) > 0) {
 			$class = 'brapci:Place';			
