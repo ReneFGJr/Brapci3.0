@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class RDFConcept extends Model
 {
 	var $DBGroup              = 'default';
-	protected $table                = 'rdf_concept';
+	protected $table                = 'brapci.rdf_concept';
 	protected $primaryKey           = 'id_cc';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -62,13 +62,13 @@ class RDFConcept extends Model
 	function concept($dt)
 		{			
 			/* Definição da Classe */
-			$Class = new \App\Models\RDFClass();			
+			$Class = new \App\Models\RDF\RDFClass();			
 			$Class->DBGroup = $this->DBGroup;
-			$RDFdata = new \App\Models\RDFData();
+			$RDFdata = new \App\Models\RDF\RDFData();
 			$RDFdata->DBGroup = $this->DBGroup;
-			$RDFLiteral = new \App\Models\RDFLiteral();
+			$RDFLiteral = new \App\Models\RDF\RDFLiteral();
 			$RDFLiteral->DBGroup = $this->DBGroup;
-			$Property = new \App\Models\RDFClassProperty();
+			$Property = new \App\Models\RDF\RDFClassProperty();
 			$Property->DBGroup = $this->DBGroup;
 
 			$cl = $dt['Class'];

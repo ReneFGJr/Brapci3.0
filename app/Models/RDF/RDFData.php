@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class RDFData extends Model
 {
 	var $DBGroup              = 'default';
-	protected $table                = 'rdf_data';
+	protected $table                = 'brapci.rdf_data';
 	protected $primaryKey           = 'id_d';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -42,6 +42,28 @@ class RDFData extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
+	function literal($id,$prop,$name)
+		{
+			$RDFClass = new \App\Models\RDF\RDFClass();
+			$idp = $RDFClass->class($prop);
+
+			$RDFLiteral = new \App\Models\RDF\RDFLiteral();
+			$d['d_literal'] = $RDFLiteral->name($name);
+			$d['d_library'] = LIBRARY;
+			$d['d_r1'] = $id;
+			$d['d_r2'] = 0;
+			$d['d_p'] = $idp;
+
+			$rst = $this->where('d_r1',$id)->where('d_literal',$d['d_literal'])->FindAll();
+			if (count($rst) == 0)
+				{
+					$this->insert($d);
+					$rst = $this->where('d_r1',$id)->where('d_literal',$d['d_literal'])->FindAll();
+				}
+			$id = $rst[0]['id_d'];
+			return $id;
+		}
+
 	function check($dt)
 		{
 			foreach($dt as $field=>$value)
@@ -71,7 +93,7 @@ class RDFData extends Model
 					for ($r=0;$r < count($dtd);$r++)
 						{
 							$line = $dtd[$r];
-							$sx .= bsc(lang($line['prefix_ref'].':'.$line['c_class']),2,
+							$sx .= bsc('<small>'.lang($line['prefix_ref'].':'.$line['c_class'].'</small>'),2,
 									'supersmall border-top border-1 border-secondary my-2');
 							if ($line['d_r2'] != 0)
 							{
@@ -134,3 +156,4 @@ class RDFData extends Model
 			return($dt);
 		}	
 }
+

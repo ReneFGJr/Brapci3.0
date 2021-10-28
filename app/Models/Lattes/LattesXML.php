@@ -40,19 +40,18 @@ class LattesXML extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function xml($id='',$rdf='')
+	function xml($id='',$rdf=0)
 		{
 			$dir = '.tmp/lattes/';
 			$file = $dir . '/' . $id . '.xml';
 			if (file_exists($file))
 				{
 					$xml = simplexml_load_file($file);
-					$this->vinculo($xml,$id);
 				} else {
 					$this->LattesLoad($id,$rdf);
 					$xml = simplexml_load_file($file);
-					$this->vinculo($xml,$id);
 				}	
+			$this->vinculo($xml,$rdf);				
 			return $xml;
 		}
 		
@@ -87,23 +86,66 @@ class LattesXML extends Model
 	function vinculo($xml,$id)
 		{
 			$RDF = new \App\Models\RDF\RDF();
+			$RDFData = new \App\Models\RDF\RDFData();
+			$RDFClass = new \App\Models\RDF\RDFClass();
+
 			$xml = (array)$xml;
 			$xml = (array)$xml['DADOS-GERAIS'];
 			$xml = (array)$xml['ENDERECO'];
 			$xml = (array)$xml['ENDERECO-PROFISSIONAL'];
 			$dados = $xml['@attributes'];
-
-			$inst_cod = $dados['CODIGO-INSTITUICAO-EMPRESA'];
-
-			echo '===>'.$inst_cod;
-			$lang = 'pt-BR';
-			$force = 0;
 			$class = 'brapci:isCNPqInstCode';
 
-			echo '<br>===>'.$RDF->find($inst_cod,$class,$force);
-					echo '<pre>';
-					print_r($dados);					
-					exit;
+			/* Instituição */
+			$inst = $dados['NOME-INSTITUICAO-EMPRESA'];			
+			$class = 'frbr:CorporateBody';			
+			$idc = $RDF->RDP_concept($inst,$class);
+			
+			/* Codigo */
+			$prop = 'brapci:isCNPqInstCode';			
+			$codo = $dados['CODIGO-INSTITUICAO-EMPRESA'];
+			$idl = $RDFData->literal($idc,$prop,$codo);
 
+			/* Instituição */
+			$inst = $dados['PAIS'];			
+			if (strlen($inst) > 0) {
+			$class = 'brapci:Place';			
+			$id_country = $RDF->RDP_concept($inst,$class);
+			}
+
+			$inst = $dados['UF'];	
+			if (strlen($inst) > 0) {
+			$class = 'frbr:Place';			
+			$id_state = $RDF->RDP_concept($inst,$class);
+			$RDF->propriety($id_country,'brapci:haveState',$id_state);
+			}
+
+			$inst = $dados['CIDADE'];			
+			if (strlen($inst) > 0) {
+			$class = 'frbr:Place';			
+			$id_city = $RDF->RDP_concept($inst,$class);
+			$RDF->propriety($id_state,'brapci:haveCity',$id_city);
+			}
+			
+			/* Instituição */
+			if ($id_city > 0)
+			{
+				$RDF->propriety($idc,'brapci:isPlace',$id_city);
+			}
+
+			$inst = $dados['NOME-ORGAO'];			
+			$class = 'frbr:CorporateBodyDep';			
+			$idcd = $RDF->RDP_concept($inst,$class);
+			//$RDF->propriety($id_country,'brapci:haveCity',$id_state);
+
+			/* Affiliation */
+			$inst = 'Affiliation:'.strzero($idc,8).'.'.strzero($id,8);
+			$class = 'frbr:Affiliation';			
+			$id_aff = $RDF->RDP_concept($inst,$class);
+
+			if ($id_aff > 0)
+			{
+				$RDF->propriety($id,'brapci:affiliatedWith',$id_aff);
+			}			
 		}
 }

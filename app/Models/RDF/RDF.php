@@ -119,6 +119,7 @@ class RDF extends Model
 			$id = $RDFLiteral->name($sr);
 			return $id;
 		}
+
 	function recover($dt = array(), $class = '')
 	{
 		$rst = array();
@@ -324,6 +325,10 @@ class RDF extends Model
 
 	function view_data($dt)
 	{
+		if (!is_array($dt))
+			{
+				$dt = $this->le($dt);
+			}
 		$RDFdata = new \App\Models\RDF\RDFData();
 		$tela = $RDFdata->view_data($dt);
 		return $tela;
@@ -368,7 +373,6 @@ class RDF extends Model
 	function RDP_concept($name, $class)
 	{
 		$RDPConcept = new \App\Models\RDF\RDFConcept();
-		$RDPConcept->DBGroup = 'auth';
 
 		$dt['Class'] = $class;
 		$dt['Literal']['skos:prefLabel'] = $name;
@@ -376,4 +380,38 @@ class RDF extends Model
 		$tela = $idc;
 		return $tela;
 	}
+
+	function propriety($idp, $prop='', $resource=0)
+		{
+			return $this->RDP_property($idp, $prop, $resource);
+		}
+
+	function RDP_property($idp, $prop='', $resource=0)
+	{
+		$RDFClass = new \App\Models\RDF\RDFClass();
+		$RDFData = new \App\Models\RDF\RDFData();
+		$d = array();
+
+		if ($resource > 0)
+			{
+				if (sonumero($prop) != $prop)
+					{
+						$prop = $RDFClass->class($prop);
+					}
+				$d['d_r1'] = $idp;
+				$d['d_r2'] = $resource;
+				$d['d_p'] = $prop;
+				$d['d_library'] = LIBRARY;
+				$d['d_literal'] = 0;			
+			}
+
+			$rst = $RDFData->where('d_r1', $idp)->where('d_r2', $resource)->findAll();
+			if (count($rst) == 0)
+				{
+					$RDFData->insert($d);
+					return 1;
+				}
+		return 0;
+	}
+
 }
