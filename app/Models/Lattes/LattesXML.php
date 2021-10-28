@@ -55,8 +55,8 @@ class LattesXML extends Model
 					$xml = simplexml_load_file($file);
 				}	
 			clog('Harvesting XML - End');
-			$this->vinculo($xml,$rdf);	
-			return $xml;
+			$tela = $this->vinculo($xml,$rdf);	
+			return $tela;
 		}
 		
 	function LattesLoad($id)
@@ -91,9 +91,9 @@ class LattesXML extends Model
 
 	function vinculo($xml,$id)
 		{
+			$tela = '';
 			$RDF = new \App\Models\RDF\RDF();
 			$RDFData = new \App\Models\RDF\RDFData();
-			$RDFClass = new \App\Models\RDF\RDFClass();
 
 			$xml = (array)$xml;
 			$xml = (array)$xml['DADOS-GERAIS'];
@@ -107,6 +107,7 @@ class LattesXML extends Model
 			$inst = $dados['NOME-INSTITUICAO-EMPRESA'];			
 			$class = 'frbr:CorporateBody';			
 			$idc = $RDF->RDP_concept($inst,$class);
+			$tela .= $RDF->export($idc);
 			clog('Lattes - Instrituicao');
 
 			/* Codigo */
@@ -121,6 +122,7 @@ class LattesXML extends Model
 			if (strlen($inst) > 0) {
 			$class = 'brapci:Place';			
 			$id_country = $RDF->RDP_concept($inst,$class);
+			$tela .= $RDF->export($id_country).'<br>';
 			}
 
 			$inst = $dados['UF'];	
@@ -128,6 +130,7 @@ class LattesXML extends Model
 			$class = 'frbr:Place';			
 			$id_state = $RDF->RDP_concept($inst,$class);
 			$RDF->propriety($id_country,'brapci:haveState',$id_state);
+			$tela .= $RDF->export($id_state);
 			}
 
 			$inst = $dados['CIDADE'];			
@@ -141,6 +144,7 @@ class LattesXML extends Model
 			if ($id_city > 0)
 			{
 				$RDF->propriety($idc,'brapci:isPlace',$id_city);
+				$tela .= $RDF->export($id_city);
 			}
 
 			$inst = $dados['NOME-ORGAO'];			
@@ -152,10 +156,15 @@ class LattesXML extends Model
 			$inst = 'Affiliation:'.strzero($idc,8).'.'.strzero($id,8);
 			$class = 'frbr:Affiliation';			
 			$id_aff = $RDF->RDP_concept($inst,$class);
+			$tela .= $RDF->export($id_aff);
 
 			if ($id_aff > 0)
 			{
+				echo "===>".$id.'<br>';
+				echo "===>".$id_aff.'<br>';
+
 				$RDF->propriety($id,'brapci:affiliatedWith',$id_aff);
-			}			
+			}	
+			return $tela;		
 		}
 }

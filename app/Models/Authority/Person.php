@@ -53,7 +53,7 @@ function viewid($id)
 			$link1 .= '<img src="' . base_url('img/icones/lattes.png') . '" style="height: 50px">';
 			$link1 .= '</a>';
 
-			$link = base_url(PATH . '/index/import_lattes/' . trim($dt['a_lattes']) . '/' . $dt['id_a'] . '/');
+			$link = base_url(PATH .MODULE . '/index/import_lattes/' . trim($dt['a_lattes']) . '/' . $dt['id_a'] . '/');
 			$link2 = '<a href="' . $link . '" target="_new' . $dt['a_lattes'] . '">';
 			$link2 .= '<img src="' . base_url('img/icones/import.png') . '?x=1" style="height: 50px">';
 			$link2 .= '</a>';

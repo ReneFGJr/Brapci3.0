@@ -83,17 +83,12 @@ class RDF extends Model
 		return $name;
 	}
 
-	function le($id, $simple = 0, $base = '')
+	function le($id, $simple = 0)
 	{
 		$RDFConcept = new \App\Models\RDF\RDFConcept();
 
-		if ($base != '') {
-			$this->setDatabase($base);
-		}
-
-
 		$dt['concept'] = $RDFConcept->le($id);
-
+		
 		if ($simple == 0) {
 			$RDFData = new \App\Models\RDF\RDFData();
 			$dt['data'] = $RDFData->le($id);
@@ -150,6 +145,8 @@ class RDF extends Model
 
 		if (file_exists(($file))) {
 			return file_get_contents($file);
+		} else {
+			return $this->export($id);
 		}
 		return '';
 	}
@@ -210,7 +207,7 @@ class RDF extends Model
 		file_put_contents($file, $sx);
 	}
 
-	function export($d1 = '', $d2 = 0, $d3 = '')
+	function export_all($d1 = '', $d2 = 0, $d3 = '')
 	{
 		$RDFConcept = new \App\Models\RDF\RDFConcept();
 
@@ -242,7 +239,7 @@ class RDF extends Model
 		return $sx;
 	}
 
-	function export_id($id)
+	function export($id)
 	{
 		$sx = '';
 		$id = round($id);
@@ -319,7 +316,7 @@ class RDF extends Model
 			file_put_contents($file_name, $txt_name);
 		}
 
-		$sx = $txt_name . ' exported<br>';
+		$sx = $txt_name;
 		return $sx;
 	}
 

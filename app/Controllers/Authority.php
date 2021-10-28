@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 //define("PATH", 'Authoriry');
-define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix'].'authority/');
+define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix']);
 define("MODULE",'authority');
 define("URL",$_SERVER['app.baseURL']);
 

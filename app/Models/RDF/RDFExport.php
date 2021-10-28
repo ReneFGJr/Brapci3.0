@@ -75,7 +75,6 @@ class RDFExport extends Model
 						break;
 					case 'brapci:Article':
 						$tela .= 'ARTICLE';	
-
 						/************************************************** Authors */
 						$authors = $RDF->recovery($dt['data'],'hasAuthor');
 						$auths = '';
@@ -130,6 +129,7 @@ class RDFExport extends Model
 						exit;
 						break;
 				}
+			$tela .= '<a href="'.base_url(PATH.'v/'.$id).'">'.$name.'</a>';
 			return $tela;
 		}
 

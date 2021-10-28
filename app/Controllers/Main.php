@@ -10,7 +10,11 @@ $language = \Config\Services::language();
 
 helper(['boostrap','url','graphs','sisdoc_forms','form','nbr']);
 
+define("LIBRARY", "3001");
+define("LIBRARY_NAME", "BRAPCI_RESEARCH");
 define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix']);
+define("MODULE", 'main');
+define("URL", $_SERVER['app.baseURL']);
 
 class Main extends BaseController
 {
@@ -24,9 +28,6 @@ class Main extends BaseController
 		$this->EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
 
 		helper(['boostrap','url','canvas']);
-		define("LIBRARY", "3001");
-		define("LIBRARY_NAME", "BRAPCI_LABS");
-		define("MODULE", "main");
 	}	
 
 	private function cab($tp = '')

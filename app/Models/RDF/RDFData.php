@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class RDFData extends Model
 {
-	var $DBGroup              = 'default';
+	var $DBGroup              = 'brapci';
 	protected $table                = 'brapci.rdf_data';
 	protected $primaryKey           = 'id_d';
 	protected $useAutoIncrement     = true;
@@ -99,26 +99,28 @@ class RDFData extends Model
 							{
 								if ($ID == $line['d_r2'])
 									{
-										$link = base_url(URL.'v/'.$line['d_r1']);
+										$link = base_url(PATH.MODULE.'/v/'.$line['d_r1']);
 										$txt = $RDF->info($line['d_r1'],1);
 										if (strlen($txt) > 0)
 											{
 												$link = '<a href="'.$link.'">'.$txt.'</a>';
 											} else {
-												$link = '<a href="'.$link.'">Link Inverso</a>';
+												$txt = 'not found:'.$line['d_r1'];
+												$link = '<a href="'.$link.'">'.$txt.'</a>';
 											}
 										
 									} else {
-										$link = base_url(PATH.'v/'.$line['d_r2']);
+										$link = base_url(PATH.MODULE.'/v/'.$line['d_r2']);
 										$txt = $RDF->info($line['d_r2'],1);
 										if (strlen($txt) > 0)
 											{
 												$link = '<a href="'.$link.'">'.$txt.'</a>';
 											} else {
-												$link = '<a href="'.$link.'">Link</a>';
+												$txt = 'not found:'.$line['d_r2'];
+												$link = '<a href="'.$link.'">'.$txt.'</a>';
 											}
 									}
-								$sx .= bsc($link,		   10,'border-top border-1 border-secondary my-2');
+								$sx .= bsc($link,10,'border-top border-1 border-secondary my-2');
 							} else {
 								$txt = $line['n_name'];
 								$lang = $line['n_lang'];
