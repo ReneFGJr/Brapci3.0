@@ -102,27 +102,26 @@ class LattesXML extends Model
 			$xml = (array)$xml['ATUACAO-PROFISSIONAL'];
 
 			for ($r=0;$r < count($xml);$r++)
-				{
+				{					
 					$dados = $xml[$r];
+					$inst = $dados['NOME-INSTITUICAO'];	
+					echo '<pre>';
+					//print_r($dados);
+					echo '</pre>';
 
-					/* Instituição */
-					$inst = $dados['NOME-INSTITUICAO'];			
-					$class = 'frbr:CorporateBody';			
-					$idc = $RDF->RDP_concept($inst,$class);
-					clog('Lattes - Instrituicao - '.$inst);
-
-					/* Codigo */
-					$prop = 'brapci:isCNPqInstCode';			
-					$codo = $dados['CODIGO-INSTITUICAO'];
-					if (strlen($codo) > 0)
-					{
-						$idl = $RDFData->literal($idc,$prop,$codo);
-					}
 					$xmld = (array)$xml[$r];
 
 					$vinculos = (array)$xmld['VINCULOS'];
-					$anos['dt_inicio'] = 0;
-					$anos['dt_fim'] = 0;
+					if (!isset($vinculos[0]))
+						{
+							$vinculos[0] = $vinculos;
+						}
+					$ai = 999999;
+					$af = 0;
+					$ano1 = 0;
+					$ano2 = 0;
+					$nvc = array();
+
 					foreach($vinculos as $v1=>$vinc)
 						{
 							$vinc = (array)$vinc;
@@ -130,20 +129,46 @@ class LattesXML extends Model
 							{
 							$xvinc = $vinc['@attributes'];
 
-							$ano1 = $xvinc['ANO-INICIO'];
-							$ano2 = $xvinc['ANO-FIM'];
-							$mes1 = $xvinc['MES-INICIO'];
-							$mes2 = $xvinc['MES-FIM'];
-							
-							//$dados = $vinc;
+							$ano1 = round($xvinc['ANO-INICIO'].strzero($xvinc['MES-INICIO'],2));
+							$ano2 = round($xvinc['ANO-FIM'].strzero($xvinc['MES-FIM'],2));
+							$tipo = $xvinc['TIPO-DE-VINCULO'];
+							$tpv = $xvinc['OUTRO-VINCULO-INFORMADO'];
+							$nvc[$tpv] = 1;
 
-							echo '<pre><span style="color: blue;">';
-							print_r($xvinc);
-							echo '</span></pre>';
-							echo '<hr>';
-							}
+							echo $inst.'<sup>'.$tipo.'</sup>';
+							echo '<br>'.$ano1.'-'.$ano2.'*';
+							if ($ano1 < $ai) { $ai = $ano1; }
+							if ($ano2 > $af) { $af = $ano2; }						
+							}							
+							echo '<br>'.$ano1.'-'.$ano2.'<br>';							
 						}
+
+						//if (($ai > 190001) and ($ai < 300001))
+							{
+								/* Instituição */
+								$inst = $dados['NOME-INSTITUICAO'];										
+
+								/* Codigo */
+								
+								$codo = $dados['CODIGO-INSTITUICAO'];
+								
+								if (strlen($codo) > 0)
+								{
+									echo '<h1>'.$inst.'</h1>';
+									echo $ai.'='.$af;
+									print_r($nvc);
+									$class = 'frbr:CorporateBody';			
+									$idc = $RDF->RDP_concept($inst,$class);
+									clog('Lattes - Instrituicao - '.$inst);
+
+									$prop = 'brapci:isCNPqInstCode';			
+									$idl = $RDFData->literal($idc,$prop,$codo);
+								}								
+
+
+							}
 				}
+				
 					exit;			
 			$dados = $xml['@attributes'];
 			$class = 'brapci:isCNPqInstCode';
