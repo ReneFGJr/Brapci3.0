@@ -65,7 +65,7 @@ class AuthotityIds extends Model
 									$sql = "update ".$this->table." set a_lattes = '".$id_lattes."' where id_a = ".$dt['id_a'];
 
 									$this->query($sql);
-									$tela .= metarefresh(base_url(PATH.'/index/viewid/'.$dt['id_a']));
+									$tela .= metarefresh(base_url(PATH.MODULE.'/index/viewid/'.$dt['id_a']));
 								}
 						}
 				}
