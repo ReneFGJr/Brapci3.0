@@ -92,8 +92,9 @@ class RDFData extends Model
 					$dtd = $dt['data'];
 					for ($r=0;$r < count($dtd);$r++)
 						{
-							$line = $dtd[$r];
-							$sx .= bsc('<small>'.lang($line['prefix_ref'].':'.$line['c_class'].'</small>'),2,
+							$line = (array)$dtd[$r];
+							$sx .= bsc('<small>'.lang($line['prefix_ref'].':'.
+									$line['c_class'].'</small>'),2,
 									'supersmall border-top border-1 border-secondary my-2');
 							if ($line['d_r2'] != 0)
 							{
@@ -147,14 +148,22 @@ class RDFData extends Model
 			$this->join('rdf_class', 'rdf_data.d_p = rdf_class.id_c', 'LEFT');
 			$this->join('rdf_prefix', 'rdf_class.c_prefix = rdf_prefix.id_prefix', 'LEFT');
 
-    		$this->select('rdf_name.id_n, rdf_name.n_name, rdf_name.n_lang');
-			$this->select('rdf_class.c_class, rdf_class.c_prefix, rdf_class.c_type');	
-			$this->select('rdf_prefix.prefix_ref, rdf_prefix.prefix_url');
-    		$this->select('rdf_data.*');	
+			//rderBy('rdf_class.c_class, rdf_name.n_name');
+			$sql = "select ";
+			$sql .= " DISTINCT 
+    		rdf_name.id_n, rdf_name.n_name, rdf_name.n_lang, 
+			rdf_class.c_class, rdf_class.c_prefix, rdf_class.c_type, 
+			rdf_prefix.prefix_ref, rdf_prefix.prefix_url, 
+    		rdf_data.*
+			";
 
-			$where = "(d_r1 = $id) OR (d_r2 = $id)";
-			$this->where($where);
-			$dt = $this->FindAll();
+			$sql .= "from brapci.rdf_data ";
+			$sql .= "left join brapci.rdf_name ON d_literal = rdf_name.id_n ";
+			$sql .= "left join brapci.rdf_class ON rdf_data.d_p = rdf_class.id_c ";
+			$sql .= "left join brapci.rdf_prefix ON rdf_class.c_prefix = rdf_prefix.id_prefix ";
+			$sql .= "where (d_r1 = $id) OR (d_r2 = $id)";
+			$sql .= "order by c_class, d_r1, d_r2, n_name";
+			$dt = (array)$this->db->query($sql)->getResult();			
 			return($dt);
 		}	
 }

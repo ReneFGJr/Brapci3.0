@@ -59,7 +59,7 @@ class Index extends Model
 			case 'resumeCreate':
 				$this->resumeCreate();
 				break;
-			case 'LattedFindId':
+			case 'LattesFindId':
 				$AuthotityIds = new \App\Models\Authority\AuthotityIds();
 				$tela .= $AuthotityIds->LattesFindID($d2);
 				break;

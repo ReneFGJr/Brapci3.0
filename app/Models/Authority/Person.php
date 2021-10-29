@@ -60,7 +60,7 @@ function viewid($id)
 
 			$tela .= bsc('<small>' . lang('Link do Lattes') . '</small><br>' . $link1 . $link2, 12);
 		} else {
-			$tela .= anchor(base_url(PATH . '/index/LattedFindId/' . $dt['id_a']));
+			$tela .= anchor(base_url(PATH . MODULE. '/index/LattesFindId/' . $dt['id_a']));
 		}
 
 		/*************************************************** BRAPCI */
