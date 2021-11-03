@@ -46,7 +46,9 @@ class V extends Model
 			$RDF = new \App\Models\Rdf\RDF();
 
 			$tela = $th->cab();			
-			$dt = $RDF->le($id,1,'brapci');
+			$dt = $RDF->le($id,1);
+
+			print_r($dt);
 
 			$class = $dt['concept']['c_class'];
 			$name = $dt['concept']['n_name'];
