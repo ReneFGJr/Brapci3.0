@@ -1,33 +1,20 @@
 <?php
 
-namespace App\Models\Authority;
+namespace App\Models\Rdf;
 
 use CodeIgniter\Model;
 
-class AuthorityNames extends Model
+class RdfFormText extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'brapci_authority.AuthorityNames';
-	protected $primaryKey           = 'id_a';
+	protected $table                = 'rdfformtexts';
+	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [
-		'id_a','a_prefTerm','a_class','a_lattes','a_brapci','a_orcid','a_uri','a_use'
-	];
-
-	protected $typeFields        = [
-		'hidden',
-		'string:100',
-		'string:100',
-		'string:100',
-		'string:100',
-		'string:100',
-		'string:100',
-		'string:1'
-	];
+	protected $allowedFields        = [];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -53,26 +40,17 @@ class AuthorityNames extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function summaryCreate()
+	function edit($id)	
 		{
-			$this->select('count(*) as total');
-			$dt = $this->findAll();
-			print_r($dt);
-		}
+			$path = PATH.'rdf/text/'.$id;
+			$texto = '';
+			$txt = '';
+			$txt = form_open($path);
+			$txt .= '<span class="supersmall">'.lang('rdf.textarea').'</span>';
+			$txt .= '<textarea style="width: 100%;" class="form-control">'.$texto.'</textarea>';
 
-	function edit($id)
-		{
-			$this->id = $id;
-			$this->path = base_url(PATH . MODULE.  '/index/edit/' . $id);
-			IF ($id > 0)
-				{
-					$this->path_back = base_url(PATH . MODULE.  '/index/viewid/' . $id);
-				} else {
-					$this->path_back = base_url(PATH . MODULE.  '/index/');
-				}
-			
-			$tela = form($this);
-			return $tela;
+			$txt .= form_submit('action', lang('rdf.save'), 'class="btn btn-primary supersmall m-3"');
+			$txt .= form_close();
+			return $txt;
 		}
-
 }

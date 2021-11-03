@@ -59,7 +59,7 @@ class AuthotityIds extends Model
 					if (count($dtc) == 1)
 						{
 							$data['id_a'] = $dt['id_a'];
-							foreach($dtc as $name=>$id_lattes)
+							foreach($dtc as $id_lattes=>$name)
 								{
 									$data['a_lattes'] = $id_lattes;
 									$sql = "update ".$this->table." set a_lattes = '".$id_lattes."' where id_a = ".$dt['id_a'];
@@ -67,6 +67,11 @@ class AuthotityIds extends Model
 									$this->query($sql);
 									$tela .= metarefresh(base_url(PATH.MODULE.'/index/viewid/'.$dt['id_a']));
 								}
+						} else {
+							echo '<pre>';
+							print_r($dta);
+							echo '</pre>';
+							exit;
 						}
 				}
 			return $tela;

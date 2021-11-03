@@ -70,6 +70,10 @@ class Index extends Model
 			case 'list':
 				$tela .= $this->tableview();
 				break;
+			case 'edit':
+				$AuthorityNames = new \App\Models\Authority\AuthorityNames();
+				$tela .= $AuthorityNames->edit($d2);
+				break;				
 			case 'import_api_brapci':
 				$tela .= $this->import_api_brapci($d2);
 				break;

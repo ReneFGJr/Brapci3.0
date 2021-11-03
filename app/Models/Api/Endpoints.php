@@ -79,12 +79,14 @@ class Endpoints extends Model
 		$q = mb_strtoupper(ascii($q));
 		$dt['query'] = $q;
 		$tot = 0;
+		$rst = array();
 		if ($handle) {
 			while (($line = fgets($handle)) !== false) {
 				// process the line read.
 				if (strpos(' ' . $line, $q)) {
 					$d = explode(';', $line);
-					$dt['result'][$d[0]] = $d[1];
+					$rst[$d[1]] = $d[0];
+					//$dt['result'][$d[0]] = $d[1];
 					$tot++;
 					if ($tot > 10)
 						{
@@ -96,6 +98,7 @@ class Endpoints extends Model
 			}
 			fclose($handle);
 		}
+		$dt['result'] = $rst;
 		return $dt;
 	}
 }

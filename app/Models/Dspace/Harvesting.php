@@ -1,33 +1,20 @@
 <?php
 
-namespace App\Models\Authority;
+namespace App\Models\Dspace;
 
 use CodeIgniter\Model;
 
-class AuthorityNames extends Model
+class Harvesting extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'brapci_authority.AuthorityNames';
-	protected $primaryKey           = 'id_a';
+	protected $table                = 'harvestings';
+	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [
-		'id_a','a_prefTerm','a_class','a_lattes','a_brapci','a_orcid','a_uri','a_use'
-	];
-
-	protected $typeFields        = [
-		'hidden',
-		'string:100',
-		'string:100',
-		'string:100',
-		'string:100',
-		'string:100',
-		'string:100',
-		'string:1'
-	];
+	protected $allowedFields        = [];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -53,26 +40,10 @@ class AuthorityNames extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function summaryCreate()
+	function harvesting($id)
 		{
-			$this->select('count(*) as total');
-			$dt = $this->findAll();
-			print_r($dt);
+			//http://repositorios.questoesemrede.uff.br/repositorios/handle/123456789/5?show=full
+			//http://repositorios.questoesemrede.uff.br/oai/request?verb=Identify
 		}
-
-	function edit($id)
-		{
-			$this->id = $id;
-			$this->path = base_url(PATH . MODULE.  '/index/edit/' . $id);
-			IF ($id > 0)
-				{
-					$this->path_back = base_url(PATH . MODULE.  '/index/viewid/' . $id);
-				} else {
-					$this->path_back = base_url(PATH . MODULE.  '/index/');
-				}
-			
-			$tela = form($this);
-			return $tela;
-		}
-
+		
 }
