@@ -222,10 +222,10 @@ class JournalIssue extends Model
 				/*********************** Le os dados */
 				$dt = $RDF->le($ar[$r]);
 				/*********************** Recupera propriedades */
-				$dt = $dt['data'];
+				$dt = (array)$dt['data'];
 
 				for ($y = 0; $y < count($dt); $y++) {
-					$dtc = $dt[$y];
+					$dtc = (array)$dt[$y];
 					/*************************************** Recupera classe */
 					$class = $dtc['c_class'];
 					$value = $dtc['n_name'];
