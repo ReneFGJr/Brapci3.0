@@ -6,9 +6,9 @@ namespace App\Controllers;
 define("URL",$_SERVER['app.baseURL']);
 define("MODULE",'journal');
 define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix']);
-
 define("LIBRARY", "202101");
 helper(['boostrap', 'url', 'graphs', 'sisdoc_forms', 'form', 'nbr']);
+define("PREFIX",'brapci');
 
 use App\Controllers\BaseController;
 
