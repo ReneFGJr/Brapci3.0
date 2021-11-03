@@ -107,7 +107,7 @@ class JournalIssue extends Model
 	function view_issue_articles($id)
 		{
 			$tela = '';
-			$RDF = new \App\Models\RDF\RDF();
+			$RDF = new \App\Models\Rdf\RDF();
 			$dt = $RDF->le($id,0,'brapci');
 
 			$dtd = $dt['data'];
@@ -188,16 +188,16 @@ class JournalIssue extends Model
 	function view_issue_import($idx = 0)
 	{
 		$this->setDatabase('brapci');
-		$RDF = new \App\Models\RDF\RDF();
+		$RDF = new \App\Models\Rdf\RDF();
 
 		$dt = $RDF->le_data($idx);
-		$dt = $dt['data'];
+		$dt = (array)$dt['data'];
 
 		$sx = '<h3>' . msg('ISSUE') . '</h3>';
 		$ar = array();
 
 		for ($r = 0; $r < count($dt); $r++) {
-			$line = $dt[$r];
+			$line = (array)$dt[$r];
 			if ($line['c_class'] == 'hasIssue') {
 				$n = $line['d_r1'];
 				array_push($ar, $n);
@@ -222,10 +222,10 @@ class JournalIssue extends Model
 				/*********************** Le os dados */
 				$dt = $RDF->le($ar[$r]);
 				/*********************** Recupera propriedades */
-				$dt = $dt['data'];
+				$dt = (array)$dt['data'];
 
 				for ($y = 0; $y < count($dt); $y++) {
-					$dtc = $dt[$y];
+					$dtc = (array)$dt[$y];
 					/*************************************** Recupera classe */
 					$class = $dtc['c_class'];
 					$value = $dtc['n_name'];

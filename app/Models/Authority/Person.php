@@ -82,7 +82,7 @@ function viewid($id)
 
 	function PersonPublications($id)	
 		{
-			$RDF = new \App\Models\RDF\RDF();
+			$RDF = new \App\Models\Rdf\RDF();
 			$dt = $RDF->le($id,0,'brapci');
 			$tela = $RDF->view_data($dt);
 			return $tela;

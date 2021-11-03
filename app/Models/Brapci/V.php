@@ -43,10 +43,10 @@ class V extends Model
 	function index($th,$id)
 		{
 			$Checked = new \App\Models\Brapci\Checked();
-			$RDF = new \App\Models\RDF\RDF();
+			$RDF = new \App\Models\Rdf\RDF();
 
 			$tela = $th->cab();			
-			$dt = $RDF->le($id,1,'brapci');
+			$dt = $RDF->le($id,1);
 
 			$class = $dt['concept']['c_class'];
 			$name = $dt['concept']['n_name'];
