@@ -191,13 +191,13 @@ class JournalIssue extends Model
 		$RDF = new \App\Models\Rdf\RDF();
 
 		$dt = $RDF->le_data($idx);
-		$dt = $dt['data'];
+		$dt = (array)$dt['data'];
 
 		$sx = '<h3>' . msg('ISSUE') . '</h3>';
 		$ar = array();
 
 		for ($r = 0; $r < count($dt); $r++) {
-			$line = $dt[$r];
+			$line = (array)$dt[$r];
 			if ($line['c_class'] == 'hasIssue') {
 				$n = $line['d_r1'];
 				array_push($ar, $n);
