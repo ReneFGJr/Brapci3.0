@@ -119,9 +119,13 @@ class RDF extends Model
 	{
 		$rst = array();
 		$id = $dt['concept']['id_cc'];
-		$dt = $dt['data'];
+		$dt = (array)$dt['data'];
+		echo '<pre>';
+		print_r($dt);
 		for ($r = 0; $r < count($dt); $r++) {
-			$line = $dt[$r];
+			$line = (array)$dt[$r];
+			echo '<hr>';
+			print_r($line);
 			if ($line['c_class'] == $class) {
 				if (trim($line['n_name']) != '') {
 					array_push($rst, $line['n_name']);
@@ -134,6 +138,7 @@ class RDF extends Model
 				}
 			}
 		}
+		print_r($rst);
 		return $rst;
 	}
 
