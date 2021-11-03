@@ -107,7 +107,7 @@ class JournalIssue extends Model
 	function view_issue_articles($id)
 		{
 			$tela = '';
-			$RDF = new \App\Models\RDF\RDF();
+			$RDF = new \App\Models\Rdf\RDF();
 			$dt = $RDF->le($id,0,'brapci');
 
 			$dtd = $dt['data'];
@@ -188,7 +188,7 @@ class JournalIssue extends Model
 	function view_issue_import($idx = 0)
 	{
 		$this->setDatabase('brapci');
-		$RDF = new \App\Models\RDF\RDF();
+		$RDF = new \App\Models\Rdf\RDF();
 
 		$dt = $RDF->le_data($idx);
 		$dt = $dt['data'];
