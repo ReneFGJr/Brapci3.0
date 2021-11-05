@@ -4,10 +4,10 @@ namespace App\Models\AI;
 
 use CodeIgniter\Model;
 
-class NLP extends Model
+class Index extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'nlps';
+	protected $table                = 'indices';
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -43,6 +43,7 @@ class NLP extends Model
 	function index($d1='',$d2='',$d3='')
 		{
 			$tela = '';
+			echo '===>'.$d1.'==>'.$d2;
 			switch($d1)
 				{
 					case 'syllables':
@@ -53,42 +54,28 @@ class NLP extends Model
 					case 'syllable':
 						$AI = new \App\Models\AI\NLP\Syllables();
 						$tela .= $this->formAI(1,lang('ai.Sillables'));
-						$tela .= $AI->syllable(get("dd1"),get("dd2"));		
-					/* wordcount */
-					case 'wordcount':
-						$AI = new \App\Models\AI\NLP\Wordcount();
-						$tela .= $this->formAI(1,lang('ai.Wordcount'));
-						$tela .= $AI->wordcount(get("dd1"),get("dd2"));						
+						$tela .= $AI->syllable(get("dd1"),get("dd2"));						
 						break;
-
 					default:
 						$tela .= bsmessage('Service notefound: '.$d1,2);
+						$tela .= $this->services();
 						break;
 				}
 			return $tela;		
 		}	
 
-	function formAI($tp,$txt)
+	function services()
 		{
 			$tela = '';
-			$tela .= form_open();
-			$tela .= lang('ai.InputTextForm');
-			$tela .= '<textarea  class="form-control" name="dd1" rows=5>';
-			$tela .= get("dd1");
-			$tela .= '</textarea>';			
-			
-			$tela .= '<hr>';
-			$tela .= lang('ai.language').': ';
-			$tela .= '<select name="dd2">';
-			$tela .= '<option value="'.get("dd2").'">'.lang("ai.".get("dd2")).'</option>';
-			$tela .= '<option value="pt-BR">'.lang("ai.pt-BR").'</option>';
-			$tela .= '<option value="en">'.lang("ai.en").'</option>';
-			$tela .= '</select>';
-
-			$tela .= '<hr>';
-			$tela .= '<input type="submit" value="'.lang('ai.Proceess').'" class="btn btn-outline-primary">';
-
-			$tela .= '</form>';
+			$s = array();
+			$s['ai.syllables'] = 'ai/nlp/syllables';
+			$s['ai.wordcount'] = 'ai/nlp/wordcount';
+			$tela .= '<ul>';
+			foreach($s as $service=>$url)
+				{
+					$tela .= '<li><a href="'.base_url(PATH.$url).'">'.$service.'</a></li>';
+				}
+			$tela .= '</ul>';
 			return $tela;
-		}
+		}		
 }

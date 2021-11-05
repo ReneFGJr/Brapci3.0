@@ -46,11 +46,11 @@ class AI extends BaseController
 		return $tela;
 	}
 
-	public function index()
+	public function index($d1='',$d2='',$d3='')
 	{
-		$NLP = new \App\Models\AI\NLP();
+		$AI = new \App\Models\AI\Index();
 		$tela = $this->cab();
-		$tela .= $NLP->index();
+		$tela .= $AI->index();
 		return $tela;
 	}
 

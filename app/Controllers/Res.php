@@ -10,7 +10,7 @@ $session = \Config\Services::session();
 define("LIBRARY", "3001");
 define("LIBRARY_NAME", "BRAPCI_RESEARCH");
 define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix']);
-define("MODULE", 'res');
+define("MODULE", 'res/');
 define("URL", $_SERVER['app.baseURL']);
 define("PREFIX",'brapci.');
 
