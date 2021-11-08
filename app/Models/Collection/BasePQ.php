@@ -48,10 +48,10 @@ class BasePQ extends Model
 		function index($d1='',$d2='',$d3='')
 			{
 				$tela = '';
-				switch($d1)
+				switch($d2)
 					{
 						case 'viewid':
-							$tela .= $this->viewid($d2);
+							$tela .= $this->viewid($d3);
 						break;
 
 						default:
@@ -60,12 +60,32 @@ class BasePQ extends Model
 					}	
 				return $tela;
 			}
-
+		// http://brapci3/ai/research/pq/viewid/1
 		function viewid($id)
 			{
-				$tela = '';
+				$tela = $id;
 				$dt = $this->find($id);
-				print_r($dt);
+
+				$AuthorityNames = new \App\Models\Authority\AuthorityNames();
+				$da = $AuthorityNames->where('a_prefTerm',$dt['bs_nome'])->findAll();
+				if (count($da) == 0)
+					{
+						$d['a_class'] = 'P';
+						$d['a_uri'] = 'htps://brapci.inf.br/index.php/res/v/'.$dt['bs_rdf_id'];
+						$d['a_use'] = 'P';
+						$d['a_prefTerm'] = $dt['bs_nome'];
+						$d['a_lattes'] = $dt['bs_lattes'];
+						$d['a_brapci'] = $dt['bs_rdf_id'];
+						$d['a_orcid'] = 'P';			
+						$AuthorityNames->insert($d);
+					}
+				$url = 'htps://brapci.inf.br/index.php/res/v/'.$dt['bs_lattes'];
+				$url_lattes = 'hhttp://lattes.cnpq.br/'.$dt['bs_rdf_id'];
+				$tela = bsc(h($dt['bs_nome'],1),12);
+				$tela .= bsc('<small>'.$url.'</small>',12);
+				$tela .= bsc('<small>'.$url_lattes.'</small>',12);
+
+				return $tela;
 			}
 
 		function edit($id)
