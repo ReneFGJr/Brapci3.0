@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models\AI;
+namespace App\Models\Ai\Research;
 
 use CodeIgniter\Model;
 
-class Index extends Model
+class SystematicReviewGroup extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'indices';
+	protected $table                = 'systematicreviewgroups';
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -39,44 +39,4 @@ class Index extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
-
-	function index($d1='',$d2='',$d3='')
-		{
-			$tela = '';
-			echo '===>'.$d1.'==>'.$d2;
-			switch($d1)
-				{
-					case 'syllables':
-						$AI = new \App\Models\AI\NLP\Syllables();
-						$tela .= $this->formAI(1,lang('ai.Sillables'));
-						$tela .= $AI->syllables(get("dd1"),get("dd2"));						
-						break;
-					case 'syllable':
-						$AI = new \App\Models\AI\NLP\Syllables();
-						$tela .= $this->formAI(1,lang('ai.Sillables'));
-						$tela .= $AI->syllable(get("dd1"),get("dd2"));						
-						break;
-					default:
-						$tela .= bsmessage('Service notefound: '.$d1,2);
-						$tela .= $this->services();
-						break;
-				}
-			return $tela;		
-		}	
-
-	function services()
-		{
-			$tela = '';
-			$s = array();
-			$s['ai.syllables'] = 'ai/nlp/syllables';
-			$s['ai.wordcount'] = 'ai/nlp/wordcount';
-			$s['ai.systematic_review'] = 'ai/research/systematic_review';
-			$tela .= '<ul>';
-			foreach($s as $service=>$url)
-				{
-					$tela .= '<li><a href="'.base_url(PATH.$url).'">'.$service.'</a></li>';
-				}
-			$tela .= '</ul>';
-			return $tela;
-		}		
 }

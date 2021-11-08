@@ -9,6 +9,7 @@ define("URL",$_SERVER['app.baseURL']);
 
 define("LIBRARY", "202101");
 helper(['boostrap', 'url', 'graphs', 'sisdoc_forms', 'form', 'nbr']);
+define("PREFIX",'brapci3.');
 
 $this->session = \Config\Services::session();
 $language = \Config\Services::language();

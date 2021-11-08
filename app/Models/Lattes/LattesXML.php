@@ -56,6 +56,9 @@ class LattesXML extends Model
 		}
 		clog('Harvesting XML - End');
 
+		$this->producao($xml, $rdf);
+		exit;
+		return $xml;
 		$this->vinculo($xml, $rdf);
 		return $xml;
 	}
@@ -85,6 +88,8 @@ class LattesXML extends Model
 				$zip->close();
 				unlink($file);
 			} else {
+				echo '<pre>';
+				print_r($txt);
 				echo "ERRO";
 				exit;
 			}
@@ -92,6 +97,13 @@ class LattesXML extends Model
 		clog('Lattes Load - End');
 		return $tela;
 	}
+
+	function producao($xml,$id)
+		{
+			echo '<pre>';
+			print_r($xml);	
+		}
+
 
 	function atuacao_profissiona($xml, $id)
 	{

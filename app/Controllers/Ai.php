@@ -9,7 +9,7 @@ helper(['boostrap','url','graphs','sisdoc_forms','form','nbr']);
 define("LIBRARY", "3001");
 define("LIBRARY_NAME", "BRAPCI_RESEARCH");
 define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix']);
-define("MODULE",'ai');
+define("MODULE",'ai/');
 define("URL", $_SERVER['app.baseURL']);
 
 
@@ -61,4 +61,12 @@ class AI extends BaseController
 		$tela .= $NLP->index($d1,$d2,$d3);
 		return $tela;
 	}
+
+	public function research($d1='',$d2='',$d3='')
+	{
+		$Research = new \App\Models\AI\Research();
+		$tela = $this->cab();
+		$tela .= $Research->index($d1,$d2,$d3);
+		return $tela;
+	}	
 }
