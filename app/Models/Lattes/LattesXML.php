@@ -59,7 +59,7 @@ class LattesXML extends Model
 		clog('Harvesting XML - End');
 
 		$LattesProducao->producao_xml($xml, $rdf);
-		exit;
+		return '';
 		return $xml;
 		$this->vinculo($xml, $rdf);
 		return $xml;
