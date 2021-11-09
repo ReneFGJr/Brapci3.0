@@ -83,7 +83,7 @@ class BasePQ extends Model
 				$url = 'htps://brapci.inf.br/index.php/res/v/'.$dt['bs_rdf_id'];
 				$url_lattes = 'hhttp://lattes.cnpq.br/'.$dt['bs_lattes'];
 				$da = $da[0];
-				$url_brapci = URL.'authority/index/viewid/'.$da['id_a'];
+				$url_brapci = PATH.'authority/index/viewid/'.$da['id_a'];
 				$tela = bsc(h($dt['bs_nome'],1),12);
 				$tela .= bsc('<small>'.anchor($url).'</small>',12);
 				$tela .= bsc('<small>'.anchor($url_lattes).'</small>',12);
