@@ -52,13 +52,14 @@ function viewid($id)
 			$link1 = '<a href="' . $link . '" target="_new' . $dt['a_lattes'] . '">';
 			$link1 .= '<img src="' . base_url('img/icones/lattes.png') . '" style="height: 50px">';
 			$link1 .= '</a>';
-
-			$link = base_url(PATH .MODULE . '/index/import_lattes/' . trim($dt['a_lattes']) . '/' . $dt['a_brapci'] . '/');
-			$link2 = '<a href="' . $link . '" target="_new' . $dt['a_lattes'] . '">';
-			$link2 .= '<img src="' . base_url('img/icones/import.png') . '?x=1" style="height: 50px">';
-			$link2 .= '</a>';
-
-			$tela .= bsc('<small>' . lang('Link do Lattes') . '</small><br>' . $link1 . $link2, 12);
+			if ($dt['a_brapci'] != 0)
+			{			
+				$link = base_url(PATH .MODULE . '/index/import_lattes/' . trim($dt['a_lattes']) . '/' . $dt['a_brapci'] . '/');
+				$link2 = '<a href="' . $link . '" target="_new' . $dt['a_lattes'] . '">';
+				$link2 .= '<img src="' . base_url('img/icones/import.png') . '?x=1" style="height: 50px">';
+				$link2 .= '</a>';
+				$tela .= bsc('<small>' . lang('Link do Lattes') . '</small><br>' . $link1 . $link2, 12);
+			}
 		} else {
 			$tela .= anchor(base_url(PATH . MODULE. '/index/LattesFindId/' . $dt['id_a']));
 		}
