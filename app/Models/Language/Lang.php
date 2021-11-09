@@ -45,6 +45,9 @@ class Lang extends Model
 			$x = ascii(mb_strtolower($x));
 			switch($x)
 				{
+					case 'dinamarques':
+						return 'dn';
+						break;
 					case 'assames':
 						return 'as';
 						break;
