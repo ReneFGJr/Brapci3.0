@@ -71,6 +71,11 @@ function producao($id)
 
 function producao_xml($xml,$id)
 		{
+			if ($id == 0)
+				{
+					echo "OPS ID = ZERO";
+					exit;
+				}
 			$Lang = new \App\Models\Language\Lang();
 			$xml = (array) $xml;
 			$prod = (array)$xml['PRODUCAO-BIBLIOGRAFICA'];
