@@ -42,6 +42,8 @@ class LattesXML extends Model
 
 	function xml($id = '', $rdf = 0)
 	{
+		$LattesProducao = new \App\Models\Lattes\LattesProducao();
+
 		clog('Harvesting XML');
 		$dir = '.tmp/lattes/';
 		$file = $dir . '/' . $id . '.xml';
@@ -56,7 +58,7 @@ class LattesXML extends Model
 		}
 		clog('Harvesting XML - End');
 
-		$this->producao($xml, $rdf);
+		$LattesProducao->producao_xml($xml, $rdf);
 		exit;
 		return $xml;
 		$this->vinculo($xml, $rdf);
@@ -64,7 +66,7 @@ class LattesXML extends Model
 	}
 
 	function LattesLoad($id)
-	{
+	{		
 		$tela = '';
 		$url = 'https://brapci.inf.br/ws/api/?verb=lattes&q=' . $id;
 		
@@ -98,11 +100,7 @@ class LattesXML extends Model
 		return $tela;
 	}
 
-	function producao($xml,$id)
-		{
-			echo '<pre>';
-			print_r($xml);	
-		}
+	
 
 
 	function atuacao_profissiona($xml, $id)

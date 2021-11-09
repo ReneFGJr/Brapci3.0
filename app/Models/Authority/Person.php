@@ -42,7 +42,7 @@ class Person extends Model
 
 function viewid($id)
 	{
-		$AuthorityNames = new \App\Models\Authority\AuthorityNames();
+		$AuthorityNames = new \App\Models\Authority\AuthorityNames();		
 		$dt = $AuthorityNames->find($id);
 		$tela = h($dt['a_prefTerm'], 1);
 		$tela .= anchor($dt['a_uri']);
@@ -82,9 +82,11 @@ function viewid($id)
 
 	function PersonPublications($id)	
 		{
+			$LattesProducao = new \App\Models\Lattes\LattesProducao();
+			$tela = $LattesProducao->producao($id);
 			$RDF = new \App\Models\Rdf\RDF();
 			$dt = $RDF->le($id,0,'brapci');
-			$tela = $RDF->view_data($dt);
+			$tela .= $RDF->view_data($dt);
 			return $tela;
 		}
 }
