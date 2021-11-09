@@ -76,6 +76,7 @@ class Lang extends Model
 						return 'pt-BR';
 						break;
 					default:
+						return 'xx';
 						echo 'OPS language '.$x;
 						exit;
 				}
