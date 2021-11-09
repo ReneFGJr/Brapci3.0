@@ -103,7 +103,7 @@ class Index extends Model
 		$tela = '';
 		$Lattes = new \App\Models\Lattes\LattesXML();
 		$tela = $Lattes->xml($d1,$ida);
-		$tela = metarefresh(PATH.'index/viewid/'.$id);
+		$tela = metarefresh(PATH.'index/viewid/'.$ida);
 		return $tela;
 	}
 
