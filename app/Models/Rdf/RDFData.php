@@ -86,7 +86,7 @@ class RDFData extends Model
 		{
 			$RDF = new \App\Models\RDF\RDF();
 			$sx = '';
-			IF (!isset($dt['concept']['id_cc'])) { return array(); }
+			IF (!isset($dt['concept']['id_cc'])) { return ''; }
 			$ID = $dt['concept']['id_cc'];
 			if (isset($dt['data']))
 				{
