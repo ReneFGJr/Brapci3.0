@@ -47,7 +47,7 @@ class SystematicReview extends Model
 
 	function index($d1,$d2,$d3)
 		{
-			$Fluxo = new \App\Models\Io\Imagem\Fluxo();
+			$Fluxo = new \App\Models\IO\Imagem\Fluxo();
 			$tela = h(lang('research.systematic_review'),1);
 			$tela .= $Fluxo->index('Planejamento','#66ff66');
 			$tela .= $Fluxo->index('Execução','#66ff66');

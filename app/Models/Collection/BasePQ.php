@@ -126,12 +126,36 @@ class BasePQ extends Model
 				$file = '.tmp/.files/'.$filename;
 				file_put_contents($file,$csv);
 				$sx = anchor_popup(URL.$file,'Base PQ');
-				$sql = "select * from brapci_authority.LattesProducao 
+
+				$sql = "select 
+						concat('lattes_',id_lp) as id
+						lp_authors as author,
+						lp_title as title,
+						lp_ano as year,
+						lp_url as eprint,
+						lp_doi as doi,
+						lp_issn as issn,
+						lp_journal as journal,
+						lp_vol as volume,
+						lp_nr as number,
+						lp_place as place
+						from brapci_lattes.LattesProducao 
 						where (".$wh.")
 						and (lp_ano >= 2017) 
 						and (lp_ano <= 2021) 
 						";
-				$sx .= '<pre>'.$sql.'</pre>';
+
+				$BibText = new \App\Models\Metadata\Bibtex();
+				$txt = '';
+				$rp = $this->query($sql)->getresult();
+				for($r=0;$r < count($rp);$r++)
+					{
+						$line = (array)$rp[$r];
+						$txt .= $BibText->BibtexArticle($line);
+						echo $txt;
+						exit;
+					}
+				
 				return $sx;
 			}			
 		// http://brapci3/ai/research/pq/viewid/1
