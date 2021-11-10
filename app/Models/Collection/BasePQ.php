@@ -94,6 +94,8 @@ class BasePQ extends Model
 
 		function corpus()
 			{
+				$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
+				$SR = True;
 				$sql = "select bs_nome, bs_lattes, bs_rdf_id
 							from brapci_pq.bolsas as bolsas
 							INNER JOIN brapci_pq.bolsistas ON bolsas.bb_person = bolsistas.id_bs
@@ -152,8 +154,12 @@ class BasePQ extends Model
 					{
 						$line = (array)$rp[$r];
 						$txt .= $BibText->BibtexArticle($line);
-						echo $txt;
-						exit;
+
+						if ($SR)
+							{
+								$line['c_study'] = 1;
+								$SystematicReviewCorpus->insert($line);
+							}
 					}
 				
 				return $sx;
