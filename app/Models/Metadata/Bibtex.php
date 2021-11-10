@@ -63,20 +63,25 @@ class Bibtex extends Model
 				'author','title','journal',
 				'year','volume','number',
 				'pages','doi','issn',
-				'month','note','eprint'
+				'month','note','eprint',
+				'keyword'
 			);
 
 			$sx = '';
+			$sx .= 'Brapci'.cr();
+			$sx .= 'EXPORT DATE: '.date("D M Y").cr();
 			$sx .= '@article{'.$d['key'].','.cr();
 			for ($r=0;$r < count($fld);$r++)
 				{
 					$field = $fld[$r];
 					if (isset($d[$field]))
 						{
-							$sx .= $field.' = "'.$d[$fld[$r]].'",'.cr();
+							$sx .= $field.' = {'.$d[$fld[$r]].'},'.cr();
 						}					
 				}
-			$sx .= 'post = "'.date("Y-m-d").'"'.cr();
+			$sx .= 'source = {Brapci},'.cr();
+			
+			$sx .= 'post = {'.date("Y-m-d").'}'.cr();
 			$sx .= '}'.cr();
 			return $sx;
 		}
