@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class SystematicReviewCorpus extends Model
 {
-	protected $DBGroup              = 'default';
+	protected $DBGroup              = 'lattes';
 	protected $table                = 'SystematicReviews_Corpus';
 	protected $primaryKey           = 'id_c';
 	protected $useAutoIncrement     = true;
