@@ -7,8 +7,8 @@ use CodeIgniter\Model;
 class SystematicReviewCorpus extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'systematicreviewcorpus';
-	protected $primaryKey           = 'id';
+	protected $table                = 'SystematicReviews_Corpus';
+	protected $primaryKey           = 'id_c';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
