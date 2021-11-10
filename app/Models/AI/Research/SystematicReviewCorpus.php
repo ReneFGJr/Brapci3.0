@@ -67,6 +67,65 @@ class SystematicReviewCorpus extends Model
 					$this->query($sql);
 				}
 		}
+	function classification($id)
+		{
+			$dt = $this->find($id);
+			$tela = $this->show($dt);
+			return $tela;
+		}
+	function show($dt)
+		{
+			$tela = '';
+			$tela .= '<hr>';
+			$tela .= $dt['author'];
+			$tela .= '<hr>';
+			$tela .= $dt['title'];
+			$tela .= '<hr>';
+			$tela .= $dt['journal'];
+			$tela .= '<hr>';
+			$tela .= $dt['volume'];
+			$tela .= '<hr>';
+			$tela .= $dt['issn'];
+			$tela .= '<hr>';
+			$tela .= $dt['number'];
+			$tela .= '<hr>';
+			$tela .= $dt['doi'];
+			$tela .= '<hr>';
+			$tela .= '<a href="'.($dt['eprint']).'">'.($dt['eprint']).'</a>';
+			$tela .= '<hr>';
+			$tela .= $dt['url'];
+			$tela .= '<hr>';
+			return $tela;
+		}
+	function list($id)
+		{
+			$rlt = $this->where('c_study',$id)
+					->where('c_status',0)
+					->orderBy('title, c_duplicata')
+					->findAll();
+
+			$sx = '';
+			$sx .= '<ol>';
+			for ($r=0;$r < count($rlt);$r++)
+				{
+					$c = '<span>';
+					$ca = '</span>';
+					
+					$line = (array)$rlt[$r];
+					if ($line['c_duplicata']) 
+						{
+							$c = '<span style="text-decoration:line-through; color: #DDD;">';
+						}
+					$url = URL.MODULE.'research/systematic_review/corpusId/'.$line['id_c'];
+					$link = onclick($url,'1024','800');
+					$sx .= '<li>'.$link.$c.$line['title'].'</a>';
+					$sx .= '. <b>'.$line['journal'].'</b>';
+					$sx .= ', '.$line['year'];
+					$sx .= $ca.'</li>';
+				}
+			$sx .= '</ol>';
+			return $sx;
+		}
 
 	function view($id)
 		{
@@ -98,6 +157,8 @@ class SystematicReviewCorpus extends Model
 					$sx .= bsc('<span class="supersmall">'.lang('ai.sr_status_'.$r).'</span>'.h($n[$r],3),2);
 				}
 			$sx = bs($sx);
+
+			$sx .= $this->list($id);
 			return $sx;
 		}
 }

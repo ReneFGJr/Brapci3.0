@@ -52,9 +52,11 @@ class SystematicReview extends Model
 			$tela .= $Fluxo->index('Planejamento','#66ff66');
 			$tela .= $Fluxo->index('Execução','#66ff66');
 			$tela .= $Fluxo->index('Análise','#66ff66');
-			ECHO '===>'.$d2;
 			switch($d2)
 				{
+					case 'corpusId':
+						$tela .= $this->classification($d3);
+						break;
 					case 'viewid':
 						$tela .= $this->viewid($d3);
 						break;
@@ -68,6 +70,13 @@ class SystematicReview extends Model
 				}
 			return $tela;
 		}
+
+		function classification($id)
+			{
+				$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
+				$tela = $SystematicReviewCorpus->classification($id);
+				return $tela;
+			}
 		function authors($id)
 		{
 			$tela = h('<i>João da Silva Sauro</i>',4);
