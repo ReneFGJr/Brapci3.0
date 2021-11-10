@@ -46,4 +46,35 @@ class SystematicReviewCorpus extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+	function view($id)
+		{
+			$sql = "select count(*) as total, c_duplicata from ".$this->table." where c_study = ".$id." group by c_duplicata";
+			$rlt = $this->query($sql)->getresult();
+			$dup = 0;
+			for ($r=0;$r < count($rlt);$r++)
+				{
+					$line = (array)$rlt[$r];
+					if ($line['c_duplicata'] == 1) { $dup = $line['total']; }
+				}
+
+			$sql = "select count(*) as total, c_status from ".$this->table." where c_study = ".$id." group by c_status";
+			$rlt = $this->query($sql)->getresult();
+			$n = array(0,0,0,0);
+			for ($r=0;$r < count($rlt);$r++)
+				{
+					$line = (array)$rlt[$r];
+					if ($line['c_status'] == 0) { $n[0] = $line['total']; }
+					if ($line['c_status'] == 1) { $n[1] = $line['total']; }
+					if ($line['c_status'] == 2) { $n[2] = $line['total']; }
+					if ($line['c_status'] == 9) { $n[3] = $line['total']; }
+				}
+			$sx = '';
+			for ($r=0;$r < count($n);$r++)
+				{
+					$sx .= bsc('<span class="supersmall">'.lang('ai.sr_status_'.$r).'</span>'.h($n[$r],3),2);
+				}
+			$sx = bs($sx);
+			return $sx;
+		}
 }

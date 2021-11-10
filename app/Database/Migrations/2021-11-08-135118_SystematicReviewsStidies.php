@@ -119,7 +119,7 @@ $this->forge->addField([
             ],
             'id' => [
                 'type' => 'VARCHAR',
-                'constraint' => '100'
+                'constraint' => '20'
             ],             
             'c_study' => [
                 'type' => 'INT',
@@ -186,11 +186,28 @@ $this->forge->addField([
             'source' => [
                 'type' => 'VARCHAR',
                 'constraint' => '20'
-            ],                                         
+            ],   
+            'url' => [
+                'type' => 'VARCHAR',
+                'constraint' => '100'
+            ],  
+            'c_duplicata' => [
+                'type' => 'INT',
+				'default' => 0
+            ], 
+            'c_status' => [
+                'type' => 'INT',
+				'default' => 0
+            ], 
+            'c_notas' => [
+                'type' => 'TEXT'
+            ],                                     
+            
             'created_at datetime default current_timestamp',
             'updated_at datetime default current_timestamp on update current_timestamp'
         ]);		
 		$this->forge->addKey('id_c', true);
+        $this->forge->addKey('id', false);
         $this->forge->createTable('SystematicReviews_Corpus');        
 	}
 

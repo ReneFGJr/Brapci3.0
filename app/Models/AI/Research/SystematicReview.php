@@ -77,6 +77,7 @@ class SystematicReview extends Model
 		function viewid($id)
 		{
 			$SystematicReviewData = new \App\Models\AI\Research\SystematicReviewData();
+			$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
 			$dt = $this->find($id);
 			$tela = '';
 			$tela .= bsc(h($dt['sr_title'],1),12);
@@ -85,6 +86,8 @@ class SystematicReview extends Model
 			$tela .= bsc('<small>'.lang('update').'</small><br>'.$dt['updated_at'],6);
 
 			$tela .= $SystematicReviewData->view($id);
+
+			$tela .= $SystematicReviewCorpus->view($id);
 			return bs($tela);
 		}
 
