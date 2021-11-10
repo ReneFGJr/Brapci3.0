@@ -6,8 +6,8 @@ use CodeIgniter\Model;
 
 class SystematicReviewCorpus extends Model
 {
-	protected $DBGroup              = 'ai';
-	protected $table                = 'SystematicReviews_Corpus';
+	protected $DBGroup              = 'default';
+	protected $table                = 'brapci_ai.SystematicReviews_Corpus';
 	protected $primaryKey           = 'id_c';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -51,15 +51,21 @@ class SystematicReviewCorpus extends Model
 		{
 			$sql = "select * from 
 					(
-						select title, c_study, count(*) as total
-						from ".$this->DBGroup.".".$this->table."
-						where c_study = $id
+						select title, c_study, count(*) as total, max(id_c) as max
+						from ".$this->table."
+						where c_study = $id and c_duplicata = 0
 						group by title, c_study
 					) as tabela
 					where total > 1";
-					echo $sql;
+
 			$rlt = $this->query($sql)->getresult();
-			print_r($rlt);
+
+			for ($r=0;$r < count($rlt);$r++)
+				{
+					$line = (array)$rlt[$r];
+					$sql = "update ".$this->table." set c_duplicata = 1 where id_c = ".$line['max'];
+					$this->query($sql);
+				}
 		}
 
 	function view($id)
