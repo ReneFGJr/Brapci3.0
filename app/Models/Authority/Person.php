@@ -44,6 +44,7 @@ function viewid($id)
 	{
 		$AuthorityNames = new \App\Models\Authority\AuthorityNames();		
 		$dt = $AuthorityNames->find($id);
+
 		$tela = h($dt['a_prefTerm'], 1);
 		$tela .= anchor($dt['a_uri']);
 
@@ -54,15 +55,22 @@ function viewid($id)
 			$link1 .= '</a>';
 			if ($dt['a_brapci'] != 0)
 			{			
-				$link = base_url(PATH .MODULE . '/index/import_lattes/' . trim($dt['a_lattes']) . '/' . $dt['a_brapci'] . '/');
+				$link = base_url(PATH .MODULE . '/index/import_lattes/' . trim($dt['a_lattes']) . '/');
 				$link2 = '<a href="' . $link . '" target="_new' . $dt['a_lattes'] . '">';
 				$link2 .= '<img src="' . base_url('img/icones/import.png') . '?x=1" style="height: 50px">';
 				$link2 .= '</a>';
-				$tela .= bsc('<small>' . lang('Link do Lattes') . '</small><br>' . $link1 . $link2, 12);
+			} else {
+
 			}
+			$tela .= bsc('<small>' . lang('Link do Lattes') . '</small><br>' . $link1 . $link2, 12);
 		} else {
 			$tela .= anchor(base_url(PATH . MODULE. '/index/LattesFindId/' . $dt['id_a']));
 		}
+
+		if ($dt['a_lattes'] == 0)
+			{
+				return $tela.'no lattes';
+			}	
 
 		/*************************************************** BRAPCI */
 		if (($dt['a_brapci'] == 0) and (strpos($dt['a_uri'],'brapci.inf.br')))
@@ -77,17 +85,20 @@ function viewid($id)
 				$this->query($sql);
 				$dt['a_brapci'] = $txt;
 			}
-		$tela .= $this->PersonPublications($dt['a_brapci']);
+		$tela .= $this->PersonPublications($dt['a_lattes']);
 		return $tela;
 	}
 
 	function PersonPublications($id)	
 		{
+			echo '==========>'.$id;
 			$LattesProducao = new \App\Models\Lattes\LattesProducao();
 			$tela = $LattesProducao->producao($id);
+			/*
 			$RDF = new \App\Models\Rdf\RDF();
 			$dt = $RDF->le($id,0,'brapci');
 			$tela .= $RDF->view_data($dt);
+			*/
 			return $tela;
 		}
 }

@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class LattesProducao extends Model
 {
-	protected $DBGroup              = 'default';
+	protected $DBGroup              = 'lattes';
 	protected $table                = 'LattesProducao';
 	protected $primaryKey           = 'id_lp';
 	protected $useAutoIncrement     = true;

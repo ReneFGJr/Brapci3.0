@@ -6,7 +6,7 @@ use CodeIgniter\Database\Migration;
 
 class LattesProducao extends Migration
 {
-	protected $DBGroup = 'auth';
+	protected $DBGroup = 'lattes';
 
 	public function up()
 	{
@@ -16,7 +16,7 @@ $this->forge->addField([
                 'auto_increment' => true
             ],
 			'lp_author' => [
-				'type' => 'INT',
+				'type' => 'BIGINT',
 				'constraint' => '0',
 			],
 			'lp_author_total' => [

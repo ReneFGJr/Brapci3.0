@@ -54,12 +54,86 @@ class BasePQ extends Model
 							$tela .= $this->viewid($d3);
 						break;
 
+						case 'harvesting':
+							$tela .= $this->harvesting($d3);
+						break;						
+
+						case 'corpus':
+							$tela .= $this->corpus();
+						break;						
+
 						default:
 							$tela = $this->tableview();
 							break;
 					}	
 				return $tela;
 			}
+
+		function harvesting($p)
+			{
+				$p = round($p);
+				$sql = "select * from ".$this->table." order by id_bs limit 1 offset $p ";
+				$query = $this->query($sql);
+				$rlt = (array)$query->getResult();
+				if (count($rlt) > 0)
+					{
+						$line = (array)$rlt[0];
+						$lattes = $line['bs_lattes'];
+						echo '===>'.$lattes;
+						$Lattes = new \App\Models\Lattes\LattesXML();
+						$Lattes->xml($lattes);
+						$tela = bsmessage('Coleta completa de <b>'.$line['bs_nome'].'</b>',1);
+						$url = PATH.MODULE.'research/pq/harvesting/'.($p+1);
+						$tela .= metarefresh($url,1);
+						$tela .= $url;
+
+						return $tela;
+					}	
+				exit;
+			}
+
+		function corpus()
+			{
+				$sql = "select bs_nome, bs_lattes, bs_rdf_id
+							from brapci_pq.bolsas as bolsas
+							INNER JOIN brapci_pq.bolsistas ON bolsas.bb_person = bolsistas.id_bs
+						where bs_finish >= '2017-01-01' 
+						group by bs_nome, bs_lattes, bs_rdf_id
+						order by bs_nome, bs_lattes, bs_rdf_id";
+				$rst = $this->query($sql)->getresult();
+				
+				$sep = ';';
+				$csv = 'name'.$sep.'lattes'.$sep.'brapci_id'.cr();
+				$wh = '';
+				
+				for ($r=0;$r< count($rst);$r++)
+					{
+						$line = (array)$rst[$r];
+						$csv .= '"'.$line['bs_nome'].'"'.$sep;
+						$csv .='"hhttp://lattes.cnpq.br/'.$line['bs_lattes'].'"'.$sep;
+						$csv .= $line['bs_rdf_id'];
+						if (strlen($wh) > 0)
+							{
+								$wh .= ' OR ';
+							}
+						$wh .= " (lp_author = '".$line['bs_lattes']."') ";
+						$csv .= cr();
+					}
+				dircheck('.tmp');
+				dircheck('.tmp/.files');
+				$csv = utf8_decode($csv);
+				$filename = 'brapci_pq_'.date("Ymd_His").'.csv';
+				$file = '.tmp/.files/'.$filename;
+				file_put_contents($file,$csv);
+				$sx = anchor_popup(URL.$file,'Base PQ');
+				$sql = "select * from brapci_authority.LattesProducao 
+						where (".$wh.")
+						and (lp_ano >= 2017) 
+						and (lp_ano <= 2021) 
+						";
+				$sx .= '<pre>'.$sql.'</pre>';
+				return $sx;
+			}			
 		// http://brapci3/ai/research/pq/viewid/1
 		function viewid($id)
 			{

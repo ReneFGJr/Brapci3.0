@@ -40,28 +40,28 @@ class LattesXML extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function xml($id = '', $rdf = 0)
+	function xml($lattes = '')
 	{
 		$LattesProducao = new \App\Models\Lattes\LattesProducao();
 
 		clog('Harvesting XML');
 		$dir = '.tmp/lattes/';
-		$file = $dir . '/' . $id . '.xml';
+		$file = $dir . '/' . $lattes . '.xml';
 
 		if (file_exists($file)) {
 			clog('Harvesting XML - Load File');
 			$xml = simplexml_load_file($file);
 		} else {
 			clog('Harvesting XML - Import from CNPq');
-			$this->LattesLoad($id, $rdf);
+			$this->LattesLoad($lattes, $lattes);
 			$xml = simplexml_load_file($file);
 		}
 		clog('Harvesting XML - End');
 
-		$LattesProducao->producao_xml($xml, $rdf);
+		$LattesProducao->producao_xml($xml, $lattes);
 		return '';
 		return $xml;
-		$this->vinculo($xml, $rdf);
+		$this->vinculo($xml, $lattes);
 		return $xml;
 	}
 
