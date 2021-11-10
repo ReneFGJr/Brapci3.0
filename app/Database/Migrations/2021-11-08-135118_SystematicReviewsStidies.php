@@ -117,6 +117,10 @@ $this->forge->addField([
                 'type' => 'INT',
                 'auto_increment' => true
             ],
+            'id' => [
+                'type' => 'VARCHAR',
+                'constraint' => '100'
+            ],             
             'c_study' => [
                 'type' => 'INT',
 				'default' => 0
@@ -171,6 +175,10 @@ $this->forge->addField([
                 'type' => 'VARCHAR',
                 'constraint' => '60'
             ],
+            'issn' => [
+                'type' => 'VARCHAR',
+                'constraint' => '60'
+            ],            
             'language' => [
                 'type' => 'VARCHAR',
                 'constraint' => '20'

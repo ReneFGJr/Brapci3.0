@@ -15,7 +15,7 @@ class SystematicReviewCorpus extends Model
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'id_c','c_study',
+		'id_c','c_study','id',
 		'author','title','journal',
 		'year','volume','number',
 		'pages','doi','issn',
