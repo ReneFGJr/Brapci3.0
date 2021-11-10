@@ -42,9 +42,9 @@ class SystematicReviewData extends Model
 
 	function view($id)
 		{
-			$sql = "select * from systematicreviews_group
-						LEFT JOIN systematicreviews_fields ON fr_field = id_fs
-						LEFT JOIN systematicreviews_protocol ON sp_field = id_fs AND sr_study = $id
+			$sql = "select * from SystematicReviews_Group
+						LEFT JOIN SystematicReviews_Fields ON fr_field = id_fs
+						LEFT JOIN SystematicReviews_Protocol ON sp_field = id_fs AND sr_study = $id
 						ORDER BY fr_order
 					";
 			$dt = $this->query($sql)->getResult();
