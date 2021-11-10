@@ -70,7 +70,7 @@ class Bibtex extends Model
 			$sx = '';
 			$sx .= 'Brapci'.cr();
 			$sx .= 'EXPORT DATE: '.date("D M Y").cr();
-			$sx .= '@article{'.$d['key'].','.cr();
+			$sx .= '@article{'.$d['id'].','.cr();
 			for ($r=0;$r < count($fld);$r++)
 				{
 					$field = $fld[$r];

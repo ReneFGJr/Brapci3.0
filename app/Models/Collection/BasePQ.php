@@ -128,7 +128,7 @@ class BasePQ extends Model
 				$sx = anchor_popup(URL.$file,'Base PQ');
 
 				$sql = "select 
-						concat('lattes_',id_lp) AS key,
+						concat('lattes_',id_lp) AS id,
 						lp_authors as author,
 						lp_title as title,
 						lp_ano as year,
