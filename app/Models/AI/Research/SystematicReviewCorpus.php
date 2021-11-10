@@ -57,6 +57,7 @@ class SystematicReviewCorpus extends Model
 						group by title, c_study
 					) as table
 					where total > 1";
+					echo $sql;
 			$rlt = $this->query($sql)->getresult();
 			print_r($rlt);
 		}
