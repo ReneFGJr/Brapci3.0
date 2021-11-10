@@ -70,9 +70,10 @@ class SystematicReviewCorpus extends Model
 					if ($line['c_status'] == 9) { $n[3] = $line['total']; }
 				}
 			$sx = '';
+			$sx .= bsc('<span class="supersmall">'.lang('ai.sr_status_dp').'</span>'.h($n[$r],3),2);
 			for ($r=0;$r < count($n);$r++)
 				{
-					$sx .= bsc('<span class="supersmall">'.lang('ai.sr_status_'.$r).'</span>'.h($n[$r],3),2);
+					$sx .= bsc('<span class="supersmall">'.lang('ai.sr_status_'.$r).'</span>'.h($dup,3),2);
 				}
 			$sx = bs($sx);
 			return $sx;
