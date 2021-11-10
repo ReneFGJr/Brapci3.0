@@ -7,8 +7,8 @@ use CodeIgniter\Model;
 class SystematicReviewField extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'systematicreviewfields';
-	protected $primaryKey           = 'id';
+	protected $table                = 'SystematicReviews_Fields';
+	protected $primaryKey           = 'id_fs';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';

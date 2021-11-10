@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class SystematicReviewProtocol extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'systematicreviewprotocols';
+	protected $table                = 'SystematicReviews_Protocol';
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;

@@ -7,8 +7,8 @@ use CodeIgniter\Model;
 class SystematicReviewGroup extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'systematicreviewgroups';
-	protected $primaryKey           = 'id';
+	protected $table                = 'SystematicReviews_Group';
+	protected $primaryKey           = 'id_fr';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
