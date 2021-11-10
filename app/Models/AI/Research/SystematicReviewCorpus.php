@@ -52,7 +52,8 @@ class SystematicReviewCorpus extends Model
 			$sql = "select * from 
 					(
 						select title, c_study, count(*) as total
-						from ".$this->table."
+						from ".$this->DBGroup.".".$this->table."
+						where c_study = $id
 						group by title, c_study
 					) as table
 					where total > 1";
