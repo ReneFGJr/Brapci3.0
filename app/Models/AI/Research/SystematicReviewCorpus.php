@@ -47,8 +47,22 @@ class SystematicReviewCorpus extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
+	function check_duplicate($id)
+		{
+			$sql = "select * from 
+					(
+						select title, c_study, count(*) as total
+						from ".$this->table."
+						group by title, c_study
+					) as table
+					where total > 1";
+			$rlt = $this->query($sql)->getresult();
+			print_r($rlt);
+		}
+
 	function view($id)
 		{
+			$this->check_duplicate($id);
 			$sql = "select count(*) as total, c_duplicata from ".$this->table." where c_study = ".$id." group by c_duplicata";
 			$rlt = $this->query($sql)->getresult();
 			$dup = 0;
