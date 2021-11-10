@@ -55,7 +55,7 @@ class SystematicReviewCorpus extends Model
 						from ".$this->DBGroup.".".$this->table."
 						where c_study = $id
 						group by title, c_study
-					) as table
+					) as tabela
 					where total > 1";
 					echo $sql;
 			$rlt = $this->query($sql)->getresult();
