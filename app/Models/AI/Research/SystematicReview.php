@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Ai\Research;
+namespace App\Models\AI\Research;
 
 use CodeIgniter\Model;
 
@@ -76,7 +76,7 @@ class SystematicReview extends Model
 
 		function viewid($id)
 		{
-			$SystematicReviewData = new \App\Models\Ai\Research\SystematicReviewData();
+			$SystematicReviewData = new \App\Models\AI\Research\SystematicReviewData();
 			$dt = $this->find($id);
 			$tela = '';
 			$tela .= bsc(h($dt['sr_title'],1),12);

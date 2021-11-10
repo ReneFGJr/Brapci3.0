@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Ai\Research;
+namespace App\Models\AI\Research;
 
 use CodeIgniter\Model;
 
