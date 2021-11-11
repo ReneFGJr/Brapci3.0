@@ -83,6 +83,7 @@ class SystematicReviewCorpus extends Model
 
 					/*****************************/
 					$tela .= $this->classification($id);
+					$tela .= metarefresh(PATH.MODULE.'research/systematic_review/autoclass',0);
 				}
 			return $tela;
 		}
