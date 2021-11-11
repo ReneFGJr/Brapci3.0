@@ -57,7 +57,10 @@ class SystematicReview extends Model
 					case 'autoclass':
 						$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
 						$tela .= $SystematicReviewCorpus->autoClass($d3);
-						break;					
+						break;	
+					case 'nlp':
+						$tela .= $this->analyse($d3);
+						break;										
 					case 'corpusId':
 						$tela .= $this->classification($d3);
 						break;
@@ -74,6 +77,15 @@ class SystematicReview extends Model
 				}
 			return $tela;
 		}
+
+		function analyse($id)
+			{
+				$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
+				$Thesa = new \App\Models\AI\Thesa();
+				$vc = $Thesa->le_array(243);
+
+				
+			}
 
 		function classification($id)
 			{
