@@ -54,6 +54,10 @@ class SystematicReview extends Model
 			$tela .= $Fluxo->index('Análise','#66ff66');
 			switch($d2)
 				{
+					case 'autoclass':
+						$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
+						$tela .= $SystematicReviewCorpus->autoClass($d3);
+						break;					
 					case 'corpusId':
 						$tela .= $this->classification($d3);
 						break;

@@ -67,10 +67,30 @@ class SystematicReviewCorpus extends Model
 					$this->query($sql);
 				}
 		}
+	function autoClass()
+		{
+			$offset = round(get("offset"));
+			$sql = "select * from brapci_ai.SystematicReviews_CorpusOcultar 
+					where c_status = 0 limit 1 offset ".$offset;
+			$dt = $this->query($sql)->getresult();
+			print_r($dt);
+		}
 	function classification($id)
 		{
 			$dt = $this->find($id);
 			$tela = $this->show($dt);
+
+			$ArticleBusca = new \App\Models\Brapci\ArticleBusca();
+			$rdfid = $ArticleBusca->search($dt['title']);
+
+			echo '==xx=>'.$rdfid;
+			if ($rdfid > 0)
+				{
+					$sql = "update brapci_ai.SystematicReviews_Corpus 
+								set c_brapci = $rdfid, c_status = 1
+								where id_c = ".$dt['id_c'];
+					$this->query($sql);
+				}
 			return $tela;
 		}
 	function show($dt)
