@@ -108,7 +108,8 @@ class SystematicReviewCorpus extends Model
 				{
 					$tela .= bsmessage('Artigo localizado '.$rdfid,1);
 					$sql = "update brapci_ai.SystematicReviews_Corpus 
-								set c_brapci = $rdfid, c_status = 1
+								set c_brapci = $rdfid, 
+								c_status = 1
 								where id_c = ".$dt['id_c'];
 					$this->query($sql);
 				}
@@ -182,14 +183,15 @@ class SystematicReviewCorpus extends Model
 
 			$sql = "select count(*) as total, c_status from ".$this->table." where c_study = ".$id." group by c_status";
 			$rlt = $this->query($sql)->getresult();
-			$n = array(0,0,0,0);
+			$n = array(0,0,0,0,0);
 			for ($r=0;$r < count($rlt);$r++)
 				{
 					$line = (array)$rlt[$r];
 					if ($line['c_status'] == 0) { $n[0] = $line['total']; }
 					if ($line['c_status'] == 1) { $n[1] = $line['total']; }
 					if ($line['c_status'] == 2) { $n[2] = $line['total']; }
-					if ($line['c_status'] == 9) { $n[3] = $line['total']; }
+					if ($line['c_status'] == 3) { $n[3] = $line['total']; }
+					if ($line['c_status'] == 9) { $n[4] = $line['total']; }
 				}
 			$sx = '';
 			$sx .= bsc('<span class="supersmall">'.lang('ai.sr_status_dp').'</span>'.h($dup,3),2);
