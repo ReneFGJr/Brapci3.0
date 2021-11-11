@@ -75,6 +75,7 @@ class SystematicReviewCorpus extends Model
 			$dt = $this->query($sql)->getresult();
 			print_r($dt);
 		}
+		
 	function classification($id)
 		{
 			$dt = $this->find($id);
