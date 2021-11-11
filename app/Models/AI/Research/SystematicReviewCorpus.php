@@ -136,7 +136,7 @@ class SystematicReviewCorpus extends Model
 						{
 							$c = '<span style="text-decoration:line-through; color: #DDD;">';
 						}
-					$url = URL.MODULE.'research/systematic_review/corpusId/'.$line['id_c'];
+					$url = PATH.'research/systematic_review/corpusId/'.$line['id_c'];
 					$link = onclick($url,'1024','800');
 					$sx .= '<li>'.$link.$c.$line['title'].'</a>';
 					$sx .= '. <b>'.$line['journal'].'</b>';
