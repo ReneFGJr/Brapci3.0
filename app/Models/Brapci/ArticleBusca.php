@@ -40,6 +40,22 @@ class ArticleBusca extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
+	function txt($id=0)
+		{
+			$url = 'https://brapci.inf.br/index.php/res/download/'.$id;
+			$url = 'https://brapci.inf.br/index.php/res/txt/'.$id;
+			$txt = file_get_contents($url);
+			$txt = troca($txt,chr(13),'#');
+			$txt = troca($txt,chr(10),'#');
+			$txt = troca($txt,'.#','.'.chr(10));
+			$txt = troca($txt,'#',' ');
+			while (strpos($txt,'  '))
+				{
+					$txt = troca($txt,'  ',' ');
+				}
+			return $txt;
+		}
+
 	function search($termo)
 	{
 		$rlt = $this->where('n_name',$termo)->findAll();

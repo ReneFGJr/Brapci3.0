@@ -84,7 +84,13 @@ class SystematicReview extends Model
 				$Thesa = new \App\Models\AI\Thesa();
 				$vc = $Thesa->le_array(243);
 
-				
+				$ArticleBusca = new \App\Models\Brapci\ArticleBusca();
+				$txt = $ArticleBusca->txt(149163);
+
+				$WordMatch = new \App\Models\AI\NLP\WordMatch();
+				$tela = $WordMatch->analyse($txt,$vc);
+
+				return $tela;
 			}
 
 		function classification($id)
