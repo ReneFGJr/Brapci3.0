@@ -69,13 +69,32 @@ class SystematicReviewCorpus extends Model
 		}
 	function autoClass()
 		{
+			$tela = '';
 			$offset = round(get("offset"));
 			$sql = "select * from brapci_ai.SystematicReviews_Corpus
 					where c_status = 0 limit 1 offset ".$offset;
 			$dt = $this->query($sql)->getresult();
-			print_r($dt);
+
+			if (count($dt) > 0)
+				{
+					$line = (array)$dt[0];
+					$id = $line['id_c'];
+					$this->changeStatus($id,3);
+
+					/*****************************/
+					$tela .= $this->classification($id);
+				}
+			return $tela;
 		}
-		
+	
+	function changeStatus($id,$st)
+		{
+			$sql = "update brapci_ai.SystematicReviews_Corpus 
+			set c_status = $st
+			where id_c = ".$id;
+			$this->query($sql);			
+		}
+
 	function classification($id)
 		{
 			$dt = $this->find($id);
@@ -84,9 +103,9 @@ class SystematicReviewCorpus extends Model
 			$ArticleBusca = new \App\Models\Brapci\ArticleBusca();
 			$rdfid = $ArticleBusca->search($dt['title']);
 
-			echo '==xx=>'.$rdfid;
 			if ($rdfid > 0)
 				{
+					$tela .= bsmessage('Artigo localizado '.$rdfid,1);
 					$sql = "update brapci_ai.SystematicReviews_Corpus 
 								set c_brapci = $rdfid, c_status = 1
 								where id_c = ".$dt['id_c'];
