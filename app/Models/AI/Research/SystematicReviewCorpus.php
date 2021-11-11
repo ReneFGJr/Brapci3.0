@@ -70,7 +70,7 @@ class SystematicReviewCorpus extends Model
 	function autoClass()
 		{
 			$offset = round(get("offset"));
-			$sql = "select * from brapci_ai.SystematicReviews_CorpusOcultar 
+			$sql = "select * from brapci_ai.SystematicReviews_Corpus
 					where c_status = 0 limit 1 offset ".$offset;
 			$dt = $this->query($sql)->getresult();
 			print_r($dt);
