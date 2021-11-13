@@ -44,7 +44,11 @@ $this->forge->addField([
             'sp_field' => [
                 'type' => 'INT',
 				'default' => 0
-            ], 				
+            ], 	            			
+            'sp_corpus' => [
+                'type' => 'INT',
+				'default' => 0
+            ], 	            
             'sp_context' => [
                 'type' => 'TEXT',
             ], 			
@@ -208,7 +212,30 @@ $this->forge->addField([
         ]);		
 		$this->forge->addKey('id_c', true);
         $this->forge->addKey('id', false);
-        $this->forge->createTable('SystematicReviews_Corpus');        
+        $this->forge->createTable('SystematicReviews_Corpus');  
+
+$this->forge->addField([
+            'id_sd' => [
+                'type' => 'INT',
+                'auto_increment' => true
+            ],
+            'sd_study' => [
+                'type' => 'INT',
+				'default' => 0
+            ], 			
+            'sd_field' => [
+                'type' => 'INT',
+				'default' => 0
+            ], 			
+            'sd_desc' => [
+                'type' => 'TEXT',
+            ], 
+            'created_at datetime default current_timestamp',
+            'updated_at datetime default current_timestamp on update current_timestamp'
+        ]);
+		
+		$this->forge->addKey('id_sd', true);
+        $this->forge->createTable('SystematicReviews_Values');                
 	}
 
 	public function down()

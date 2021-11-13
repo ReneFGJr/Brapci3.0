@@ -34,6 +34,9 @@ class AI extends BaseController
 				break;
 			case 'menu':
 				$tela .= $hd->menu($dt);
+				break;
+			case 'head':
+				$tela = view('Pages/_head');
 				break;				
 			default:
 				$tela = view('Pages/_head');
@@ -54,19 +57,24 @@ class AI extends BaseController
 		return $tela;
 	}
 
-	public function nlp($d1='',$d2='',$d3='')
+	public function nlp($d1='',$d2='',$d3='',$d4='')
 	{
 		$NLP = new \App\Models\AI\NLP();
 		$tela = $this->cab();
-		$tela .= $NLP->index($d1,$d2,$d3);
+		$tela .= $NLP->index($d1,$d2,$d3,$d4);
 		return $tela;
 	}
 
-	public function research($d1='',$d2='',$d3='')
+	public function research($d1='',$d2='',$d3='',$d4='')
 	{
 		$Research = new \App\Models\AI\Research();
-		$tela = $this->cab();
-		$tela .= $Research->index($d1,$d2,$d3);
+		$tp = '';
+		if ($d2 == 'corpusId')
+			{
+				$tp = 'head';
+			}	
+		$tela = $this->cab($tp);				
+		$tela .= $Research->index($d1,$d2,$d3,$d4);
 		return $tela;
 	}	
 }

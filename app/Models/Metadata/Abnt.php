@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models\Ai;
+namespace App\Models\Metadata;
 
 use CodeIgniter\Model;
 
-class Research extends Model
+class Abnt extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'researches';
+	protected $table                = 'abtns';
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -40,23 +40,45 @@ class Research extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function index($d1='',$d2='',$d3='',$d4='')
+	function show($dt,$type='A')
 		{
-			$tela = '';
-			switch($d1)
+			switch($type)
 				{
-					case 'systematic_review':
-						$SystematicReview = new \App\Models\AI\Research\SystematicReview();
-						$tela .= $SystematicReview->index($d1,$d2,$d3,$d4);						
-						break;
-					case 'pq':
-						$BasePQ = new \App\Models\Collection\BasePQ();
-						$tela .= $BasePQ->index($d1,$d2,$d3,$d4);						
-						break;						
 					default:
-						$tela .= bsmessage('Service not found: '.$d1,2);
-						break;
+					$tela = $this->abnt_article($dt);
 				}
-			return $tela;		
-		}	
+			return $tela;
+		}
+	function abnt_article($dt)
+		{
+			$title = trim(html_entity_decode($dt['title']));
+			$title = trim(mb_strtolower($title));
+			$tu = mb_strtoupper($title);
+			$tu = mb_substr($tu,0,1);
+			$te = mb_substr($title,1);
+			$title = $tu.$te;
+		
+			$tela = '';
+			$tela .= '<div class="abtn-article">';
+			$tela .= $dt['author'];
+			$tela .= '. '.$title;
+			$tela .= '. <b>'.nbr_author($dt['journal'],7).'</b>';
+			if (strlen($dt['volume']) > 0)
+				{			
+					$tela .= ', '.$dt['volume'];
+				}
+			if (strlen($dt['number']) > 0)
+				{			
+					$tela .= ', '.$dt['number'];
+				}
+			$tela .= ', '.$dt['year'];
+			if (strlen($dt['pages']) > 0)
+				{
+					$tela .= ', p '.$dt['pages'];
+				}
+			$tela .= '.';
+			
+			$tela .= '</div>';
+			return $tela;
+		}
 }

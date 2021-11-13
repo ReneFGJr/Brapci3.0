@@ -1,20 +1,22 @@
 <?php
 
-namespace App\Models\Ai;
+namespace App\Models\AI\Research;
 
 use CodeIgniter\Model;
 
-class Research extends Model
+class SystematicReviewValue extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'researches';
-	protected $primaryKey           = 'id';
+	protected $table                = 'brapci_ai.SystematicReviews_Values';
+	protected $primaryKey           = 'id_sd';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [];
+	protected $allowedFields        = [
+		'id_sd','sd_study','sd_field','sd_desc'
+	];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -39,24 +41,4 @@ class Research extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
-
-	function index($d1='',$d2='',$d3='',$d4='')
-		{
-			$tela = '';
-			switch($d1)
-				{
-					case 'systematic_review':
-						$SystematicReview = new \App\Models\AI\Research\SystematicReview();
-						$tela .= $SystematicReview->index($d1,$d2,$d3,$d4);						
-						break;
-					case 'pq':
-						$BasePQ = new \App\Models\Collection\BasePQ();
-						$tela .= $BasePQ->index($d1,$d2,$d3,$d4);						
-						break;						
-					default:
-						$tela .= bsmessage('Service not found: '.$d1,2);
-						break;
-				}
-			return $tela;		
-		}	
 }

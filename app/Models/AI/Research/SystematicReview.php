@@ -45,7 +45,7 @@ class SystematicReview extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function index($d1,$d2,$d3)
+	function index($d1,$d2,$d3,$d4='')
 		{
 			$Fluxo = new \App\Models\IO\Imagem\Fluxo();
 			$tela = h(lang('research.systematic_review'),1);
@@ -56,16 +56,27 @@ class SystematicReview extends Model
 				{
 					case 'autoclass':
 						$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
-						$tela .= $SystematicReviewCorpus->autoClass($d3);
+						$tela .= $SystematicReviewCorpus->autoClass_mth1($d3);
+						$tela .= $SystematicReviewCorpus->autoClass_mth2($d3);
 						break;	
 					case 'nlp':
 						$tela .= $this->analyse($d3);
 						break;										
 					case 'corpusId':
-						$tela .= $this->classification($d3);
-						break;
+						$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
+						$tela = $SystematicReviewCorpus->classification($d3);
+						break;	
+					case 'corpus_edit':
+						$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
+						$tela .= $SystematicReviewCorpus->edit($d3);
+						break;		
+					case 'corpus_status':
+						$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
+						$tela .= $SystematicReviewCorpus->changeStatus($d3,$d4);
+						$tela .= metarefresh(PATH.MODULE.'research/systematic_review/viewid/'.$d3,0);
+						break;		
 					case 'viewid':
-						$tela .= $this->viewid($d3);
+						$tela .= $this->viewid($d3,$d4);
 						break;
 					case 'edit':
 						$d3 = round($d3);
@@ -93,19 +104,13 @@ class SystematicReview extends Model
 				return $tela;
 			}
 
-		function classification($id)
-			{
-				$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
-				$tela = $SystematicReviewCorpus->classification($id);
-				return $tela;
-			}
 		function authors($id)
 		{
 			$tela = h('<i>João da Silva Sauro</i>',4);
 			return $tela;
 		}
 
-		function viewid($id)
+		function viewid($id,$d4=0)
 		{
 			$SystematicReviewData = new \App\Models\AI\Research\SystematicReviewData();
 			$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
@@ -118,7 +123,7 @@ class SystematicReview extends Model
 
 			$tela .= $SystematicReviewData->view($id);
 
-			$tela .= $SystematicReviewCorpus->view($id);
+			$tela .= $SystematicReviewCorpus->view($id,$d4);
 			return bs($tela);
 		}
 
