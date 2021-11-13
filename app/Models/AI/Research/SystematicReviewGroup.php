@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class SystematicReviewGroup extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'SystematicReviews_Group';
+	protected $table                = 'brapci_ai.SystematicReviews_Group';
 	protected $primaryKey           = 'id_fr';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
