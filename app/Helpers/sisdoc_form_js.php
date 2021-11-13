@@ -18,13 +18,23 @@ function onclick($url,$x=800,$y=800,$class="")
     return $a;
 }
 
-function wclose()
+function wclose($tp='')
     {
-        $a = '
-            <script>
-	            window.opener.location.reload();
-	            close(); 		
-            </script>
- 	        ';
+        if ($tp != '')
+            {
+                $a = '
+                    <script>
+                        close(); 		
+                    </script>
+                    ';
+
+            } else {
+                $a = '
+                    <script>
+                        window.opener.location.reload();
+                        close(); 		
+                    </script>
+                    ';
+            }
         return $a;
     }

@@ -103,7 +103,7 @@ class SystematicReviewField extends Model
 				if ($exclusion == 1)
 					{
 						$SystematicReviewCorpus->changeStatus($id,4);
-						$sx .= wclose();
+						$sx .= wclose('no_refresh');
 					}
 				return $sx;
 			}
