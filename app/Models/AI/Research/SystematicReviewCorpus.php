@@ -110,8 +110,15 @@ class SystematicReviewCorpus extends Model
 
 	function changeStatus($id, $st)
 	{
+		$par = '';
+		if ($st == 'd')
+			{
+				$par = ', c_duplicata = 1';
+				$st = 0;
+			}
 		$sql = "update brapci_ai.SystematicReviews_Corpus 
 			set c_status = $st
+			$par
 			where id_c = " . $id;
 		$this->query($sql);
 	}
@@ -130,6 +137,16 @@ class SystematicReviewCorpus extends Model
 					</a> ';
 			return $sx;
 		}	
+
+	function btn_duplicate($id)
+		{
+			print_r($id);
+			$sx = '<a href="'.PATH.MODULE.'research/systematic_review/corpus_status/'.$id.
+					'/d" class="btn btn-primary btn-sm">
+						duplicate
+					</a> ';
+			return $sx;
+		}		
 
 	function btn_exclusion($dt)
 		{
@@ -176,7 +193,9 @@ class SystematicReviewCorpus extends Model
 
 				/*************/
 				$tela1 = $this->btn_exclusion($dt);
-				$tela .= bs(bsc($tela1,4));
+				$tela1 = $this->btn_duplicate($id);
+
+				$tela .= bs(bsc($tela1,12));
 				break;
 
 			case 4:
@@ -187,7 +206,8 @@ class SystematicReviewCorpus extends Model
 
 				/*************/
 				$tela1 = $this->btn_exclusion($dt);
-				$tela .= bs(bsc($tela1,4));
+				$tela1 = $this->btn_duplicate($id);
+				$tela .= bs(bsc($tela1,12));
 				break;				
 
 			default:
