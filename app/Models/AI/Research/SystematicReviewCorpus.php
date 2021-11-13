@@ -189,11 +189,11 @@ class SystematicReviewCorpus extends Model
 				$tela .= $this->class_status_3($id, $dt);
 				$tela1 = $this->btn_edit($id);
 				$tela1 .= $this->btn_recheck($id);
+				$tela1 .= $this->btn_duplicate($id);
 				$tela .= bs(bsc($tela1,12));
 
 				/*************/
 				$tela1 = $this->btn_exclusion($dt);
-				$tela1 .= $this->btn_duplicate($id);
 
 				$tela .= bs(bsc($tela1,12));
 				break;
@@ -202,11 +202,12 @@ class SystematicReviewCorpus extends Model
 				$tela .= $this->class_status_3($id, $dt);
 				$tela1 = $this->btn_edit($id);
 				$tela1 .= $this->btn_recheck($id);
+				$tela1 .= $this->btn_duplicate($id);
 				$tela .= bs(bsc($tela1,12));
 
 				/*************/
 				$tela1 = $this->btn_exclusion($dt);
-				$tela1 .= $this->btn_duplicate($id);
+				
 				$tela .= bs(bsc($tela1,12));
 				break;				
 
