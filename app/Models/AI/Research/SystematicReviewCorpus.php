@@ -193,7 +193,7 @@ class SystematicReviewCorpus extends Model
 
 				/*************/
 				$tela1 = $this->btn_exclusion($dt);
-				$tela1 = $this->btn_duplicate($id);
+				$tela1 .= $this->btn_duplicate($id);
 
 				$tela .= bs(bsc($tela1,12));
 				break;
@@ -206,7 +206,7 @@ class SystematicReviewCorpus extends Model
 
 				/*************/
 				$tela1 = $this->btn_exclusion($dt);
-				$tela1 = $this->btn_duplicate($id);
+				$tela1 .= $this->btn_duplicate($id);
 				$tela .= bs(bsc($tela1,12));
 				break;				
 

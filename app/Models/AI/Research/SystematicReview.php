@@ -73,7 +73,7 @@ class SystematicReview extends Model
 					case 'corpus_status':
 						$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
 						$tela .= $SystematicReviewCorpus->changeStatus($d3,$d4);
-						$tela .= wclose();
+						$tela .= wclose('no_refresh');
 						break;		
 					case 'viewid':
 						$tela .= $this->viewid($d3,$d4);
