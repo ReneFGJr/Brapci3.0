@@ -71,7 +71,7 @@ class SystematicReviewCorpus extends Model
 
 		for ($r = 0; $r < count($rlt); $r++) {
 			$line = (array)$rlt[$r];
-			$sql = "update " . $this->table . " set c_duplicata = 1 where id_c = " . $line['max'];
+			$sql = "update " . $this->table . " set c_duplicata = 1, c_status = 9 where id_c = " . $line['max'];
 			$this->query($sql);
 		}
 	}
@@ -114,7 +114,7 @@ class SystematicReviewCorpus extends Model
 		if ($st == 'd')
 			{
 				$par = ', c_duplicata = 1';
-				$st = 0;
+				$st = 9;
 			}
 		$sql = "update brapci_ai.SystematicReviews_Corpus 
 			set c_status = $st
