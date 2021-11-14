@@ -49,6 +49,10 @@ class Research extends Model
 						$SystematicReview = new \App\Models\AI\Research\SystematicReview();
 						$tela .= $SystematicReview->index($d1,$d2,$d3,$d4);						
 						break;
+					case 'contentanalysis':
+						$ContentAnalysis = new \App\Models\AI\Research\ContentAnalysis();
+						$tela .= $ContentAnalysis->index($d1,$d2,$d3,$d4);						
+						break;						
 					case 'pq':
 						$BasePQ = new \App\Models\Collection\BasePQ();
 						$tela .= $BasePQ->index($d1,$d2,$d3,$d4);						

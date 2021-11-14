@@ -60,6 +60,11 @@ class NLP extends Model
 						$tela .= $this->formAI(1,lang('ai.Wordcount'));
 						$tela .= $AI->wordcount(get("dd1"),get("dd2"));						
 						break;
+					case 'wordmatch':
+						$AI = new \App\Models\AI\NLP\WordMatch();
+						$tela .= $this->formAI(1,lang('ai.Wordmatch'));
+						$tela .= $AI->WordMatch(get("dd1"),get("dd2"));						
+						break;						
 
 					default:
 						$tela .= bsmessage('Service notefound: '.$d1,2);

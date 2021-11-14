@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models\AI;
+namespace App\Models\AI\Research;
 
 use CodeIgniter\Model;
 
-class Index extends Model
+class ContentAnalysis extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'indices';
+	protected $table                = 'contentanalyses';
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -40,44 +40,57 @@ class Index extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function index($d1='',$d2='',$d3='')
+	function index($d1,$d2,$d3,$d4)
 		{
 			$tela = '';
-			switch($d1)
+			//corpusId
+			switch($d2)
 				{
-					case 'syllables':
-						$AI = new \App\Models\AI\NLP\Syllables();
-						$tela .= $this->formAI(1,lang('ai.Sillables'));
-						$tela .= $AI->syllables(get("dd1"),get("dd2"));						
+					case 'corpusId':
+						$tela = $this->corpusId($d1,$d3,$d4);
 						break;
-					case 'syllable':
-						$AI = new \App\Models\AI\NLP\Syllables();
-						$tela .= $this->formAI(1,lang('ai.Sillables'));
-						$tela .= $AI->syllable(get("dd1"),get("dd2"));						
-						break;
-					default:
-						$tela .= bsmessage('Service notefound: '.$d1,2);
-						$tela .= $this->services();
-						break;
+					break;
 				}
-			return $tela;		
-		}	
-
-	function services()
-		{
-			$tela = '';
-			$s = array();
-			$s['ai.syllables'] = 'ai/nlp/syllables';
-			$s['ai.wordcount'] = 'ai/nlp/wordcount';
-			$s['ai.systematic_review'] = 'ai/research/systematic_review';
-			$s['ai.content_analysis'] = 'ai/research/contentanalysis';
-			$s['ai.pq'] = 'ai/research/pq';
-			$tela .= '<ul>';
-			foreach($s as $service=>$url)
-				{
-					$tela .= '<li><a href="'.base_url(PATH.$url).'">'.$service.'</a></li>';
-				}
-			$tela .= '</ul>';
 			return $tela;
+		}
+
+	function BrapciFullText($dt)
+		{
+			$Search = new \App\Models\Brapci\Search();			
+			$idb = $dt['c_brapci'];
+			$txt = $Search->getFullText($idb);
+			return $txt;
+		}
+
+	function corpusId($d1,$d2,$d3)
+		{
+			$th = 243;
+			$WordMatch = new \App\Models\AI\NLP\WordMatch();
+			$Thesa = new \App\Models\AI\Thesa();
+			$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
+			$dt = $SystematicReviewCorpus->find($d2);	
+			$vc = $Thesa->le_array($th);
+
+			if (strlen($dt['c_fulltext']) == 0)
+				{
+					$txt = $this->BrapciFullText($dt);
+					$dt['c_fulltext'] = $txt;
+					$SystematicReviewCorpus->update_textfull($d2,$txt);
+				}
+			$tela = $WordMatch->analyse($dt['c_fulltext'],$vc);		
+			$tela = '';
+
+
+
+			return $tela;
+		}
+
+	function btn_ContentAnalysis($id)
+		{
+			$sx = '<a href="'.PATH.MODULE.'research/contentanalysis/corpusId/'.$id.
+					'/1" class="btn btn-primary btn-sm">
+						ContentAnalysis
+					</a> ';
+			return $sx;
 		}		
 }

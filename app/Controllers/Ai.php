@@ -68,6 +68,8 @@ class AI extends BaseController
 	public function research($d1='',$d2='',$d3='',$d4='')
 	{
 		$Research = new \App\Models\AI\Research();
+		$d2 = trim($d2);
+		echo '===>'.$d2;
 		$tp = '';
 		if ($d2 == 'corpusId')
 			{

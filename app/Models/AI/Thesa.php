@@ -97,6 +97,7 @@ class Thesa extends Model
 					return $txt;
 				} else {
 					$txt = $this->import($id);
+					return $txt;
 				}
 			return '';
 		}

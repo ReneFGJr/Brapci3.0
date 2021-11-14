@@ -75,6 +75,18 @@ class SystematicReviewCorpus extends Model
 			$this->query($sql);
 		}
 	}
+
+	function update_textfull($id,$txt)
+		{
+			$txt = troca($txt,"'","´");
+			$sql = "update " . $this->table . " 
+					set c_fulltext = '$txt'
+					where id_c = " . $id;
+
+			$this->query($sql);
+			return true;
+		}
+
 	function autoClass_mth2()
 	{
 		$tela = '';
@@ -140,13 +152,21 @@ class SystematicReviewCorpus extends Model
 
 	function btn_duplicate($id)
 		{
-			print_r($id);
 			$sx = '<a href="'.PATH.MODULE.'research/systematic_review/corpus_status/'.$id.
 					'/d" class="btn btn-primary btn-sm">
 						duplicate
 					</a> ';
 			return $sx;
 		}		
+
+	function btn_inclusion($id)
+		{
+			$sx = '<a href="'.PATH.MODULE.'research/systematic_review/corpus_status/'.$id.
+					'/1" class="btn btn-primary btn-sm">
+						inclusion
+					</a> ';
+			return $sx;
+		}	
 
 	function btn_exclusion($dt)
 		{
@@ -165,20 +185,24 @@ class SystematicReviewCorpus extends Model
 
 	function btn_fulltext($dt)
 		{
-			$id = $dt['id_c'];
-			$study = $dt['c_study'];
-
-			$sx = '<span class="btn btn-primary btn-sm">
-						Exclusion Criterie
-					</span> ';
-
+			$sx = '';
 			$tx = $dt['c_fulltext'];
-			$tx = troca($tx,chr(13),'<br>');
+			if (strlen($tx) > 0)
+			{
+				$tx = troca($tx,'.'.chr(13),'¢');
+				$tx = troca($tx,chr(13),' ');
+				$tx = troca($tx,'¢','<br><br>');
 
-			$sx .= '<div id="fulltext">';
-			$sx .= $tx;
-			$sx .= '</div>';
+				$sx = '<span class="btn btn-primary btn-sm">
+							Texto Completo
+						</span> ';
 
+				
+
+				$sx .= '<div id="fulltext">';
+				$sx .= $tx;
+				$sx .= '</div>';
+			} 
 			return $sx;
 		}		
 
@@ -193,6 +217,7 @@ class SystematicReviewCorpus extends Model
 
 	function classification($id)
 	{
+		$ContentAnalysis = new \App\Models\AI\Research\ContentAnalysis();
 		$dt = $this->find($id);
 		$st = $dt['c_status'];
 		$tela = $this->show($dt, 'ABNT');
@@ -205,7 +230,16 @@ class SystematicReviewCorpus extends Model
 				$tela1 = $this->btn_edit($id);
 				$tela1 .= $this->btn_recheck($id);
 				$tela1 .= $this->btn_duplicate($id);
-				$tela1 .= $this->btn_fulltext($dt);
+				$tela1 .= $this->btn_inclusion($id);
+				$tela1 .= $ContentAnalysis->btn_ContentAnalysis($id);				
+				$tela1 .= $this->btn_fulltext($dt);				
+				$tela .= bs(bsc($tela1,12));
+				break;
+
+			case 1:
+				$tela1 = '';
+				$tela1 .= $this->btn_inclusion($id);
+				$tela1 .= $ContentAnalysis->btn_ContentAnalysis($id);
 				$tela .= bs(bsc($tela1,12));
 				break;
 

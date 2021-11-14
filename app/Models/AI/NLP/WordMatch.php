@@ -42,19 +42,15 @@ class WordMatch extends Model
 
 	function analyse($txt,$vc)
 		{
+			$TextPrepare = new \App\Models\AI\NLP\TextPrepare();
 			$rst = array();
-			$txt = mb_strtolower($txt);
-			$txt = ascii($txt);
-			$sp = array('.',',','-');
-			for ($r=0;$r < count($sp);$r++)
-				{					
-					$txt = troca($txt,$sp[$r],' '.$sp[$r].' ');
-				}
+			$txt = $TextPrepare->Text($txt);
+
 
 			$w = array();
 			foreach($vc as $t1=>$t2)
 				{			
-					$txt = troca($txt,' '.$t1.' ',' <b>'.$t2.'</b> ');
+					$txt = troca($txt,' '.$t1.' ',' <b style="color: blue;">'.$t2.'</b> ');
 					$w[$t2] = 0;
 				}
 
@@ -66,7 +62,8 @@ class WordMatch extends Model
 						$w[$t1] = $ocorrencia;
 						echo $t1.'-['.$ocorrencia.']<br>';
 					}	
-				}			
+				}
+			$txt = troca($txt,chr(13),'<hr>');
 			echo '<tt>'.$txt.'</tt>';
 			return $txt;
 		}
