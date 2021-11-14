@@ -16,11 +16,11 @@ class SystematicReviewCorpus extends Model
 	protected $protectFields        = true;
 	protected $allowedFields        = [
 		'id_c', 'c_study', 'id',
-		'author', 'title', 'journal',
+		'title', 'author', 'journal',
 		'year', 'volume', 'number',
 		'pages', 'doi', 'issn',
 		'month', 'note', 'eprint',
-		'keyword'
+		'keyword','c_fulltext'
 	];
 
 	protected $typeFields        = [
@@ -29,7 +29,7 @@ class SystematicReviewCorpus extends Model
 		'string:10', 'string:10', 'string:10',
 		'string:100', 'string:100', 'string:10',
 		'string:10', 'text', 'string:100',
-		'text'
+		'text','text'
 	];	
 
 	// Dates
@@ -163,6 +163,25 @@ class SystematicReviewCorpus extends Model
 			return $sx;
 		}
 
+	function btn_fulltext($dt)
+		{
+			$id = $dt['id_c'];
+			$study = $dt['c_study'];
+
+			$sx = '<span class="btn btn-primary btn-sm">
+						Exclusion Criterie
+					</span> ';
+
+			$tx = $dt['c_fulltext'];
+			$tx = troca($tx,chr(13),'<br>');
+
+			$sx .= '<div id="fulltext">';
+			$sx .= $tx;
+			$sx .= '</div>';
+
+			return $sx;
+		}		
+
 	function edit($id)
 		{
 			$this->path = PATH.MODULE.'research/systematic_review/corpus_edit/'.$id;
@@ -183,6 +202,11 @@ class SystematicReviewCorpus extends Model
 		switch ($st) {
 			case 0:
 				$tela .= $this->class_status_0($id, $dt);
+				$tela1 = $this->btn_edit($id);
+				$tela1 .= $this->btn_recheck($id);
+				$tela1 .= $this->btn_duplicate($id);
+				$tela1 .= $this->btn_fulltext($dt);
+				$tela .= bs(bsc($tela1,12));
 				break;
 
 			case 3:
