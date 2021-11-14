@@ -77,10 +77,19 @@ class ContentAnalysis extends Model
 					$dt['c_fulltext'] = $txt;
 					$SystematicReviewCorpus->update_textfull($d2,$txt);
 				}
-			$tela = $WordMatch->analyse($dt['c_fulltext'],$vc);		
+			$rst = $WordMatch->analyse($dt['c_fulltext'],$vc);
+			
+			/*************************************** KEYS */
+			$keys = $rst['keys'];
+			$tkey = '';
+			echo '<pre>';
+			print_r($keys);
+			foreach ($keys as $key => $value)
+				{
+					$tkey .= $key.'; ';
+				}
+			echo $tkey;
 			$tela = '';
-
-
 
 			return $tela;
 		}
@@ -89,7 +98,7 @@ class ContentAnalysis extends Model
 		{
 			$sx = '<a href="'.PATH.MODULE.'research/contentanalysis/corpusId/'.$id.
 					'/1" class="btn btn-primary btn-sm">
-						ContentAnalysis
+						Content Analysis
 					</a> ';
 			return $sx;
 		}		

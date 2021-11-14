@@ -54,17 +54,20 @@ class WordMatch extends Model
 					$w[$t2] = 0;
 				}
 
+			$wt = array();
 			foreach($w as $t1=>$v)
 				{
 				$ocorrencia = substr_count($txt,$t1);
 				if ($ocorrencia > 0)
 					{
 						$w[$t1] = $ocorrencia;
-						echo $t1.'-['.$ocorrencia.']<br>';
+						$wt[$t1] = $ocorrencia;
+						//echo $t1.'-['.$ocorrencia.']<br>';
 					}	
 				}
+			
 			$txt = troca($txt,chr(13),'<hr>');
-			echo '<tt>'.$txt.'</tt>';
-			return $txt;
+			$rst = array($txt,'keys'=>$wt);
+			return $rst;
 		}
 }

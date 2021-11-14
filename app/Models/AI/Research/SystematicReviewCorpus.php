@@ -168,6 +168,30 @@ class SystematicReviewCorpus extends Model
 			return $sx;
 		}	
 
+	function btn_url($dt)
+		{
+			$sx = '';
+			$url = trim($dt['url']);
+			$url2 = trim($dt['eprint']);
+			if (strlen($url2) > 0)
+				{
+					$url = $url2;
+				}
+
+			if ($dt['c_brapci'] > 0)
+				{
+					$url = 'https://brapci.inf.br/index.php/res/v/'.$dt['c_brapci'];
+				}
+
+			if (strlen($url) > 0)
+				{
+					$sx = '<a href="'.$url.'" target="_blank" class="btn btn-primary btn-sm">
+								URL
+							</a> ';
+				} 
+			return $sx;
+		}		
+
 	function btn_exclusion($dt)
 		{
 			$id = $dt['id_c'];
@@ -231,7 +255,8 @@ class SystematicReviewCorpus extends Model
 				$tela1 .= $this->btn_recheck($id);
 				$tela1 .= $this->btn_duplicate($id);
 				$tela1 .= $this->btn_inclusion($id);
-				$tela1 .= $ContentAnalysis->btn_ContentAnalysis($id);				
+				$tela1 .= $ContentAnalysis->btn_ContentAnalysis($id);
+				$tela1 .= $this->btn_url($dt);
 				$tela1 .= $this->btn_fulltext($dt);				
 				$tela .= bs(bsc($tela1,12));
 				break;
@@ -240,6 +265,7 @@ class SystematicReviewCorpus extends Model
 				$tela1 = '';
 				$tela1 .= $this->btn_inclusion($id);
 				$tela1 .= $ContentAnalysis->btn_ContentAnalysis($id);
+				$tela1 .= $this->btn_url($dt);
 				$tela .= bs(bsc($tela1,12));
 				break;
 
@@ -248,6 +274,7 @@ class SystematicReviewCorpus extends Model
 				$tela1 = $this->btn_edit($id);
 				$tela1 .= $this->btn_recheck($id);
 				$tela1 .= $this->btn_duplicate($id);
+				$tela1 .= $this->btn_inclusion($id);
 				$tela .= bs(bsc($tela1,12));
 
 				/*************/
