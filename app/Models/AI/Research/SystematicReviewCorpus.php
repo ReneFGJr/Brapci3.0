@@ -275,6 +275,7 @@ class SystematicReviewCorpus extends Model
 				$tela1 .= $this->btn_recheck($id);
 				$tela1 .= $this->btn_duplicate($id);
 				$tela1 .= $this->btn_inclusion($id);
+				$tela1 .= $this->btn_url($dt);
 				$tela .= bs(bsc($tela1,12));
 
 				/*************/
