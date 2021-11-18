@@ -60,6 +60,8 @@ class Index extends Model
 	function harvesting($d1,$d2,$d3)
 		{
 			$sx = $d1;
+			$Patent = new \App\Models\INPI\HarvestingPatent();
+			$sx .= $Patent->harvesting();
 			return $sx;
 		}
 }
