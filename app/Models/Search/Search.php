@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Brapci;
+namespace App\Models\Search;
 
 use CodeIgniter\Model;
 
@@ -42,9 +42,18 @@ class Search extends Model
 
 	function formSearch()
 		{
+			$Elastic = new \App\Models\Search\ElasticSearch();
 			$tela = '';
 			$tela .= $this->formSearchTitle();
 			$tela .= $this->formSearchField();
+
+			$vlr = get("query");
+			$collection = get("collection");
+
+			if (strlen($vlr) > 0)
+				{
+					$tela .= bs($Elastic->Search($vlr,$collection));
+				}
 			return $tela;
 		}
 
@@ -68,6 +77,13 @@ class Search extends Model
 			return '';
 		}
 
+	function Search($vlr,$collection)
+		{
+			$sx = '';
+			$sx .= '<h1>Result</h1>';
+			return $sx;
+		}
+
 	function formSearchTitle()
 		{
 			$tela = '';
@@ -77,20 +93,27 @@ class Search extends Model
 
 	function formSearchField()
 		{
+			$vlr = get("query");
+			$collection = get("collection");
 			$tela = '';
 			$tela .= '
-				<div class="input-group input-group-lg mb-0 p-3" style="border: 0px solid #0093DD;">
-  					<input type="text" class="form-control shadow" placeholder="'.lang('main.What do you looking?').'">
-					<select id="type" class="form-control-2 shadow" style="border: 1px solid #ccc; font-size: 130%; line-hight: 150%; width: 250px; margin: 0px 10px;" >
-						<option value="">'.lang('main.All Collections').'</option>
-						<option value="">'.lang('main.Articles').'</option>
-						<option value="">'.lang('main.Proceedings').'</option>
-						<option value="">'.lang('main.Books').'</option>
-						<option value="">'.lang('main.Authorities').'</option>
-						<option value="">'.lang('main.Thesis').'</option>
+				<form method="get">
+				<div class="input-group input-group-lg mb-0 p-3" style="border: 0px solid #0093DD;">					
+  					<input type="text" name="query" value="'.$vlr.'" class="form-control shadow" placeholder="'.lang('main.What do you looking?').'">
+					<select id="type" name="collection" class="form-control-2 shadow" style="border: 1px solid #ccc; font-size: 130%; line-hight: 150%; width: 250px; margin: 0px 10px;" >
+				';
+				$coll = array('all','article','procceding','book','authority','thesis');
+				for ($r=0;$r < count($coll);$r++)
+				{
+					$sel = '';
+					if ($collection == $coll[$r]) { $sel = 'selected ';}
+					$tela .= '<option value="'.$coll[$r].'" '.$sel.'>'.lang('main.'.$coll[$r]).'</option>'.cr();
+				}
+				$tela .= '
 					</select>
-  					<button class="btn btn-primary shadow" type="button">'.lang('main.Search').'</button>
-  					</div>			
+  					<input type="submit" class="btn btn-primary shadow p-3 mb-0 text-lg" type="button" value="'.lang('main.Search').'">
+				</div>			
+				</form>
 			';
 			$tela = bsc($tela,12);
 			$tela = bs($tela);

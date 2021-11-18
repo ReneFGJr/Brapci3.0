@@ -10,13 +10,13 @@ $session = \Config\Services::session();
 define("LIBRARY", "3001");
 define("LIBRARY_NAME", "BRAPCI_RESEARCH");
 define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix']);
-define("MODULE", 'res/');
+define("MODULE", 'patent/');
 define("URL", $_SERVER['app.baseURL']);
-define("PREFIX",'brapci.');
+define("PREFIX",'brapci_patent.');
 
 $this->Socials = new \App\Models\Socials();
 
-class Res extends BaseController
+class Patent extends BaseController
 {
 	public function __construct()
 	{
@@ -27,9 +27,10 @@ class Res extends BaseController
 	{
 		$hd = new \App\Models\Header\Header();
 		$tela = '';
-		$dt['title'] = 'Authority';
+		$dt['title'] = 'Patent INPI';
 		$dt['menu'][''] = 'main';
-		$dt['menu']['index/list'] = 'list';
+		$dt['menu'][MODULE.'/index/list'] = 'list';
+		$dt['menu'][MODULE.'/inpi'] = 'INPI';
 
 		$title = lang(MODULE . '.' . $dt['title']);
 		switch ($tp) {
@@ -60,6 +61,15 @@ class Res extends BaseController
 		$tela .= $this->Search->formSearch();
 		return $tela;
 	}
+
+	public function inpi($d1='',$d2='',$d3='',$d4='')
+		{
+			$tela = '';
+			$INPI = new \App\Models\INPI\Index();
+
+			$tela = $INPI->index($d1,$d2,$d3,$d4);
+			return $tela;
+		}
 
 	public function elastic()
 	{
