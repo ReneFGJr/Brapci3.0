@@ -15,7 +15,7 @@ define("URL", $_SERVER['app.baseURL']);
 define("PREFIX",'brapci_patent.');
 
 echo '<pre>';
-print_r($_SERVER);
+echo '===>'.PATH;
 exit;
 
 $this->Socials = new \App\Models\Socials();
