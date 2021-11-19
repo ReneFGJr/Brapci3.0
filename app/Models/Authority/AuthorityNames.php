@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class AuthorityNames extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'brapci_authority.AuthorityNames';
+	public $table                		= 'brapci_authority.AuthorityNames';
 	protected $primaryKey           = 'id_a';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -15,7 +15,7 @@ class AuthorityNames extends Model
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'id_a','a_prefTerm','a_class','a_lattes','a_brapci','a_orcid','a_uri','a_use'
+		'id_a','a_prefTerm','a_class','a_lattes','a_brapci','a_orcid','a_uri','a_use','a_country','a_UF'
 	];
 
 	protected $typeFields        = [
@@ -58,6 +58,14 @@ class AuthorityNames extends Model
 			$this->select('count(*) as total');
 			$dt = $this->findAll();
 			print_r($dt);
+		}
+
+	function get_id_by_name($name,$dt=array())
+		{
+			$name = trim($name);
+			$this->where('a_prefTerm',$name);
+			$dt = $this->findAll();
+			return $dt;
 		}
 
 	function edit($id)

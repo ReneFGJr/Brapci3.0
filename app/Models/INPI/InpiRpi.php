@@ -4,17 +4,21 @@ namespace App\Models\INPI;
 
 use CodeIgniter\Model;
 
-class Index extends Model
+class InpiRpi extends Model
 {
-	protected $DBGroup              = 'default';
-	protected $table                = 'indices';
-	protected $primaryKey           = 'id';
+	protected $DBGroup              = 'inpi';
+	protected $table                = 'INPI_RPI';
+	protected $primaryKey           = 'id_pb';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [];
+	protected $allowedFields        = [
+		'id_pb','pb_number','pb_date',
+		'pb_type','pb_ano','pb_file',
+		'pb_status'
+	];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -40,33 +44,25 @@ class Index extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function index($d1,$d2,$d3,$d4)
+	function atualiza($dta)
 		{
-			$sx = '';
-			switch($d1)
-				{
-					case 'harvesting':
-						$sx .= $this->harvesting($d2,$d3,$d4);
-						break;
-					case 'process':
-						$HarvestingPatent = new \App\Models\INPI\HarvestingPatent();
-						$sx .= $HarvestingPatent->process($d2,$d3,$d4);
-						break;						
-					default:
-						$sx = bsmessage('Not locate action - '.$d1);
-						$sx .= '<ul>';
-						$sx .= '<li>'.anchor(URL.MODULE.'inpi/harvesting','Harvesting').'</li>';
-						$sx .= '<li>'.anchor(URL.MODULE.'inpi/process/1','Process Authority').'</li>';
-						$sx .= '</ul>';
-				}
-			return $sx;
-		}
+			$sx = 'Action: ';
+			$type = $dta['pb_type'];
+			$nr = $dta['pb_number'];
+			$file = $dta['pb_file'];
 
-	function harvesting($d1,$d2,$d3)
-		{
-			$sx = $d1;
-			$Patent = new \App\Models\INPI\HarvestingPatent();
-			$sx .= $Patent->harvesting();
+			$dt = $this->where('pb_file',$file)
+				->where('pb_type',$type)
+				->findAll();
+
+			if (count($dt) ==  0)
+				{
+					$this->insert($dta);
+					$sx .= 'Append';
+				} else 
+				{
+					$sx .= 'none';
+				}
 			return $sx;
 		}
 }

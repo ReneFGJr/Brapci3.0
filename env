@@ -39,18 +39,17 @@ app.sufix = 'index.php/'
 # DATABASE
 #--------------------------------------------------------------------
 
-#database.default.hostname = localhost
 database.default.hostname = localhost
 database.default.database = brapci3
 database.default.username = root
-database.default.password = 
+database.default.password = ''
 database.default.DBDriver = MySQLi
 database.default.DBPrefix =
 
 database.auth.hostname = localhost
 database.auth.database = brapci_authority
 database.auth.username = root
-database.auth.password = root
+database.auth.password = 
 database.auth.DBDriver = MySQLi
 database.auth.DBPrefix =
 
@@ -61,12 +60,46 @@ database.main.password =
 database.main.DBDriver = MySQLi
 database.main.DBPrefix =
 
-database.ia.hostname = localhost
-database.ia.database = brapci_main
-database.ia.username = root
-database.ia.password = 
-database.ia.DBDriver = MySQLi
-database.ia.DBPrefix =
+database.ai.hostname = localhost
+database.ai.database = brapci_ai
+database.ai.username = root
+database.ai.password = 
+database.ai.DBDriver = MySQLi
+database.ai.DBPrefix =
+
+database.click.hostname = localhost
+database.click.database = brapci_click
+database.click.username = root
+database.click.password = 
+database.click.DBDriver = MySQLi
+database.click.DBPrefix =
+
+database.brapci.hostname = localhost
+database.brapci.database = brapci
+database.brapci.username = root
+database.brapci.password = 
+database.brapci.DBDriver = MySQLi
+database.brapci.DBPrefix =
+
+database.brapci3.hostname = localhost
+database.brapci3.database = brapci3
+database.brapci3.username = root
+database.brapci3.password = 
+database.brapci3.DBDriver = MySQLi
+database.brapci3.DBPrefix =
+
+database.lattes.hostname = localhost
+database.lattes.database = brapci_lattes
+database.lattes.username = root
+database.lattes.password = 
+database.lattes.DBDriver = MySQLi
+database.lattes.DBPrefix =
+
+database.inpi.hostname = localhost
+database.inpi.database = brapci_inpi
+database.inpi.username = root
+database.inpi.password = 
+database.inpi.DBDriver = MySQLi
 
 #--------------------------------------------------------------------
 # CONTENT SECURITY POLICY

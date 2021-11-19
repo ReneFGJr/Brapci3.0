@@ -43,49 +43,173 @@ class HarvestingPatent extends Model
 	protected $path          = '.tmp/inpi/publications/';
 
 	function harvesting()
-		{
-			//
-			$next = $this->last();
+	{
+		$sx = '';
+		$next = $this->last();
+		if ($next > 0) {
+			$sx .= 'Next: '.$next.'<br>';
 			$sx = $this->upload($next);
-
-			return $sx;
+		} else {
+			$sx .= bsmessage('Nothing to colete',2);
 		}
-	function upload($id)
-		{
-			$file_dest = $this->path.'P'.$id.'.zip';
-			$url = "http://revistas.inpi.gov.br/txt/P$id.zip";
-			$txt = file_get_contents($url);
-			file_put_contents($file_dest,$txt);
-			
-			$zip = new ZipArchive;
-			$res = $zip->open($file_dest);
-			if ($res === TRUE) {
-			  $zip->extractTo($this->path);
-			  $zip->close();
-			  echo 'woot!';
-			} else {
-			  echo 'doh!';
-			}			
-		}
-	function last()
-		{
-			$dir = '.tmp';
-			dircheck($dir);
-			$dir = '.tmp/inpi';
-			dircheck($dir);
-			$dir = '.tmp/inpi/patent';
-			dircheck($dir);
-			$dir = '.tmp/inpi/publications';
-			dircheck($dir);
+		$sx .= $this->xml();
+		return $sx;
+	}
 
-			for ($r=2650;$r < 2670;$r++)
+	function xml()
+	{
+		//Patente_2640_10082021
+		$sx = '';
+		$fl = scandir($this->path . 'txt/');
+
+		for ($r = 0; $r < count($fl); $r++) {
+			$file = $fl[$r];
+			$file_substr = substr($file, 0, 8);
+			if ($file_substr == 'Patente_') {
+				$file_xml = $this->path . 'txt/' . $file;
+				$sx .= '<br>'.$this->xml_register($file_xml);
+			}
+		}
+		return $sx;
+	}
+
+	function xml_register($file_xml)
+	{
+		$InpiRpi = new \App\Models\INPI\InpiRpi();
+		$xml = simplexml_load_file($file_xml);
+		$att = (array)$xml->attributes();
+
+		if (isset($att['@attributes']['numero']))
+		{
+			$data = $att['@attributes']['dataPublicacao'];
+			$data2 = substr($data,6,4) . '-' . substr($data,3,2) . '-' . substr($data,0,2);
+			$dta['pb_number'] = $att['@attributes']['numero'];
+			$dta['pb_date'] = $data2;
+			$dta['pb_type'] = 'PATENT';
+			$dta['pb_ano'] = substr($data,strlen($data)-4,4);
+			$dta['pb_file'] = $file_xml;
+			$dta['pb_status'] = 1;
+			$sx = $file_xml.' -> '. $InpiRpi->atualiza($dta);
+		}
+		return $sx;
+	}
+
+	function process($sta=1)
+		{
+			$InpiRpi = new \App\Models\INPI\InpiRpi();
+			$dt = $InpiRpi->where('pb_status',$sta)->findAll();
+			if (count($dt) > 0)
 				{
-					$file = $dir.'/P'.$r.'.zip';
-					if (!file_exists($file))
-						{
-							return $r;
-						}
-					return 0;
+					$dt = $dt[0];
+					$file = $dt['pb_file'];
+					
 				}
 		}
+
+	function xml_process_01($file_xml)
+	{
+		$Authority = new \App\Models\INPI\InpiAuthority();
+		$sx = '';
+		$xml = simplexml_load_file($file_xml);
+		$despacho = $xml->despacho;
+
+		for ($r = 0; $r < count($despacho); $r++) {
+			$ln = (array)$despacho[$r];
+			if (isset($ln['processo-patente'])) {
+				$pp = (array)$ln['processo-patente'];
+				if (isset($pp['titular-lista'])) {
+					$tt = (array)$pp['titular-lista'];
+					$tti = (array)$tt['titular'];
+
+					$titular = array();
+					if (isset($tti[0])) 
+					{
+						$titular = (array)$tti;
+					} else {
+						$titular[0] = $tti;
+					}					
+
+					for ($z = 0; $z < count($titular); $z++) {
+						$ti = (array)$titular[$z];
+
+						/******************* Endereço */
+						if (isset($ti['endereco'])) {
+							$end = (array)$ti['endereco'];
+							/* Pais */
+							if (isset($end['pais'])) {
+								$pais = (array)$end['pais'];
+								$ti['a_country'] = $pais['sigla'];
+							}
+							/* Estado */
+							if (isset($end['UF'])) {
+								$ti['a_UF'] = $end['UF'];
+							}
+						}
+						/*****************************************************************/
+						if (isset($ti['nome-completo'])) {
+							$dta = $Authority->get_id_by_name($ti['nome-completo'], $ti);
+						} else {
+							echo "OOOOOOOOOOOOOOOOO";
+							print_r($ti);
+							echo "XXXXXXXXXXXXXXXXX";
+						}
+					}
+				}
+			}
+		}
+
+		//$sx .= '<h6>' . $xml->attributes()->autores . '</h6>';
+		exit;
+	}
+
+	function upload($id)
+	{
+		$sx = '';
+		if ($id <= 0) {
+			return '';
+		}
+		$file_dest = $this->path . 'P' . $id . '.zip';
+		$url = "http://revistas.inpi.gov.br/txt/P$id.zip";
+		$txt = file_get_contents($url);
+		file_put_contents($file_dest, $txt);
+
+		$zip = new \ZipArchive;
+		$res = $zip->open($file_dest);
+		if ($res === TRUE) {
+			$zip->extractTo($this->path . 'txt/');
+			$zip->close();
+			$sx = bsmessage('Unzip ' . $file_dest, 1);
+			//unlink($file);
+		} else {
+			unlink($file_dest);
+			return bsmessage("ERRO " . $file_dest, 3);
+		}
+		return $sx;
+	}
+
+	function last()
+	{
+		$dir = '.tmp';
+		dircheck($dir);
+		$dir = '.tmp/inpi';
+		dircheck($dir);
+		$dir = '.tmp/inpi/patent';
+		dircheck($dir);
+		$dir = '.tmp/inpi/publications';
+		dircheck($dir);
+		$dir = '.tmp/inpi/publications/processed';
+		dircheck($dir);
+		$dir = '.tmp/inpi/publications/txt';
+		dircheck($dir);
+
+		$dir = '.tmp/inpi/publications';
+		for ($r = 2550; $r < 2670; $r++) {
+			$file = $dir . '/P' . $r . '.zip';
+			if (!file_exists($file)) {
+				//echo " - Not found";
+				return $r;
+			}
+		}
+		return -1;
+	}
 }
