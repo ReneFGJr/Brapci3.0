@@ -29,8 +29,8 @@ class Patent extends BaseController
 		$tela = '';
 		$dt['title'] = 'Patent INPI';
 		$dt['menu'][''] = 'main';
-		$dt['menu'][MODULE.'/index/list'] = 'list';
-		$dt['menu'][MODULE.'/inpi'] = 'INPI';
+		$dt['menu'][PATH.MODULE.'/index/list'] = 'list';
+		$dt['menu'][PATH.MODULE.'/inpi'] = 'INPI';
 
 		$title = lang(MODULE . '.' . $dt['title']);
 		switch ($tp) {
