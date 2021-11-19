@@ -26,7 +26,9 @@ class AuthorityNames extends Model
 		'string:100',
 		'string:100',
 		'string:100',
-		'string:1'
+		'string:1',
+		'string:20',
+		'string:2'
 	];
 
 	// Dates

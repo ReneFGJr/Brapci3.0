@@ -28,9 +28,9 @@ class Patent extends BaseController
 		$hd = new \App\Models\Header\Header();
 		$tela = '';
 		$dt['title'] = 'Patent INPI';
-		$dt['menu'][''] = 'main';
-		$dt['menu'][PATH.MODULE.'/index/list'] = 'list';
-		$dt['menu'][PATH.MODULE.'/inpi'] = 'INPI';
+		$dt['menu'][PATH.MODULE] = 'main';
+		$dt['menu'][PATH.MODULE.'index/list'] = 'list';
+		$dt['menu'][PATH.MODULE.'inpi'] = 'INPI';
 
 		$title = lang(MODULE . '.' . $dt['title']);
 		switch ($tp) {
