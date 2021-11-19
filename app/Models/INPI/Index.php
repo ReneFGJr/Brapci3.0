@@ -55,8 +55,8 @@ class Index extends Model
 					default:
 						$sx = bsmessage('Not locate action - '.$d1);
 						$sx .= '<ul>';
-						$sx .= '<li>'.anchor(URL.MODULE.'inpi/harvesting','Harvesting').'</li>';
-						$sx .= '<li>'.anchor(URL.MODULE.'inpi/process/1','Process Authority').'</li>';
+						$sx .= '<li>'.anchor(PATH.MODULE.'inpi/harvesting','Harvesting').'</li>';
+						$sx .= '<li>'.anchor(PATH.MODULE.'inpi/process/1','Process Authority').'</li>';
 						$sx .= '</ul>';
 				}
 			return $sx;
