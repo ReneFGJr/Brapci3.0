@@ -58,6 +58,13 @@ class InpiAuthority extends Model
 			$name = troca($name,', limited',' limited');
 			$name = troca($name,', naamloze vennootschap',' n. v');
 			$name = troca($name,',naamloze vennootschap',' n. v');
+			$name = substr($name,0,120);
+			echo $name.'===>'.substr($name,strlen($name)-1,1).'<br>';
+			if (substr($name,strlen($name)-1,1) == '.')
+				{
+					echo "OPS ".$name;
+					exit;
+				}
 			$name = nbr_author($name,7);
 
 			$AuthorityNames = new \App\Models\Authority\AuthorityNames();

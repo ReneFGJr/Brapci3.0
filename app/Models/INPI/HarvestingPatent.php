@@ -48,7 +48,8 @@ class HarvestingPatent extends Model
 		$next = $this->last();
 		if ($next > 0) {
 			$sx .= 'Next: '.$next.'<br>';
-			$sx = $this->upload($next);
+			$sx .= $this->upload($next);
+			$sx .= metarefresh(PATH.MODULE.'inpi/harvesting',1);
 		} else {
 			$sx .= bsmessage('Nothing to colete',2);
 		}
@@ -96,14 +97,29 @@ class HarvestingPatent extends Model
 
 	function process($sta=1)
 		{
+			$sx = h('Process '.$sta,4);
 			$InpiRpi = new \App\Models\INPI\InpiRpi();
 			$dt = $InpiRpi->where('pb_status',$sta)->findAll();
 			if (count($dt) > 0)
 				{
 					$dt = $dt[0];
 					$file = $dt['pb_file'];
-					
+					$status = $dt['pb_status'];
+					switch($status)
+						{
+							case 1:
+								$sx .= $this->xml_process_01($file);
+								$sx .= bsmessage(lang('brapci.finish - '.$file),1);
+								$InpiRpi->update_file($file,2);
+								$url = URL.MODULE.'/inpi/process/'.$status;
+								$sx .= metarefresh($url,2);
+								break;
+
+							default:
+								$sx .= bsmessage(lang('brapci.status_not_locete - '.$status),3);
+						}
 				}
+			return $sx;
 		}
 
 	function xml_process_01($file_xml)
@@ -157,9 +173,7 @@ class HarvestingPatent extends Model
 				}
 			}
 		}
-
 		//$sx .= '<h6>' . $xml->attributes()->autores . '</h6>';
-		exit;
 	}
 
 	function upload($id)
