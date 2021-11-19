@@ -48,6 +48,9 @@ class Index extends Model
 					case 'harvesting':
 						$sx .= $this->harvesting($d2,$d3,$d4);
 						break;
+					case 'authority':
+						$sx .= $this->tableView();
+						break;
 					case 'process':
 						$HarvestingPatent = new \App\Models\INPI\HarvestingPatent();
 						$sx .= $HarvestingPatent->process($d2,$d3,$d4);
@@ -57,8 +60,19 @@ class Index extends Model
 						$sx .= '<ul>';
 						$sx .= '<li>'.anchor(PATH.MODULE.'inpi/harvesting','Harvesting').'</li>';
 						$sx .= '<li>'.anchor(PATH.MODULE.'inpi/process/1','Process Authority').'</li>';
+						$sx .= '<li>'.anchor(PATH.MODULE.'inpi/authority','Authority').'</li>';
+						
 						$sx .= '</ul>';
 				}
+			return $sx;
+		}
+
+	function tableView()
+		{
+			$AuthorityNames = new \App\Models\Authority\AuthorityNames();
+			$AuthorityNames->table = 'brapci_inpi.AuthorityNames';
+			$AuthorityNames->path = base_url(PATH. MODULE . '/index/');
+			$sx = tableView($AuthorityNames);			
 			return $sx;
 		}
 

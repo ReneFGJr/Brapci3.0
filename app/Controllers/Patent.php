@@ -65,9 +65,10 @@ class Patent extends BaseController
 	public function inpi($d1='',$d2='',$d3='',$d4='')
 		{
 			$tela = '';
+			$tela .= $this->cab();
 			$INPI = new \App\Models\INPI\Index();
 
-			$tela = $INPI->index($d1,$d2,$d3,$d4);
+			$tela .= $INPI->index($d1,$d2,$d3,$d4);
 			return $tela;
 		}
 
