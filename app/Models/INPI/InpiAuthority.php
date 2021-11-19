@@ -59,11 +59,9 @@ class InpiAuthority extends Model
 			$name = troca($name,', naamloze vennootschap',' n. v');
 			$name = troca($name,',naamloze vennootschap',' n. v');
 			$name = substr($name,0,120);
-			echo $name.'===>'.substr($name,strlen($name)-1,1).'<br>';
 			if (substr($name,strlen($name)-1,1) == '.')
 				{
-					echo "OPS ".$name;
-					exit;
+					$name = substr($name,0,strlen($name)-1);
 				}
 			$name = nbr_author($name,7);
 
