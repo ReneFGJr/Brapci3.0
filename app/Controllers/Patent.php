@@ -14,6 +14,10 @@ define("MODULE", 'patent/');
 define("URL", $_SERVER['app.baseURL']);
 define("PREFIX",'brapci_patent.');
 
+echo '<pre>';
+print_r($_SERVER);
+exit;
+
 $this->Socials = new \App\Models\Socials();
 
 class Patent extends BaseController
