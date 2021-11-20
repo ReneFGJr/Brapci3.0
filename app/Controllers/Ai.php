@@ -65,6 +65,14 @@ class AI extends BaseController
 		return $tela;
 	}
 
+	public function roboti($d1='',$d2='',$d3='',$d4='')
+	{
+		$Roboti = new \App\Models\Roboti\Index();
+		$tela = $this->cab();
+		$tela .= $Roboti->index($d1,$d2,$d3,$d4);
+		return $tela;
+	}	
+
 	public function research($d1='',$d2='',$d3='',$d4='')
 	{
 		$Research = new \App\Models\AI\Research();

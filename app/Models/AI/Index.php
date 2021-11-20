@@ -71,6 +71,7 @@ class Index extends Model
 			$s['ai.wordcount'] = 'ai/nlp/wordcount';
 			$s['ai.systematic_review'] = 'ai/research/systematic_review';
 			$s['ai.content_analysis'] = 'ai/research/contentanalysis';
+			$s['ai.roboti_task'] = 'ai/roboti';
 			$s['ai.pq'] = 'ai/research/pq';
 			$tela .= '<ul>';
 			foreach($s as $service=>$url)
