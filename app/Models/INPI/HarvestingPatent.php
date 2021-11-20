@@ -111,8 +111,6 @@ class HarvestingPatent extends Model
 								$sx .= $this->xml_process_01($file);
 								$sx .= bsmessage(lang('brapci.finish - '.$file),1);
 								$InpiRpi->update_file($file,2);
-								$url = URL.MODULE.'/inpi/process/'.$status;
-								$sx .= metarefresh($url,2);
 								break;
 
 							default:
