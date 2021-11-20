@@ -101,6 +101,12 @@ database.inpi.username = root
 database.inpi.password = 
 database.inpi.DBDriver = MySQLi
 
+database.roboti.hostname = localhost
+database.roboti.database = roboti
+database.roboti.username = root
+database.roboti.password = 
+database.roboti.DBDriver = MySQLi
+
 #--------------------------------------------------------------------
 # CONTENT SECURITY POLICY
 #--------------------------------------------------------------------
