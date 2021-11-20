@@ -44,6 +44,13 @@ class InpiRpi extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
+	function update_file($file,$sta)
+		{
+			$this->set('pb_status',$sta);
+			$this->where('pb_file',$file);
+			$this->update();
+		}
+
 	function atualiza($dta)
 		{
 			$sx = 'Action: ';

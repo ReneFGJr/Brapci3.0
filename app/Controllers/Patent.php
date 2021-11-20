@@ -28,9 +28,9 @@ class Patent extends BaseController
 		$hd = new \App\Models\Header\Header();
 		$tela = '';
 		$dt['title'] = 'Patent INPI';
-		$dt['menu'][''] = 'main';
-		$dt['menu'][MODULE.'/index/list'] = 'list';
-		$dt['menu'][MODULE.'/inpi'] = 'INPI';
+		$dt['menu'][PATH.MODULE] = 'main';
+		$dt['menu'][PATH.MODULE.'index/list'] = 'list';
+		$dt['menu'][PATH.MODULE.'inpi'] = 'INPI';
 
 		$title = lang(MODULE . '.' . $dt['title']);
 		switch ($tp) {
@@ -65,9 +65,10 @@ class Patent extends BaseController
 	public function inpi($d1='',$d2='',$d3='',$d4='')
 		{
 			$tela = '';
+			$tela .= $this->cab();
 			$INPI = new \App\Models\INPI\Index();
 
-			$tela = $INPI->index($d1,$d2,$d3,$d4);
+			$tela .= $INPI->index($d1,$d2,$d3,$d4);
 			return $tela;
 		}
 

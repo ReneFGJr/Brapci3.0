@@ -48,6 +48,12 @@ class Index extends Model
 					case 'harvesting':
 						$sx .= $this->harvesting($d2,$d3,$d4);
 						break;
+					case 'edit':
+						$sx .= $this->edit($d2,$d3,$d4);
+						break;
+					case 'authority':
+						$sx .= $this->tableView();
+						break;
 					case 'process':
 						$HarvestingPatent = new \App\Models\INPI\HarvestingPatent();
 						$sx .= $HarvestingPatent->process($d2,$d3,$d4);
@@ -55,16 +61,38 @@ class Index extends Model
 					default:
 						$sx = bsmessage('Not locate action - '.$d1);
 						$sx .= '<ul>';
-						$sx .= '<li>'.anchor(URL.MODULE.'inpi/harvesting','Harvesting').'</li>';
-						$sx .= '<li>'.anchor(URL.MODULE.'inpi/process/1','Process Authority').'</li>';
+						$sx .= '<li>'.anchor(PATH.MODULE.'inpi/harvesting','Harvesting').'</li>';
+						$sx .= '<li>'.anchor(PATH.MODULE.'inpi/process/1','Process Authority').'</li>';
+						$sx .= '<li>'.anchor(PATH.MODULE.'inpi/authority','Authority').'</li>';
+						
 						$sx .= '</ul>';
 				}
 			return $sx;
 		}
 
+	function edit($d2)
+		{
+			$AuthorityNames = new \App\Models\Authority\AuthorityNames();
+			$AuthorityNames->table = 'brapci_inpi.AuthorityNames';
+			$AuthorityNames->path = base_url(PATH. MODULE . '/inpi/');
+			$AuthorityNames->path_back = base_url(PATH. MODULE . '/inpi/authority');
+			$AuthorityNames->id = $d2;
+			$sx = $AuthorityNames->edit($d2);			
+			return $sx;
+		}		
+
+	function tableView()
+		{
+			$AuthorityNames = new \App\Models\Authority\AuthorityNames();
+			$AuthorityNames->table = 'brapci_inpi.AuthorityNames';
+			$AuthorityNames->path = base_url(PATH. MODULE . '/inpi/');
+			$sx = tableView($AuthorityNames);			
+			return $sx;
+		}
+
 	function harvesting($d1,$d2,$d3)
 		{
-			$sx = $d1;
+			$sx = '';
 			$Patent = new \App\Models\INPI\HarvestingPatent();
 			$sx .= $Patent->harvesting();
 			return $sx;

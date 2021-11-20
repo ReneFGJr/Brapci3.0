@@ -13,7 +13,7 @@
                     {
                         echo '                    
                             <li class="nav-item">
-                                <a href="'.base_url(PATH.'/'.$link).'" class="nav-link text-muted">'.
+                                <a href="'.$link.'" class="nav-link text-muted">'.
                                 lang($label).'</a>
                             </li>
                         ';
