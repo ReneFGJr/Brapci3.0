@@ -1,4 +1,4 @@
-<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+<div id="carouselBook" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">  
     <div class="carousel-item active">
       <a href="<?php echo PATH.'book/submit';?>">
@@ -25,3 +25,8 @@
     <span class="visually-hidden">Next</span>
   </button>
 </div>
+
+<script>
+  var myCarousel = document.querySelector('#carouselBook')
+  var carousel = new bootstrap.Carousel(myCarousel)
+</script>

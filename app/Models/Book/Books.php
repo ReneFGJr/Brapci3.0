@@ -76,6 +76,8 @@ class Books extends Model
 						break;
 					default:
 						$dt = array();
+						$dt['title'] = 'Brapci Livros';
+						$tela .= view('Header/header',$dt);
 						$tela .= view('Book/caroussel',$dt);
 				}
 			return $tela;
