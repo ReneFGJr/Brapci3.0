@@ -43,7 +43,6 @@ class Res extends BaseController
 				$tela .= $hd->menu($dt);
 				break;
 			default:
-				$tela = view('Pages/_head');
 				$tela .= view('Pages/_aside');
 				$tela .= view('Pages/_main_00');
 				$tela .= view('Pages/_navbar');
@@ -60,6 +59,15 @@ class Res extends BaseController
 		$tela .= $this->Search->formSearch();
 		return $tela;
 	}
+
+	public function book($d1='',$d2='',$d3='',$d4='')
+	{
+		//
+		$Book = new \App\Models\Book\Books();
+		$tela = $Book->index($d1,$d2,$d3,$d4);
+		return $tela;
+	}	
+
 
 	public function elastic()
 	{

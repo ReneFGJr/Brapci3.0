@@ -12,5 +12,11 @@ return [
     'submit_status_3'=>'Aprovado',
     'submit_status_9'=>'Arquivado',
     'selft_action_0'=>'editar',
-    ''=>'',      
+    'New'=>'Nova',
+    'Work'=>'Obra',
+    'See_all_book'=>'Veja todos os livros',
+    'Learn_More'=>'mais detalhes',
+    'Download'=>'Acessar o livro',
+    ''=>'',
+    ''=>'',
 ];
