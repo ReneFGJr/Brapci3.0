@@ -68,7 +68,7 @@ class Res extends BaseController
 	}
 
 
-	public function about()
+	public function about($d1='',$d2='',$d3='',$d4='')
 	{
 		//
 		$tela = $this->cab("user");
@@ -78,7 +78,7 @@ class Res extends BaseController
 		return $tela;
 	}	
 
-	public function help()
+	public function help($d1='',$d2='',$d3='',$d4='')
 	{
 		//
 		$tela = $this->cab("user");
@@ -88,7 +88,18 @@ class Res extends BaseController
 		return $tela;
 	}	
 
-	public function admin()
+	public function tools($d1='',$d2='',$d3='',$d4='')
+	{
+		//
+		$tela = $this->cab("user");
+		$dt = array();
+		$tools = new \App\Models\AI\Tools();
+		$tela .= $tools->index($d1,$d2,$d3,$d4);
+
+		return $tela;
+	}	
+
+	public function admin($d1='',$d2='',$d3='',$d4='')
 	{
 		//
 		$tela = $this->cab("user");
