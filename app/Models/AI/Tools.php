@@ -57,7 +57,7 @@ class Tools extends Model
 						{
 							
 							$tela .= '<li>';
-							$tela .= '<a href="'.PATH.MODULE.'tools/'.$lst[$r].'">'.lang('ai.'.$lst[$r]).'</a>';
+							$tela .= '<a href="'.PATH.MODULE.'research/'.$lst[$r].'">'.lang('ai.'.$lst[$r]).'</a>';
 							$tela .= '</li>';
 						}
 					$tela .= '</ul>';

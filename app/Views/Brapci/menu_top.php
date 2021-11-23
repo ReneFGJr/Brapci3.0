@@ -24,7 +24,7 @@
         $menu['Home'] = URL.'index.php/res/';
         $menu['About'] = URL.'index.php/res/about/';
         $menu['Help'] = URL.'index.php/res/help/';
-        $menu['Bibliometric'] = URL.'index.php/res/tools/bibliometric/';
+        $menu['Bibliometric'] = URL.'index.php/res/research/';
         foreach($menu as $label=>$url) {
                 echo '<li class="nav-item">'.cr();
                 echo '    <a class="nav-link active" aria-current="page" href="'.$url.'">'.lang('brapci.'.$label).'</a>'.cr();

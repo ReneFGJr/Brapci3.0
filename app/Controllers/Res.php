@@ -88,7 +88,7 @@ class Res extends BaseController
 		return $tela;
 	}	
 
-	public function tools($d1='',$d2='',$d3='',$d4='')
+	public function research($d1='',$d2='',$d3='',$d4='')
 	{
 		//
 		$tela = $this->cab("user");
