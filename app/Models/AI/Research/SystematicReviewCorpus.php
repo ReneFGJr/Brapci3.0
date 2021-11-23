@@ -142,6 +142,20 @@ class SystematicReviewCorpus extends Model
 					</a> ';
 			return $sx;
 		}
+		function btn_brapci($id)
+		{
+			$sx = '<a href="'.PATH.MODULE.'research/systematic_review/brapci_api/'.$id.'" class="btn btn-primary btn-sm">
+						Brapci Search
+					</a> ';
+			return $sx;
+		}
+		function btn_google($id)
+		{
+			$sx = '<a href="'.PATH.MODULE.'research/systematic_review/google_edit/'.$id.'" class="btn btn-primary btn-sm">
+						Google Search
+					</a> ';
+			return $sx;
+		}				
 	function btn_recheck($id)
 		{
 			$sx = '<a href="'.PATH.MODULE.'research/systematic_review/corpus_status/'.$id.'/0" class="btn btn-primary btn-sm">
@@ -255,9 +269,16 @@ class SystematicReviewCorpus extends Model
 				$tela1 .= $this->btn_recheck($id);
 				$tela1 .= $this->btn_duplicate($id);
 				$tela1 .= $this->btn_inclusion($id);
+				
 				$tela1 .= $ContentAnalysis->btn_ContentAnalysis($id);
 				$tela1 .= $this->btn_url($dt);
 				$tela1 .= $this->btn_fulltext($dt);				
+
+				$tela1 .= '<hr>';
+				$tela1 .= $this->btn_brapci($id);
+				$tela1 .= $this->btn_google($id);
+
+
 				$tela .= bs(bsc($tela1,12));
 				break;
 

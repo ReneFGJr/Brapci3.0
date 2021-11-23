@@ -40,6 +40,14 @@ class ArticleBusca extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
+	function brapci_api($id)
+		{
+			
+			$dt = array();
+			$dt = 'FIM';
+			return $dt;			
+		}	
+
 	function txt($id=0)
 		{
 			$url = 'https://brapci.inf.br/index.php/res/download/'.$id;

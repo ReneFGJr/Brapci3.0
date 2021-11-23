@@ -54,6 +54,10 @@ class SystematicReview extends Model
 			$tela .= $Fluxo->index('Análise','#66ff66');
 			switch($d2)
 				{
+					case 'brapci_api':
+						$ArticleBusca = new \App\Models\Brapci\ArticleBusca();
+						$tela .= $ArticleBusca->brapci_api($d1);
+						break;
 					case 'autoclass':
 						$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
 						$tela .= $SystematicReviewCorpus->autoClass_mth1($d3);
