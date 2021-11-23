@@ -78,6 +78,16 @@ class Res extends BaseController
 		return $tela;
 	}	
 
+	public function help()
+	{
+		//
+		$tela = $this->cab("user");
+		$dt = array();
+		$tela .= view('Brapci/help_pt',$dt);
+
+		return $tela;
+	}	
+
 	public function admin()
 	{
 		//

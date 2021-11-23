@@ -22,7 +22,7 @@
 
         $menu = array();
         $menu['Home'] = URL.'index.php/res/';
-        $menu['About'] = URL.'index.php/res/anout/';
+        $menu['About'] = URL.'index.php/res/about/';
         $menu['Help'] = URL.'index.php/res/help/';
         $menu['Bibliometric'] = URL.'index.php/res/tools/bibliometric/';
         foreach($menu as $label=>$url) {
