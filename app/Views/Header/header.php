@@ -1,7 +1,7 @@
 <?php
     if (!isset($title)) { $title = 'none'; }
     $thema = 'css/bootstrap-cyborg.min.css';
-    $themaz = 'css/bootstrap.css';
+    $thema = 'css/bootstrap.css';
 ?><!doctype html>
 <html>
 <head>

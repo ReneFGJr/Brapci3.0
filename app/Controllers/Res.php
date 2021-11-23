@@ -23,11 +23,11 @@ class Res extends BaseController
 		$this->Socials = new \App\Models\Socials();
 		$this->Search = new \App\Models\Search\Search();
 	}
-	function cab($tp = '')
+	function cab($tp = '',$dt=array())
 	{
 		$hd = new \App\Models\Header\Header();
 		$tela = '';
-		$dt['title'] = 'Authority';
+		$dt['title'] = 'Brapci 3.0';
 		$dt['menu'][''] = 'main';
 		$dt['menu']['index/list'] = 'list';
 
@@ -42,11 +42,17 @@ class Res extends BaseController
 			case 'menu':
 				$tela .= $hd->menu($dt);
 				break;
+			case 'user':
+				$tela .= view('Header/header',$dt);
+				$tela .= view('Brapci/menu_top',$dt);
+				break;
 			default:
-				$tela .= view('Pages/_aside');
-				$tela .= view('Pages/_main_00');
-				$tela .= view('Pages/_navbar');
-				$tela .= view('Pages/_menu_top', $dt);
+				$tela .= view('Header/header',$dt);
+				$tela .= view('Brapci/menu_top',$dt);
+
+				//$tela .= view('Pages/_aside');
+				//$tela .= view('Pages/_main_00');
+				//$tela .= view('Pages/_navbar');
 				break;
 		}
 		return $tela;
@@ -55,16 +61,44 @@ class Res extends BaseController
 	public function index()
 	{
 		//
-		$tela = $this->cab();
+		$tela = $this->cab("user");
+		$tela .= view('Brapci/collections');
 		$tela .= $this->Search->formSearch();
 		return $tela;
 	}
 
-	public function book($d1='',$d2='',$d3='',$d4='')
+	public function admin()
 	{
 		//
+		$tela = $this->cab("user");
+		print_r($_SESSION);		
+		return $tela;
+	}	
+
+	public function benancib($d1='',$d2='',$d3='',$d4='')
+	{
+		$dt['collection'] = mb_strtoupper(lang('brapci.Benancib'));
+		$tela = $this->cab("user",$dt);
+		//$Book = new \App\Models\Book\Books();
+		//$tela .= $Book->index($d1,$d2,$d3,$d4);
+		return $tela;
+	}
+
+	public function authoriry($d1='',$d2='',$d3='',$d4='')
+	{
+		$dt['collection'] = mb_strtoupper(lang('brapci.Authoriry'));
+		$tela = $this->cab("user",$dt);
+		//$Book = new \App\Models\Book\Books();
+		//$tela .= $Book->index($d1,$d2,$d3,$d4);
+		return $tela;
+	}	
+
+	public function book($d1='',$d2='',$d3='',$d4='')
+	{
+		$dt['collection'] = mb_strtoupper(lang('brapci.Books'));
+		$tela = $this->cab("user",$dt);
 		$Book = new \App\Models\Book\Books();
-		$tela = $Book->index($d1,$d2,$d3,$d4);
+		$tela .= $Book->index($d1,$d2,$d3,$d4);
 		return $tela;
 	}	
 
