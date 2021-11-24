@@ -206,7 +206,6 @@ class SystematicReviewCorpus extends Model
 					$sx = '<a href="'.$url.'" target="_blank" class="btn btn-primary btn-sm">
 								URL
 							</a> ';
-						$sx .= '<br>'.$url;
 
 				} 
 			return $sx;
@@ -287,8 +286,7 @@ class SystematicReviewCorpus extends Model
 			case 0:
 				$tela .= $this->class_status_0($id, $dt);
 				$tela1 = $this->btn_edit($id);
-				$tela1 .= $this->btn_recheck($id);
-				$tela1 .= $this->btn_url($dt);
+				$tela1 .= $this->btn_recheck($id);							
 				$tela1 .= $this->btn_duplicate($id);				
 				
 				$tela1 .= $ContentAnalysis->btn_ContentAnalysis($id);
