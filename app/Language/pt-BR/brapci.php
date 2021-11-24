@@ -33,7 +33,7 @@ return [
     'Authoriry'=>'Autoridades',
     'Benancib'=>'Benancib',
     'Home'=>'Inicial',
-    'Bibliometric'=>'Ferramentas Bibliométricas',
+    'Bibliometric'=>'Ferramentas',
     ''=>'',
     ''=>'',
     ''=>'',

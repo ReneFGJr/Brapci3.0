@@ -40,11 +40,10 @@ class ArticleBusca extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function brapci_api($id)
+	function brapci_api($dt)
 		{
-			
-			$dt = array();
-			$dt = 'FIM';
+			$title = $dt['title'];
+			$dt = $this->search_word($title);
 			return $dt;			
 		}	
 
@@ -63,6 +62,39 @@ class ArticleBusca extends Model
 				}
 			return $txt;
 		}
+
+	function search_word($termo)
+	{
+		$st = array(':',';','!','?','.');
+		$termo = troca($termo,$st,' ');
+		$bs = explode(' ', $termo);
+		$wh = '';
+		foreach($bs as $b)
+			{
+				if (strlen($b) > 2)
+				{
+					if (strlen($wh) > 0) { $wh .= ' AND '; }
+					$wh .= " (n_name like '%$b%')";
+				}
+			}
+		$sql = "select * from ".$this->table." where $wh";
+		$rlt = (array)$this->db->query($sql)->getResult();
+
+		if (count($rlt) > 0)
+			{
+				$line = (array)$rlt[0];
+				$id = $line['id_n'];
+				$sql = "SELECT * FROM brapci.rdf_data where d_p = 17 and d_literal = ".$id;
+				$rst = $this->query($sql)->getresult();
+				if (count($rst) > 0)
+					{
+						$l = (array)$rst[0];
+						$id_rdf = $l['d_r1'];
+						return $id_rdf;
+					}
+			}	
+		return 0;	
+	}		
 
 	function search($termo)
 	{

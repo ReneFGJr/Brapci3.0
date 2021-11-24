@@ -56,7 +56,9 @@ class SystematicReview extends Model
 				{
 					case 'brapci_api':
 						$ArticleBusca = new \App\Models\Brapci\ArticleBusca();
-						$tela .= $ArticleBusca->brapci_api($d1);
+						$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
+						$dt = $SystematicReviewCorpus->find($d3);
+						$tela .= $ArticleBusca->brapci_api($dt);
 						break;
 					case 'autoclass':
 						$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
@@ -65,7 +67,11 @@ class SystematicReview extends Model
 						break;	
 					case 'nlp':
 						$tela .= $this->analyse($d3);
-						break;										
+						break;	
+					case 'criterieEd':
+						$SystematicReviewValue = new \App\Models\AI\Research\SystematicReviewValue();
+						$tela = $SystematicReviewValue->edit($d3);
+						break;	
 					case 'corpusId':
 						$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
 						$tela = $SystematicReviewCorpus->classification($d3);

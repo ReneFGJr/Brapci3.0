@@ -17,6 +17,11 @@ class SystematicReviewValue extends Model
 	protected $allowedFields        = [
 		'id_sd','sd_study','sd_field','sd_desc'
 	];
+	protected $typeFields        = [
+		'hidden',
+		'qr:id_sr:sr_title:brapci_ai.systematicreviews_studies',
+		'qr:id_fs:fs_field:brapci_ai.systematicreviews_fields','text'
+	];	
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -41,4 +46,11 @@ class SystematicReviewValue extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+	function edit($id)
+		{
+			$this->path = URL.MODULE.'research/systematic_review/criterieEd/';
+			$sx = form($this);
+			return $sx;
+		}
 }

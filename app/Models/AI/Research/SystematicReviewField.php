@@ -18,7 +18,9 @@ class SystematicReviewField extends Model
 		'id_fs','fs_field','fs_context','fs_type','fs_sample'
 	];
 	protected $typeFields        = [
-		'hidden','string:100','text','text','text'
+		'hidden',
+		'string:100',
+		'text','text','text'
 	];
 
 	// Dates
@@ -44,6 +46,78 @@ class SystematicReviewField extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+		function inclusion($id,$study)
+			{
+				$SystematicReviewValue = new \App\Models\AI\Research\SystematicReviewValue();
+				$SystematicReviewProtocol = new \App\Models\AI\Research\SystematicReviewProtocol();
+				$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
+
+				$sql = "select * from ".$this->table." 
+						INNER JOIN ".$SystematicReviewValue->table." ON sd_field = id_fs
+						LEFT JOIN ".$SystematicReviewProtocol->table." 
+								ON (sp_field = sd_field) and (sr_study = $study) and (sp_corpus = $id)
+								and (sp_criterie = id_sd)
+						where fs_field = 'hasInclusionCriterie'
+						and sd_study = $study
+						";
+				$dt = $this->query($sql)->getresult();
+
+
+				/************************************************** SALVAR */
+				$action = get("action");
+
+				$inclusion = 0;
+				
+				$sx =  'Options:<br>';
+				$sx .= '<form method="post">';
+				for ($r=0;$r < count($dt);$r++)
+					{
+						$line = (array)$dt[$r];
+						$chk = '';
+						$var = 'id_'.$line['id_fs'].'_'.$line['id_sd'];
+						
+						if ($action != '')
+						{						
+							$field = $line['id_fs'];
+							$study = $line['sd_study'];
+							$criterie = $line['id_sd'];
+							$corpus = $id;
+							$value = get($var);
+
+							$SystematicReviewProtocol->atualiza($study,$field,$corpus,$criterie,$value);
+
+							if ($value != '') { $chk = 'checked'; $inclusion = 1; }
+						} else {
+							if ($line['sp_context'] != '')
+								{
+									$chk = 'checked';
+								}
+						}
+
+						$sx .= '<input type="checkbox" name="'.$var.'" '.$chk.'> ';
+						$sx .= $line['sd_desc'];
+						$sx .= '<br>';
+					}
+				$sx .= '<input type="submit" name="action" value="'.lang('ai.Save').'">';
+				$sx .= '</form>';
+
+				$sx .= $this->new_criterie();
+
+				if ($inclusion == 1)
+					{
+						$SystematicReviewCorpus->changeStatus($id,1);
+						$sx .= wclose('no_refresh');
+					}
+				return $sx;
+			}
+
+		function new_criterie()
+			{
+				$url = PATH.MODULE.'research/systematic_review/criterieEd/0';
+				$sx = '<a href="'.$url.'" class="small">'.lang('ai.new_criterie').'</a>';
+				return $sx;				
+			}
 
 		function exclusion($id,$study)
 			{
@@ -99,6 +173,8 @@ class SystematicReviewField extends Model
 					}
 				$sx .= '<input type="submit" name="action" value="'.lang('ai.Save').'">';
 				$sx .= '</form>';
+
+				$sx .= $this->new_criterie();
 
 				if ($exclusion == 1)
 					{

@@ -10,4 +10,13 @@ return [
     'sr_status_4'=>'Excluídos',    
     'Update'=>'Atualizar',
     'Save'=>'Gravar',
+    'ExclusionCriterie'=>'Critério de Exclusão',
+    'InclusionCriterie'=>'Critério de Inclusão',
+    'systematic_review'=>'Revisão Sistemática de Literatura',
+    'content_analysis'=>'Análise de Conteúdo',
+    'roboti_task'=>'Roboti (Schedule)',
+    'bibliometric'=>'Ferramentas Bibliometricas',
+    'syllables'=>'Divisão Silábica',
+    'wordcount'=>'Contador de Palávras',
+    ''=>'',
 ];

@@ -149,10 +149,11 @@ class SystematicReviewCorpus extends Model
 					</a> ';
 			return $sx;
 		}
-		function btn_google($id)
+		function btn_google($dt)
 		{
-			$sx = '<a href="'.PATH.MODULE.'research/systematic_review/google_edit/'.$id.'" class="btn btn-primary btn-sm">
-						Google Search
+			$url = 'https://scholar.google.com.br/scholar?hl=pt-BR&as_sdt=0%2C5&q=ALMEIDA%2C+Jobson+Louis+Santos+de%3B+FREIRE%2C+Gustavo+Henrique+de+Ara%C3%BAjo.+A+biblioteca+multin%C3%ADvel+no+ifpb+campus+sousa%3A+conceito%2C+descri%C3%A7%C3%A3o+e+finalidade&btnG=';
+			$sx = '<a href="'.$url.'" target="new_'.date("Hmis").'" class="btn btn-primary btn-sm">
+						Google Academic
 					</a> ';
 			return $sx;
 		}				
@@ -173,7 +174,7 @@ class SystematicReviewCorpus extends Model
 			return $sx;
 		}		
 
-	function btn_inclusion($id)
+	function btn_status($id)
 		{
 			$sx = '<a href="'.PATH.MODULE.'research/systematic_review/corpus_status/'.$id.
 					'/1" class="btn btn-primary btn-sm">
@@ -213,13 +214,28 @@ class SystematicReviewCorpus extends Model
 
 			$SystematicReviewField = new \App\Models\AI\Research\SystematicReviewField();
 
-			$sx = '<span class="btn btn-primary btn-sm">
-						Exclusion Criterie
+			$sx = '<span class="h5 text-primary">
+						'.lang('ai.ExclusionCriterie').'
 					</span> ';
-
+			$sx .= '<br>';
 			$sx .= $SystematicReviewField->exclusion($id, $study);
 			return $sx;
 		}
+
+	function btn_inclusion($dt)
+		{
+			$id = $dt['id_c'];
+			$study = $dt['c_study'];
+
+			$SystematicReviewField = new \App\Models\AI\Research\SystematicReviewField();
+
+			$sx = '<span class="h5 text-primary">
+						'.lang('ai.InclusionCriterie').'
+					</span> ';
+			$sx .= '<br>';
+			$sx .= $SystematicReviewField->inclusion($id, $study);
+			return $sx;
+		}		
 
 	function btn_fulltext($dt)
 		{
@@ -267,8 +283,7 @@ class SystematicReviewCorpus extends Model
 				$tela .= $this->class_status_0($id, $dt);
 				$tela1 = $this->btn_edit($id);
 				$tela1 .= $this->btn_recheck($id);
-				$tela1 .= $this->btn_duplicate($id);
-				$tela1 .= $this->btn_inclusion($id);
+				$tela1 .= $this->btn_duplicate($id);				
 				
 				$tela1 .= $ContentAnalysis->btn_ContentAnalysis($id);
 				$tela1 .= $this->btn_url($dt);
@@ -276,18 +291,25 @@ class SystematicReviewCorpus extends Model
 
 				$tela1 .= '<hr>';
 				$tela1 .= $this->btn_brapci($id);
-				$tela1 .= $this->btn_google($id);
+				$tela1 .= $this->btn_google($dt);
 
+				/*************/
+				$tela2 = '<hr>';
+				$tela2 .= bsc($this->btn_exclusion($dt),6);
+				$tela2 .= bsc($this->btn_inclusion($dt),6);
 
-				$tela .= bs(bsc($tela1,12));
+				$tela .= bs(bsc($tela1,12).$tela2);
 				break;
 
 			case 1:
 				$tela1 = '';
-				$tela1 .= $this->btn_inclusion($id);
 				$tela1 .= $ContentAnalysis->btn_ContentAnalysis($id);
 				$tela1 .= $this->btn_url($dt);
-				$tela .= bs(bsc($tela1,12));
+				$tela2 = '<hr>';
+				$tela2 .= bsc($this->btn_exclusion($dt),6);
+				$tela2 .= bsc($this->btn_inclusion($dt),6);
+
+				$tela .= bs(bsc($tela1,12).$tela2);
 				break;
 
 			case 3:
@@ -295,14 +317,15 @@ class SystematicReviewCorpus extends Model
 				$tela1 = $this->btn_edit($id);
 				$tela1 .= $this->btn_recheck($id);
 				$tela1 .= $this->btn_duplicate($id);
-				$tela1 .= $this->btn_inclusion($id);
 				$tela1 .= $this->btn_url($dt);
 				$tela .= bs(bsc($tela1,12));
 
 				/*************/
-				$tela1 = $this->btn_exclusion($dt);
+				$tela2 = '<hr>';
+				$tela2 .= bsc($this->btn_exclusion($dt),6);
+				$tela2 .= bsc($this->btn_inclusion($dt),6);
 
-				$tela .= bs(bsc($tela1,12));
+				$tela .= bs(bsc($tela1,12).$tela2);
 				break;
 
 			case 4:

@@ -43,7 +43,7 @@ function form($th)
     if (isset($th->path)) {
         $url = ($th->path . '/edit/' . $id);
     } else {
-        echo 'Erro $th->path não informado';
+        echo 'Erro $this->path não informado';
         exit;
     }
 
@@ -263,7 +263,9 @@ function form_fields($typ, $fld, $vlr, $th = array())
             $op = array(1, 0);            
             $opt = substr($typ, strpos($typ, ':') + 1, strlen($typ));
             $opc = explode(':', $opt);
+            print_r($opc);
             $sg = '<select id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '" class="form-control">' . cr();
+            $sg .= '<option value="">:: options ::</option>'.cr();
             for ($r = 0; $r < count($opc); $r++) {
                 $sel = '';
                 $opx = explode('&',$opc[$r]);
@@ -290,6 +292,7 @@ function form_fields($typ, $fld, $vlr, $th = array())
             $query = $query->getResult();
 
             $sg = '<select id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '" class="form-control">' . cr();
+            $sg .= '<option value=""></option>'.cr();
             for ($r = 0; $r < count($query); $r++) {
                 $ql = (array)$query[$r];
                 $sel = '';
