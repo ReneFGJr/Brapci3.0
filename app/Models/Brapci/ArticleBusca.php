@@ -42,9 +42,13 @@ class ArticleBusca extends Model
 
 	function brapci_api($dt)
 		{
-			$title = $dt['title'];
-			$dt = $this->search_word($title);
-			return $dt;			
+			$title = trim($dt['title']);
+			$idbp = $this->search($title);
+			if ($idbp == 0)
+				{					
+					$idbp = $this->search_word($title);
+				}			
+			return $idbp;
 		}	
 
 	function txt($id=0)
@@ -78,6 +82,7 @@ class ArticleBusca extends Model
 				}
 			}
 		$sql = "select * from ".$this->table." where $wh";
+		//echo $sql;
 		$rlt = (array)$this->db->query($sql)->getResult();
 
 		if (count($rlt) > 0)

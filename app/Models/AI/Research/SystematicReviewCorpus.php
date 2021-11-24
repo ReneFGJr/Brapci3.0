@@ -489,6 +489,11 @@ class SystematicReviewCorpus extends Model
 		}
 		$sx = bs($sx);
 
+		$sx .= 'Actions:';
+		$sx .= '<ul>';
+		$sx .= anchor(PATH.MODULE.'research/systematic_review/autoBrapci','Identificar na Brapci');
+		$sx .= '</ul>';
+
 		$sx .= $this->list($id, $d4);
 		return $sx;
 	}

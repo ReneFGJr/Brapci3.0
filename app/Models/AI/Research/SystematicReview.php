@@ -65,6 +65,9 @@ class SystematicReview extends Model
 						$tela .= $SystematicReviewCorpus->autoClass_mth1($d3);
 						$tela .= $SystematicReviewCorpus->autoClass_mth2($d3);
 						break;	
+					case 'autoBrapci':
+						$tela .= $this->autoBrapci($d3);
+						break;						
 					case 'nlp':
 						$tela .= $this->analyse($d3);
 						break;	
@@ -99,6 +102,36 @@ class SystematicReview extends Model
 			return $tela;
 		}
 
+		function autoBrapci($ini)
+			{
+				$tela = '';
+				$ini = round($ini);
+				$ArticleBusca = new \App\Models\Brapci\ArticleBusca();
+				$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
+				$sql = "select * from ".$SystematicReviewCorpus->table." 
+							limit 1 offset $ini";
+				$rlt = (array)$this->query($sql)->getResult();
+				if (count($rlt) > 0)
+					{
+						$dt = (array)$rlt[0];
+						$id = $dt['id_c'];
+						$rst = $SystematicReviewCorpus->class_status_0($id,$dt);
+						if ($rst == 0)
+							{
+								$ini++;
+							} else {
+
+							}
+						$tela .= 'Redirecionando ->'.$ini;
+						$tela .= '<br>'.date("d/m/Y H:i:s").'<br>';
+						$tela .= metarefresh(PATH.MODULE.'research/systematic_review/autoBrapci/'.$ini,1);
+					} else {
+						$tela .= bsmessage('Fim do processamento');
+					}
+				
+				return $tela;
+			}
+
 		function analyse($id)
 			{
 				$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
@@ -106,7 +139,7 @@ class SystematicReview extends Model
 				$vc = $Thesa->le_array(243);
 
 				$ArticleBusca = new \App\Models\Brapci\ArticleBusca();
-				$txt = $ArticleBusca->txt(149163);
+				$txt = $ArticleBusca->txt($id);
 
 				$WordMatch = new \App\Models\AI\NLP\WordMatch();
 				$tela = $WordMatch->analyse($txt,$vc);

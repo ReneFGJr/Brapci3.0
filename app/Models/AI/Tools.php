@@ -70,7 +70,6 @@ class Tools extends Model
 	{
 		$Research = new \App\Models\AI\Research();
 		$d2 = trim($d2);
-		echo '===>'.$d2;
 		$tp = '';
 		if ($d2 == 'corpusId')
 			{
