@@ -84,14 +84,16 @@ class ArticleBusca extends Model
 				}
 			}
 		$sql = "select * from ".$this->table." where $wh";
-		//echo $sql;
 		$rlt = (array)$this->db->query($sql)->getResult();
-
+		$pre = '';
 		if (count($rlt) > 0)
 			{
 				$line = (array)$rlt[0];
 				$id = $line['id_n'];
-				$sql = "SELECT * FROM brapci.rdf_data where d_p = 17 and d_literal = ".$id;
+				
+				$sql = "SELECT * FROM brapci.rdf_data 
+							INNER JOIN brapci.rdf_concept ON d_r1 = id_cc
+							where d_p = 17 and d_literal = $id and cc_status <> 99";
 				$rst = $this->query($sql)->getresult();
 				if ((count($rst) > 0) and (count($rst) == 1))
 					{
@@ -111,14 +113,18 @@ class ArticleBusca extends Model
 			{
 				$line = (array)$rlt[0];
 				$id = $line['id_n'];
-				$sql = "SELECT * FROM brapci.rdf_data where d_p = 17 and d_literal = ".$id;
-				$rst = $this->query($sql)->getresult();
-				if (count($rst) > 0)
+				$pre = 'and cc_created = d_literal';
+				$sql = "SELECT * FROM brapci.rdf_data 
+							INNER JOIN brapci.rdf_concept ON d_r1 = id_cc $pre
+							where d_p = 17 and d_literal = ".$id;
+				$rst = (array)$this->query($sql)->getresult();
+				if ((count($rst) > 0) and (count($rst) == 1))
 					{
 						$l = (array)$rst[0];
 						$id_rdf = $l['d_r1'];
 						return $id_rdf;
 					}
+
 			}	
 		return 0;	
 	}
