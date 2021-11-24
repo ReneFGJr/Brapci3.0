@@ -323,12 +323,13 @@ class SystematicReviewCorpus extends Model
 				$tela1 .= $this->btn_url($dt);
 				$tela1 .= $this->btn_recheck($id);
 				$tela1 .= $this->btn_duplicate($id);
-				
+				$tela1 .= $this->btn_google($dt);
 
 				/*************/
 				$tela2 = '<hr>';
 				$tela2 .= bsc($this->btn_exclusion($dt),6);
 				$tela2 .= bsc($this->btn_inclusion($dt),6);
+				
 
 				$tela .= bs(bsc($tela1,12).$tela2);
 				break;
