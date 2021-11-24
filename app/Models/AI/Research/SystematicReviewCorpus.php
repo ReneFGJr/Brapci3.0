@@ -305,7 +305,7 @@ class SystematicReviewCorpus extends Model
 				$tela1 = '';
 				$tela1 .= $ContentAnalysis->btn_ContentAnalysis($id);
 				$tela1 .= $this->btn_url($dt);
-				$tela1 = $this->btn_edit($id);
+				$tela1 .= $this->btn_edit($id);
 				$tela2 = '<hr>';				
 				$tela2 .= bsc($this->btn_exclusion($dt),6);
 				$tela2 .= bsc($this->btn_inclusion($dt),6);
