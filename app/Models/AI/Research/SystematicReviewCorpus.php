@@ -329,7 +329,7 @@ class SystematicReviewCorpus extends Model
 			case 3:
 				$tela .= $this->class_status_3($id, $dt);
 				$tela1 = $this->btn_edit($id);
-				$tela1 = $this->btn_edit_full($id);
+				$tela1 .= $this->btn_edit_full($id);
 				$tela1 .= $this->btn_url($dt);
 				$tela1 .= $this->btn_recheck($id);
 				$tela1 .= $this->btn_duplicate($id);
