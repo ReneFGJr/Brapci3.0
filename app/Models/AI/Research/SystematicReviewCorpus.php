@@ -201,8 +201,9 @@ class SystematicReviewCorpus extends Model
 			if (strlen($url) > 0)
 				{
 					$sx = '<a href="'.$url.'" target="_blank" class="btn btn-primary btn-sm">
-								URL
+								URL - '.$url.'
 							</a> ';
+
 				} 
 			return $sx;
 		}		
