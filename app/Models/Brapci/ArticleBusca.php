@@ -43,6 +43,7 @@ class ArticleBusca extends Model
 	function brapci_api($dt)
 		{
 			$title = trim($dt['title']);
+			$title = troca($title,"'","´");
 			$idbp = $this->search($title);
 			if ($idbp == 0)
 				{					
@@ -69,6 +70,7 @@ class ArticleBusca extends Model
 
 	function search_word($termo)
 	{
+		$termo = troca($termo,"'","´");
 		$st = array(':',';','!','?','.');
 		$termo = troca($termo,$st,' ');
 		$bs = explode(' ', $termo);
@@ -103,6 +105,7 @@ class ArticleBusca extends Model
 
 	function search($termo)
 	{
+		$termo = troca($termo,"'","´");
 		$rlt = $this->where('n_name',$termo)->findAll();
 		if (count($rlt) > 0)
 			{
