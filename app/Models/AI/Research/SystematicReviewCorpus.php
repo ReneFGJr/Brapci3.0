@@ -191,7 +191,7 @@ class SystematicReviewCorpus extends Model
 			if (strlen($url2) > 0)
 				{
 					$url = $url2;
-					$url = troca($url,'http://http'.'http');
+					$url = troca($url,'http://http','http');
 				}
 
 			if ($dt['c_brapci'] > 0)
