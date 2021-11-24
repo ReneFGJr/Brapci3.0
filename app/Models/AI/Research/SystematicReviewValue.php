@@ -19,8 +19,8 @@ class SystematicReviewValue extends Model
 	];
 	protected $typeFields        = [
 		'hidden',
-		'qr:id_sr:sr_title:brapci_ai.systematicreviews_studies',
-		'qr:id_fs:fs_field:brapci_ai.systematicreviews_fields','text'
+		'qr:id_sr:sr_title:brapci_ai.SystematicReviews_Studies',
+		'qr:id_fs:fs_field:brapci_ai.SystematicReviews_Fields','text'
 	];	
 
 	// Dates
