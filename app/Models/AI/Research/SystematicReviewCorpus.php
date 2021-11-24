@@ -160,7 +160,7 @@ class SystematicReviewCorpus extends Model
 		{
 			$title = htmlentities($dt['title']);
 
-			$url = 'https://scholar.google.com.br/scholar?hl=pt-BR&as_sdt='.$title;			
+			$url = 'https://scholar.google.com.br/scholar?hl=pt-BR&as_sdt='.$title.'&btnG=';			
 			$sx = '<a href="'.$url.'" target="new_'.date("Hmis").'" class="btn btn-primary btn-sm">
 						Google Academic
 					</a> ';
