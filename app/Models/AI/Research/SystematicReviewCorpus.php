@@ -192,6 +192,8 @@ class SystematicReviewCorpus extends Model
 				{
 					$url = $url2;
 					$url = trim(troca($url,'http://http','http'));
+					$url = trim(troca($url,'[',''));
+					$url = trim(troca($url,']',''));
 				}
 
 			if ($dt['c_brapci'] > 0)
@@ -200,10 +202,11 @@ class SystematicReviewCorpus extends Model
 				}
 
 			if (strlen($url) > 0)
-				{
-					$sx = '</><a href="'.$url.'" target="_blank" class="btn btn-primary btn-sm">
+				{					
+					$sx = '<a href="'.$url.'" target="_blank" class="btn btn-primary btn-sm">
 								URL
 							</a> ';
+						$sx .= '<br>'.$url;
 
 				} 
 			return $sx;
@@ -285,6 +288,7 @@ class SystematicReviewCorpus extends Model
 				$tela .= $this->class_status_0($id, $dt);
 				$tela1 = $this->btn_edit($id);
 				$tela1 .= $this->btn_recheck($id);
+				$tela1 .= $this->btn_url($dt);
 				$tela1 .= $this->btn_duplicate($id);				
 				
 				$tela1 .= $ContentAnalysis->btn_ContentAnalysis($id);
@@ -318,10 +322,10 @@ class SystematicReviewCorpus extends Model
 			case 3:
 				$tela .= $this->class_status_3($id, $dt);
 				$tela1 = $this->btn_edit($id);
+				$tela1 .= $this->btn_url($dt);
 				$tela1 .= $this->btn_recheck($id);
 				$tela1 .= $this->btn_duplicate($id);
-				$tela1 .= $this->btn_url($dt);
-				$tela .= bs(bsc($tela1,12));
+				
 
 				/*************/
 				$tela2 = '<hr>';
