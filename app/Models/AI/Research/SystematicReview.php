@@ -102,19 +102,23 @@ class SystematicReview extends Model
 			return $tela;
 		}
 
-		function autoBrapci($ini)
+		function autoBrapci($ini,$st=0)
 			{
 				$tela = '';
 				$ini = round($ini);
 				$ArticleBusca = new \App\Models\Brapci\ArticleBusca();
 				$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
 				$sql = "select * from ".$SystematicReviewCorpus->table." 
-							limit 1 offset $ini";
+							where c_status = $st
+							order by id_c
+							limit 1 offset $ini
+							";
 				$rlt = (array)$this->query($sql)->getResult();
 				if (count($rlt) > 0)
-					{
+					{						
 						$dt = (array)$rlt[0];
 						$id = $dt['id_c'];
+						$tela .= $SystematicReviewCorpus->show($dt);
 						$rst = $SystematicReviewCorpus->class_status_0($id,$dt);
 						if ($rst == 0)
 							{
