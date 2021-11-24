@@ -158,9 +158,9 @@ class SystematicReviewCorpus extends Model
 		}
 		function btn_google($dt)
 		{
-			$title = htmlentities($dt['title']);
+			$title = htmlentities('"'.$dt['title'].'"');
 
-			$url = 'https://scholar.google.com.br/scholar?hl=pt-BR&as_sdt='.$title.'&btnG=';			
+			$url = 'https://scholar.google.com.br/scholar?hl=pt-BR&q='.$title.'&btnG=';			
 			$sx = '<a href="'.$url.'" target="new_'.date("Hmis").'" class="btn btn-primary btn-sm">
 						Google Academic
 					</a> ';

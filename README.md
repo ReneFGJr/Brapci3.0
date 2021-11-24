@@ -1,5 +1,4 @@
 # Brapci 3.0 - Search Data - IA
-
 ## Instalação
 
 Edite o arquivo .env no diretório Raiz 
