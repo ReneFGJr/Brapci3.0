@@ -69,7 +69,7 @@ class SystematicReviewCorpus extends Model
 
 		$rlt = $this->query($sql)->getresult();
 
-		for ($r = 0; $r < count($rlt); $r++) {
+		for ($r = 0; $r <a count($rlt); $r++) {
 			$line = (array)$rlt[$r];
 			$sql = "update " . $this->table . " set c_duplicata = 1, c_status = 9 where id_c = " . $line['max'];
 			$this->query($sql);
@@ -191,7 +191,7 @@ class SystematicReviewCorpus extends Model
 			if (strlen($url2) > 0)
 				{
 					$url = $url2;
-					$url = troca($url,'http://http','http');
+					$url = trim(troca($url,'http://http','http'));
 				}
 
 			if ($dt['c_brapci'] > 0)
@@ -201,8 +201,8 @@ class SystematicReviewCorpus extends Model
 
 			if (strlen($url) > 0)
 				{
-					$sx = '<a href="'.$url.'" target="_blank" class="btn btn-primary btn-sm">
-								URL - '.$url.'
+					$sx = '</a><a href="'.$url.'" target="_blank" class="btn btn-primary btn-sm">
+								URL
 							</a> ';
 
 				} 
