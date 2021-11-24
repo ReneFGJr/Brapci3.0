@@ -360,6 +360,10 @@ class SystematicReviewCorpus extends Model
 
 		$ArticleBusca = new \App\Models\Brapci\ArticleBusca();
 		$rdfid = $ArticleBusca->search($dt['title']);
+		if ($rdfid == 0)
+			{
+				$rdfid = $ArticleBusca->search_word($dt['title']);
+			}
 
 		if ($rdfid > 0) {
 			$tela .= bsmessage('Artigo localizado ' . $rdfid, 1);

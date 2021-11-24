@@ -86,10 +86,10 @@ class ArticleBusca extends Model
 				$id = $line['id_n'];
 				$sql = "SELECT * FROM brapci.rdf_data where d_p = 17 and d_literal = ".$id;
 				$rst = $this->query($sql)->getresult();
-				if (count($rst) > 0)
+				if ((count($rst) > 0) and (count($rst) == 1))
 					{
 						$l = (array)$rst[0];
-						$id_rdf = $l['d_r1'];
+						$id_rdf = $l['d_r1'];	
 						return $id_rdf;
 					}
 			}	
