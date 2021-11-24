@@ -49,7 +49,7 @@ class SystematicReviewValue extends Model
 
 	function edit($id)
 		{
-			$this->path = URL.MODULE.'research/systematic_review/criterieEd/';
+			$this->path = PATH.MODULE.'research/systematic_review/criterieEd/';
 			$sx = form($this);
 			return $sx;
 		}
