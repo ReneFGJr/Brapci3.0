@@ -142,6 +142,13 @@ class SystematicReviewCorpus extends Model
 					</a> ';
 			return $sx;
 		}
+		function btn_edit_full($id)
+		{
+			$sx = '<a href="'.PATH.MODULE.'research/systematic_review/corpus_edit_text/'.$id.'" class="btn btn-primary btn-sm">
+						editar Full
+					</a> ';
+			return $sx;
+		}		
 		function btn_brapci($id)
 		{
 			$sx = '<a href="'.PATH.MODULE.'research/systematic_review/brapci_api/'.$id.'" class="btn btn-primary btn-sm">
@@ -151,7 +158,9 @@ class SystematicReviewCorpus extends Model
 		}
 		function btn_google($dt)
 		{
-			$url = 'https://scholar.google.com.br/scholar?hl=pt-BR&as_sdt=0%2C5&q=ALMEIDA%2C+Jobson+Louis+Santos+de%3B+FREIRE%2C+Gustavo+Henrique+de+Ara%C3%BAjo.+A+biblioteca+multin%C3%ADvel+no+ifpb+campus+sousa%3A+conceito%2C+descri%C3%A7%C3%A3o+e+finalidade&btnG=';
+			$title = htmlentities($dt['title']);
+
+			$url = 'https://scholar.google.com.br/scholar?hl=pt-BR&as_sdt='.$title;			
 			$sx = '<a href="'.$url.'" target="new_'.date("Hmis").'" class="btn btn-primary btn-sm">
 						Google Academic
 					</a> ';
@@ -320,6 +329,7 @@ class SystematicReviewCorpus extends Model
 			case 3:
 				$tela .= $this->class_status_3($id, $dt);
 				$tela1 = $this->btn_edit($id);
+				$tela1 = $this->btn_edit_full($id);
 				$tela1 .= $this->btn_url($dt);
 				$tela1 .= $this->btn_recheck($id);
 				$tela1 .= $this->btn_duplicate($id);
