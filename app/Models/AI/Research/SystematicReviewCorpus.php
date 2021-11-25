@@ -440,10 +440,17 @@ class SystematicReviewCorpus extends Model
 		$sx = '';
 		$sx .= '<ol>';
 		for ($r = 0; $r < count($rlt); $r++) {
+			$full = '';
 			$c = '<span>';
 			$ca = '</span>';
-
 			$line = (array)$rlt[$r];
+
+			if (strlen($line['c_fulltext']) > 100)
+				{
+					$full = ' - <span class="p-1 supersmall rounded btn-primary">FULL</span>';
+				}
+
+			
 			if ($line['c_duplicata']) {
 				$c = '<span style="text-decoration:line-through; color: #DDD;">';
 			}
@@ -452,6 +459,7 @@ class SystematicReviewCorpus extends Model
 			$sx .= '<li>' . $link . $c . $line['title'] . '</a>';
 			$sx .= '. <b>' . $line['journal'] . '</b>';
 			$sx .= ', ' . $line['year'];
+			$sx .= $full;
 			$sx .= $ca . '</li>';
 		}
 		$sx .= '</ol>';
