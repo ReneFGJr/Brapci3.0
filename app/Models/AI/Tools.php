@@ -45,6 +45,9 @@ class Tools extends Model
 			$tela = '';
 			switch($d1)
 				{
+					case 'contentanalysis':
+						$tela = $this->research($d1,$d2,$d3,$d4);
+						break;
 					case 'systematic_review':
 						$tela = $this->research($d1,$d2,$d3,$d4);
 						break;
