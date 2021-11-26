@@ -57,26 +57,6 @@ class Search extends Model
 			return $tela;
 		}
 
-	function getFullText($id)
-		{
-			$sql = "
-			SELECT d_r2 as idf, c_class 
-				FROM brapci.rdf_data 
-				INNER JOIN brapci.rdf_class ON d_p = id_c 
-				WHERE d_r1 = $id and c_class = 'hasFileStorage'
-			";
-			$dt = $this->query($sql)->getResult();
-			if (count($dt) > 0)
-				{
-					$line = (array)$dt[0];
-					$idt = $line['idf'];
-					$url = 'https://brapci.inf.br/index.php/res/txt/'.$idt;
-					$txt = file_get_contents($url);
-					return $txt;
-				}
-			return '';
-		}
-
 	function Search($vlr,$collection)
 		{
 			$sx = '';

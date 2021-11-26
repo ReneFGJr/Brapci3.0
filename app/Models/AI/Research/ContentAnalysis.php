@@ -56,7 +56,7 @@ class ContentAnalysis extends Model
 
 	function BrapciFullText($dt)
 		{
-			$Search = new \App\Models\Brapci\Search();			
+			$Search = new \App\Models\Brapci\ArticleBusca();			
 			$idb = $dt['c_brapci'];
 			$txt = $Search->getFullText($idb);
 			return $txt;
@@ -70,12 +70,15 @@ class ContentAnalysis extends Model
 			$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
 			$dt = $SystematicReviewCorpus->find($d2);	
 			$vc = $Thesa->le_array($th);
-
+			$txt = $dt['c_fulltext'];
 			if (strlen($dt['c_fulltext']) == 0)
 				{
 					$txt = $this->BrapciFullText($dt);
 					$dt['c_fulltext'] = $txt;
-					$SystematicReviewCorpus->update_textfull($d2,$txt);
+					if (strlen($txt > 100))
+					{
+						$SystematicReviewCorpus->update_textfull($d2,$txt);
+					}
 				}
 			$rst = $WordMatch->analyse($dt['c_fulltext'],$vc);
 			
@@ -84,6 +87,8 @@ class ContentAnalysis extends Model
 			$tkey = '';
 			echo '<pre>';
 			print_r($keys);
+			echo '<hr>';
+			echo $txt;
 			foreach ($keys as $key => $value)
 				{
 					$tkey .= $key.'; ';
