@@ -130,11 +130,11 @@ class Scraping extends Model
 
 	function get_word($txt,$word)
 	{
-		preg_match_all('/'.$word.'(\/\w+)|(\w+\s\w).*/', $txt, $matches);
+		$txt = ascii(mb_strtolower($txt));
+		$word = ascii(mb_strtolower($word));
+		preg_match_all('/('.$word.'.*[,;.])\s(.*)/', $txt, $matches);
 		//echo '===>'.$txt;
-			$email = $matches[0];
-			echo '<pre>';
-			print_r($matches);
-		return $email;
+		$words = $matches[0];
+		return $words;
 	}		
 }
