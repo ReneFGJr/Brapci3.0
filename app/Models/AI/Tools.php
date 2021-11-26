@@ -45,13 +45,28 @@ class Tools extends Model
 			$tela = '';
 			switch($d1)
 				{
+					case 'scraping':
+						$Scraping = new \App\Models\AI\NLP\Scraping();
+						$tela .= $Scraping->index($d1,$d2,$d3,$d4);
+						break;
+
 					case 'systematic_review':
-						$tela = $this->research($d1,$d2,$d3,$d4);
+						$tela .= $this->research($d1,$d2,$d3,$d4);
 						break;
 
 					default:
-					$tela = bsmessage('Service not found - '.$d1);
-					$lst = array('systematic_review','content_analysis','roboti_task','bibliometric','syllables','wordcount');
+					$tela .= bsmessage('Service not found (Tools) - '.$d1);
+
+					/********************** Serviços */
+					$lst = array(
+						'systematic_review',
+						'content_analysis',
+						'roboti_task',
+						'bibliometric',
+						'syllables',
+						'wordcount',
+						'scraping'
+						);
 					$tela .= '<ul>';
 					for ($r=0;$r < count($lst);$r++)
 						{

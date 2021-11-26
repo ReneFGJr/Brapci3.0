@@ -88,6 +88,17 @@ class Socials extends Model
 			}
 		
 		switch ($cmd) {
+			case 'test':
+			if ($_SERVER['CI_ENVIRONMENT'] == 'development')
+				{
+						$_SESSION['id'] = 99999999;
+						$_SESSION['user'] = 'social_teste';	
+						$_SESSION['email'] = 'Usuário Teste';					
+						echo metarefresh(PATH);
+						exit;
+				}
+				$sx = bsmessage('Usuário não pode ser ativado no ambiente de produção');
+				break;
 			case 'login':
 				$sx = $cab;
 				$sx .= $this->login();

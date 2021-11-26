@@ -58,7 +58,7 @@ class Research extends Model
 						$tela .= $BasePQ->index($d1,$d2,$d3,$d4);						
 						break;						
 					default:
-						$tela .= bsmessage('Service not found: '.$d1,2);
+						$tela .= bsmessage('Service not found (Research): '.$d1,2);
 						break;
 				}
 			return $tela;		
