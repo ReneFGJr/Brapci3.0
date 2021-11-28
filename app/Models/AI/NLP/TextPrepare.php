@@ -45,7 +45,8 @@ class TextPrepare extends Model
 		$t = array('http:','https:');
 		for ($r=0;$r < count($t);$r++) {
 			$term = $t[$r];
-			while ($pos = strpos($txt,$term))
+			$loop = 0;
+			while (($pos = strpos($txt,$term)) and ($loop++ < 400))
 			{
 				$http = substr($txt,$pos,strlen($txt));
 				$http = substr($http,0,strpos($http,' '));
