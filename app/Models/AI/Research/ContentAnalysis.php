@@ -64,6 +64,8 @@ class ContentAnalysis extends Model
 
 	function corpusId($d1,$d2,$d3)
 		{
+			$tela = '';
+
 			$th = 243;
 			$WordMatch = new \App\Models\AI\NLP\WordMatch();
 			$Thesa = new \App\Models\AI\Thesa();
@@ -74,6 +76,7 @@ class ContentAnalysis extends Model
 			$txt = $dt['c_fulltext'];
 			if ((strlen($dt['c_fulltext']) == 0) and ($dt['c_brapci'] > 0))
 				{
+					$tela .= '<h5>Coletando Brapci</h5>';
 					$txt = $this->BrapciFullText($dt);					
 					$dt['c_fulltext'] = $txt;
 					if (strlen($txt > 100))
@@ -86,7 +89,7 @@ class ContentAnalysis extends Model
 			/*************************************** KEYS */
 			$keys = $rst['keys'];
 			$tkey = '';
-			$tela = '<h2>Keywords</h2>';
+			$tela .= '<h2>Keywords</h2>';
 			$tela .= '<ul>';
 			foreach ($keys as $key => $value)
 				{
