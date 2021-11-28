@@ -113,7 +113,7 @@ class Res extends BaseController
 		$tela = $this->cab("user",$dt);
 
 		$Benancib = new \App\Models\Benancib\index();
-		$tela .= $Benancib->index($d1,$d2,$d3,$d4);
+		$tela .= $Benancib->Index($d1,$d2,$d3,$d4);
 		return $tela;
 	}
 
