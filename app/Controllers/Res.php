@@ -112,7 +112,7 @@ class Res extends BaseController
 		$dt['collection'] = mb_strtoupper(lang('brapci.Benancib'));
 		$tela = $this->cab("user",$dt);
 
-		$Benancib = new \App\Models\Benancib\index();
+		$Benancib = new \App\Models\Benancib\Index();
 		$tela .= $Benancib->Index($d1,$d2,$d3,$d4);
 		return $tela;
 	}
