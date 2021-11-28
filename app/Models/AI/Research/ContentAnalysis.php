@@ -72,7 +72,7 @@ class ContentAnalysis extends Model
 			$vc = $Thesa->le_array($th);
 
 			$txt = $dt['c_fulltext'];
-			//if (strlen($dt['c_fulltext']) == 0)
+			if ((strlen($dt['c_fulltext']) == 0) and ($dt['c_brapci'] > 0))
 				{
 					$txt = $this->BrapciFullText($dt);					
 					$dt['c_fulltext'] = $txt;
