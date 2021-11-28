@@ -60,6 +60,10 @@ class Index extends Model
 				$Harvesting = new \App\Models\Benancib\Harvesting();
 				$sx .= $Harvesting->havest($d2,$d3,$d4);
 				break;
+			default:
+				$sx .= '<ul>';
+				$sx .= '<li>'.anchor(PATH.MODULE.'benancib/harvesting_auto/0','Auto Harvesting').'</li>';
+				$sx .= '</ul>';
 		}
 		return $sx;
 	}
