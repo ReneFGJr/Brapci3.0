@@ -74,12 +74,12 @@ class ContentAnalysis extends Model
 			$vc = $Thesa->le_array($th);
 
 			$txt = $dt['c_fulltext'];
-			if ((strlen($dt['c_fulltext']) == 0) and ($dt['c_brapci'] > 0))
+			if ((strlen($dt['c_fulltext']) < 500) and ($dt['c_brapci'] > 0))
 				{
 					$tela .= '<h5>Coletando Brapci</h5>';
 					$txt = $this->BrapciFullText($dt);					
 					$dt['c_fulltext'] = $txt;
-					if (strlen($txt > 100))
+					if (strlen($txt) >= 500)
 					{
 						$SystematicReviewCorpus->update_textfull($d2,$txt);
 					}
