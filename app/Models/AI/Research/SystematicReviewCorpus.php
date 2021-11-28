@@ -20,7 +20,7 @@ class SystematicReviewCorpus extends Model
 		'year', 'volume', 'number',
 		'pages', 'doi', 'issn',
 		'month', 'note', 'eprint',
-		'keyword','c_fulltext'
+		'keyword','c_fulltext','c_keywords'
 	];
 
 	protected $typeFields        = [
@@ -29,7 +29,7 @@ class SystematicReviewCorpus extends Model
 		'string:10', 'string:10', 'string:10',
 		'string:100', 'string:100', 'string:10',
 		'string:10', 'text', 'string:100',
-		'text','text'
+		'text','text','text'
 	];	
 
 	// Dates
@@ -86,6 +86,16 @@ class SystematicReviewCorpus extends Model
 			$this->query($sql);
 			return true;
 		}
+
+	function update_keyworks($id,$txt)
+		{
+			$txt = troca($txt,"'","´");
+			$sql = "update " . $this->table . " 
+					set c_keywords = '$txt'
+					where id_c = " . $id;
+			$this->query($sql);
+			return true;
+		}		
 
 	function autoClass_mth2()
 	{
@@ -441,6 +451,7 @@ class SystematicReviewCorpus extends Model
 		$sx .= '<ol>';
 		for ($r = 0; $r < count($rlt); $r++) {
 			$full = '';
+			$keys = '';
 			$c = '<span>';
 			$ca = '</span>';
 			$line = (array)$rlt[$r];
@@ -449,6 +460,22 @@ class SystematicReviewCorpus extends Model
 				{
 					$full = ' - <span class="p-1 supersmall rounded btn-primary">FULL</span>';
 				}
+
+			if (strlen($line['c_keywords']) > 1)
+				{
+					$key = $line['c_keywords'];
+					$key = explode(';', $key);
+					for ($y=0;$y < count($key);$y++)
+						{
+							if (strlen($key[$y]) > 0)
+								{
+									$keys .= ' <span class="p-1 supersmall rounded btn-warning">';
+									$keys .= $key[$y];
+									$keys .= '</span>';
+								}
+						}
+					if (strlen($keys) > 0) { $keys = '<br>' . $keys; }
+				}				
 
 			
 			if ($line['c_duplicata']) {
@@ -460,6 +487,7 @@ class SystematicReviewCorpus extends Model
 			$sx .= '. <b>' . $line['journal'] . '</b>';
 			$sx .= ', ' . $line['year'];
 			$sx .= $full;
+			$sx .= $keys;
 			$sx .= $ca . '</li>';
 		}
 		$sx .= '</ol>';

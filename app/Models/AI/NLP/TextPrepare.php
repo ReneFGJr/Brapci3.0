@@ -83,7 +83,7 @@ class TextPrepare extends Model
 			$txt = troca($txt,chr(10),' ');
 			$txt = troca($txt,'¢¢¢¢','¢¢');
 
-			$sp = array('.',',','-',';','?','!','/');
+			$sp = array('.',',',';','?','!','/');
 			for ($r=0;$r < count($sp);$r++)
 				{					
 					$txt = troca($txt,$sp[$r],' '.$sp[$r].' ');

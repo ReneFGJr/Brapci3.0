@@ -70,10 +70,11 @@ class ContentAnalysis extends Model
 			$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
 			$dt = $SystematicReviewCorpus->find($d2);	
 			$vc = $Thesa->le_array($th);
+
 			$txt = $dt['c_fulltext'];
 			if (strlen($dt['c_fulltext']) == 0)
 				{
-					$txt = $this->BrapciFullText($dt);
+					$txt = $this->BrapciFullText($dt);					
 					$dt['c_fulltext'] = $txt;
 					if (strlen($txt > 100))
 					{
@@ -85,17 +86,19 @@ class ContentAnalysis extends Model
 			/*************************************** KEYS */
 			$keys = $rst['keys'];
 			$tkey = '';
-			echo '<pre>';
-			print_r($keys);
-			echo '<hr>';
-			echo $txt;
+			$tela = '<h2>Keywords</h2>';
+			$tela .= '<ul>';
 			foreach ($keys as $key => $value)
 				{
 					$tkey .= $key.'; ';
+					$tela .= '<li>'.$key.'</li>';
 				}
-			echo $tkey;
-			$tela = '';
-
+			$tela .= '</ul>';
+			if (strlen($tkey) > 0)
+				{
+					$dt = $SystematicReviewCorpus->update_keyworks($d2,$tkey);	
+				}			
+			
 			return $tela;
 		}
 

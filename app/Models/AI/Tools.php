@@ -54,6 +54,10 @@ class Tools extends Model
 						$tela .= $this->research($d1,$d2,$d3,$d4);
 						break;
 
+					case 'contentanalysis':
+						$tela .= $this->research($d1,$d2,$d3,$d4);
+						break;						
+
 					default:
 					$tela .= bsmessage('Service not found (Tools) - '.$d1);
 

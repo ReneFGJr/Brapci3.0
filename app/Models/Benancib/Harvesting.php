@@ -48,7 +48,7 @@ class Harvesting extends Model
 			{
 				$offset++;
 				$sx .= '';
-				$sx .= metarefresh(PATH.MODULE.'benancib/harvesting_auto/'.($offset),1);
+				$sx .= metarefresh(PATH.MODULE.'benancib/harvesting_auto/'.($offset),5);
 			} else {
 				$sx .= 'Erro na carga do arquivo';
 			}
