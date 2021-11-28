@@ -100,8 +100,10 @@ class ContentAnalysis extends Model
 			if (strlen($tkey) > 0)
 				{
 					$dt = $SystematicReviewCorpus->update_keyworks($d2,$tkey);	
-				}			
-			
+				}				
+
+			if (count($rst['keys']) == 0) 
+				{ $tela = ''; }
 			return $tela;
 		}
 

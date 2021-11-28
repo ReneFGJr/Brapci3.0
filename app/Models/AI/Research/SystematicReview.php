@@ -67,7 +67,10 @@ class SystematicReview extends Model
 						break;	
 					case 'autoBrapci':
 						$tela .= $this->autoBrapci($d3);
-						break;						
+						break;	
+					case 'autoKeywords':
+						$tela .= $this->autoKeywords($d3,1);
+						break;											
 					case 'nlp':
 						$tela .= $this->analyse($d3);
 						break;	
@@ -101,6 +104,46 @@ class SystematicReview extends Model
 				}
 			return $tela;
 		}
+
+		function autoKeywords($ini,$st=0)
+			{
+				$tela = '';
+				$ini = round($ini);
+				$ArticleBusca = new \App\Models\Brapci\ArticleBusca();
+				$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
+				$ContentAnalysis = new \App\Models\AI\Research\ContentAnalysis();
+				$sql = "select * from ".$SystematicReviewCorpus->table." 
+							where c_status = $st
+							and c_keywords = ''
+							order by id_c
+							limit 1 offset $ini
+							";
+							echo $sql;
+				$rlt = (array)$this->query($sql)->getResult();
+				$rst = '';
+				if (count($rlt) > 0)
+					{						
+						$dt = (array)$rlt[0];
+						$id = $dt['id_c'];
+						$tela .= $SystematicReviewCorpus->show($dt,'ABNT');
+						$rst = $ContentAnalysis->corpusId('',$id,'');
+						echo '<br>==x==>'.strlen($rst);
+						if (strlen($rst) == 0)
+							{
+								$ini++;
+							} else {
+								
+							}
+						$tela .= $rst;
+						$tela .= 'Redirecionando ->'.$ini;
+						$tela .= '<br>'.date("d/m/Y H:i:s").'<br>';
+						$tela .= metarefresh(PATH.MODULE.'research/systematic_review/autoKeywords/'.$ini,1);
+					} else {
+						$tela .= bsmessage('Fim do processamento');
+					}
+				
+				return $tela;
+			}		
 
 		function autoBrapci($ini,$st=0)
 			{
