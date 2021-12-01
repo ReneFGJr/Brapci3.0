@@ -48,12 +48,13 @@ class Harvesting extends Model
 		if (strlen($sx) > 0)
 			{
 				$offset++;
-				$sx .= '';
-				$sx .= metarefresh(PATH.MODULE.'benancib/harvesting_auto/'.($offset),5);
+				$sx .= '';				
 				if ($this->status > 0)
 					{
+						$sx .= metarefresh(PATH.MODULE.'benancib/harvesting_auto/'.($offset),5);
 						$sx .= bsmessage('Harvesting Success!');
 					} else {
+						$sx .= metarefresh(PATH.MODULE.'benancib/harvesting_auto/'.($offset),1);
 						$sx .= bsmessage('Already harvested!');
 					}
 			} else {
@@ -69,12 +70,13 @@ class Harvesting extends Model
 		if (strlen($sx) > 0)
 			{
 				$offset++;
-				$sx .= '';
-				$sx .= metarefresh(PATH.MODULE.'benancib/harvesting_pdf/'.($offset),5);
+				$sx .= '';				
 				if ($this->status > 0)
 					{
+						$sx .= metarefresh(PATH.MODULE.'benancib/harvesting_pdf/'.($offset),5);
 						$sx .= bsmessage('Harvesting PDF Success!');
 					} else {
+						$sx .= metarefresh(PATH.MODULE.'benancib/harvesting_pdf/'.($offset),1);
 						$sx .= bsmessage('Already PDF harvested!');
 					}
 			} else {
