@@ -113,6 +113,8 @@ class Harvesting extends Model
 			$data = $matches[0];
 
 			# Remove HTML Tags
+			if (isset($data[0]))
+			{
 			$txt = $data[0];
 			$txt = substr($txt,strpos($txt,'href="')+6,strlen($txt));
 			$txt = substr($txt,0,strpos($txt,'"'));
@@ -136,6 +138,9 @@ class Harvesting extends Model
 			$txt = file_get_contents($url);
 			file_put_contents($file,$txt);
 			$this->status = 1;
+			} else {
+				$url .= 'Not locate';
+			}
 			return $url;
 		}
 
