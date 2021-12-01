@@ -6,6 +6,7 @@ use CodeIgniter\Model;
 
 class Harvesting extends Model
 {
+	var $status = 0;
 	protected $DBGroup              = 'default';
 	protected $table                = 'harvestings';
 	protected $primaryKey           = 'id';
@@ -49,6 +50,12 @@ class Harvesting extends Model
 				$offset++;
 				$sx .= '';
 				$sx .= metarefresh(PATH.MODULE.'benancib/harvesting_auto/'.($offset),5);
+				if ($this->status > 0)
+					{
+						$sx .= bsmessage('Harvesting Success!');
+					} else {
+						$sx .= bsmessage('Already harvested!');
+					}
 			} else {
 				$sx .= 'Erro na carga do arquivo';
 			}
@@ -64,6 +71,7 @@ class Harvesting extends Model
 		dircheck('.tmp/benancib/harvesting');
 		$file = '.tmp/benancib/harvesting/benancib_' . $id . '.xml';
 		if (!file_exists($file)) {
+			$this->status = 1;
 			$url = 'http://repositorios.questoesemrede.uff.br/repositorios/handle/123456789/' . $id . '?show=full';
 			$url2 = 'http://repositorios.questoesemrede.uff.br/repositorios/handle/123456789/' . $id;
 
@@ -115,6 +123,8 @@ class Harvesting extends Model
 				}
 				file_put_contents($file, $simplexml->asXML());
 			}			
+		} else {
+			$this->status = -1;
 		}
 		return $file;
 	}
