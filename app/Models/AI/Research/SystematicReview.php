@@ -127,7 +127,6 @@ class SystematicReview extends Model
 						$id = $dt['id_c'];
 						$tela .= $SystematicReviewCorpus->show($dt,'ABNT');
 						$rst = $ContentAnalysis->corpusId('',$id,'');
-						echo '<br>==x==>'.strlen($rst);
 						if (strlen($rst) == 0)
 							{
 								$ini++;

@@ -47,6 +47,11 @@ class Index extends Model
 			return $sx;
 		}
 
+	function status()
+		{
+			
+		}
+
 	function index($d1,$d2,$d3,$d4)
 	{
 		$sx = $this->cab();
@@ -68,6 +73,7 @@ class Index extends Model
 				$sx .= '<ul>';
 				$sx .= '<li>'.anchor(PATH.MODULE.'benancib/harvesting_auto/0','Auto Harvesting').'</li>';
 				$sx .= '<li>'.anchor(PATH.MODULE.'benancib/harvesting_pdf/0','Auto Harvesting PDF').'</li>';
+				$sx .= '<li>'.anchor('http://repositorios.questoesemrede.uff.br/repositorios/handle/123456789/2','Repositório BENANCIB').'</li>';
 				$sx .= '</ul>';
 		}
 		return $sx;
