@@ -100,7 +100,8 @@ class Harvesting extends Model
 				return "Erro 404";
 				exit;				
 			}		
-			$fl = 'd:\lixo\dspace.html';
+			$fl = '.tmp/benancib/harvesting/benancib_' . $id . '.pdf';
+			$file = '.tmp/benancib/harvesting/benancib_' . $id . '.pdf';
 			if (!file_exists($fl))	
 				{
 					$txt = file_get_contents($url);		
@@ -120,8 +121,7 @@ class Harvesting extends Model
 			$txt = substr($txt,0,strpos($txt,'"'));
 			$url = $http.$txt;
 
-			/******************************** Arquivo */
-			$file = '.tmp/benancib/harvesting/benancib_' . $id . '.pdf';
+			/******************************** Arquivo */			
 			if (!file_exists($file))
 			{
 				$pageDocument = @file_get_contents($url);
