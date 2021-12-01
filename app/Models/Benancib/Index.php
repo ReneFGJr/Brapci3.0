@@ -56,6 +56,10 @@ class Index extends Model
 				$Harvesting = new \App\Models\Benancib\Harvesting();
 				$sx .= $Harvesting->harvesting_auto($d2,$d3,$d4);
 				break;
+			case 'harvesting_pdf':
+				$Harvesting = new \App\Models\Benancib\Harvesting();
+				$sx .= $Harvesting->harvesting_auto_pdf($d2,$d3,$d4);
+				break;				
 			case 'harvesting':
 				$Harvesting = new \App\Models\Benancib\Harvesting();
 				$sx .= $Harvesting->havest($d2,$d3,$d4);
@@ -63,6 +67,7 @@ class Index extends Model
 			default:
 				$sx .= '<ul>';
 				$sx .= '<li>'.anchor(PATH.MODULE.'benancib/harvesting_auto/0','Auto Harvesting').'</li>';
+				$sx .= '<li>'.anchor(PATH.MODULE.'benancib/harvesting_pdf/0','Auto Harvesting PDF').'</li>';
 				$sx .= '</ul>';
 		}
 		return $sx;

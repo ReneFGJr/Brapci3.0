@@ -62,6 +62,82 @@ class Harvesting extends Model
 		return $sx;
 	}
 
+	function harvesting_auto_pdf($offset=0)
+	{
+		if (strlen($offset)==0) { $offset = 5; }
+		$sx = $this->harvesting_pdf($offset);
+		if (strlen($sx) > 0)
+			{
+				$offset++;
+				$sx .= '';
+				$sx .= metarefresh(PATH.MODULE.'benancib/harvesting_pdf/'.($offset),5);
+				if ($this->status > 0)
+					{
+						$sx .= bsmessage('Harvesting PDF Success!');
+					} else {
+						$sx .= bsmessage('Already PDF harvested!');
+					}
+			} else {
+				$sx .= 'Erro na carga do arquivo';
+			}
+		return $sx;
+	}	
+
+	function harvesting_pdf($id=5)
+		{
+			dircheck('.tmp');
+			dircheck('.tmp/benancib');
+			dircheck('.tmp/benancib/harvesting');
+
+			$http = 'http://repositorios.questoesemrede.uff.br';
+			$url = 'http://repositorios.questoesemrede.uff.br/repositorios/handle/123456789/' . $id;
+			$pageDocument = @file_get_contents($url);
+			if ($pageDocument === false) {
+				if ($id > 5000)
+					{
+						exit;
+					}
+				return "Erro 404";
+				exit;				
+			}		
+			$fl = 'd:\lixo\dspace.html';
+			if (!file_exists($fl))	
+				{
+					$txt = file_get_contents($url);		
+					file_put_contents($fl,$txt);		
+				} else {
+					$txt = file_get_contents($fl);
+				}
+			/** <a class="image-link" */
+			preg_match_all('/<a class="image-link".*?>(.*?)<\/a>/si', $txt, $matches);
+			$data = $matches[0];
+
+			# Remove HTML Tags
+			$txt = $data[0];
+			$txt = substr($txt,strpos($txt,'href="')+6,strlen($txt));
+			$txt = substr($txt,0,strpos($txt,'"'));
+			$url = $http.$txt;
+
+			/******************************** Arquivo */
+			$file = '.tmp/benancib/harvesting/benancib_' . $id . '.pdf';
+			if (!file_exists($file))
+			{
+				$pageDocument = @file_get_contents($url);
+				if ($pageDocument === false) {
+					if ($id > 5000)
+						{
+							exit;
+						}
+					return "Erro 404";
+					exit;				
+				}
+			}
+
+			$txt = file_get_contents($url);
+			file_put_contents($file,$txt);
+			$this->status = 1;
+			return $url;
+		}
 
 	function havesting($id = 5)
 	{
