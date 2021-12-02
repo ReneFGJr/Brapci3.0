@@ -177,7 +177,7 @@ class JournalIssue extends Model
 							$sx .= bsc(h($year,5),12);
 							$xyear = $year;
 						}
-					$link = '<a href="'.base_url(URL.'/v/'.$dtx['is_source_issue']).'">';
+					$link = '<a href="'.PATH.'res/v/'.$dtx['is_source_issue'].'">';
 					$linka = '</a>';
 					$sx .= bsc($link.$dtx['is_vol'].'<br/>'.$dtx['is_nr'].$linka,1,'p-2 m-1 shadown bordered bw');
 				}

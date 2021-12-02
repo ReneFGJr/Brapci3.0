@@ -70,6 +70,18 @@ class Main extends BaseController
 		return $sx;
 	}	
 
+	public function proceeding($d1='',$d2='',$d3='',$d4='')
+	{
+		define("MOD","proceeding");
+		$Journals = new \App\Models\Journal\Journals();
+
+		$tela = $this->cab('all');
+		$tela .= $Journals->index($d2,$d3,$d4);
+		$tela .= $this->cab('footer');
+
+		return $tela;
+	}	
+
 	public function index()
 	{
 		//
@@ -85,6 +97,7 @@ class Main extends BaseController
 	
         $MENU = bsc('Menu',12);
         $menu = array();
+		$menu['main/aggregation'] = array('',lang("main.Aggregation"),lang("main.Aggregation"));
 		$menu['res'] = array('',lang("main.Brapci"),lang("main.Brapci_desc"));
 		$menu['res/painel'] = array('',lang("main.BrapciPainel"),lang("main.Brapci_desc"));
         $menu['authority'] = array('',lang("main.Authority"),lang("main.Authority_desc"));
@@ -109,14 +122,29 @@ class Main extends BaseController
         $tela .= '<div style="height: 50px;"></div>';
 
 		$tela .= bs(
-						bsc($MENU,8).
-						bsc($login,4)
+						bsc($MENU,12)
 					);	
 
 		$tela .= $this->EventProceedings->resume();		
 		
 		return $tela;
 	}
+
+	function aggregation($d1='',$d2='',$d3='',$d4='')
+		{
+			$Aggregation = new \App\Models\Search\Aggregation();
+			$tela = $this->cab('all');
+			$tela .= $Aggregation->index($d1,$d2,$d3,$d4);
+			return $tela;
+		}
+
+	function oai($d1='',$d2='',$d3='',$d4='')
+		{
+			$Oaipmh = new \App\Models\Oaipmh\Oaipmh();
+			$tela = $this->cab('all');
+			$tela .= $Oaipmh->index($d1,$d2,$d3,$d4);
+			return $tela;
+		}		
 
 	public function news($cmd='',$id='')
 		{
@@ -176,3 +204,4 @@ class Main extends BaseController
 				return $tela;
 			}		 
 }
+

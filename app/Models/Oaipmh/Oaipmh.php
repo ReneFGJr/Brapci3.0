@@ -46,14 +46,23 @@ class Oaipmh extends Model
 
 	function index($d1,$d2)
 		{
+			echo '===>'.$d1;
+			echo '===>'.$d2;
 			switch($d1)
 				{
 					case 'get_proceedings':
 						$sx = $this->harvesting_proceedings($d2);
 					break;
 
-					default:
+					case 'harvesting':
 						$sx = $this->harvesting($d1,$d2);
+					break;
+
+					default:
+						$sx = ':??:';	
+						$sx .= "d1=".$d1.'<br>';
+						$sx .= "d2=".$d2.'<br>';
+						$sx .= "d1=".$d1.'<br>';
 						break;
 				}
 			return $sx;
@@ -68,7 +77,7 @@ class Oaipmh extends Model
 
 
 
-	function harvesting($id)
+	function harvesting_issue($id)
 		{
 				$this->EventProceedingsIssue = new \App\Models\EventProceedingsIssue();
 				$dt = $this->EventProceedingsIssue->find($id);

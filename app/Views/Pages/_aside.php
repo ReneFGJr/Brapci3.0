@@ -5,10 +5,11 @@ if (!isset($subtitle)) {
   $subtitle = 'DRASHBOARD';
 }
 $items = array();
-$items['res/painel'] = 'Main';
+$items['main/'] = 'Main';
+$items['main/painel'] = 'Painel';
 $items['journal'] = 'Journal';
-$items['book'] = 'Book';
-$items['proceeding'] = 'Proceeding';
+$items['main/book'] = 'Book';
+$items['main/proceeding'] = 'Proceeding';
 $items['authority'] = 'Authority';
 $items['patent'] = 'Patent';
 $items['these'] = 'Thesis';

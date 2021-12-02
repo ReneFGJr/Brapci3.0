@@ -65,6 +65,7 @@ class Journals extends Model
 		{
 			$this->path = base_url(PATH.'/index/');
 			$this->path_back = base_url(PATH.'/index/');
+
 			switch ($d1)
 				{
 					case 'edit_issue':
@@ -258,7 +259,7 @@ class Journals extends Model
 
 	function tableview()
 		{	
-			switch(MODULE)
+			switch(MOD)
 				{
 				case 'proceeding':
 					$this->where("jnl_collection = 'EV'");
@@ -267,7 +268,7 @@ class Journals extends Model
 					$this->where("jnl_collection = 'JA'");
 					break;
 				}	
-			$this->path = base_url(PATH.MODULE.'/index/');
+			$this->path = base_url(PATH.MODULE.'/'.MOD.'/index/');
 			$tela = tableview($this);
 			$tela = bs(bsc($tela,12));
 			return $tela;
