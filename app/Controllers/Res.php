@@ -99,6 +99,12 @@ class Res extends BaseController
 		return $tela;
 	}	
 
+	public function oai($d1='',$d2='',$d3='',$d4='',$d5='')
+		{
+			$OAI = new \App\Models\OaiPmhServer\Index();
+			$OAI->index($d1,$d2,$d3,$d4,$d5);
+		}
+
 	public function admin($d1='',$d2='',$d3='',$d4='')
 	{
 		//
