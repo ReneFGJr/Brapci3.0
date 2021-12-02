@@ -43,7 +43,7 @@ class Harvesting extends Model
 
 	function check_harvesting()
 	{
-		$dir = '.tmp/benancib/harvesting';
+		$dir = '.tmp/benancib/harvesting/';
 		$sx = '<table class="table">';
 		$err1 = 0;
 		$err2 = 0;
@@ -55,13 +55,13 @@ class Harvesting extends Model
 			$sx .= '<tr>';
 			$sx .= '<td>' . $id . '</td>';
 			if (!file_exists($file1)) {
-				$sx .= '<td>' . 'not harvet' . '</td>';
+				$sx .= '<td>' . 'not harveted' . '</td>';
 				$err1++;
 			} else {
 				$sx .= '<td>' . 'OK' . '</td>';
 			}
 			if (!file_exists($file2)) {
-				$sx .= '<td>' . 'not harvet' . '</td>';
+				$sx .= '<td>' . 'not harveted' . '</td>';
 				$err2++;
 			} else {
 				$sx .= '<td>' . 'OK' . '</td>';
