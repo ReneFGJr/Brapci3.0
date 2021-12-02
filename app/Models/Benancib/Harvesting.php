@@ -71,7 +71,7 @@ class Harvesting extends Model
 				$ok[1] = 1;
 			}
 			$sl .= '</tr>';
-			if ($ok[0]+$ok[1] == 2) 
+			if ($ok[0]+$ok[1] != 2) 
 			{
 				$sx .= $sl;				
 			}
