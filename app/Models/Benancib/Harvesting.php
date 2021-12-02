@@ -43,11 +43,12 @@ class Harvesting extends Model
 
 	function check_harvesting()
 	{
+		$total = 3654;
 		$dir = '.tmp/benancib/harvesting/';
 		$sx = '<table class="table">';
 		$err1 = 0;
 		$err2 = 0;
-		for ($r = 5; $r < 3700; $r++) {
+		for ($r = 5; $r < $total; $r++) {
 			$id = $r;
 			$file1 = $dir . 'benancib_' . $id . '.xml';
 			$file2 = $dir . 'benancib_' . $id . '.pdf';
