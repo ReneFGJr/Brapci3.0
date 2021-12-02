@@ -75,6 +75,7 @@ class Harvesting extends Model
 			{
 				$sx .= $sl;				
 			}
+		}
 		$sx .= '</table>';
 		$sa = '<table class="table">';
 		$sa .= '<tr><th>Erros Metadata</th><th>Erros PDF</th></tr>';
