@@ -52,23 +52,29 @@ class Harvesting extends Model
 			$id = $r;
 			$file1 = $dir . 'benancib_' . $id . '.xml';
 			$file2 = $dir . 'benancib_' . $id . '.pdf';
+			$ok = array(0,0);
 
-			$sx .= '<tr>';
-			$sx .= '<td>' . $id . '</td>';
+			$sl = '<tr>';
+			$sl .= '<td>' . $id . '</td>';
 			if (!file_exists($file1)) {
-				$sx .= '<td>' . 'not harveted' . '</td>';
+				$sl .= '<td>' . 'not harveted' . '</td>';
 				$err1++;
 			} else {
-				$sx .= '<td>' . 'OK' . '</td>';
+				$sl .= '<td>' . 'OK' . '</td>';
+				$ok[0] = 1;
 			}
 			if (!file_exists($file2)) {
-				$sx .= '<td>' . 'not harveted' . '</td>';
+				$sl .= '<td>' . 'not harveted' . '</td>';
 				$err2++;
 			} else {
-				$sx .= '<td>' . 'OK' . '</td>';
+				$sl .= '<td>' . 'OK' . '</td>';
+				$ok[1] = 1;
 			}
-			$sx .= '</tr>';
-		}
+			$sl .= '</tr>';
+			if ($ok[0]+$ok[1] == 2) 
+			{
+				$sx .= $sl;				
+			}
 		$sx .= '</table>';
 		$sa = '<table class="table">';
 		$sa .= '<tr><th>Erros Metadata</th><th>Erros PDF</th></tr>';
