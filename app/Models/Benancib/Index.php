@@ -64,7 +64,11 @@ class Index extends Model
 			case 'harvesting_pdf':
 				$Harvesting = new \App\Models\Benancib\Harvesting();
 				$sx .= $Harvesting->harvesting_auto_pdf($d2,$d3,$d4);
-				break;				
+				break;	
+			case 'check':
+				$Harvesting = new \App\Models\Benancib\Harvesting();
+				$sx .= $Harvesting->check_harvesting($d2,$d3,$d4);
+				break;			
 			case 'harvesting':
 				$Harvesting = new \App\Models\Benancib\Harvesting();
 				$sx .= $Harvesting->havest($d2,$d3,$d4);
@@ -73,6 +77,7 @@ class Index extends Model
 				$sx .= '<ul>';
 				$sx .= '<li>'.anchor(PATH.MODULE.'benancib/harvesting_auto/5','Auto Harvesting').'</li>';
 				$sx .= '<li>'.anchor(PATH.MODULE.'benancib/harvesting_pdf/5','Auto Harvesting PDF').'</li>';
+				$sx .= '<li>'.anchor(PATH.MODULE.'benancib/check','Check Harvesting').'</li>';
 				$sx .= '<li>'.anchor('http://repositorios.questoesemrede.uff.br/repositorios/handle/123456789/2','Repositório BENANCIB').'</li>';
 				$sx .= '</ul>';
 		}

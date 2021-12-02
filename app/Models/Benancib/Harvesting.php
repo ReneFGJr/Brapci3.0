@@ -41,114 +41,146 @@ class Harvesting extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function harvesting_auto($offset=0)
+	function check_harvesting()
 	{
-		if (strlen($offset)==0) { $offset = 5; }
-		$sx = $this->havesting($offset);
-		if (strlen($sx) > 0)
-			{
-				$offset++;
-				$sx .= '';				
-				if ($this->status > 0)
-					{
-						$sx .= metarefresh(PATH.MODULE.'benancib/harvesting_auto/'.($offset),5);
-						$sx .= bsmessage('Harvesting Success!');
-					} else {
-						$sx .= metarefresh(PATH.MODULE.'benancib/harvesting_auto/'.($offset),1);
-						$sx .= bsmessage('Already harvested!');
-					}
+		$dir = '.tmp/benancib/harvesting';
+		$sx = '<table class="table">';
+		$err1 = 0;
+		$err2 = 0;
+		for ($r = 5; $r < 3700; $r++) {
+			$id = $r;
+			$file1 = $dir . 'benancib_' . $id . '.xml';
+			$file2 = $dir . 'benancib_' . $id . '.pdf';
+
+			$sx .= '<tr>';
+			$sx .= '<td>' . $id . '</td>';
+			if (!file_exists($file1)) {
+				$sx .= '<td>' . 'not harvet' . '</td>';
+				$err1++;
 			} else {
-				$sx .= 'Erro na carga do arquivo';
+				$sx .= '<td>' . 'OK' . '</td>';
 			}
+			if (!file_exists($file2)) {
+				$sx .= '<td>' . 'not harvet' . '</td>';
+				$err2++;
+			} else {
+				$sx .= '<td>' . 'OK' . '</td>';
+			}
+			$sx .= '</tr>';
+		}
+		$sx .= '</table>';
+		$sa = '<table class="table">';
+		$sa .= '<tr><th>Erros Metadata</th><th>Erros PDF</th></tr>';
+		$sa .= '<tr><td class="h1">'.$err1.'</td><td class="h1">'.$err2.'</td></tr>';
+		$sa .= '</table>';
+		return $sa . $sx;
+	}
+
+	function harvesting_auto($offset = 0)
+	{
+		if (strlen($offset) == 0) {
+			$offset = 5;
+		}
+		$sx = $this->havesting($offset);
+		if (strlen($sx) > 0) {
+			$offset++;
+			$sx .= '';
+			if ($this->status > 0) {
+				$sx .= metarefresh(PATH . MODULE . 'benancib/harvesting_auto/' . ($offset), 5);
+				$sx .= bsmessage('Harvesting Success!');
+			} else {
+				$sx .= metarefresh(PATH . MODULE . 'benancib/harvesting_auto/' . ($offset), 1);
+				$sx .= bsmessage('Already harvested!');
+			}
+		} else {
+			$sx .= 'Erro na carga do arquivo';
+		}
 		return $sx;
 	}
 
-	function harvesting_auto_pdf($offset=0)
+	function harvesting_auto_pdf($offset = 0)
 	{
-		if (strlen($offset)==0) { $offset = 5; }
+		if (strlen($offset) == 0) {
+			$offset = 5;
+		}
 		$sx = $this->harvesting_pdf($offset);
-		if (strlen($sx) > 0)
-			{
-				$offset++;
-				$sx .= '';				
-				if ($this->status > 0)
-					{
-						$sx .= metarefresh(PATH.MODULE.'benancib/harvesting_pdf/'.($offset),5);
-						$sx .= bsmessage('Harvesting PDF Success!');
-					} else {
-						$sx .= metarefresh(PATH.MODULE.'benancib/harvesting_pdf/'.($offset),1);
-						$sx .= bsmessage('Already PDF harvested!');
-					}
+		if (strlen($sx) > 0) {
+			$offset++;
+			$sx .= '';
+			if ($this->status > 0) {
+				$sx .= metarefresh(PATH . MODULE . 'benancib/harvesting_pdf/' . ($offset), 5);
+				$sx .= bsmessage('Harvesting PDF Success!');
 			} else {
-				$sx .= 'Erro na carga do arquivo';
+				$sx .= metarefresh(PATH . MODULE . 'benancib/harvesting_pdf/' . ($offset), 1);
+				$sx .= bsmessage('Already PDF harvested!');
 			}
+		} else {
+			$sx .= 'Erro na carga do arquivo';
+		}
 		return $sx;
-	}	
+	}
 
-	function harvesting_pdf($id=5)
-		{
-			dircheck('.tmp');
-			dircheck('.tmp/benancib');
-			dircheck('.tmp/benancib/harvesting');
+	function harvesting_pdf($id = 5)
+	{
+		dircheck('.tmp');
+		dircheck('.tmp/benancib');
+		dircheck('.tmp/benancib/harvesting');
 
-			$http = 'http://repositorios.questoesemrede.uff.br';
-			$url = 'http://repositorios.questoesemrede.uff.br/repositorios/handle/123456789/' . $id;
-			$pageDocument = @file_get_contents($url);
-			if ($pageDocument === false) {
-				if ($id > 5000)
-					{
-						exit;
-					}
-				return "Erro 404";
-				exit;				
-			}		
-			$fl = '.tmp/benancib/harvesting/benancib_' . $id . '.pdf';
-			$file = '.tmp/benancib/harvesting/benancib_' . $id . '.pdf';
-			if (!file_exists($fl))	
-				{
-					$txt = file_get_contents($url);		
-					file_put_contents($fl,$txt);		
-				} else {
-					$txt = file_get_contents($fl);
-				}
-			/** <a class="image-link" */
-			preg_match_all('/<a class="image-link".*?>(.*?)<\/a>/si', $txt, $matches);
-			$data = $matches[0];
+		$http = 'http://repositorios.questoesemrede.uff.br';
+		$url = 'http://repositorios.questoesemrede.uff.br/repositorios/handle/123456789/' . $id;
+		$pageDocument = @file_get_contents($url);
+		if ($pageDocument === false) {
+			if ($id > 5000) {
+				exit;
+			}
+			return "Erro 404";
+			exit;
+		}
+		$fl = '.tmp/benancib/harvesting/benancib_' . $id . '.pdf';
+		$file = '.tmp/benancib/harvesting/benancib_' . $id . '.pdf';
+		if (!file_exists($fl)) {
+			$txt = file_get_contents($url);
+			file_put_contents($fl, $txt);
+		} else {
+			$txt = file_get_contents($fl);
+		}
+		/** <a class="image-link" */
+		preg_match_all('/<a class="image-link".*?>(.*?)<\/a>/si', $txt, $matches);
+		$data = $matches[0];
 
-			# Remove HTML Tags
-			if (isset($data[0]))
-			{
+		# Remove HTML Tags
+		if (isset($data[0])) {
 			$txt = $data[0];
-			$txt = substr($txt,strpos($txt,'href="')+6,strlen($txt));
-			$txt = substr($txt,0,strpos($txt,'"'));
-			$url = $http.$txt;
+			$txt = substr($txt, strpos($txt, 'href="') + 6, strlen($txt));
+			$txt = substr($txt, 0, strpos($txt, '"'));
+			$url = $http . $txt;
 
-			/******************************** Arquivo */			
-			if (!file_exists($file))
-			{
+			/******************************** Arquivo */
+			if (!file_exists($file)) {
 				$pageDocument = @file_get_contents($url);
 				if ($pageDocument === false) {
-					if ($id > 5000)
-						{
-							exit;
-						}
+					if ($id > 5000) {
+						exit;
+					}
 					return "Erro 404";
-					exit;				
+					exit;
 				}
 			}
 
 			$txt = file_get_contents($url);
-			file_put_contents($file,$txt);
+			file_put_contents($file, $txt);
 			$this->status = 1;
-			} else {
-				$url .= 'Not locate';
-			}
-			return $url;
+		} else {
+			$url .= 'Not locate';
 		}
+		return $url;
+	}
 
 	function havesting($id = 5)
 	{
-		if ($id < 5) { return ''; }
+		if ($id < 5) {
+			return '';
+		}
 		dircheck('.tmp');
 		dircheck('.tmp/benancib');
 		dircheck('.tmp/benancib/harvesting');
@@ -160,13 +192,12 @@ class Harvesting extends Model
 
 			$pageDocument = @file_get_contents($url);
 			if ($pageDocument === false) {
-				if ($id > 5000)
-					{
-						exit;
-					}
+				if ($id > 5000) {
+					exit;
+				}
 				return "Erro 404";
-				exit;				
-			}			
+				exit;
+			}
 			$txt = file_get_contents($url);
 
 			$fr = '<table xmlns:i18n="http://apache.org/cocoon/i18n/2.1" xmlns="http://di.tamu.edu/DRI/1.0/" xmlns:oreatom="http://www.openarchives.org/ore/atom/" xmlns:ore="http://www.openarchives.org/ore/terms/" xmlns:atom="http://www.w3.org/2005/Atom" class="ds-includeSet-table detailtable">';
@@ -205,7 +236,7 @@ class Harvesting extends Model
 					}
 				}
 				file_put_contents($file, $simplexml->asXML());
-			}			
+			}
 		} else {
 			$this->status = -1;
 		}
