@@ -18,7 +18,7 @@ class SystematicReview extends Model
 		'id_sr','sr_title','sr_status','sr_user'
 	];
 	protected $typeFields        = [
-		'hidden','text','[0-9]','user'
+		'hidden','string:100','string:1','user'
 	];	
 
 	// Dates
@@ -65,6 +65,18 @@ class SystematicReview extends Model
 						$tela .= $SystematicReviewCorpus->autoClass_mth1($d3);
 						$tela .= $SystematicReviewCorpus->autoClass_mth2($d3);
 						break;	
+					case 'strategy':
+						$SystematicReviewStrategy = new \App\Models\AI\Research\SystematicReviewStrategy();
+						$tela .= $SystematicReviewStrategy->index($d3,$d4);
+						break;
+					case 'strategy_edit':
+						$SystematicReviewStrategy = new \App\Models\AI\Research\SystematicReviewStrategy();
+						$tela .= $SystematicReviewStrategy->edit($d3,$d4);
+						break;
+					case 'strategy_view':
+						$SystematicReviewStrategy = new \App\Models\AI\Research\SystematicReviewStrategy();
+						$tela .= $SystematicReviewStrategy->view($d3,$d4);
+						break;						
 					case 'autoBrapci':
 						$tela .= $this->autoBrapci($d3);
 						break;	
@@ -227,6 +239,7 @@ class SystematicReview extends Model
 		function tableview()
 			{
 				$this->path = PATH.MODULE.'research/systematic_review';
+				$this->where('sr_user',user_id());
 				$tela = tableview($this);
 				return $tela;
 			}

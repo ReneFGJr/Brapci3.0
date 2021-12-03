@@ -220,8 +220,8 @@ $this->forge->addField([
                 'auto_increment' => true
             ],
             'sd_study' => [
-                'type' => 'INT',
-				'default' => 0
+                'type' => 'VARCHAR',
+                'constraint' => '100'
             ], 			
             'sd_field' => [
                 'type' => 'INT',
@@ -235,7 +235,37 @@ $this->forge->addField([
         ]);
 		
 		$this->forge->addKey('id_sd', true);
-        $this->forge->createTable('SystematicReviews_Values');                
+        $this->forge->createTable('SystematicReviews_Values'); 
+
+$this->forge->addField([
+            'id_st' => [
+                'type' => 'INT',
+                'auto_increment' => true
+            ],
+            'st_study' => [
+                'type' => 'INT',
+				'default' => 0
+            ],            
+            'st_database' => [
+                'type' => 'INT',
+				'default' => 0
+            ], 			
+            'st_strategy' => [
+                'type' => 'TEXT'
+            ], 			
+            'st_justify' => [
+                'type' => 'TEXT',
+            ], 
+            'st_status' => [
+                'type' => 'INT',
+				'default' => 0
+            ],             
+            'created_at datetime default current_timestamp',
+            'updated_at datetime default current_timestamp on update current_timestamp'
+        ]);
+		
+		$this->forge->addKey('id_st', true);
+        $this->forge->createTable('SystematicReviews_Strategy');                         
 	}
 
 	public function down()

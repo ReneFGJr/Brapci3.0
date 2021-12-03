@@ -150,4 +150,15 @@ function version()
             $sx .= bsdivclose();
             return($sx);    
         }  
-?>
+function user_id()
+{
+	if (isset($_SESSION['id'])) 
+	{
+		$user = $_SESSION["id"];
+		if (strlen($user) > 0) 
+			{
+			return ($user);
+			}
+	}
+	return (0);
+}

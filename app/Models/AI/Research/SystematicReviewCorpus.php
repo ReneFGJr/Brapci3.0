@@ -543,6 +543,7 @@ class SystematicReviewCorpus extends Model
 
 		$sx .= 'Actions:';
 		$sx .= '<ul>';
+		$sx .= '<li>'.anchor(PATH.MODULE.'research/systematic_review/strategy/'.$id,lang('strategies')).'</li>';
 		$sx .= '<li>'.anchor(PATH.MODULE.'research/systematic_review/autoBrapci','Identificar na Brapci').'</li>';
 		$sx .= '<li>'.anchor(PATH.MODULE.'research/systematic_review/autoKeywords','Identificar na Keywords').'</li>';
 		$sx .= '</ul>';

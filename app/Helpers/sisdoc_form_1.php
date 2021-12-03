@@ -327,6 +327,31 @@ function form_fields($typ, $fld, $vlr, $th = array())
             $sx .= '</div>';
             break;
 
+        case 'status':
+            $opt = array();
+            $source = substr($typ, strpos($typ, ':') + 1, strlen($typ));
+            if (strlen($source) == 0) { $source = 'main.'; }
+
+            array_push($opt, lang($source.'status_1'));
+            array_push($opt, lang($source.'status_2'));
+            array_push($opt, lang($source.'status_3'));
+            array_push($opt, lang($source.'status_4'));
+            array_push($opt, lang($source.'status_9'));
+
+            $sx .= '<div class="form-group">' . cr();
+            $sx .= '<select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="' . $fld . '" name="' . $fld . '">';
+            $sx .= '<option>Select...</option>' . cr();
+            for ($r = 0; $r < count($opt); $r++) {
+                $chk = '';
+                if ($vlr == $r) {
+                    $chk = 'selected';
+                }
+                $sx .= '<option value="' . $r . '" ' . $chk . '>' . lang($opt[$r]) . '</option>' . cr();
+            }
+            $sx .= '</select>';
+            $sx .= '</div>';
+            break;            
+
         case 'version':
             if (strlen($vlr) == 0) { $vlr = version(); }
             $sx .= '<div class="form-group" style="margin-bottom: 20px;">' . cr();
@@ -368,6 +393,11 @@ function form_fields($typ, $fld, $vlr, $th = array())
             $sx .= '<input type="hidden" id="' . $fld . '" name="' . $fld . '" value="' . $vlr . '">';
             break;
 
+        case 'user':
+            $user_id = user_id();
+            $sx .= '<input type="hidden" id="' . $fld . '" name="' . $fld . '" value="' . $user_id . '">';
+            break;            
+
         case 'password':
             $sx .= '<div class="form-group" style="margin-bottom: 20px;">' . cr();
             $sx .= '<label for="' . $fld . '">' . lang($lib . $fld) . '</label>
@@ -386,6 +416,7 @@ function form_fields($typ, $fld, $vlr, $th = array())
 
         case 'text':
             $rows = 5;
+            $sx .= '<div class="form-group" style="margin-bottom: 20px;">' . cr();
             $sx .= '<label for="' . $fld . '">' . lang($lib . $fld) . '</label>' . cr();
             $sx .= '<textarea id="' . $fld . '" rows="' . $rows . '" name="' . $fld . '" class="form-control">' . $vlr . '</textarea>';
             $sx .= $tdc;

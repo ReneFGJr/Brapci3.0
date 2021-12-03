@@ -7,7 +7,7 @@
 * @category    Helpers
 * @author      Rene F. Gabriel Junior <renefgj@gmail.com>
 * @link        http://www.sisdoc.com.br/CodIgniter
-* @version     v0.21.07.27
+* @version     v0.21+12.03
 */
 
 function bsicone($type='',$w=16)
@@ -289,6 +289,16 @@ function h($t='',$s=1,$class='')
         $sx = '<h'.$s.' class="'.$class.'">'.$t.'</h'.$s.'>';
         return($sx);
     }  
+function p($t='',$label='',$class='')
+    {
+        $sx = '';
+        if (strlen($label) > 0)
+            {
+                $sx .= '<span class="small">'.$label.'</span>';
+            }
+        $sx .= '<p class="'.$class.'">'.$t.'</p>';
+        return($sx);
+    }      
 
 function small($text)
     {
