@@ -91,7 +91,7 @@ class SystematicReviewStrategy extends Model
 	function view($id,$id2)
 		{
 			$sx = '';
-			$this->join('systematicreviews_studies','id_sr = st_study');
+			$this->join('SystematicReviews_Studies','id_sr = st_study');
 			$dt = $this->find($id2);
 			print_r($dt);
 
@@ -130,7 +130,7 @@ class SystematicReviewStrategy extends Model
 
 	function list($id)
 		{
-			$dt = $this->where('id_st',$id)->findAll();
+			$dt = $this->where('st_study',$id)->findAll();
 			$sx = '';
 			$sx .= '<table class="table">';
 			$sx .= '<tr>';
