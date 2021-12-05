@@ -15,21 +15,27 @@ class SystematicReviewCorpus extends Model
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'id_c', 'c_study', 'id',
+		'id_c', 'c_study', 'c_strategy', 'id',
 		'title', 'author', 'journal',
 		'year', 'volume', 'number',
 		'pages', 'doi', 'issn',
 		'month', 'note', 'eprint',
-		'keyword','c_fulltext','c_keywords'
+		'affiliation','pubmed_id','abbrev_source_title',
+		'keywords','author_keywords','c_fulltext','c_keywords',
+		'publisher','language','source',
+		'document_type','abstract','url'
 	];
 
 	protected $typeFields        = [
-		'hidden', 'string:10', 'string:10',
+		'hidden', 'string:10', 'string:10','string:30',
 		'text', 'text', 'string:100',
 		'string:10', 'string:10', 'string:10',
 		'string:100', 'string:100', 'string:10',
 		'string:10', 'text', 'string:100',
-		'text','text','text'
+		'string:100', 'string:100', 'string:100',
+		'text','text','text','text',
+		'string:100', 'string:100', 'string:100',
+		'string:100', 'text', 'string:100',
 	];	
 
 	// Dates
@@ -55,6 +61,22 @@ class SystematicReviewCorpus extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+	function registro($id,$id2,$dt)
+		{
+			$ida = $dt['id'];
+			$this->where('c_strategy',$id2);
+			$this->where('id',$ida);
+			$dta = $this->findAll();
+			if (count($dta)==0)
+				{
+					$dt['c_strategy'] = $id2;
+					$dt['c_study'] = $id;
+					$this->insert($dt);
+				} else {
+					
+				}
+		}
 
 	function check_duplicate($id)
 	{
@@ -322,6 +344,11 @@ class SystematicReviewCorpus extends Model
 				$tela2 .= bsc($this->btn_inclusion($dt),6);
 
 				$tela .= bs(bsc($tela1,12).$tela2);
+
+				/* */
+				$tela .= bs(bsc(p($dt['abstract'],'Abstract'),12));
+				$tela .= bs(bsc(p($dt['keywords'],'Keywords'),12));
+				$tela .= bs(bsc(p($dt['author_keywords'],'Keywords (Author)'),12));
 				break;
 
 			case 1:

@@ -22,6 +22,24 @@ return [
     'AI','Inteligência Artificial',
     'Journal' => 'Revistas Científicas',
     'Main' => 'Home',
-    'Account_user'=>'Dados da conta'
+    'Account_user'=>'Dados da conta',
+    'edit'=>'editar',
+    'import_registers'=>'importar registros',
+    'new'=>'novo',
+    'status_0'=>'::Opções::',
+    'status_1'=>'Em preenchimento',
+    'status_2'=>'Em análise',
+    'status_3'=>'Com pendências',
+    'status_4'=>'Revisão',
+    'status_5'=>'Finalizado',
+    'status_9'=>'Calncelado',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+
 
 ];

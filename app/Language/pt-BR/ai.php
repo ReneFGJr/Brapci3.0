@@ -18,5 +18,6 @@ return [
     'bibliometric'=>'Ferramentas Bibliometricas',
     'syllables'=>'Divisão Silábica',
     'wordcount'=>'Contador de Palávras',
+    'new_criterie'=>'Incrição novo Critério',
     ''=>'',
 ];

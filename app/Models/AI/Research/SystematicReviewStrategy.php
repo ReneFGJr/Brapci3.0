@@ -15,12 +15,14 @@ class SystematicReviewStrategy extends Model
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'id_st','st_study','st_database','st_strategy',
+		'id_st','st_study','st_database','st_datavase_type','st_strategy',
 		'st_justify','st_status'
 	];
 	protected $typeFields        = [
-		'hidden','hidden','string:100','text',
-		'text','status'
+		'hidden','hidden','string:100',
+		'select:None:Manual:Scopus:WoS:Brapci:Other',
+		'text',
+		'text','status:main'
 	];	
 
 	// Dates
@@ -62,17 +64,29 @@ class SystematicReviewStrategy extends Model
 		}
 	function btn_edit($id,$id2=0)
 		{
-			if ($id==0)
+			if ($id2==0)
 				{
 					$msg = 'main.new';
 				} else {
 					$msg = 'main.edit';
 				}
-			$sx = '<a href="'.base_url(PATH.MODULE.'research/systematic_review/strategy_edit/'.$id.'/'.$id2).'" class="btn btn-primary btn-sm">';
+			$sx = '<a href="'.base_url(PATH.MODULE.'research/systematic_review/strategy_edit/'.$id.'/'.$id2).'" class="btn btn-outline-primary btn-sm m-1" style="width: 100%;">';
 			$sx .= lang($msg);
 			$sx .= '</a>';
 			return $sx;			
 		}
+
+	function btn_import($id,$id2=0)
+		{
+			if ($id2 > 0)
+			{
+				$msg = 'main.import_registers';
+				$sx = '<a href="'.base_url(PATH.MODULE.'research/systematic_review/strategy_import/'.$id.'/'.$id2).'" class="btn btn-outline-primary btn-sm m-1" style="width: 100%;">';
+				$sx .= lang($msg);
+				$sx .= '</a>';
+			}
+			return $sx;			
+		}		
 
 	function view($id,$id2)
 		{
@@ -91,13 +105,29 @@ class SystematicReviewStrategy extends Model
 
 			$sb = '';
 			$sb .= $this->btn_edit($id,$id2);
+			$sb .= $this->btn_import($id,$id2);
 
-			$sx .= bsc($sa,11);
-			$sx .= bsc($sb,1);
+			$sx .= bsc($sa,10);
+			$sx .= bsc($sb,2);
 
 			$sx = bs($sx);
 			return $sx;
 		}
+	function import($id,$id2)
+		{
+			$dt = $this->find($id2);
+			$sx = '';
+			$type = $dt['st_datavase_type'];
+			switch($type)
+				{
+					case '2': //Scopus//
+						$Scopus = new \App\Models\AI\Research\SystematicReview\Scopus();
+						$sx = $Scopus->import($id,$id2,$dt);
+						break;
+				}
+			return $sx;
+		}
+
 	function list($id)
 		{
 			$dt = $this->where('id_st',$id)->findAll();
@@ -119,7 +149,7 @@ class SystematicReviewStrategy extends Model
 					$sx .= '<td>'.$link.$ln['st_database'].$linka.'</td>';
 					$sx .= '<td>'.$ln['st_strategy'].'</td>';
 					$sx .= '<td>'.$ln['st_justify'].'</td>';
-					$sx .= '<td>'.$ln['st_status'].'</td>';
+					$sx .= '<td>'.lang('main.'.'status_'.$ln['st_status']).'</td>';
 					$sx .= '</tr>';					
 				}
 			$sx .= '</table>';
@@ -129,7 +159,7 @@ class SystematicReviewStrategy extends Model
 		{
 			$sx = '';
 			$this->id = $id2;
-			$_POST['st_study'] = $id;
+			if ($id2 == 0) { $_GET['st_study'] = $id; }
 			$this->path = PATH.MODULE.'research/systematic_review/strategy_edit/'.$id.'/'.$id2;
 			$this->path_back = PATH.MODULE.'research/systematic_review/strategy/'.$id.'/';
 			$sx = form($this);

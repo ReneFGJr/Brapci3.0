@@ -314,6 +314,7 @@ function form_fields($typ, $fld, $vlr, $th = array())
             $opt = explode(':', $opt);
 
             $sx .= '<div class="form-group">' . cr();
+            $sx .= '<small id="emailHelp" class="form-text text-muted">' . lang($lib . $fld) . '</small>';
             $sx .= '<select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="' . $fld . '" name="' . $fld . '">';
             $sx .= '<option>Select...</option>' . cr();
             for ($r = 0; $r < count($opt); $r++) {
@@ -330,8 +331,13 @@ function form_fields($typ, $fld, $vlr, $th = array())
         case 'status':
             $opt = array();
             $source = substr($typ, strpos($typ, ':') + 1, strlen($typ));
-            if (strlen($source) == 0) { $source = 'main.'; }
-
+            if (strlen($source) == 0) 
+                { 
+                  $source = 'main.'; 
+                } else {
+                  $source .= '.';  
+                }
+            array_push($opt, lang($source.'status_0'));
             array_push($opt, lang($source.'status_1'));
             array_push($opt, lang($source.'status_2'));
             array_push($opt, lang($source.'status_3'));
@@ -339,6 +345,7 @@ function form_fields($typ, $fld, $vlr, $th = array())
             array_push($opt, lang($source.'status_9'));
 
             $sx .= '<div class="form-group">' . cr();
+            $sx .= '<small id="emailHelp" class="form-text text-muted">' . lang($lib . $fld) . '</small>';
             $sx .= '<select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="' . $fld . '" name="' . $fld . '">';
             $sx .= '<option>Select...</option>' . cr();
             for ($r = 0; $r < count($opt); $r++) {

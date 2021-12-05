@@ -76,7 +76,11 @@ class SystematicReview extends Model
 					case 'strategy_view':
 						$SystematicReviewStrategy = new \App\Models\AI\Research\SystematicReviewStrategy();
 						$tela .= $SystematicReviewStrategy->view($d3,$d4);
-						break;						
+						break;	
+					case 'strategy_import':
+						$SystematicReviewStrategy = new \App\Models\AI\Research\SystematicReviewStrategy();
+						$tela .= $SystematicReviewStrategy->import($d3,$d4);
+						break;			
 					case 'autoBrapci':
 						$tela .= $this->autoBrapci($d3);
 						break;	

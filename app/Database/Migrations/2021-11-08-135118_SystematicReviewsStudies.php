@@ -128,7 +128,11 @@ $this->forge->addField([
             'c_study' => [
                 'type' => 'INT',
 				'default' => 0
-            ],             
+            ], 
+            'c_strategy' => [
+                'type' => 'INT',
+				'default' => 0
+            ],                         
             'author' => [
                 'type' => 'TEXT',
             ], 				
@@ -172,9 +176,31 @@ $this->forge->addField([
             'eprint' => [
                 'type' => 'TEXT',
             ], 
-            'keyword' => [
+            'keywords' => [
                 'type' => 'TEXT',
             ],  
+            'author_keywords' => [
+                'type' => 'TEXT',
+            ], 
+            'affiliation' => [
+                'type' => 'TEXT',
+            ],                                  
+            'pubmed_id' => [
+                'type' => 'VARCHAR',
+                'constraint' => '60'
+            ],           
+            'language' => [
+                'type' => 'VARCHAR',
+                'constraint' => '20'
+            ],           
+            'abbrev_source_title' => [
+                'type' => 'VARCHAR',
+                'constraint' => '40'
+            ],           
+            'document_type' => [
+                'type' => 'VARCHAR',
+                'constraint' => '20'
+            ],                                                           
             'publisher' => [
                 'type' => 'VARCHAR',
                 'constraint' => '60'
@@ -183,10 +209,6 @@ $this->forge->addField([
                 'type' => 'VARCHAR',
                 'constraint' => '60'
             ],            
-            'language' => [
-                'type' => 'VARCHAR',
-                'constraint' => '20'
-            ],
             'source' => [
                 'type' => 'VARCHAR',
                 'constraint' => '20'
@@ -247,8 +269,8 @@ $this->forge->addField([
 				'default' => 0
             ],            
             'st_database' => [
-                'type' => 'INT',
-				'default' => 0
+                'type' => 'VARCHAR',
+                'constraint' => '100'
             ], 			
             'st_strategy' => [
                 'type' => 'TEXT'
@@ -256,6 +278,10 @@ $this->forge->addField([
             'st_justify' => [
                 'type' => 'TEXT',
             ], 
+            'st_datavase_type' => [
+                'type' => 'VARCHAR',
+                'constraint' => '20'
+            ],            
             'st_status' => [
                 'type' => 'INT',
 				'default' => 0
