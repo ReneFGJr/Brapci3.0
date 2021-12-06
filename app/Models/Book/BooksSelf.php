@@ -50,7 +50,7 @@ class BooksSelf extends Model
 	function index($d1,$d2)
 		{
 			$tela = '';
-			switch($d1)
+			switch($d2)
 				{
 					case 'upload_ajax':
 						$tela .= $this->ajax();
@@ -106,7 +106,7 @@ class BooksSelf extends Model
 	function submit_2()
 		{
 			$BooksSelf = new \App\Models\Book\BooksSelf();
-			$url = base_url(PATH.'index/self/upload_ajax');
+			$url = base_url(PATH.MODULE.'book/index/self/upload_ajax');
 			$dir = $_SESSION['book_self_id'];
 			$tela = upload($url);
 			$tela .= '<br>'.$BooksSelf->btn_metadata();
@@ -128,6 +128,15 @@ class BooksSelf extends Model
 			dircheck($dir);
 
 			$arr_file_types = ['image/png', 'image/gif', 'image/jpg', 'image/jpeg','application/pdf'];
+
+			if (!isset($_FILES['file']))
+				{
+					$tela = '<div class="alert alert-danger">';
+					$tela = 'ERRO';
+					$tela .= '</div>';
+					print_r($_FILES);
+					return $tela;
+				}
 
 			$file = $_FILES['file']['name'];
 			$type = $_FILES['file']['type'];
@@ -216,8 +225,8 @@ class BooksSelf extends Model
 	function metadata($user)
 		{
 			$tela = '';
-			$this->path_back = base_url(PATH.'index/self/end');
-			$this->path = base_url(PATH.'index/self/metadata');
+			$this->path_back = base_url(PATH.MODULE.'book/index/self/end');
+			$this->path = base_url(PATH.MODULE.'book/index/self/metadata');
 			$tela = form($this);
 			return $tela;
 		}
@@ -252,7 +261,7 @@ class BooksSelf extends Model
 						
 						if ($d['bs_status'] == 0)
 							{
-								$link = '<a href="'.base_url(PATH.'index/book/self/metadata/'.$d['id_bs']).'" class="btn btn-outline-primary">'.lang('book.selft_action_'.$d['bs_status']).'</a>';
+								$link = '<a href="'.base_url(PATH.MODULE.'book/index/self/metadata/'.$d['id_bs']).'" class="btn btn-outline-primary">'.lang('book.selft_action_'.$d['bs_status']).'</a>';
 							} else {
 								$link ='-';
 							}
@@ -272,7 +281,7 @@ class BooksSelf extends Model
 	function btn_newSubmit($user)
 		{
 			$tela = '';
-			$tela .= '<a href="'.base_url(PATH.'index/self/new').'" class="btn btn-primary">';
+			$tela .= '<a href="'.base_url(PATH.MODULE.'book/index/self/new').'" class="btn btn-primary">';
 			$tela .= lang('book.submit_new');
 			$tela .= '</a>';
 			return $tela;
@@ -281,7 +290,7 @@ class BooksSelf extends Model
 	function btn_metadata()
 		{
 			$tela = '';
-			$tela .= '<a href="'.base_url(PATH.'index/self/metadata').'" class="btn btn-primary">';
+			$tela .= '<a href="'.base_url(PATH.MODULE.'book/index/self/metadata').'" class="btn btn-primary">';
 			$tela .= lang('book.submit_metadata');
 			$tela .= '</a>';
 			return $tela;

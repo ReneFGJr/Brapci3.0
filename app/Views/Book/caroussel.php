@@ -1,17 +1,17 @@
 <div id="carouselBook" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">  
     <div class="carousel-item active">
-      <a href="<?php echo PATH.'book/submit';?>">
+      <a href="<?php echo URL.'index.php/res/book/index/self';?>">
       <img src="<?php echo URL.'img/banners/books/Slide1.JPG';?>" class="d-block w-100" alt="...">
       </a>
     </div>
     <div class="carousel-item">
-      <a href="#">
+      <a href="<?php echo URL.'index.php/res/book/index/self';?>">
       <img src="<?php echo URL.'img/banners/books/Slide2.JPG';?>" class="d-block w-100" alt="...">
       </a>
     </div>
     <div class="carousel-item">
-      <a href="#">
+      <a href="<?php echo URL.'index.php/res/book/index/self';?>">
       <img src="<?php echo URL.'img/banners/books/Slide3.JPG';?>" class="d-block w-100" alt="...">
       </a>
     </div>

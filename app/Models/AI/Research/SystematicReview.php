@@ -69,6 +69,11 @@ class SystematicReview extends Model
 						$SystematicReviewStrategy = new \App\Models\AI\Research\SystematicReviewStrategy();
 						$tela .= $SystematicReviewStrategy->index($d3,$d4);
 						break;
+					case 'upload_ajax':
+						$SystematicReviewStrategy = new \App\Models\AI\Research\SystematicReviewStrategy();
+						echo $SystematicReviewStrategy->ajax($d3,$d4);
+						exit;
+						break;
 					case 'strategy_edit':
 						$SystematicReviewStrategy = new \App\Models\AI\Research\SystematicReviewStrategy();
 						$tela .= $SystematicReviewStrategy->edit($d3,$d4);

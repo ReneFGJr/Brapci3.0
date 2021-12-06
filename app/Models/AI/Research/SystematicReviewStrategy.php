@@ -15,11 +15,16 @@ class SystematicReviewStrategy extends Model
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'id_st','st_study','st_database','st_datavase_type','st_strategy',
+		'id_st',
+		'st_study',
+		'st_database',
+		'st_datavase_type','st_strategy',
 		'st_justify','st_status'
 	];
-	protected $typeFields        = [
-		'hidden','hidden','string:100',
+	var $typeFields        = [
+		'hidden',
+		'string:3',
+		'string:100',
 		'select:None:Manual:Scopus:WoS:Brapci:Other',
 		'text',
 		'text','status:main'
@@ -48,6 +53,40 @@ class SystematicReviewStrategy extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+	function ajax()
+		{
+			$Social = new \App\Models\Socials();
+			$ids = $_SESSION['book_self_id'];
+			$user = $Social->loged();
+			$dir = '.tmp/';
+			dircheck($dir);
+			$dir = '.tmp/.files/';
+			dircheck($dir);
+			$dir = '.tmp/.files/'.$user.'/';
+			dircheck($dir);
+
+			$arr_file_types = ['application/octet-stream'];
+
+			$file = $_FILES['file']['name'];
+			$type = $_FILES['file']['type'];
+
+			if (ajax($dir,$arr_file_types))
+				{
+					$tela = '';
+					$tela .= $this->process_file($dir.$file);
+					$tela = bs(bsc(bsmessage(lang('bacpci.saved '.$file. ' - '.$type),1),12));
+				} else {
+					$tela = bs(bsc(bsmessage(lang('bacpci.save_save_error - '.$type),3),12));
+				}
+			echo $tela;
+			exit;
+		}	
+
+	function process_file($dir)
+		{
+			echo $dir;
+		}
 
 	function index($id,$d2)
 		{
@@ -118,11 +157,19 @@ class SystematicReviewStrategy extends Model
 			$dt = $this->find($id2);
 			$sx = '';
 			$type = $dt['st_datavase_type'];
+			
+			$url = base_url(PATH.MODULE.'research/systematic_review/upload_ajax');
+			
+			$dir = $_SESSION['book_self_id'];
+			$tela = upload($url);
+
+			$sx = upload($url);
+
 			switch($type)
 				{
-					case '2': //Scopus//
-						$Scopus = new \App\Models\AI\Research\SystematicReview\Scopus();
-						$sx = $Scopus->import($id,$id2,$dt);
+					case 'bib':
+						$Bibtex = new \App\Models\AI\Research\SystematicReview\Bibtex();
+						$sx = $Bibtex->import($id,$id2,$dt);
 						break;
 				}
 			return $sx;
@@ -158,8 +205,10 @@ class SystematicReviewStrategy extends Model
 	function edit($id,$id2)
 		{
 			$sx = '';
-			$this->id = $id2;
-			if ($id2 == 0) { $_GET['st_study'] = $id; }
+			$this->id = $id2;	
+			if ($id2 == 0) { 
+				$this->typeFields[1] = 'set:'.$id; 
+				}
 			$this->path = PATH.MODULE.'research/systematic_review/strategy_edit/'.$id.'/'.$id2;
 			$this->path_back = PATH.MODULE.'research/systematic_review/strategy/'.$id.'/';
 			$sx = form($this);

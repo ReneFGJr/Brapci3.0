@@ -40,7 +40,29 @@ class Bibtex extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function import($txt='')
+	function import($id='',$id2='',$dt=array(),$file='')
+		{
+			$sx = '';
+			if (file_exists($file))
+				{
+					$SystematicReviewCorpus = new \App\Models\AI\Research\SystematicReviewCorpus();
+
+					$sx .= '<h3>'.lang('st_import_scopus').'</h3>';
+					$txt = file_get_contents($file);					
+					$dt = $this->import2($txt);
+					/**************************************************/
+					for ($r=0;$r < count($dt);$r++)
+						{
+							$data = $dt[$r];
+							$SystematicReviewCorpus->registro($id,$id2,$data);
+						}
+				} else {
+					$sx = bsmessage('File not found - '.$file,3);
+				}
+			return $sx;
+		}	
+
+	function import2($txt='')
 	{
 		$txt = str_replace("\r\n", "\n", $txt);
 		$txt = str_replace("\r", "\n", $txt);

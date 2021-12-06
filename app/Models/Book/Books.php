@@ -57,7 +57,7 @@ class Books extends Model
 			$this->path = base_url(PATH.'/index/');
 			$this->path_back = base_url(PATH.'/index/');
 			$tela = $this->cab();
-			switch ($d1)
+			switch ($d2)
 				{
 					case 'self':
 						$BooksSelf = new \App\Models\Book\BooksSelf();

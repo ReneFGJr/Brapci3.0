@@ -73,8 +73,8 @@ class BooksTerms extends Model
 		}
 	function btn_newSubmit($id=0)
 		{
-			$btn_agree = '<a href="'.base_url(PATH.'book/index/self/upload').'" class="btn btn-primary">'.lang('book.agree').'</a>';
-			$btn_noagree = '<a href="'.base_url(PATH.'book/index/self/noagree').'" class="btn btn-warning">'.lang('book.noagree').'</a>';
+			$btn_agree = '<a href="'.base_url(PATH.MODULE.'book/index/self/upload').'" class="btn btn-primary">'.lang('book.agree').'</a>';
+			$btn_noagree = '<a href="'.base_url(PATH.MODULE.'book/index/self/noagree').'" class="btn btn-warning">'.lang('book.noagree').'</a>';
 			$sx = $btn_agree.' &nbsp; '.$btn_noagree;
 			$sx = bs(bsc($sx,12));
 			return $sx;
