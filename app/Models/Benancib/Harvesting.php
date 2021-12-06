@@ -134,6 +134,13 @@ class Harvesting extends Model
 		dircheck('.tmp/benancib');
 		dircheck('.tmp/benancib/harvesting');
 
+		$file = '.tmp/benancib/harvesting/benancib_' . $id . '.xml';
+		if (file_exists($file))
+			{
+				return bsmessage('Already harvesting '.$file);
+				exit;
+			}
+
 		$http = 'http://repositorios.questoesemrede.uff.br';
 		$url = 'http://repositorios.questoesemrede.uff.br/repositorios/handle/123456789/' . $id;
 		$pageDocument = @file_get_contents($url);
@@ -179,7 +186,7 @@ class Harvesting extends Model
 			file_put_contents($file, $txt);
 			$this->status = 1;
 		} else {
-			$url .= 'Not locate';
+			$url .= ' Not locate';
 		}
 		return $url;
 	}
