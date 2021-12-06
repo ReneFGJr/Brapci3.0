@@ -57,14 +57,18 @@ class Harvesting extends Model
 			$sl = '<tr>';
 			$sl .= '<td>' . $id . '</td>';
 			if (!file_exists($file1)) {
-				$sl .= '<td>' . 'not harveted' . '</td>';
+				$link = '<a href="http://repositorios.questoesemrede.uff.br/repositorios/handle/123456789/'.$id.'" taget="new_'.$id.'">';
+				$linka = '</a>';
+				$sl .= '<td>' . $link . 'not harveted' . $linka. '</td>';
 				$err1++;
 			} else {
 				$sl .= '<td>' . 'OK' . '</td>';
 				$ok[0] = 1;
 			}
 			if (!file_exists($file2)) {
-				$sl .= '<td>' . 'not harveted' . '</td>';
+				$link = '<a href="http://repositorios.questoesemrede.uff.br/repositorios/handle/123456789/'.$id.'" taget="new_'.$id.'">';
+				$linka = '</a>';
+				$sl .= '<td>' . $link . 'not harveted' . $linka. '</td>';
 				$err2++;
 			} else {
 				$sl .= '<td>' . 'OK' . '</td>';
