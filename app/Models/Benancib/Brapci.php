@@ -43,6 +43,7 @@ class Brapci extends Model
 	function export($id)
 	{
 		$RDF = new \App\Models\Rdf\RDF();
+		$Language = new \App\Models\AI\NLP\Language();
 
 		$dir = '.tmp/benancib/harvesting/';
 		$file1 = $dir . 'benancib_' . $id . '.xml';
@@ -65,6 +66,26 @@ class Brapci extends Model
 		echo '</pre>';
 		$title = (string)$reg['dc.title'];
 		$idt = $RDF->literal($title,$lang,$idc,'brapci:hasTitle');
+
+		/************************************* Author */
+		for ($r=0;$r < count($reg['dc.contributor.author']);$r++)
+			{
+				$auth = (string)$reg['dc.contributor.author'][$r];
+				$ida = $RDF->conecpt($auth,'foaf:Person');
+				echo '===>'.$auth.'==>'.$ida.'<br>';
+				$RDF->propriety($idc,'brapci:hasAuthor',$ida);
+			}
+		/************************************** Subject */
+		for ($r=0;$r < count($reg['dc.keywords']);$r++)
+			{
+				$term = (string)$reg['dc.keywords'][$r];
+				$lang = $Language->identify($term);
+				echo '<br>===>'.$term;
+				exit;
+				$idt = $RDF->conecpt($term,'dc:Subject');
+				$RDF->propriety($idc,'brapci:hasSubject',$idt);
+			}		
+		
 		$link = '<a href="'.URL.'/res/v/'.$idc.'" target="new'.$idc.'">'.$title.'</a>';
 		$sx = '';
 		$sx .= $link;

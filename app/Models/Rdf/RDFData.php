@@ -64,6 +64,30 @@ class RDFData extends Model
 			return $id;
 		}
 
+	function propriety($id1,$prop,$id2)
+		{
+			$RDFClass = new \App\Models\RDF\RDFClass();
+			$idp = $RDFClass->class($prop);
+
+			$d['d_r1'] = $id1;
+			$d['d_r2'] = $id2;
+			$d['d_p'] = $idp;
+			$d['d_library'] = LIBRARY;
+			$d['d_literal'] = 0;
+			$rst = $this->where('d_r1',$id1)->where('d_r2',$id2)->FindAll();
+			if (count($rst) == 0)
+				{
+					$rst = $this->where('d_r2',$id1)->where('d_r1',$id2)->FindAll();
+					if (count($rst) ==0)
+						{
+							$this->insert($d);
+						}					
+					$rst = $this->where('d_r1',$id1)->where('d_r2',$id2)->FindAll();
+				}
+			$id = $rst[0]['id_d'];
+			return $id;			
+		}
+
 	function check($dt)
 		{
 			foreach($dt as $field=>$value)

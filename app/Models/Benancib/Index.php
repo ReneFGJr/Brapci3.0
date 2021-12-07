@@ -90,7 +90,7 @@ class Index extends Model
 	}
 
 	function export($id=0)
-		{
+		{			
 			$offset = round($id);
 			$sx = '<h1>Exportação para Brapci</h1>';
 			$dir = '.tmp/benancib/harvesting/';

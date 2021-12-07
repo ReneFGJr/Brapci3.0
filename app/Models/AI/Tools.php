@@ -42,22 +42,35 @@ class Tools extends Model
 
 	function index($d1='',$d2='',$d3='',$d4='')
 		{
+			$NLP = new \App\Models\AI\NLP();
 			$tela = '';
 			switch($d1)
 				{
+					case 'language_detection':
+						$Language = new \App\Models\AI\NLP\Language();
+						$tela .= $NLP->formAI(1,lang('ai.Sillables'));
+						$tela .= $Language->getTextLanguage(get("dd1"),get("dd2"));						
+						break;
+					case 'syllables':
+						$AI = new \App\Models\AI\NLP\Syllables();
+						$tela .= $NLP->formAI(1,lang('ai.Sillables'));
+						$tela .= $AI->syllables(get("dd1"),get("dd2"));						
+						break;
+					case 'syllable':
+						$AI = new \App\Models\AI\NLP\Syllables();
+						$tela .= $NLP->formAI(1,lang('ai.Sillables'));
+						$tela .= $AI->syllable(get("dd1"),get("dd2"));
+						break;					
 					case 'scraping':
 						$Scraping = new \App\Models\AI\NLP\Scraping();
 						$tela .= $Scraping->index($d1,$d2,$d3,$d4);
 						break;
-
 					case 'systematic_review':
 						$tela .= $this->research($d1,$d2,$d3,$d4);
 						break;
-
 					case 'contentanalysis':
 						$tela .= $this->research($d1,$d2,$d3,$d4);
-						break;						
-
+						break;			
 					default:
 					$tela .= bsmessage('Service not found (Tools) - '.$d1);
 
@@ -69,6 +82,7 @@ class Tools extends Model
 						'bibliometric',
 						'syllables',
 						'wordcount',
+						'language_detection',
 						'scraping'
 						);
 					$tela .= '<ul>';

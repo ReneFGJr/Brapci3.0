@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\AI;
+namespace App\Models\AI\NLP;
 
 use CodeIgniter\Model;
 
@@ -40,16 +40,8 @@ class Language extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	//https://www.ti-enxame.com/pt/php/detectar-idioma-da-string-php/967079314/
- function pt()
-	{
-		/* Digrafos */
-		// "gu", "qu", "lh", "nh" e "ch"
-		
-		$s = ''
-	}
-
- function getTextLanguage($text, $default) {
+function getTextLanguage($text, $default) {
+	  $text = ascii(mb_strtolower($text));
       $supported_languages = array(
           'en',
           'de',
@@ -69,48 +61,57 @@ class Language extends Model
       // from http://wortschatz.uni-leipzig.de/Papers/top100de.txt
       $wordList['pt'] = array ('de', 'da', 'em', 'ção', 'cao', 'vel', 
           'ico', 'das', 'mit', 'sich', 'des', 'auf', 'für', 'ist', 'im', 
-          'dem', 'nicht', 'ein', 'Die', 'eine');
+          'dem', 'nicht', 'ein', 'Die', 'eine');	  
       // from http://wortschatz.uni-leipzig.de/Papers/top100de.txt
       $wordList['es'] = array ('der', 'die', 'und', 'in', 'den', 'von', 
           'zu', 'das', 'mit', 'sich', 'des', 'auf', 'für', 'ist', 'im', 
-          'dem', 'nicht', 'ein', 'Die', 'eine');
+          'dem', 'nicht', 'ein', 'die', 'eine');
+
+
+	   /************************************************************************/
+	   $end['de'] = array();
+	   $end['en'] = array('at','ed','gy','on','nce','ons','ion','fic','ment','rch');
+	   $end['pt'] = array('ao','em','ia','cos','dos','iro','je','por','ena','nto');
+	   $end['es'] = array();
 
       // clean out the input string - note we don't have any non-ASCII 
       // characters in the Word lists... change this if it is not the 
       // case in your language wordlists!
       $text = preg_replace("/[^A-Za-z]/", ' ', $text);
+	  $text = ' ' .$text. ' ';
       // count the occurrences of the most frequent words
-      foreach ($supported_languages as $language) {
+	  
+	  /****************************** Zera contador */
+      foreach ($supported_languages as $language) 
+	  {
         $counter[$language]=0;
       }
-      for ($i = 0; $i < 20; $i++) {
-        foreach ($supported_languages as $language) {
-          $counter[$language] = $counter[$language] + 
-            // I believe this is way faster than fancy RegEx solutions
-            substr_count($text, ' ' .$wordList[$language][$i] . ' ');;
-        }
-      }
-      // get max counter value
-      // from http://stackoverflow.com/a/1461363
-      $max = max($counter);
-      $maxs = array_keys($counter, $max);
-      // if there are two winners - fall back to default!
-      if (count($maxs) == 1) {
-        $winner = $maxs[0];
-        $second = 0;
-        // get runner-up (second place)
-        foreach ($supported_languages as $language) {
-          if ($language <> $winner) {
-            if ($counter[$language]>$second) {
-              $second = $counter[$language];
-            }
-          }
-        }
-        // apply arbitrary threshold of 10%
-        if (($second / $max) < 0.1) {
-          return $winner;
-        } 
-      }
-      return $default;
+
+	  // split the text into words
+      foreach ($supported_languages as $language) 
+	  	{
+		  $terms = $wordList[$language];
+		  for ($r=0;$r < count($terms);$r++)
+		  {
+			  $total = substr_count($text, ' ' .$terms[$r] . ' ');
+			  $counter[$language] = $counter[$language]+ $total;
+		  }
+
+		  $terms = $end[$language];
+		  for ($r=0;$r < count($terms);$r++)
+		  {
+			  $total = substr_count($text, $terms[$r] . ' ');
+			  $counter[$language] = $counter[$language]+ $total;
+		  }		  
+		}
+
+		$lang = '??';
+		$max = 1;
+		foreach($counter as $key => $value)
+		{
+			if ($value > $max) { $lang = $key; $max = $value; }
+		}
+      return '==>'.$lang;
     }	
+	
 }

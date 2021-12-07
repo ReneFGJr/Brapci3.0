@@ -45,15 +45,6 @@ class NLP extends Model
 			$tela = '';
 			switch($d1)
 				{
-					case 'syllables':
-						$AI = new \App\Models\AI\NLP\Syllables();
-						$tela .= $this->formAI(1,lang('ai.Sillables'));
-						$tela .= $AI->syllables(get("dd1"),get("dd2"));						
-						break;
-					case 'syllable':
-						$AI = new \App\Models\AI\NLP\Syllables();
-						$tela .= $this->formAI(1,lang('ai.Sillables'));
-						$tela .= $AI->syllable(get("dd1"),get("dd2"));		
 					/* wordcount */
 					case 'wordcount':
 						$AI = new \App\Models\AI\NLP\Wordcount();
