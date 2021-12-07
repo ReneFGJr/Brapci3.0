@@ -397,6 +397,10 @@ class RDF extends Model
 	}
 
 
+	function conecpt($name,$class)
+		{
+			return $this->RDP_concept($name,$class);
+		}
 
 	function RDP_concept($name, $class)
 	{
@@ -408,6 +412,24 @@ class RDF extends Model
 		$tela = $idc;
 		return $tela;
 	}
+
+	function literal($name,$lang,$idp, $prop)
+		{
+			return $this->RDF_literal($name,$lang,$idp, $prop);
+		}
+
+	function RDF_literal($name,$lang,$idp, $prop)
+	{
+		$idn = 0;
+		$RDPLiteral = new \App\Models\Rdf\RDFLiteral();
+		if (($prop != '') and ($idp > 0))
+			{
+				$RDFData = new \App\Models\Rdf\RDFData();
+				$idn = $RDFData->literal($idp,$prop,$name,$lang);
+			}
+		return $idn;
+	}
+
 
 	function propriety($idp, $prop='', $resource=0)
 		{

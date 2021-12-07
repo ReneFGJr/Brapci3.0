@@ -42,13 +42,13 @@ class RDFData extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function literal($id,$prop,$name)
+	function literal($id,$prop,$name,$lang='')
 		{
 			$RDFClass = new \App\Models\RDF\RDFClass();
 			$idp = $RDFClass->class($prop);
 
 			$RDFLiteral = new \App\Models\RDF\RDFLiteral();
-			$d['d_literal'] = $RDFLiteral->name($name);
+			$d['d_literal'] = $RDFLiteral->name($name,$lang);
 			$d['d_library'] = LIBRARY;
 			$d['d_r1'] = $id;
 			$d['d_r2'] = 0;
