@@ -111,7 +111,7 @@ function getTextLanguage($text, $default) {
 		{
 			if ($value > $max) { $lang = $key; $max = $value; }
 		}
-      return '==>'.$lang;
+      return $lang;
     }	
 	
 }
