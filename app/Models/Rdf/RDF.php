@@ -396,6 +396,30 @@ class RDF extends Model
 		return $sx;
 	}
 
+	function show_class($dt)
+		{
+			$prefix = '';
+			$class = '';
+			$prefix_url = '';
+			if (strlen($dt['prefix_url']) > 0) {
+				$prefix_url = $dt['prefix_url'];
+			}
+			if (strlen($dt['prefix_ref']) > 0)
+				{
+					$prefix = $dt['prefix_ref'].':';
+				}
+			if (strlen($dt['c_class']) > 0)
+				{
+					$class = $prefix.$dt['c_class'];
+					$prefix_url .= '#'.$dt['c_class'];
+				}
+			if (strlen($prefix_url) > 0)
+				{
+					$class .= '<a href="' . $prefix_url . '" target="_new"><sup>(#)</sup></a>';
+				}
+			return $class;
+		}
+
 
 	function conecpt($name,$class)
 		{
@@ -418,7 +442,7 @@ class RDF extends Model
 			return $this->RDF_literal($name,$lang,$idp, $prop);
 		}
 
-	function RDF_literal($name,$lang,$idp, $prop)
+	function RDF_literal($name,$lang, $idp, $prop)
 	{
 		$idn = 0;
 		$RDPLiteral = new \App\Models\Rdf\RDFLiteral();
@@ -430,6 +454,11 @@ class RDF extends Model
 		return $idn;
 	}
 
+	/* Igual ao propriety */
+	function assoc($idp, $idt, $prop='')
+		{
+			return $this->RDP_property($idp, $prop, $idt);
+		}
 
 	function propriety($idp, $prop='', $resource=0)
 		{

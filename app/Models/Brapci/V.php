@@ -50,14 +50,25 @@ class V extends Model
 
 			$class = $dt['concept']['c_class'];
 			$name = $dt['concept']['n_name'];
-
+			if (1==2) 
+			{ 
+			echo '<pre>';
+			print_r($dt);
+			echo '</pre>';
+			echo '===============>'.$class;
+			}
 			switch ($class)
 				{
 					case 'Article':
 						$Checked->check($id,100);
 						$Articles = new \App\Models\Journal\Articles();
 						$tela .= $Articles->view_articles($id);
-						break;					
+						break;
+					case 'Proceeding':
+						$Checked->check($id,100);
+						$Articles = new \App\Models\Journal\Articles();
+						$tela .= $Articles->view_articles($id);
+						break;											
 					case 'Issue':
 						$JournalIssue = new \App\Models\Journal\JournalIssue();
 						$tela .= $JournalIssue->view_issue_articles($id);

@@ -60,7 +60,9 @@ class RDFConcept extends Model
 		}
 
 	function concept($dt)
-		{			
+		{		
+			$Language = new \App\Models\AI\NLP\Language();
+
 			/* Definição da Classe */
 			$Class = new \App\Models\RDF\RDFClass();			
 			$Class->DBGroup = $this->DBGroup;
@@ -74,7 +76,8 @@ class RDFConcept extends Model
 			$cl = $dt['Class'];
 			$id_class = $Class->class($cl);
 
-			$id_prefTerm = $RDFLiteral->name($dt['Literal']['skos:prefLabel']);
+			$lang = $Language->getTextLanguage($dt['Literal']['skos:prefLabel']);
+			$id_prefTerm = $RDFLiteral->name($dt['Literal']['skos:prefLabel'],$lang);
 
 			/************************************************************* CREATE CONCEPT */
 			$dtc = $this

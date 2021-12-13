@@ -40,7 +40,7 @@ class Language extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-function getTextLanguage($text, $default) {
+function getTextLanguage($text) {
 	  $text = ascii(mb_strtolower($text));
       $supported_languages = array(
           'en',
@@ -70,8 +70,8 @@ function getTextLanguage($text, $default) {
 
 	   /************************************************************************/
 	   $end['de'] = array();
-	   $end['en'] = array('at','ed','gy','on','nce','ons','ion','fic','ment','rch');
-	   $end['pt'] = array('ao','em','ia','cos','dos','iro','je','por','ena','nto');
+	   $end['en'] = array('at','ed','gy','on','nce','ons','ion','fic','ment','rch','ate');
+	   $end['pt'] = array('ao','em','ia','cos','dos','iro','je','por','ena','nto','lho');
 	   $end['es'] = array();
 
       // clean out the input string - note we don't have any non-ASCII 
@@ -101,16 +101,19 @@ function getTextLanguage($text, $default) {
 		  for ($r=0;$r < count($terms);$r++)
 		  {
 			  $total = substr_count($text, $terms[$r] . ' ');
-			  $counter[$language] = $counter[$language]+ $total;
+			  $counter[$language] = $counter[$language] + $total;
 		  }		  
 		}
 
-		$lang = '??';
+		$lang = 'NaN';
 		$max = 1;
 		foreach($counter as $key => $value)
 		{
 			if ($value > $max) { $lang = $key; $max = $value; }
 		}
+		if ($lang == 'pt') { $lang = 'pt-BR'; }
+		if ($lang == 'NaN') 
+			{ echo '<h1>Language: '.$text.'<br>==>'.$lang; }
       return $lang;
     }	
 	

@@ -5,6 +5,7 @@
             $menu['Books'] = URL . 'index.php/res/book/';
             $menu['Authoriry'] = URL . 'index.php/res/authoriry/';
             $menu['Benancib'] = URL . 'index.php/res/benancib/';
+            $menu['Ontology'] = URL . 'index.php/res/ontology/';
             foreach ($menu as $label => $url) {
                 echo '<li class="nav-item">' . cr();
                 echo '    <a class="list-group-item" aria-current="page" href="' . $url . '">' . lang('brapci.' . $label) . '</a>' . cr();

@@ -158,6 +158,15 @@ class Res extends BaseController
 		return $tela;
 	}
 
+	function ontology($d1='',$d2='',$d3='',$d4='')
+	{
+		$Ontology = new \App\Models\Brapci\Ontology();
+		$tela = $this->cab();		
+		$tela .= bs($Ontology->index($d1,$d2,$d3,$d4));
+		$tela .= $this->cab("footer");		
+		return $tela;
+	}	
+
 	function download($id = 0)
 	{
 		$PDF = new \App\Models\PDF\PDF();
