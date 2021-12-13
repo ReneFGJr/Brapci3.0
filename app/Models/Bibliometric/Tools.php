@@ -48,7 +48,7 @@ class Tools extends Model
 	function form($d1,$d2,$d3)
 		{
 			$utf8 = false;
-			$tps = array('RIS','CSV1','CSV2');
+			$tps = array('','RIS','CSV1','CSV2','TXT1','NET');
 
 			$sf = h(lang('ai.from_tools'),5);
 			$sf .= '<select id="from" name="from" style="width: 100%; font-size:40px;">';
