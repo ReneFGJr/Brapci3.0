@@ -46,6 +46,10 @@ class Tools extends Model
 			$tela = '';
 			switch($d1)
 				{
+					case 'bibliometric.convert':
+						$Btools = new \App\Models\Bibliometric\Tools();
+						$tela = $Btools->index($d2,$d3,$d4);
+						break;
 					case 'language_detection':
 						$Language = new \App\Models\AI\NLP\Language();
 						$tela .= $NLP->formAI(1,lang('ai.Sillables'));
@@ -83,7 +87,8 @@ class Tools extends Model
 						'syllables',
 						'wordcount',
 						'language_detection',
-						'scraping'
+						'scraping',
+						'bibliometric.convert'
 						);
 					$tela .= '<ul>';
 					for ($r=0;$r < count($lst);$r++)
