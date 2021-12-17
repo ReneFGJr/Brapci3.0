@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class Ontology extends Model
 {
 	protected $DBGroup              = 'brapci';
-	protected $table                = 'rdf_class';
+	protected $table                = PREFIX.'rdf_class';
 	protected $primaryKey           = 'id_c';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -45,7 +45,7 @@ class Ontology extends Model
 		$RDF = new \App\Models\Rdf\RDF();
 		$sx = '';
 		if ($d2 != '') {	
-			$this->join('rdf_prefix', 'c_prefix = id_prefix', STR_PAD_LEFT);
+			$this->join(PREFIX.'rdf_prefix', 'c_prefix = id_prefix', STR_PAD_LEFT);
 			$dt = $this->find($d2);
 			$sx .= view('setspec/class',$dt);
 		} else {
@@ -74,9 +74,10 @@ class Ontology extends Model
 	function list($type = 'C')
 	{
 		$RDF = new \App\Models\Rdf\RDF();
-		$this->join('rdf_prefix', 'c_prefix = id_prefix', STR_PAD_LEFT);
+		$this->join(PREFIX.'rdf_prefix', 'c_prefix = id_prefix', STR_PAD_LEFT);
 		$this->where('c_type', $type)->orderBy('prefix_ref, c_class');
 		$dt = $this->findAll();
+		//echo $this->getLastQuery();
 		$tela1 = '';
 		$tela2 = '';
 
