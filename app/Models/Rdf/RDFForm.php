@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class RdfForm extends Model
 {
-	protected $DBGroup              = 'default';
+	protected $DBGroup              = 'brapci';
 	protected $table                = 'rdfforms';
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;

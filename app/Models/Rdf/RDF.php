@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class RDF extends Model
 {
-	var $DBGroup              = 'default';
+	var $DBGroup              		= 'brapci';
 	protected $table                = PREFIX.'rdf_concept';
 	protected $primaryKey           = 'id_cc';
 	protected $useAutoIncrement     = true;
