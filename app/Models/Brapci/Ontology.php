@@ -49,6 +49,8 @@ class Ontology extends Model
 			$dt = $this->find($d2);
 			$sx .= view('setspec/class',$dt);
 		} else {
+			$this->check();
+			$sx .= '';			
 			$sx .= view('setspec/header_title');
 			$sx .= bsc($this->list('C'), 6);
 			$sx .= bsc($this->list('P'), 6);
@@ -77,6 +79,7 @@ class Ontology extends Model
 		$this->join(PREFIX.'rdf_prefix', 'c_prefix = id_prefix', STR_PAD_LEFT);
 		$this->where('c_type', $type)->orderBy('prefix_ref, c_class');
 		$dt = $this->findAll();
+		
 		//echo $this->getLastQuery();
 		$tela1 = '';
 		$tela2 = '';
@@ -90,11 +93,18 @@ class Ontology extends Model
 		}
 
 		$tela1 .= '<ul>';
+		$xpre = '';
 		for ($r = 0; $r < count($dt); $r++) {
+			$ln = $dt[$r];
+			$pre = $ln['prefix_ref'];
+			if ($pre!= $xpre)
+				{
+					$tela1 .= '<h4>'.$pre.'</h4>';
+					$xpre = $pre;
+				}
 			$tela1 .= '<li>';
-			$tela1 .= '<a href="' . PATH . MODULE . ('ontology/' . $pre . '/' . $dt[$r]['id_c']) . '#' . $dt[$r]['c_class'] . '">' .
+			$tela1 .= '<a href="' . PATH . MODULE . ('ontology/' . $pre . '/' . $ln['id_c']) . '#' . $ln['c_class'] . '">' .
 				$RDF->show_class($dt[$r]) .
-
 				'</a>';
 			$tela1 .= '</li>';
 		}
