@@ -43,8 +43,12 @@ class Index extends Model
 	function index($d1,$d2,$d3,$d4)
 		{
 			$sx = '';
+			if ($d1=='') { $d1 = $d2; $d2 = $d3; $d3 = $d4; $d4 = ''; }
 			switch($d1)
 				{
+					case 'viewid':
+						$sx .= $this->viewid($d2,$d3,$d4);
+						break;
 					case 'harvesting':
 						$sx .= $this->harvesting($d2,$d3,$d4);
 						break;
@@ -61,9 +65,9 @@ class Index extends Model
 					default:
 						$sx = bsmessage('Not locate action - '.$d1);
 						$sx .= '<ul>';
-						$sx .= '<li>'.anchor(PATH.MODULE.'inpi/harvesting','Harvesting').'</li>';
-						$sx .= '<li>'.anchor(PATH.MODULE.'inpi/process/1','Process Authority').'</li>';
-						$sx .= '<li>'.anchor(PATH.MODULE.'inpi/authority','Authority').'</li>';
+						$sx .= '<li>'.anchor(PATH.'patent/inpi/harvesting','Harvesting').'</li>';
+						$sx .= '<li>'.anchor(PATH.'patent/inpi/process/1','Process Authority').'</li>';
+						$sx .= '<li>'.anchor(PATH.MODULE.'patent/authority','Authority').'</li>';
 						
 						$sx .= '</ul>';
 				}
@@ -79,13 +83,21 @@ class Index extends Model
 			$AuthorityNames->id = $d2;
 			$sx = $AuthorityNames->edit($d2);			
 			return $sx;
-		}		
+		}	
+		
+	function viewid($id)
+		{
+			$AuthorityNames = new \App\Models\Authority\AuthorityNames();
+			$AuthorityNames->table = 'brapci_inpi.AuthorityNames';
+			$sx = $AuthorityNames->view($id);	
+			return $sx;
+		}
 
 	function tableView()
 		{
 			$AuthorityNames = new \App\Models\Authority\AuthorityNames();
 			$AuthorityNames->table = 'brapci_inpi.AuthorityNames';
-			$AuthorityNames->path = base_url(PATH. MODULE . '/inpi/');
+			$AuthorityNames->path = base_url(PATH. MODULE . 'patent/authority/');
 			$sx = tableView($AuthorityNames);			
 			return $sx;
 		}

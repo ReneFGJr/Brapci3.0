@@ -42,7 +42,10 @@ class InpiAuthority extends Model
 
 	function get_id_by_name($name,$dta=array())
 		{
+			$name2 = $name;
 			$name = mb_strtolower($name);
+			$name = troca($name,':',' ');
+			$name = troca($name,'?',' ');
 			while (strpos($name,'  '))
 			{
 				$name = str_replace('  ',' ',$name);
@@ -99,16 +102,28 @@ class InpiAuthority extends Model
 
 					$dt['a_prefTerm'] = trim($name);
 					$dt['a_class'] = $dta['a_class'];
+					$OK = 0;
+
 					if (isset($dta['a_country']))
 						{
 							$dt['a_country'] = $dta['a_country'];
+							$OK = 1;
 						}
 					if (isset($dta['a_UF']))
 						{
 							$dt['a_UF'] = $dta['a_UF'];
-						}		
-					$AuthorityNames->insert($dt);
-					$dt = $AuthorityNames->get_id_by_name($name);
+							$OK = 1;
+						}
+						
+					/******* CHECK */
+					if ($OK == 1)
+						{
+							$AuthorityNames->insert($dt);
+							$dt = $AuthorityNames->get_id_by_name($name);
+						} else {
+							echo bsmessage('ERROR:'.$name2,3);
+						}
+					
 				}
 			return $dt;
 		}

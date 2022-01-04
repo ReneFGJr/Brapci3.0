@@ -69,6 +69,22 @@ class AuthorityNames extends Model
 			$dt = $this->findAll();
 			return $dt;
 		}
+	function view($id)
+		{
+			$Country = new \App\Models\Authority\Country();
+			$dt = $this->find($id);
+
+			/******************************************** Instituição */
+			$sx = '';
+			$sx .= bsc(lang('brapci.prefTerm'),11,'small');
+			$sx .= bsc(lang('brapci.Country'),1,'small');
+			$sx .= bsc(h($dt['a_prefTerm'],3),11);
+			$country = $dt['a_country'].$dt['a_UF'];
+			$img = $Country->flag($dt['a_country']);
+			$sx .= bsc($img,1);
+			$sx = bs($sx);
+			return $sx;
+		}
 
 	function edit($id)
 		{

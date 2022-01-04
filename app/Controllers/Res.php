@@ -123,6 +123,16 @@ class Res extends BaseController
 		return $tela;
 	}
 
+	public function patent($d1='',$d2='',$d3='',$d4='')
+	{
+		$dt['collection'] = mb_strtoupper(lang('brapci.PatentBR'));
+		$tela = $this->cab("user",$dt);
+
+		$Patent = new \App\Models\Patent\Index();
+		$tela .= $Patent->Index($d1,$d2,$d3,$d4);
+		return $tela;
+	}	
+
 	public function authoriry($d1='',$d2='',$d3='',$d4='')
 	{
 		$dt['collection'] = mb_strtoupper(lang('brapci.Authoriry'));
