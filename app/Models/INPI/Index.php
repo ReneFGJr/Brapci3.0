@@ -98,6 +98,7 @@ class Index extends Model
 			$AuthorityNames = new \App\Models\Authority\AuthorityNames();
 			$AuthorityNames->table = 'brapci_inpi.AuthorityNames';
 			$AuthorityNames->path = base_url(PATH. MODULE . 'patent/authority/');
+			if (isset($this->wh)) { $AuthorityNames->where($this->wh); }
 			$sx = tableView($AuthorityNames);			
 			return $sx;
 		}

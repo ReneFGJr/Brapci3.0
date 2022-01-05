@@ -71,7 +71,7 @@ class Index extends Model
 
 						default:
 						$INPI = new \App\Models\INPI\Index();
-						$INPI->where('a_use',0);
+						$INPI->wh = 'a_use = 0';
 						$sx .= $INPI->tableView($d2,$d3,$d4,'');
 						break;
 
