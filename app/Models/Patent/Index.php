@@ -55,13 +55,16 @@ class Index extends Model
 	function index($d1,$d2,$d3,$d4)
 	{
 		$sx = $this->cab();
-		echo '===>'.$d1;
-		echo '<br>===>'.$d2;
 		switch($d1)
 		{
 			case 'authority':
 				switch($d2)
 					{
+						case 'edit':
+							$AuthorityNames = new \App\Models\Authority\AuthorityNames();
+							$AuthorityNames->table = 'brapci_inpi.AuthorityNames';
+							$sx .= $AuthorityNames->edit($d3);	
+							break;
 						case 'viewid':
 							$AuthorityNames = new \App\Models\Authority\AuthorityNames();
 							$AuthorityNames->table = 'brapci_inpi.AuthorityNames';

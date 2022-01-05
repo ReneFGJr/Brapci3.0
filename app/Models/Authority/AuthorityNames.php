@@ -92,7 +92,11 @@ class AuthorityNames extends Model
 					$Match = new \App\Models\AI\Authority\Match();
 					$Match->table = $this->table;
 					$Match->check($name);					
-				}	
+				}
+
+			/**************************************************/
+			$ROR = new \App\Models\Authority\ROR();
+			$ROR->search($name);
 			return '';
 		}
 	function remissive($id)	
@@ -112,6 +116,7 @@ class AuthorityNames extends Model
 			$sx .= '</ul>';
 			return $sx;
 		}
+
 	function viewid($id)
 		{
 			$Country = new \App\Models\Authority\Country();
@@ -128,9 +133,7 @@ class AuthorityNames extends Model
 			$sx .= bsc('<hr>',12);
 			$sx .= bsc($this->remissive($id),12);
 
-			$sx = bs($sx);
-
-			
+			$sx = bs($sx);			
 			return $sx;
 		}
 
@@ -152,7 +155,7 @@ class AuthorityNames extends Model
 	function edit($id)
 		{
 			$this->id = $id;
-			$this->path = base_url(PATH . MODULE.  '/index/edit/' . $id);
+			$this->path = base_url(PATH . MODULE.  '/patent/authority/edit/' . $id);
 			IF ($id > 0)
 				{
 					$this->path_back = base_url(PATH . MODULE.  '/index/viewid/' . $id);

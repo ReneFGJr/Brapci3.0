@@ -57,18 +57,34 @@ class Brapci extends Model
 		$name = "enancib.org.".$year.".".$id;
 		$idc = $RDF->conecpt($name,$class);
 
-
-		/* Properties */
-		echo '<h1>'.$name.'</h1>';
-		echo '<h2>'.$idc.'</h2>';
-		echo '<pre>';
-		print_r($reg);
-		echo '</pre>';
-
 		/***************************************************** ISSUE */
 		$class = "Brapci:Issue";
 		$term = 'Enancib-'.$reg['dc.ano.evento'];
 		$id_issue = $RDF->conecpt($term,'brapci:Issue');
+
+		/******************************************************* ISSUE YEAR */
+		$class = "Date";
+		$term = $reg['dc.ano.evento'];
+		$id_year = $RDF->conecpt($term,$class);
+		$RDF->propriety($id_issue,'brapci:hasDateTime',$id_year);
+
+		/******************************************************* ISSUE YEAR */
+		$class = "frbr:Place";
+		$term = $reg['dc.cidade.evento'];
+		$id_place = $RDF->conecpt($term,$class);
+		$RDF->propriety($id_issue,'brapci:hasPlace',$id_place);	
+
+		/******************************************************* ISSUE YEAR */
+		$class = "brapci:Edition";
+		$term = romano($reg['dc.edicao.evento']);
+		$id_edition = $RDF->conecpt($term,$class);
+		$RDF->propriety($id_issue,'brapci:isEdition',$id_edition);	
+
+		/******************************************************* ISSUE YEAR */
+		$class = "brapci:Proceeding";
+		$term = 'Encontro Nacional de Pesquisa e Pós-graduação em Ciência da Informação';
+		$id_journal = $RDF->conecpt($term,$class);
+		$RDF->propriety($id_journal,'brapci:isEdition',$id_issue);
 
 		/* Associa trabalho ao issue */
 		$RDF->assoc($id_issue,$idc,'brapci:hasIssue');		
@@ -86,9 +102,18 @@ class Brapci extends Model
 			}
 
 		/************************************* Author */
-		for ($r=0;$r < count($reg['dc.contributor.author']);$r++)
+		$auths = $reg['dc.contributor.author'];
+		if (is_array($auths))
 			{
-				$auth = (string)$reg['dc.contributor.author'][$r];
+				
+			} else {
+				$auths = array();
+				$auths[0] = $reg['dc.contributor.author'];
+			}
+		
+		for ($r=0;$r < count($auths);$r++)
+			{
+				$auth = (string)$auths[$r];
 				$ida = $RDF->conecpt($auth,'foaf:Person');
 				$RDF->propriety($idc,'brapci:hasAuthor',$ida);
 			}

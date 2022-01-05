@@ -72,6 +72,7 @@ class V extends Model
 					case 'Issue':
 						$JournalIssue = new \App\Models\Journal\JournalIssue();
 						$tela .= $JournalIssue->view_issue_articles($id);
+						$tela .= bs(bsc($RDF->view_data($id),12));
 						break;
 					default:
 						$sx = h($name,4);

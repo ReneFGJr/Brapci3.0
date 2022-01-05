@@ -122,6 +122,7 @@ class JournalIssue extends Model
 					$value = trim($dtl['n_name']);
 					$id1 = $dtl['d_r1'];
 					$id2 = $dtl['d_r2'];
+					echo '==>'.$class.'==='.$value.'<br>';
 					switch($class)
 						{
 							case 'dateOfPublication':
@@ -142,6 +143,7 @@ class JournalIssue extends Model
 							case 'altLabel':
 								break;
 							case 'prefLabel':
+								$IssueName = $value;
 								break;
 							default:
 								$tela .= '<br>'.$class.'==>'.$value.'=='.$id1.'=='.$id2;
@@ -149,6 +151,7 @@ class JournalIssue extends Model
 						}
 				}
 			$tela = h($journal.', '.$nr.', '.$vol.', ' .$year,5).$tela;
+			$tela .= $IssueName;
 			$tela = bs($tela);
 			return $tela;
 		}

@@ -54,6 +54,7 @@ class Articles extends Model
 		$telax = '';
 		$data = $dt['data'];
 		$d = array();
+		$d['section'] = 'Nome da seção';
 		$url = '';
 
 		for ($r = 0; $r < count($data); $r++) {
@@ -82,6 +83,7 @@ class Articles extends Model
 					break;
 				case 'hasSectionOf':
 					/* none */
+					//echo $txt.'<br>';
 					break;
 				case 'hasAuthor':
 					$txt = $RDF->le_content($line['d_r2']);
@@ -101,7 +103,12 @@ class Articles extends Model
 					if (!isset($d['subject'][$lang])) {
 						$d['subject'][$lang] = array();
 					}
-					array_push($d['subject'][$lang], '<a href="' . $line['d_r2'] . '" class="link-primary p-2">' . trim($txt).'.</a>');
+					$keyw = '<a href="' . URL . 'res/v/' . $line['d_r2'] . '" class="rounded-pill me-1" 
+								style="padding: 1px 6px;
+								background-color: #ddd;
+								color: #000;"
+								>' . trim($txt).'</a>&nbsp;';
+					array_push($d['subject'][$lang], $keyw);
 					break;
 				default:
 					$telax .= $class . '==>' . $txt . '==>' . $line['d_r2'] . '--<br>';
@@ -121,19 +128,24 @@ class Articles extends Model
 
 		/********************************************************************* AUTHOR ****/
 		$auth = '';
-		foreach ($d['author'] as $name => $idx) {
-			$link = '<a href="' . base_url(PATH . 'res/v/' . $idx) . '" class="form-control h5 link-primary">';
-			$linka = '<a>';
-			$auth .= $link . $name . $linka;
+		if (isset($d['author']))
+		{
+			foreach ($d['author'] as $name => $idx) {
+				$link = '<a href="' . base_url(PATH . 'res/v/' . $idx) . '" 
+						class="form-control h5 link-secondary" >';
+				$linka = '<a>';
+				$auth .= $link . $name . $linka;
+			}
 		}
 
 		/********************************************************************* MOSTRA *****/
 		/**********************************************************************************/
 		/**********************************************************************************/
-		$pref = array('pt-BR', 'es', 'en');
+		$pref = array('pt-BR', 'es', 'es-ES', 'en');
 		$cl = 'h3';
-		
+
 		$tela .= '<div class="row">';
+
 		for ($r = 0; $r < count($pref); $r++) {
 			$lg = $pref[$r];
 
@@ -152,7 +164,8 @@ class Articles extends Model
 
 
 			if (strlen($auth) > 0) {
-				$tela .=  '<div class="author text-end row">' . $auth . '</div>';
+				//$tela .=  '<div class="author text-end row">' . $auth . '</div>';
+				$tela .=  bsc($auth,12,'author text-end');
 				$auth = '';
 			}
 
@@ -162,32 +175,53 @@ class Articles extends Model
 			$lg = $pref[$r];
 			if (isset($d['abs'][$lg])) {
 				$tela .=
-					'<div class="abs_title fw-bold">' . lang('brapci.abstract_' . $lg) . '</div>' .
-					'<div class="title text-justify m-1 p-2">'.
-						$d['abs'][$lg].
-					'</div>';					
+					bsc(lang('brapci.abstract_' . $lg),12,'abs_title fw-bold').
+					bsc('<p style="text-align: justify; text-justify: inter-word;">'.$d['abs'][$lg].'</p>',12).
+					bsc($lg,12);
 				
 				/***************************************************************** SUBJECT ****/
 				$subj = '';
-				if (isset($d['subject'][$lang])) {
-					for ($z = 0; $z < count($d['subject'][$lang]); $z++) {
-						$key = $d['subject'][$lang][$z];
-						$subj .= $key;
+				//$tela .= '<style> div { border: 1px solid #ccc; } </style>'.cr();
+				$tela .= '<style> .keywords { line-height: 150%; } </style>'.cr();
+				if (isset($d['subject'][$lg])) {
+	//				echo '<pre>';
+	//				print_r($d['subject']);
+	//				exit;
+
+					for ($z = 0; $z < count($d['subject'][$lg]); $z++) {
+						$key = $d['subject'][$lg][$z];
+						$subj .= $key.cr();
 					}
 					if (strlen($subj)) {
-						$tela .= '<div class="keyword p-1 m-1">' .
+						$tela .= bsc(
 							'<span class="abs_keyword fw-bold">'.lang('brapci.keyword_' . $lang) . '</span>'.
-							': ' .
-							$subj . '</div>';
-					}
+							': ' .cr() .
+							$subj,12,'mb-5 keywords');
+					}					
 				}
+				
 			}
 		}
 		$tela .= '</div>';
 
 		/***************************************************************************************/		
 		$right_side = $PDF->pdf_download($id);
-		$tela = bs(bsc($tela,11).bsc($right_side,1,'mt-6'));
+
+		$top = '';
+		$top .= '<div class="col-12 text-center mb-5" style="position: relative;">';
+		$top .= '<img src="'.URL.'img/subheads/0001.png'.'" 
+					class="img-fluid" style="width: 100%;"> ';
+		$top .= '<span class="btn-primary pt-2 pb-2 ps-4 pe-4 rounded-pill" 
+						style="position: absolute; 
+						left: 50%;
+						transform: translateX(-50%); 
+						bottom: -15px;">'.$d['section'].'</span>';
+		$top .= '</div>';			
+		$top = bs($top,array('fluid'=>true));
+
+		
+		$tela = $top . bs(bsc($tela,11).bsc($right_side,1,'mt-6'));
+
 
 		$tela .= $dados;
 		$tela .= $telax;

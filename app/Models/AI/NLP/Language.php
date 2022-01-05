@@ -104,16 +104,17 @@ function getTextLanguage($text) {
 			  $counter[$language] = $counter[$language] + $total;
 		  }		  
 		}
-
 		$lang = 'NaN';
 		$max = 1;
 		foreach($counter as $key => $value)
 		{
-			if ($value > $max) { $lang = $key; $max = $value; }
+			if ($value >= $max) { $lang = $key; $max = $value; }
 		}
 		if ($lang == 'pt') { $lang = 'pt-BR'; }
 		if ($lang == 'NaN') 
-			{ echo '<h1>Language: '.$text.'<br>==>'.$lang; }
+			{ 
+				//echo '<h1>Language: '.$text.'<br>==>'.$lang; 
+			}
       return $lang;
     }	
 	
