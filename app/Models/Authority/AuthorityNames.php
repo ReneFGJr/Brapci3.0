@@ -85,6 +85,10 @@ class AuthorityNames extends Model
 						}
 
 					$name = $dt[0]['a_prefTerm'];
+					if (strpos($name,' - ') > 0)
+						{
+							$name = substr($name,0,strpos($name,' - '));
+						}
 					$Match = new \App\Models\AI\Authority\Match();
 					$Match->table = $this->table;
 					$Match->check($name);					
