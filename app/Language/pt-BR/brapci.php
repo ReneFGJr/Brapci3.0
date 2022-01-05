@@ -36,9 +36,9 @@ return [
     'Bibliometric'=>'Ferramentas',
     'About'=>'Sobre',
     'Help'=>'Ajuda',
-    ''=>'',
-    ''=>'',
-    ''=>'',
-    ''=>'',
+    'Patent'=>'PatenteBR',
+    'Ontology'=>'OntologiaBrapci',
+    'prefTerm'=>'Entrada principal',
+    'Country'=>'Pais',
 
 ];

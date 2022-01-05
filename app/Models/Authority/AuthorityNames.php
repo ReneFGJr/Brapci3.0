@@ -69,10 +69,49 @@ class AuthorityNames extends Model
 			$dt = $this->findAll();
 			return $dt;
 		}
-	function view($id)
+
+	function match($id)
+		{
+			$this->where('id_a',$id);
+			$dt = $this->findAll();
+			if (count($dt) > 0)
+				{
+					$line = $dt[0];
+					if ($line['a_use'] > 0)
+						{
+							$id = $line['a_use'];
+							$this->where('id_a',$id);
+							$dt = $this->findAll();
+						}
+
+					$name = $dt[0]['a_prefTerm'];
+					$Match = new \App\Models\AI\Authority\Match();
+					$Match->table = $this->table;
+					$Match->check($name);					
+				}	
+			return '';
+		}
+	function remissive($id)	
+		{
+			$dt = $this->le($id);
+			$id = $dt['id_a'];
+			
+			$this->where('a_use',$id);
+			$this->orderBy('a_prefTerm','asc');
+			$dt = $this->findAll();
+			$sx = h('Remissivas',4);
+			$sx .= '<ul class="list-remissive-authority">';
+			for ($r=0;$r < count($dt);$r++)
+				{
+					$sx .= '<li>'.$dt[$r]['a_prefTerm'].'</li>';
+				}
+			$sx .= '</ul>';
+			return $sx;
+		}
+	function viewid($id)
 		{
 			$Country = new \App\Models\Authority\Country();
-			$dt = $this->find($id);
+			$dt = $this->le($id);
 
 			/******************************************** Instituição */
 			$sx = '';
@@ -82,8 +121,28 @@ class AuthorityNames extends Model
 			$country = $dt['a_country'].$dt['a_UF'];
 			$img = $Country->flag($dt['a_country']);
 			$sx .= bsc($img,1);
+			$sx .= bsc('<hr>',12);
+			$sx .= bsc($this->remissive($id),12);
+
 			$sx = bs($sx);
+
+			
 			return $sx;
+		}
+
+	function le($id)
+		{
+			$this->where('id_a',$id);
+			$dt = $this->findAll();
+			$dt = $dt[0];
+			if ($dt['a_use'] > 0)
+				{
+					$id = $dt['a_use'];
+					$this->where('id_a',$id);
+					$dt = $this->findAll();
+					$dt = $dt[0];
+				}
+			return $dt;
 		}
 
 	function edit($id)

@@ -56,6 +56,21 @@ class TextPrepare extends Model
 		return $txt;
 	}
 
+	function removeSimbols($txt)
+	{
+		$t = array('"','.','-','_','.','/','\\');
+		for ($r=0;$r < count($t);$r++) 
+			{				
+				$term = $t[$r];
+				$txt = troca($txt,$term,' ');
+			}		
+		while(strpos($txt,'  ') > 0)
+			{
+				$txt = troca($txt,'  ',' ');
+			}				
+		return trim($txt);
+	}	
+
 	function removeNumeroEspaco($txt)
 	{
 		$t = array('a','b','c','d','e','f','g','h','i','j','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z');

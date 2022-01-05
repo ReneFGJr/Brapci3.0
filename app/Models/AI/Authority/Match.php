@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models\Patent;
+namespace App\Models\AI\Authority;
 
 use CodeIgniter\Model;
 
-class Index extends Model
+class Match extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'indices';
+	var $table                = 'matches';
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -40,49 +40,42 @@ class Index extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function cab()
+	function check($txt)
 		{
-			$sx = bsc('<img src="'.URL.'img/logo/patent_br.png" class="img-fluid"',2);
-			$sx = bs($sx);
-			return $sx;
-		}
+			$TextPrepare = new \App\Models\AI\NLP\TextPrepare();
+			$txt = $TextPrepare->removeSimbols($txt);
+			$txt = explode(' ', $txt);
 
-	function status()
-		{
-			
-		}
-
-	function index($d1,$d2,$d3,$d4)
-	{
-		$sx = $this->cab();
-		echo '===>'.$d1;
-		echo '<br>===>'.$d2;
-		switch($d1)
-		{
-			case 'authority':
-				switch($d2)
+			$sql = 'select * from '.$this->table.' where ';
+			$sql .= "a_use = 0 ";
+			for ($r=0;$r < count($txt);$r++)
+				{
+					if (strlen($txt[$r]) > 1)
 					{
-						case 'viewid':
-							$AuthorityNames = new \App\Models\Authority\AuthorityNames();
-							$AuthorityNames->table = 'brapci_inpi.AuthorityNames';
-							$sx .= $AuthorityNames->viewid($d3);	
-							$sx .= $AuthorityNames->match($d3);	
-						break;
-
-						default:
-						$INPI = new \App\Models\INPI\Index();
-						$INPI->where('a_use',0);
-						$sx .= $INPI->tableView($d2,$d3,$d4,'');
-						break;
-
+						$sql .= " and (a_prefTerm LIKE '%".$txt[$r]."%')";
 					}
-				break;
-			default:
-				$sx .= '<ul>';				
-				$sx .= '<li>'.anchor(PATH.MODULE.'patent/authority','Autoridades').'</li>';
-				$sx .= '</ul>';
-				break;
+				}
+			$dt = (array)$this->query($sql)->getResult();	
+
+			/**********************************************************************/	
+			$pref = 0;
+			
+			for ($r=0;$r < count($dt);$r++)
+				{
+					$line = (array)$dt[$r];
+					if ($pref == 0) 
+					{ 
+						$pref = $line['id_a']; 
+					} else {
+						$this->remissiveUse($line['id_a'],$pref);
+					}
+				}
+			return 1;
 		}
-		return $sx;
-	}	
+		function remissiveUse($id,$use)
+			{
+				$sql = "update ".$this->table." set a_use = ".$use." where id_a = ".$id;
+				$this->query($sql);
+				return 1;
+			}
 }
