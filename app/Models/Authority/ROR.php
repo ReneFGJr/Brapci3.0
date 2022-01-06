@@ -61,9 +61,6 @@ class ROR extends Model
 			for ($r=0;$r < count($items);$r++)
 				{
 					$inst = $items[$r];
-					echo '<pre>';
-					print_r($inst);
-					echo '</pre>';
 					$AI = new \App\Models\AI\NLP\Language();
 					$lang = $AI->getTextLanguage($inst['name']);
 					if ($lang == 'NaN') { $d['n_inst']['en'] = $inst['name']; }
@@ -79,8 +76,22 @@ class ROR extends Model
 							$d['established'] = '';
 						}
 					
-
-
+					/************************************* LAT & LONG */
+					if (isset($inst['lat']))
+						{
+							$d['lat'] = $inst['lat'];
+							$d['lng'] = $inst['lng'];
+						} else {
+							$d['lat'] = '';
+							$d['lng'] = '';
+						}
+					/************************************* LAT & LONG */
+					if (isset($inst['city']))
+						{
+							$d['city'] = $inst['city'];
+						} else {
+							$d['city'] = '';
+						}						
 
 					$labels = $inst['labels'];
 					if (isset($inst['acronyms']))
@@ -102,10 +113,6 @@ class ROR extends Model
 							$d['n_inst'][$lang] = $name['label'];
 						}
 				}
-				echo '<pre>';
-				print_r($d);
-				echo '</pre>';
-
 			return $d;
 		}
 }
