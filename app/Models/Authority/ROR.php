@@ -80,7 +80,13 @@ class ROR extends Model
 
 
 					$labels = $inst['labels'];
-					$d['acronyms'] = (string)$inst['acronyms'][0];
+					if (isset($inst['acronyms']))
+						{
+							$d['acronyms'] = (string)$inst['acronyms'][0];
+						} else {
+							$d['acronyms'] = '';
+						}
+					
 					for ($y=0;$y < count($labels);$y++)
 						{
 							$name = $labels[$y];
