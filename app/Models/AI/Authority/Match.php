@@ -42,12 +42,13 @@ class Match extends Model
 
 	function check($txt)
 		{
+			$sx = '<form method="post">';
 			$TextPrepare = new \App\Models\AI\NLP\TextPrepare();
 			$txt = $TextPrepare->removeSimbols($txt);
 			$txt = explode(' ', $txt);
 
 			$sql = 'select * from '.$this->table.' where ';
-			$sql .= "a_use = 0 ";
+			$sql .= "(a_use = 0) and (a_master = 0) ";
 			for ($r=0;$r < count($txt);$r++)
 				{
 					if (strlen($txt[$r]) > 1)
@@ -59,22 +60,39 @@ class Match extends Model
 
 			/**********************************************************************/	
 			$pref = 0;
-			
+			$rem = 0;
 			for ($r=0;$r < count($dt);$r++)
-				{
-					$line = (array)$dt[$r];
-					if ($pref == 0) 
-					{ 
-						$pref = $line['id_a']; 
-					} else {
-						$this->remissiveUse($line['id_a'],$pref);
-					}
+			{
+				$line = (array)$dt[$r];
+				if ($pref == 0) 
+				{ 
+					$pref = $line['id_a']; 
+				} else {
+					$vlr = get("id".$line['id_a']);
+					if ($vlr == '1')
+						{
+							$this->remissiveUse($line['id_a'],$pref);
+						} else {
+							$sx .= '<input type="checkbox" name="id'.$line['id_a'].'" value="1">';
+							$sx .= ' ';
+							$sx .= $line['a_prefTerm'];
+							$sx .= '<br/>';		
+							$rem++;
+						}		
 				}
-			return 1;
+			}
+			if ($rem > 0)
+			{
+				$sx .= '<input type="submit" class="btn btn-outline-primary" value="'.lang('bapci.save').'">';
+			}
+			$sx .= '</form>';
+			return $sx;
 		}
 		function remissiveUse($id,$use)
 			{
 				$sql = "update ".$this->table." set a_use = ".$use." where id_a = ".$id;
+				$this->query($sql);
+				$sql = "update ".$this->table." set a_master = 1 where id_a = ".$use;
 				$this->query($sql);
 				return 1;
 			}
