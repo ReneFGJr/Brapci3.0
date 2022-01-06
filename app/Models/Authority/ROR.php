@@ -88,9 +88,6 @@ class ROR extends Model
 								} else {
 									$d['acronyms'] = (string)$inst['acronyms'];
 								}
-								print_r($d);
-								exit;
-							
 						} else {
 							$d['acronyms'] = '';
 						}
