@@ -76,11 +76,36 @@ class ROR extends Model
 							$d['established'] = '';
 						}
 					
-
-
+					/************************************* LAT & LONG */
+					if (isset($inst['lat']))
+						{
+							$d['lat'] = $inst['lat'];
+							$d['lng'] = $inst['lng'];
+						} else {
+							$d['lat'] = '';
+							$d['lng'] = '';
+						}
+					/************************************* LAT & LONG */
+					if (isset($inst['city']))
+						{
+							$d['city'] = $inst['city'];
+						} else {
+							$d['city'] = '';
+						}						
 
 					$labels = $inst['labels'];
-					$d['acronyms'] = (string)$inst['acronyms'][0];
+					if (isset($inst['acronyms']))
+						{
+							if (isset($inst['acronyms'][0]))
+								{
+									$d['acronyms'] = (string)$inst['acronyms'][0];
+								} else {
+									$d['acronyms'] = "";
+								}
+						} else {
+							$d['acronyms'] = '';
+						}
+					
 					for ($y=0;$y < count($labels);$y++)
 						{
 							$name = $labels[$y];

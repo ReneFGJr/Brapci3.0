@@ -41,7 +41,19 @@ class AuthorityNames extends Migration
             'a_orcid' => [
                 'type' => 'VARCHAR',
                 'constraint' => '30'
-			],            
+			], 
+            'a_UF' => [
+                'type' => 'VARCHAR',
+                'constraint' => '30'
+			],
+            'a_country' => [
+                'type' => 'VARCHAR',
+                'constraint' => '30'
+			],
+            'a_master' => [
+                'type' => 'INT',
+                'default' => '0'
+			],                                               
             'created_at datetime default current_timestamp',
             'updated_at datetime default current_timestamp on update current_timestamp'
         ]);

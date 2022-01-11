@@ -15,7 +15,7 @@ class AuthorityNames extends Model
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'id_a','a_prefTerm','a_class','a_lattes','a_brapci','a_orcid','a_uri','a_use','a_country','a_UF'
+		'id_a','a_prefTerm','a_class','a_lattes','a_brapci','a_orcid','a_uri','a_use','a_master','a_country','a_UF'
 	];
 
 	protected $typeFields        = [
@@ -72,6 +72,7 @@ class AuthorityNames extends Model
 
 	function match($id)
 		{
+			$sx = '';
 			$this->where('id_a',$id);
 			$dt = $this->findAll();
 			if (count($dt) > 0)
@@ -91,13 +92,14 @@ class AuthorityNames extends Model
 						}
 					$Match = new \App\Models\AI\Authority\Match();
 					$Match->table = $this->table;
-					$Match->check($name);					
+					$sx .= $Match->check($name);					
 				}
 
 			/**************************************************/
 			$ROR = new \App\Models\Authority\ROR();
 			$ROR->search($name);
-			return '';
+
+			return $sx;
 		}
 	function remissive($id)	
 		{

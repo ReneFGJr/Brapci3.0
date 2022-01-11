@@ -80,15 +80,17 @@ class InpiAuthority extends Model
 						'gmbh','laboratoir','ab ','a/s',
 						'faculdade','co,','universidade','university','universite',
 						'lp ','s.p','automotive','technolog','informatica','n.v.',
-						'mbh', 
+						'mbh', 'companhia',
 						'corporation','foundation','government','lp','s.l','llc',
 						'mv','corp','industria','industries','industria','industrie',
 						'military','medicine','pharmaceutical','pharmaceuticals','cie',
 						);
-					$namel = ' '.ascii(mb_strtolower($name)).' ';
+					$namel = ascii(mb_strtolower($name)).' ';
 					for ($q=0;$q < count($inst);$q++)
-						{
-							if (strpos($namel,' '.$inst[$q]))
+						{							
+							$term = ' '.ascii($inst[$q]);
+							$pos = (string)mb_strpos(' '.$namel,$term);
+							if ($pos != '')
 								{									
 									$dta['a_class'] = 'O';
 									break;
@@ -109,13 +111,17 @@ class InpiAuthority extends Model
 							$dt['a_country'] = $dta['a_country'];
 							$OK = 1;
 						}
-					if (isset($dta['a_UF']))
+					if (isset($dta['endereco']))
 						{
-							$dt['a_UF'] = $dta['a_UF'];
-							$OK = 1;
+							$end = (array)$dta['endereco'];
+							if (isset($end['uf']))
+								{
+									$dt['a_UF'] = $end['uf'];
+								}							
 						}
-						
-					/******* CHECK */
+						echo '<pre>';
+
+						/******* CHECK */
 					if ($OK == 1)
 						{
 							$AuthorityNames->insert($dt);
