@@ -36,3 +36,10 @@ function romano($n)
     }
     return($r);               
 }
+
+function brtos($dt)
+    {
+        $dt = sonumero($dt);
+        $dt = substr($dt,4,4).substr($dt,2,2).substr($dt,0,2);
+        return $dt;
+    }

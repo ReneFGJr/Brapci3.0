@@ -88,6 +88,17 @@ class Res extends BaseController
 		return $tela;
 	}	
 
+	public function lattesdata($d1='',$d2='',$d3='',$d4='')
+	{
+		//
+		$tela = $this->cab("user");
+		$dt = array();
+		$LattesData = new \App\Models\Lattes\LattesData();
+		$tela .= $LattesData->process();
+
+		return $tela;
+	}	
+
 	public function research($d1='',$d2='',$d3='',$d4='')
 	{
 		//
