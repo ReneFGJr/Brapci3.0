@@ -40,11 +40,26 @@ class LattesData extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function Process()
+	function get_file_cnpq($id)
 		{
+			$token = getenv("token_lattes");
+			$data = urlencode('Authorization').'='.urlencode('Bearer '.$token);
+			$ch = curl_init("https://api.cnpq.br/lattes-data/v1/processos/".$id);
+			curl_setopt($ch, CURLOPT_HEADER, 0);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS,  $data);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			$output = curl_exec($ch);      
+			curl_close($ch);
+			echo $output;
+		}
+
+	function Process($id='20113023806')
+		{
+			$this->get_file_cnpq($id);
 			$file = '.tmp/LattesData/20113023806.json';
-			$file = '.tmp/LattesData/20113059030.json';
-			
+			//$file = '.tmp/LattesData/20113059030.json';
+			$file = '.tmp/LattesData/20085737102.json';
 			$dt = file_get_contents($file);
 			$dt = (array)json_decode($dt);
 
