@@ -40,5 +40,26 @@ class Datasets extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	
+	function CreateDatasets($name='',$parent='')	
+		{
+		$url = $this->url.'api/dataverses/lattesdata';
+
+		$dd['name'] = 'Bolsistas Produtividade PQ1A';
+		$dd['alias'] = 'science';
+		$dd['dataverseContacts'] = array();
+		array_push($dd['dataverseContacts'], array('contactEmail' => 'renefgj@gmail.com'));
+		array_push($dd['dataverseContacts'], array('contactEmail' => 'rene@sisdoc.com.br'));
+
+		$dd['affiliation'] = 'INEP';
+		$dd['description'] = 'Descricao do Projeto de Teste';
+		$dd['dataverseType'] = 'LABORATORY';
+
+		$json = json_encode($dd, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+		echo $json;
+		$rsp = $this->curl($url,$json);
+
+		echo '<pre style="color: blue;">=====>';
+		print_r($rsp);
+		echo '</pre>';		
+		}	
 }
