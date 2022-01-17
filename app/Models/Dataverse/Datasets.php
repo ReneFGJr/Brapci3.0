@@ -40,26 +40,37 @@ class Datasets extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function CreateDatasets($name='',$parent='')	
+	function CreateDatasets($dd='')	
 		{
-		$url = $this->url.'api/dataverses/lattesdata';
-
-		$dd['name'] = 'Bolsistas Produtividade PQ1A';
-		$dd['alias'] = 'science';
-		$dd['dataverseContacts'] = array();
-		array_push($dd['dataverseContacts'], array('contactEmail' => 'renefgj@gmail.com'));
-		array_push($dd['dataverseContacts'], array('contactEmail' => 'rene@sisdoc.com.br'));
-
-		$dd['affiliation'] = 'INEP';
-		$dd['description'] = 'Descricao do Projeto de Teste';
-		$dd['dataverseType'] = 'LABORATORY';
-
-		$json = json_encode($dd, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-		echo $json;
-		$rsp = $this->curl($url,$json);
-
-		echo '<pre style="color: blue;">=====>';
-		print_r($rsp);
-		echo '</pre>';		
-		}	
+			$url = $this->url.'api/dataverses/lattesdata';
+			$id = $dd['id'];
+	
+			$json = json_encode($dd, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+			$id = strzero(1,8);
+			$file = '.tmp/dataverse/dataverse-'.$id.'.json';
+			file_put_contents($file, $json);
+	
+			$dd['AUTH'] = true;
+			$dd['POST'] = true;
+			$dd['FILE'] = $file;
+	
+			$rsp = $this->curlExec($dd);
+			$rsp = json_decode($rsp,true);
+			
+			$sta = $rsp['status'];
+			switch($sta)
+				{
+					case 'OK':
+						$sx = 'OK';
+					break;
+					case 'ERROR':
+						$sx = '<pre style="color: red;">'; 
+						$sx .= $rsp['message'];	
+						$sx .= '<br>Dataverse Name: <b>'.$dd['alias'].'</b>';
+						$sx .= '<br><a href="'.$this->url.'dataverse/'.$dd['alias'].'" target="_blank">'.$url.'/'.$dd['alias'].'</a>';
+						$sx .= '</pre>';
+						break;
+				}
+			return $sx;
+			}
 }

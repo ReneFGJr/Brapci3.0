@@ -48,18 +48,47 @@ class Dataverse extends Model
 
 /**********************************************************************
  * TESTED *************************************************************
- ***********************************************************************/		
+ ***********************************************************************/
+	function PQ1()
+		{
+			$dd = array();
+			$dd['name'] = 'Bolsistas Produtividade PQ1A';
+			$dd['alias'] = 'produtividadePQ1A';
+			$dd['dataverseContacts'] = array();
+			array_push($dd['dataverseContacts'], array('contactEmail' => 'cnpq@cnpq.br'));
+			array_push($dd['dataverseContacts'], array('contactEmail' => 'lattesdata@cnpq.br'));
+	
+			$dd['affiliation'] = 'CNPq';
+			$dd['description'] = 'Projetos dos Bolsistas Produtividade PQ1A';
+			$dd['dataverseType'] = 'LABORATORY';
+			$dd['id'] = '2018';
+			$sx = $this->CreateDataverse($dd);			
+			return $sx;
+		}		
 	function test()
 		{
-			//$this->ViewDataverseTree('science');
-			//$this->ViewDataverseCollection('lattesdata');
-			//$this->ttt();
-			//exit;
-			//$this->ViewDataverseCollection('science');
 			$sx = '';
-			$sx = $this->CreateDataverse("");
-			//$sx .= $this->CreateDataset("");
+			
 			echo $sx;
+
+			if (isset($_GET['process']))
+				{
+					$id = sonumero($_GET['process']);
+					//$sx .= $this->PQ1();
+					$file = '../../Datasets/processos_pq1a/'.trim($id).'.json';
+					
+					echo '<hr>'.$file.'</hr>';				
+					if (file_exists($file))
+						{							
+							echo "OK";
+							$txt = file_get_contents($file);
+							$txt = json_decode($txt);
+							echo '<pre>';
+							print_r($txt);
+						} else {
+							echo " - NOT FOUND";
+						}
+				}
 			return $sx;
 		}
 
@@ -88,19 +117,10 @@ class Dataverse extends Model
 		exit;
 		}
 
-	function CreateDataverse($dt='',$parent='')	
+	function CreateDataverse($dd='')	
 		{
 		$url = $this->url.'api/dataverses/lattesdata';
-
-		$dd['name'] = 'Bolsistas Produtividade PQ1A';
-		$dd['alias'] = 'science2';
-		$dd['dataverseContacts'] = array();
-		array_push($dd['dataverseContacts'], array('contactEmail' => 'renefgj@gmail.com'));
-		array_push($dd['dataverseContacts'], array('contactEmail' => 'rene@sisdoc.com.br'));
-
-		$dd['affiliation'] = 'CNPq';
-		$dd['description'] = 'Descricao do Projeto de Teste';
-		$dd['dataverseType'] = 'LABORATORY';
+		$id = $dd['id'];
 
 		$json = json_encode($dd, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 		$id = strzero(1,8);
@@ -110,9 +130,6 @@ class Dataverse extends Model
 		$dd['AUTH'] = true;
 		$dd['POST'] = true;
 		$dd['FILE'] = $file;
-		//$file = '.tmp/dataverse/dataverse-0000000.json';
-		$dd['FILE'] = $file;
-
 
 		$rsp = $this->curlExec($dd);
 		$rsp = json_decode($rsp,true);
@@ -130,8 +147,6 @@ class Dataverse extends Model
 					$sx .= '<br><a href="'.$this->url.'dataverse/'.$dd['alias'].'" target="_blank">'.$url.'/'.$dd['alias'].'</a>';
 					$sx .= '</pre>';
 					break;
-					//http://200.130.0.214:8080/dataverse/science2
-					//http://200.130.0.214:8080/dataverse/science
 			}
 		return $sx;
 		}
