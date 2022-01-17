@@ -40,8 +40,9 @@ class LattesData extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function get_file_cnpq($id)
+	function API_getFileCnpq($id)
 		{
+			$file = '.tmp/LattesData/'.$id.'.json';
 			$token = getenv("token_lattes");
 			$data = urlencode('Authorization').'='.urlencode('Bearer '.$token);
 			$ch = curl_init("https://api.cnpq.br/lattes-data/v1/processos/".$id);
@@ -52,17 +53,70 @@ class LattesData extends Model
 			$output = curl_exec($ch);      
 			curl_close($ch);
 			echo $output;
+			/************* FAZER */
+			exit;
+			return $file;
+		}
+
+	function cachedAPI($id)
+		{
+			$file = '.tmp/LattesData/'.$id.'.json';
+			if (file_exists($file))
+				{
+					return $file;
+				}
+			$file = '../../Datasets/processos_pq1a/'.$id.'.json';
+			if (file_exists($file))
+				{
+					return $file;
+				}
+			$file = '../../Datasets/processos_incts/'.$id.'.json';
+			if (file_exists($file))
+				{
+					return $file;
+				}
+			return '';
 		}
 
 	function Process($id='20113023806')
 		{
-			$this->get_file_cnpq($id);
-			$file = '.tmp/LattesData/20113023806.json';
-			//$file = '.tmp/LattesData/20113059030.json';
-			$file = '.tmp/LattesData/20085737102.json';
+			$sx = '';			
+			$file = $this->cachedAPI($id);
+			/************************************ GET API CNPq */
+			if ($file == '')
+				{
+					$file = $this->API_getFileCnpq($id);
+				}
+			
+			/*********************** read metadata */
 			$dt = file_get_contents($file);
 			$dt = (array)json_decode($dt);
 
+
+			/********************************************** MODALIDADE */
+			$MOD = 'X';
+			if (isset($dt['modalidade']))
+				{
+				$MOD = (array)$dt['modalidade'];
+				$MOD = (string)$MOD['codigo'];
+				}
+			
+			switch($MOD)
+				{
+					case 'PQ':
+						$sx .= $this->modPQ($dt,$id);
+						break;
+					case 'AI':
+						$sx .= $this->modAI($dt,$id);
+						break;
+					default:
+						$sx .= 'OPS '.$MOD.' not implemented';
+						return $sx;
+				}
+			return $sx;
+		}
+	function modPQ($dt,$id)
+		{
 			$projeto = (array)$dt['projeto'];
 			$titulo = (string)$projeto['titulo'];
 			$titulo = nbr_author($titulo,7);
