@@ -125,6 +125,8 @@ class LattesData extends Model
 
 			$processo = (string)$dt['numeroProcesso'];
 
+			$abs = (string)$projeto['resumo'];
+
 			/**************************************************/
 			$key = (string)$dt['palavrasChave'];
 			$key = troca($key,', ',';');
@@ -144,5 +146,32 @@ class LattesData extends Model
 			echo '<pre>';
 			print_r($dt);
 			echo '</pre>';
+
+			$dv = array();
+			$dv['datasetVersion'] = array();
+			$dv['datasetVersion']['termsOfUse'] = 'CC0 Waiver';
+			$dv['datasetVersion']['license'] = 'CC0';
+			
+
+			/** Citation */
+			$ci = array();
+			$ci['fields'] = array();
+
+			$primitive = array();
+			$compound = array();
+			$primitive['title'] = $titulo;
+			$primitive['productionDate'] = $dti;
+			$primitive['dsDescription'] = $abs;
+			foreach($primitive as $fld => $vlr)
+				{
+					array_push($ci['fields'],array('typeName'=>$fld,'multiple'=>false,'value'=>$vlr,'typeClass'=>'primitive'));
+				}
+			
+			$mb = array($ci);
+			$dv['metadataBlocks'] = $mb;
+			echo '<pre>';
+			echo json_encode($dv,JSON_PRETTY_PRINT);
+			echo '<hr>';
+			print_r($dv);
 		}
 }
