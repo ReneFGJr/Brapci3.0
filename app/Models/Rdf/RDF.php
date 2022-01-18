@@ -49,6 +49,60 @@ class RDF extends Model
 		}
 	*/
 
+	function index($d1, $d2, $d3 = '', $d4 = '', $d5 = '', $cab = '')
+	{
+		$sx = '';
+		$type = get("type");
+		switch ($d1) {
+			case 'search':
+				$RDFFormVC = new \App\Models\Rdf\RDFFormVC();
+				$sx = '';
+				$sx .= $RDFFormVC->search($d1,$d2,$d3);
+				echo $sx;
+				exit;
+				break;
+			case 'exclude':				
+				$RDFForm = new \App\Models\Rdf\RDFForm();
+				$sx = $cab;
+				$sx .= $RDFForm->exclude($d2,$d3);
+				break;				
+			case 'form':
+				$RDFForm = new \App\Models\Rdf\RDFForm();
+				$sx = $cab;				
+				$sx .= $RDFForm->edit($d1,$d2,$d3,$d4,$d5);
+				break;
+			case 'text':
+				$RDFFormText = new \App\Models\Rdf\RDFFormText();
+				$sx = $cab;
+				$sx .= $RDFFormText->edit($d2);
+				break;
+			case 'inport':
+				$sx = $cab;
+				switch ($type) {
+					case 'prefix':
+						$this->RDFPrefix = new \App\Models\RDFPrefix();
+						$sx .= $this->RDFPrefix->inport();
+						break;					
+
+					case 'class':
+						$this->RDFClass = new \App\Models\RDFClass();
+						$sx .= $this->RDFClass->inport();
+						break;
+				}
+				break;
+				/************* Default */
+			default:
+				$sx = $cab;
+				$sx .= lang('command not found') . ': ' . $d1;
+				$sx .= '<ul>';
+				$sx .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=prefix') . '">' . lang('Inport Prefix') . '</a></li>';
+				$sx .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=class') . '">' . lang('Inport Class') . '</a></li>';
+				$sx .= '</ul>';
+		}
+		$sx = bs($sx);
+		return $sx;
+	}
+
 	function form($id)
 		{
 			$RDFForm = new \App\Models\Rdf\RDFForm();
@@ -72,7 +126,6 @@ class RDF extends Model
 		for ($r = 0; $r < count($dt); $r++) {
 			$line = $dt[$r];
 			$class = trim($line['c_class']);
-			/* echo '<br>==>'.$class; */
 			if ($class == $fclass) {
 				array_push($rsp, array($line['d_r1'], $line['d_r2'], $line['n_name']));
 			}
@@ -358,43 +411,6 @@ class RDF extends Model
 	}
 
 
-	function index($d1, $d2, $d3 = '', $cab = '')
-
-	{
-		$sx = '';
-		$type = get("type");
-		switch ($d1) {
-			case 'text':
-				$RdfFormText = new \App\Models\Rdf\RDFFormText();
-				$sx = $cab;
-				$sx .= $RdfFormText->edit($d2);
-				break;
-			case 'inport':
-				$sx = $cab;
-				switch ($type) {
-					case 'prefix':
-						$this->RDFPrefix = new \App\Models\RDFPrefix();
-						$sx .= $this->RDFPrefix->inport();
-						break;
-
-					case 'class':
-						$this->RDFClass = new \App\Models\RDFClass();
-						$sx .= $this->RDFClass->inport();
-						break;
-				}
-				break;
-				/************* Default */
-			default:
-				$sx = $cab;
-				$sx .= lang('command not found') . ': ' . $d1;
-				$sx .= '<ul>';
-				$sx .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=prefix') . '">' . lang('Inport Prefix') . '</a></li>';
-				$sx .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=class') . '">' . lang('Inport Class') . '</a></li>';
-				$sx .= '</ul>';
-		}
-		$sx = bs($sx);
-		return $sx;
-	}
 
 	function show_class($dt)
 		{

@@ -43,6 +43,26 @@ class RDFConcept extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
+	function like($t,$class)
+		{
+			if ($class != sonumero($class))
+				{
+					$RDFClass = new \App\Models\RDF\RDFClass();
+					$class = $RDFClass->class($class,false);
+				}
+
+			$cp = 'id_cc, n_name, cc_use';
+			$sql = "select $cp from ".$this->table." ";
+			$sql .= "left join rdf_name ON cc_pref_term = rdf_name.id_n";
+			$sql .= " where (cc_class = ".$class.') ';
+			$sql .= " and (n_name like '%".$t."%') ";
+			$sql .= " order by n_name";
+			$sql .= " limit 100";
+			$dt = $this->query($sql)->getResult();
+			$dt = (array)$dt;
+			return $dt;
+		}
+
 	function le($id)
 		{
 			$this->join(PREFIX.'rdf_name', 'cc_pref_term = rdf_name.id_n', 'LEFT');
