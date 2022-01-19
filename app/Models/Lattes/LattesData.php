@@ -104,7 +104,11 @@ class LattesData extends Model
 			switch($MOD)
 				{
 					case 'PQ':
-						$sx .= $this->modPQ($dt,$id);
+						$Dataset = new \App\Models\Dataverse\Datasets();
+						//$sx .= $this->modPQ($dt,$id);
+						$dd = $this->modPQ($dt,$id);
+						$sx .= $Dataset->CreateDatasets($dd);
+						$sx .= 'Dataset processado '.$id;
 						break;
 					case 'AI':
 						$sx .= $this->modAI($dt,$id);
@@ -114,6 +118,11 @@ class LattesData extends Model
 						return $sx;
 				}
 			return $sx;
+		}
+	function filename($process='')
+		{
+			$file = ".tmp/datasets/dataset_".$process.'.json';
+			return $file;
 		}
 	function modPQ($dt,$id)
 		{
@@ -139,39 +148,91 @@ class LattesData extends Model
 					$keys .= '<li>'.$word.'</li>';
 				}
 			$keys .= '</ul>';
-			echo h($titulo,2);
-			echo h($processo,6);
-			echo '<p>'.$dti.'-'.$dtf.'</p>';
-			echo $keys;
-			echo '<pre>';
-			print_r($dt);
-			echo '</pre>';
 
 			$dv = array();
 			$dv['datasetVersion'] = array();
 			$dv['datasetVersion']['termsOfUse'] = 'CC0 Waiver';
-			$dv['datasetVersion']['license'] = 'CC0';
-			
+			$dv['datasetVersion']['license'] = 'CC0';			
 
-			/** Citation */
+			/********************** metadataBlocks */			
+
+			/********************************************** Citation */
 			$ci = array();
-			$ci['fields'] = array();
+			array_push($ci,$this->primitive('title',$titulo));
+			array_push($ci,$this->primitive('productionDate',$this->date($dti)));
 
-			$primitive = array();
-			$compound = array();
-			$primitive['title'] = $titulo;
-			$primitive['productionDate'] = $dti;
-			$primitive['dsDescription'] = $abs;
-			foreach($primitive as $fld => $vlr)
-				{
-					array_push($ci['fields'],array('typeName'=>$fld,'multiple'=>false,'value'=>$vlr,'typeClass'=>'primitive'));
-				}
-			
-			$mb = array($ci);
-			$dv['metadataBlocks'] = $mb;
-			echo '<pre>';
-			echo json_encode($dv,JSON_PRETTY_PRINT);
-			echo '<hr>';
-			print_r($dv);
+			/********************************************** Description */
+			$desc = array();
+			array_push($desc,$this->primitive('dsDescriptionValue',$abs));
+			/* CITATION */
+			array_push($ci,$this->compound('dsDescription',$desc,'dsDescriptionValue'));		
+
+
+			/** Subject */
+			array_push($ci,$this->controlledVocabulary('subject',array('Genetica')));	
+
+			$mb['citation']['fields'] = $ci;
+
+			/* Display Name */
+			$mb['citation']['displayName'] = "Display Name Metadata";
+
+			/** Author */
+			$auth = array();
+			array_push($auth,$this->primitive('authorAffiliation','CNPq'));
+			array_push($auth,$this->primitive('authorName','Fulando de Tal'));
+			/* CITATION */
+			array_push($ci,$this->compound('author',$auth));		
+
+			/* Metada Block */
+			$dv['datasetVersion']['metadataBlocks'] = $mb;
+			$dv['id'] = $id;
+
+			return $dv;
+
+			//$json = json_encode($dv,JSON_PRETTY_PRINT);
+			//$file = $this->filename($id);
+			//file_put_contents($file,$json);
 		}
+
+		function primitive($field,$value)
+			{
+				$primitive = array('typeName'=>$field,'multiple'=>false,'value'=>$value,'typeClass'=>'primitive');
+				return $primitive;
+			}
+		function controlledVocabulary($field,$value)
+			{
+				if (is_array($value))
+					{
+						$primitive = array('typeName'=>$field,'multiple'=>true,'value'=>$value,'typeClass'=>'controlledVocabulary');
+					} else {
+						$primitive = array('typeName'=>$field,'multiple'=>false,'value'=>$value,'typeClass'=>'controlledVocabulary');
+					}
+				return $primitive;
+			}			
+		function compound($field,$value,$subfield='')
+			{
+				$dt = array();
+				if (strlen($subfield) > 0)
+					{
+						$dt[$subfield] = $value[0];
+						$dt = array($dt);
+					} else {
+						$dt = $value;
+					}
+
+				
+				$compound = array('typeName'=>$field,'multiple'=>true,'value'=>$dt,'typeClass'=>'compound');
+
+//				echo '<pre>';
+				//print_r($compound);
+				//exit;
+
+				return $compound;
+			}
+		function date($dt)
+			{
+				$dt = sonumero($dt);
+				$dt = substr($dt,0,4).'-'.substr($dt,4,2).'-'.substr($dt,6,2);
+				return $dt;
+			}			
 }

@@ -42,19 +42,21 @@ class Datasets extends Model
 
 	function CreateDatasets($dd='')	
 		{
-			$url = $this->url.'api/dataverses/lattesdata';
+			$sx ='???';
+			$DataverseAPI = new \App\Models\Dataverse\API();
+		
+			$url = $this->url.'api/dataverses/produtividadePQ1A/datasets';
 			$id = $dd['id'];
 	
 			$json = json_encode($dd, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-			$id = strzero(1,8);
-			$file = '.tmp/dataverse/dataverse-'.$id.'.json';
+			$file = '.tmp/datasets/dataset_'.$id.'.json';
 			file_put_contents($file, $json);
 	
 			$dd['AUTH'] = true;
 			$dd['POST'] = true;
 			$dd['FILE'] = $file;
 	
-			$rsp = $this->curlExec($dd);
+			$rsp = $DataverseAPI->curlExec($dd);
 			$rsp = json_decode($rsp,true);
 			
 			$sta = $rsp['status'];
@@ -63,6 +65,7 @@ class Datasets extends Model
 					case 'OK':
 						$sx = 'OK';
 					break;
+
 					case 'ERROR':
 						$sx = '<pre style="color: red;">'; 
 						$sx .= $rsp['message'];	
