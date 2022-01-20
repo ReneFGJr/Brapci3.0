@@ -186,6 +186,14 @@ class LattesData extends Model
 			/* Metada Block */
 			$dv['datasetVersion']['metadataBlocks'] = $mb;
 			$dv['id'] = $id;
+			if ((!isset($_ENV['DATAVERSE_URL'])) or (!isset($_ENV['DATAVERSE_APIKEY'])))
+				{
+					echo "ERRO: defina a variavel DATAVERSE_URL e DATAVERSE_APIKEY no .env";
+					exit;
+				}
+			$dv['url'] = $_ENV['DATAVERSE_URL'];
+			$dv['apikey'] = $_ENV['DATAVERSE_APIKEY'];
+			$dv['api'] = 'api/dataverses/produtividadePQ1A/datasets';
 
 			return $dv;
 

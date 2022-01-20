@@ -42,15 +42,20 @@ class API extends Model
 
 	function curlExec($dt)
 	{
-		$api = 'api/dataverses/lattesdata';
+		if ((!isset($dt['url'])) or (!isset($dt['api'])) or (!isset($dt['apikey'])))
+			{
+				echo "Error: Missing URL, API or API Key";
+				exit;
+			}
 
-		$url = $this->url . $api;
+		$url = $dt['url'] . $dt['api'];
+		$apiKey = $dt['apikey'];
 
 		/* Comando */
 		$cmd = 'curl ';
 		/* APIKEY */
 		if (isset($dt['AUTH'])) {
-			$cmd .= '-H X-Dataverse-key:' . $this->apiKey . ' ';
+			$cmd .= '-H X-Dataverse-key:' . $apiKey . ' ';
 		}
 
 		/* POST */
@@ -67,6 +72,9 @@ class API extends Model
 			//		$cmd .= '-H "Content-Type: application/json" ';
 			$cmd .= '--upload-file ' . realpath($dt['FILE']) . ' ';
 		}
+
+		echo '<tt>'.$cmd.'</tt>';
+		//exit;
 		$txt = shell_exec($cmd);
 		return $txt;
 	}
