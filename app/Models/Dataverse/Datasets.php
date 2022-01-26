@@ -56,14 +56,23 @@ class Datasets extends Model
 			$dd['POST'] = true;
 			$dd['FILE'] = $file;
 	
-			$rsp = $DataverseAPI->curlExec($dd);
-			$rsp = json_decode($rsp,true);
+			$rst = $DataverseAPI->curlExec($dd);
+			$rsp = json_decode($rst['json'],true);
 			
 			$sta = $rsp['status'];
 			switch($sta)
 				{
 					case 'OK':
-						$sx = 'OK';
+						$sx = '';
+						$DATAVERSE_URL = $_SERVER['DATAVERSE_URL'];
+
+						$titulo = $dd['datasetVersion']['metadataBlocks']['citation']['fields'][0]['value'];
+						$DOI = $rsp['data']['persistentId'];
+						$link = $DATAVERSE_URL.'dataset.xhtml?persistentId='.$DOI.'&version=DRAFT';
+						$link = '<a href="'.($link).'" target="_blank">'.$DOI.'</a>';
+						
+						$sx .= '<h4>'.$titulo.'</h4>';
+						$sx .= '<p>Persistent ID: '.$link.'</p>';
 					break;
 
 					case 'ERROR':

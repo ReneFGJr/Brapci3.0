@@ -108,7 +108,8 @@ class LattesData extends Model
 						//$sx .= $this->modPQ($dt,$id);
 						$dd = $this->modPQ($dt,$id);
 						$sx .= $Dataset->CreateDatasets($dd);
-						$sx .= 'Dataset processado '.$id;
+						$msg = 'Dataset processado '.$id;
+						$sx .= bsmessage($msg,1);
 						break;
 					case 'AI':
 						$sx .= $this->modAI($dt,$id);
