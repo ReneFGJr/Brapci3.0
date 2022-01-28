@@ -46,8 +46,12 @@ function brtos($dt)
 
 function df($N,$pre='')
     {
-        if (defined($N))
+        if (defined($N) == true)
             {
+                echo '<br>==>'.$N;
+                echo '<br>==>'.constant($N);
+                echo '<br>==>'.$$N;
+                exit;
                 return $pre.constant($N);
             }
         return '';
