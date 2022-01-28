@@ -46,6 +46,7 @@ class OaiPMHListRecord extends Model
 
 	function resume($id)
 		{
+			$MOD = df('MOD','/');
 			$tela = '';
 			$sql = "select count(*) as total, lr_procees 
 					from ".$this->table."
@@ -63,10 +64,10 @@ class OaiPMHListRecord extends Model
 					if ($d['lr_procees'] == 2) { $v[2] = number_format($d['total'],0,',','.'); }
 					if ($d['lr_procees'] == 9) { $v[9] = number_format($d['total'],0,',','.'); }
 				}
-			$tela .= bsc(lang('brapci.oai_status_0').'<h1><a href="'.(PATH.MODULE.'/oai/'.$id.'/0').'">'.$v[0].'</a></h1>',2,'border');
-			$tela .= bsc(lang('brapci.oai_status_1').'<h1><a href="'.(PATH.MODULE.'/oai/'.$id.'/1').'">'.$v[1].'</a></h1>',2,'border');
-			$tela .= bsc(lang('brapci.oai_status_2').'<h1><a href="'.(PATH.MODULE.'/oai/'.$id.'/2').'">'.$v[2].'</a></h1>',2,'border');
-			$tela .= bsc(lang('brapci.oai_status_9').'<h1><a href="'.(PATH.MODULE.'/oai/'.$id.'/9').'">'.$v[3].'</a></h1>',2,'border');
+			$tela .= bsc(lang('brapci.oai_status_0').'<h1><a href="'.(PATH.MODULE.$MOD.'/oai/'.$id.'/0').'">'.$v[0].'</a></h1>',2,'border');
+			$tela .= bsc(lang('brapci.oai_status_1').'<h1><a href="'.(PATH.MODULE.$MOD.'/oai/'.$id.'/1').'">'.$v[1].'</a></h1>',2,'border');
+			$tela .= bsc(lang('brapci.oai_status_2').'<h1><a href="'.(PATH.MODULE.$MOD.'/oai/'.$id.'/2').'">'.$v[2].'</a></h1>',2,'border');
+			$tela .= bsc(lang('brapci.oai_status_9').'<h1><a href="'.(PATH.MODULE.$MOD.'/oai/'.$id.'/9').'">'.$v[3].'</a></h1>',2,'border');
 			return $tela;
 		}
 

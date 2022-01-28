@@ -44,12 +44,15 @@ class Oaipmh extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function index($d1,$d2)
+	function index($d1,$d2,$d3,$d4)
 		{
 			echo '===>'.$d1;
 			echo '===>'.$d2;
 			switch($d1)
 				{
+					case 'status':
+						echo '===>'.'status';
+						break;
 					case 'get_proceedings':
 						$sx = $this->harvesting_proceedings($d2);
 					break;
