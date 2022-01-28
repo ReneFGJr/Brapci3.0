@@ -168,8 +168,6 @@ class JournalIssue extends Model
 			$this->orderBy('is_year desc, is_vol, is_nr');
 			$dt = $this->FindAll();
 
-			print_r($dt);
-
 			if (count($dt) == 0)
 				{
 					$this->view_issue_import($idx);
@@ -178,19 +176,18 @@ class JournalIssue extends Model
 					$dt = $this->FindAll();
 				}
 			$sx = '';
-			$xyear = '';
 			for ($r=0;$r < count($dt);$r++)
 				{
 					$dtx = $dt[$r];
-					$year = $dtx['is_year'];
-					if ($year != $xyear)
-						{
-							$sx .= bsc(h($year,5),12);
-							$xyear = $year;
-						}
+					$sx .= bsc(h($dtx['is_year'],3),1);
+					$sx .= bsc(h($dtx['is_vol'],3),1);
+					$sx .= bsc(h($dtx['is_nr'],3),1);
+					$sx .= bsc($dtx['is_place'],3);
+					$sx .= bsc($dtx['is_thema'],6);
+					$sx .= bsc('<hr>',12);
 					$link = '<a href="'.PATH.'res/v/'.$dtx['is_source_issue'].'">';
 					$linka = '</a>';
-					$sx .= 'xx'.bsc($link.$dtx['is_vol'].'<br/>'.$dtx['is_nr'].$linka,1,'p-2 m-1 shadown bordered bw');
+					//'p-2 m-1 shadown bordered bw'
 				}
 			$sx = bs($sx);
 			return $sx;
