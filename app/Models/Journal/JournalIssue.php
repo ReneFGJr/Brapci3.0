@@ -168,6 +168,8 @@ class JournalIssue extends Model
 			$this->orderBy('is_year desc, is_vol, is_nr');
 			$dt = $this->FindAll();
 
+			print_r($dt);
+
 			if (count($dt) == 0)
 				{
 					$this->view_issue_import($idx);
