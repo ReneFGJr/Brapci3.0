@@ -163,6 +163,7 @@ class JournalIssue extends Model
 
 	function view_issue($idx = 0)
 		{
+			$MOD = df('MOD','/');
 			$this->where('is_source_rdf',$idx);
 
 			$this->orderBy('is_year desc, is_vol, is_nr');
@@ -187,7 +188,7 @@ class JournalIssue extends Model
 					$ed = bsicone('edit');
 					$sx .= bsc($ed,5);
 					$sx .= bsc('<hr>',12);
-					$link = '<a href="'.PATH.'res/v/'.$dtx['is_source_issue'].'">';
+					$link = '<a href="'.PATH.MODULE.$MOD.'res/v/'.$dtx['is_source_issue'].'">';
 					$linka = '</a>';
 					//'p-2 m-1 shadown bordered bw'
 				}
