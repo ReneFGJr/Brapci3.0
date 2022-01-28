@@ -74,6 +74,7 @@ class Main extends BaseController
 	{
 		define("MOD","proceeding");
 		$Journals = new \App\Models\Journal\Journals();
+		define("PREFIX", "brapci_events.");
 
 		$tela = $this->cab('all');
 		$tela .= $Journals->index($d2,$d3,$d4);

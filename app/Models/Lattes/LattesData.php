@@ -80,11 +80,13 @@ class LattesData extends Model
 
 	function Process($id='20113023806')
 		{
-			$sx = '';			
+			$sx = '';		
 			$file = $this->cachedAPI($id);
 			/************************************ GET API CNPq */
 			if ($file == '')
 				{
+					$sx = bsmessage('Processo não identificado! '.$id);
+					return $sx;
 					$file = $this->API_getFileCnpq($id);
 				}
 			
@@ -107,11 +109,16 @@ class LattesData extends Model
 						$Dataset = new \App\Models\Dataverse\Datasets();
 						//$sx .= $this->modPQ($dt,$id);
 						$dd = $this->modPQ($dt,$id);
+
+						/* ETAPAS */
 						$sx .= $Dataset->CreateDatasets($dd);
+						/* ENVIA e-MAIL */
 						$msg = 'Dataset processado '.$id;
 						$sx .= bsmessage($msg,1);
 						break;
 					case 'AI':
+						echo "INCT";
+						exit;
 						$sx .= $this->modAI($dt,$id);
 						break;
 					default:
@@ -120,6 +127,7 @@ class LattesData extends Model
 				}
 			return $sx;
 		}
+
 	function filename($process='')
 		{
 			$file = ".tmp/datasets/dataset_".$process.'.json';
