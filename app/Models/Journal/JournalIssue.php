@@ -113,6 +113,8 @@ class JournalIssue extends Model
 			$RDF = new \App\Models\Rdf\RDF();
 			$dt = $RDF->le($id,0,'brapci');
 
+			print_r($dt);
+
 			$dtd = $dt['data'];
 			$vol = '';
 			$nr = '';
@@ -162,6 +164,7 @@ class JournalIssue extends Model
 	function view_issue($idx = 0)
 		{
 			$this->where('is_source_rdf',$idx);
+
 			$this->orderBy('is_year desc, is_vol, is_nr');
 			$dt = $this->FindAll();
 
@@ -185,7 +188,7 @@ class JournalIssue extends Model
 						}
 					$link = '<a href="'.PATH.'res/v/'.$dtx['is_source_issue'].'">';
 					$linka = '</a>';
-					$sx .= bsc($link.$dtx['is_vol'].'<br/>'.$dtx['is_nr'].$linka,1,'p-2 m-1 shadown bordered bw');
+					$sx .= 'xx'.bsc($link.$dtx['is_vol'].'<br/>'.$dtx['is_nr'].$linka,1,'p-2 m-1 shadown bordered bw');
 				}
 			$sx = bs($sx);
 			return $sx;
