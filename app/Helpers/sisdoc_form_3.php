@@ -48,7 +48,7 @@ function df($N,$pre='')
     {
         if (defined($N))
             {
-                return $pre.$$N;
+                return $pre.constant($N);
             }
         return '';
     }
