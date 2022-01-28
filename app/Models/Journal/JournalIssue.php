@@ -67,6 +67,8 @@ class JournalIssue extends Model
 
 	function edit($reg,$id=0)
 		{
+			$MOD = df('MOD','/');
+			
 			$this->id = $id;
 			if ($reg > 0)
 				{
@@ -85,8 +87,8 @@ class JournalIssue extends Model
 					$this->typeFields[1] = 'set:'.$id;
 					$this->typeFields[2] = 'set:'.$dt['jnl_frbr'];
 				}
-			$this->path = base_url(PATH.MODULE.'/index/edit_issue/');
-			$this->path_back = base_url(PATH.MODULE.'/index/oai_check/');
+			$this->path = (PATH.MODULE.$MOD.'/index/edit_issue/');
+			$this->path_back = (PATH.MODULE.df('mod').'/index/oai_check/');
 			$tela .= form($this);
 			$tela = bs(bsc($tela,12));
 			return $tela;
@@ -94,15 +96,14 @@ class JournalIssue extends Model
 
 	function btn_new_issue($dt)
 		{
-			$MOD = '';
-			if (defined('MOD')) { $MOD = '/'.MOD; }
+			$MOD = df('MOD','/');
 			$id_rdf = $dt['jnl_frbr'];
 			$id = $dt['id_jnl'];
-			$url = base_url(PATH.MODULE.$MOD.'/index/edit_issue/0/'.$id.'/'.$id_rdf);
+			$url = (PATH.MODULE.$MOD.'/index/edit_issue/0/'.$id.'/'.$id_rdf);
 			$tela = '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_issue_new').'</a>';
 			
 			$tela .= ' ';
-			$url = base_url(PATH.MODULE.'/index/oai_check/');
+			$url = (PATH.MODULE.$MOD.'/index/oai_check/');
 			$tela .= '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_issue_harvesting').'</a>';			
 			return $tela;
 		}
