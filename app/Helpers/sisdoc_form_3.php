@@ -44,11 +44,11 @@ function brtos($dt)
         return $dt;
     }
 
-function df($N)
+function df($N,$pre='')
     {
         if (defined($N))
             {
-                return $N.'/';
+                return $pre.$$N;
             }
         return '';
     }
