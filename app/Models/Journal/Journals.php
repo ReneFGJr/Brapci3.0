@@ -63,8 +63,8 @@ class Journals extends Model
 
 	function index($d1,$d2,$d3)
 		{
-			$this->path = base_url(PATH.'/index/');
-			$this->path_back = base_url(PATH.'/index/');
+			$this->path = base_url(PATH.MODULE.'/index/');
+			$this->path_back = base_url(PATH.MODULE.'/index/');
 
 			switch ($d1)
 				{
