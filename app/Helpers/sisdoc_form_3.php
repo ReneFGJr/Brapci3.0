@@ -44,15 +44,13 @@ function brtos($dt)
         return $dt;
     }
 
-function df($N,$pre='')
+function df($N,$pre='',$pos='')
     {
         if (defined($N) == true)
             {
-                echo '<br>==>'.$N;
-                echo '<br>==>'.constant($N);
-                echo '<br>==>'.$$N;
-                exit;
-                return $pre.constant($N);
+                $var = constant($N);
+                $var = $pre.$var.$pos;
+                return $var;
             }
         return '';
     }
