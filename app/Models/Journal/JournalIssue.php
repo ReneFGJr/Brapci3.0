@@ -95,7 +95,7 @@ class JournalIssue extends Model
 	function btn_new_issue($dt)
 		{
 			$MOD = '';
-			if (defined(MOD)) { $MOD = MOD; }
+			if (defined('MOD')) { $MOD = MOD; }
 			$id_rdf = $dt['jnl_frbr'];
 			$id = $dt['id_jnl'];
 			$url = base_url(PATH.MODULE.$MOD.'/index/edit_issue/0/'.$id.'/'.$id_rdf);
