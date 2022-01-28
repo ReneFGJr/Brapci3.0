@@ -188,7 +188,7 @@ class JournalIssue extends Model
 					$ed = bsicone('edit');
 					$sx .= bsc($ed,5);
 					$sx .= bsc('<hr>',12);
-					$link = '<a href="'.PATH.MODULE.$MOD.'res/v/'.$dtx['is_source_issue'].'">';
+					$link = '<a href="'.PATH.'res/v/'.$dtx['is_source_issue'].'">';
 					$linka = '</a>';
 					//'p-2 m-1 shadown bordered bw'
 				}
