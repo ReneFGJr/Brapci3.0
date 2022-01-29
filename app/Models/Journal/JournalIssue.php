@@ -25,8 +25,8 @@ class JournalIssue extends Model
 		'hidden', 'sql:id_jnl:jnl_name:brapci.source_source', 'none',
 		'hidden','year', 'none',
 		'string:10','string:10','string:10',
-		'string:100','string:100','string:100',
-		'hidden','string:100','set:0'
+		'none','string:100','none',
+		'string:100','none','none'
 	];
 
 	// Dates
@@ -99,16 +99,9 @@ class JournalIssue extends Model
 				} else {
 					$sx = h(lang('Editar'),1);
 					$Journal = new \App\Models\Journal\Journals();
-					$dt = $Journal->find($id);
+					$dt = $Journal->find($id);									
 					
-					$this->typeFields        = [	
-						'hidden','hidden','hidden',
-						'hidden','year',
-						'string:10','string:10','string:10','string:100',
-						'none','none','none','string:100','set:0'
-					];					
-					$this->typeFields[1] = 'set:'.$id;
-					$this->typeFields[2] = $source;
+					$this->typeFields[2] = 'set:0';
 					$this->path_back = (PATH.MODULE.$MOD.'/index/viewid/'.get('is_source'));
 				}
 			$this->path = (PATH.MODULE.$MOD.'/index/edit_issue/');
