@@ -91,6 +91,7 @@ class JournalIssue extends Model
 					$source = 'sql:id_jnl:jnl_name:brapci.source_source where jnl_collection = \'JA\' order by jnl_name';
 				}
 			$this->typeFields[1] = $source;
+
 			if ($reg > 0)
 				{
 					$this->id = $reg;					
@@ -107,7 +108,7 @@ class JournalIssue extends Model
 						'none','none','none','string:100','set:0'
 					];					
 					$this->typeFields[1] = 'set:'.$id;
-					$this->typeFields[2] = 'set:'.$dt['jnl_frbr'];
+					$this->typeFields[2] = $source;
 					$this->path_back = (PATH.MODULE.$MOD.'/index/viewid/'.get('is_source'));
 				}
 			$this->path = (PATH.MODULE.$MOD.'/index/edit_issue/');
