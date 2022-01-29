@@ -101,13 +101,14 @@ class JournalIssue extends Model
 					$dt = $Journal->find($id);
 					
 					$this->typeFields        = [	
-						'hidden',$source,'hidden',
+						'hidden','hidden','hidden',
 						'hidden','year',
 						'string:10','string:10','string:10','string:100',
 						'none','none','none','string:100','set:0'
 					];					
 					$this->typeFields[1] = 'set:'.$id;
 					$this->typeFields[2] = 'set:'.$dt['jnl_frbr'];
+					$this->path_back = (PATH.MODULE.$MOD.'/index/viewid/'.get('is_source'));
 				}
 			$this->path = (PATH.MODULE.$MOD.'/index/edit_issue/');
 			if (get($this->primaryKey) != '')
