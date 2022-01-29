@@ -16,19 +16,17 @@ class JournalIssue extends Model
 	protected $protectFields        = true;
 	protected $allowedFields        = [
 		'id_is','is_source','is_source_rdf',
-		'is_source_issue','is_year',
-		'is_issue','is_vol','is_nr','is_place',
-		'is_edition','is_thema','is_cover','is_url_oai',
-		'is_works'
+		'is_source_issue','is_year', 'is_issue',
+		'is_vol','is_nr','is_place',
+		'is_edition','is_thema','is_cover',
+		'is_url_oai', 'is_works'
 	];
 	var $typeFields        = [	
-		'hidden',
-		'sql:id_jnl:jnl_name:brapci.source_source',
-		'hidden',
-		'hidden','year',
-		'string:10','string:10','string:10','string:100',
-		'string:100','string:100','hidden','string:100',
-		'set:0'
+		'hidden', 'sql:id_jnl:jnl_name:brapci.source_source', 'none',
+		'hidden','year', 'none',
+		'string:10','string:10','string:10',
+		'string:100','string:100','string:100',
+		'hidden','string:100','set:0'
 	];
 
 	// Dates
@@ -92,11 +90,10 @@ class JournalIssue extends Model
 				} else {
 					$source = 'sql:id_jnl:jnl_name:brapci.source_source where jnl_collection = \'JA\' order by jnl_name';
 				}
-			
+			$this->typeFields[1] = $source;
 			if ($reg > 0)
 				{
-					$this->id = $reg;
-					$this->typeFields[1] = $source;
+					$this->id = $reg;					
 					$sx = '';
 				} else {
 					$sx = h(lang('Editar'),1);
@@ -107,7 +104,7 @@ class JournalIssue extends Model
 						'hidden',$source,'hidden',
 						'hidden','year',
 						'string:10','string:10','string:10','string:100',
-						'none','none','none','string:100'
+						'none','none','none','string:100','set:0'
 					];					
 					$this->typeFields[1] = 'set:'.$id;
 					$this->typeFields[2] = 'set:'.$dt['jnl_frbr'];
@@ -197,7 +194,6 @@ class JournalIssue extends Model
 					$value = trim($dtl['n_name']);
 					$id1 = $dtl['d_r1'];
 					$id2 = $dtl['d_r2'];
-					echo '==>'.$class.'==='.$value.'<br>';
 					switch($class)
 						{
 							case 'dateOfPublication':

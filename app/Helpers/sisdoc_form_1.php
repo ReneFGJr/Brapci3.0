@@ -89,6 +89,7 @@ function form($th)
     /* Formulario */
 
     for ($r = 0; $r < count($fl); $r++) {
+
         $fld = $fl[$r];
         $typ = $tp[$r];
         $vlr = '';
