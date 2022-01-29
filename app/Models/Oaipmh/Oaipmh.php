@@ -44,14 +44,15 @@ class Oaipmh extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function index($d1,$d2,$d3,$d4)
+	function index($d1,$d2,$d3='',$d4='')
 		{
-			echo '===>'.$d1;
-			echo '===>'.$d2;
+			$sx = '';
+			$sx .= '===>'.$d1.'<br>';
+			$sx .= '===>'.$d2.'<br>';
 			switch($d1)
 				{
 					case 'status':
-						echo '===>'.'status';
+						$sx .= '===>'.'status';
 						break;
 					case 'get_proceedings':
 						$sx = $this->harvesting_proceedings($d2);
@@ -62,7 +63,7 @@ class Oaipmh extends Model
 					break;
 
 					default:
-						$sx = ':??:';	
+						$sx .= ':??: COMMAND NOT FOUND';	
 						$sx .= "d1=".$d1.'<br>';
 						$sx .= "d2=".$d2.'<br>';
 						$sx .= "d1=".$d1.'<br>';
@@ -71,10 +72,10 @@ class Oaipmh extends Model
 			return $sx;
 		}
 
-	function resume($id)
+	function resume($id,$issue=0)
 		{
 			$OaipmhListRecord = new \App\Models\Oaipmh\OaipmhListRecord();
-			$tela = $OaipmhListRecord->resume($id);
+			$tela = $OaipmhListRecord->resume($id,$issue);
 			return $tela;
 		}
 
@@ -135,12 +136,20 @@ class Oaipmh extends Model
 
 			$JournalIssue = new \App\Models\Journal\JournalIssue();
 			$dt = $JournalIssue->find($id);
-			
+
+			$Journal = new \App\Models\Journal\Journals();
+			$dj = $Journal->find($dt['is_source']);
+			$sx .= $Journal->journal_header($dj);
+
+			/* Identifica lista de registros */
 			$OaipmhListSetSepc = new \App\Models\Oaipmh\OaipmhListSetSepc();
 			$sx .= $OaipmhListSetSepc->harvesting($dt,'EV');
 
+			/* Identifica lista de artigos */
 			$OaipmhListRecord = new \App\Models\Oaipmh\OaipmhListRecord();
-			$sx .= $OaipmhListRecord->harvesting($dt,'EV');			
+			$sx .= $OaipmhListRecord->harvesting($dt,'EV');
+
+			$JournalIssue->update_issue($id);
 
 			return $sx;
 		}

@@ -18,14 +18,17 @@ class JournalIssue extends Model
 		'id_is','is_source','is_source_rdf',
 		'is_source_issue','is_year',
 		'is_issue','is_vol','is_nr','is_place',
-		'is_edition','is_thema','is_cover','is_url_oai'
+		'is_edition','is_thema','is_cover','is_url_oai',
+		'is_works'
 	];
-
 	var $typeFields        = [	
-		'hidden','set','hidden',
+		'hidden',
+		'sql:id_jnl:jnl_name:brapci.source_source',
+		'hidden',
 		'hidden','year',
 		'string:10','string:10','string:10','string:100',
-		'string:100','string:100','hidden','string:100'
+		'string:100','string:100','hidden','string:100',
+		'set:0'
 	];
 
 	// Dates
@@ -52,68 +55,135 @@ class JournalIssue extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function oai_check()
+	function harvesting_oaipmh($jnl=0,$issue=0)
 		{
-			$tela = '';
-			$dt = $this->where('is_source_issue',0)->FindAll();
+			$sx = '';
+			$issue = round($issue);
+
+			if ($issue > 0)
+				{
+					$this->where('id_is',$issue);
+				} else {				
+					$this->where('is_source_issue',0);
+					if ($jnl > 0)
+						{
+							$this->where('is_source',$jnl);
+						}
+				}
+			$dt = $this->FindAll();
+
 			for ($r=0;$r < count($dt);$r++)
 				{
 					$d = $dt[$r];
 					$Oaipmh = new \App\Models\Oaipmh\Oaipmh();
-					$tela = $Oaipmh->index('get_proceedings',$d['id_is']);
+					$sx = $Oaipmh->index('get_proceedings',$d['id_is']);
 				}
-			return $tela;		
+			return $sx;		
 		}
 
 	function edit($reg,$id=0)
 		{
 			$MOD = df('MOD','/');
+			if (MODULE != 'res') { $MOD = ''; }
+
+			if (MOD == 'proceeding')
+				{
+					$source = 'sql:id_jnl:jnl_name:brapci.source_source where jnl_collection = \'EV\' order by jnl_name';
+				} else {
+					$source = 'sql:id_jnl:jnl_name:brapci.source_source where jnl_collection = \'JA\' order by jnl_name';
+				}
 			
-			$this->id = $id;
 			if ($reg > 0)
 				{
-					$dt = $this->find($id);					
-					$tela = h($dt['jnl_name'],1);
+					$this->id = $reg;
+					$this->typeFields[1] = $source;
+					$sx = '';
 				} else {
-					$tela = h(lang('Editar'),1);
+					$sx = h(lang('Editar'),1);
 					$Journal = new \App\Models\Journal\Journals();
 					$dt = $Journal->find($id);
+					
 					$this->typeFields        = [	
-						'hidden','set','hidden',
-						'hidden','none',
-						'none','none','none','none',
+						'hidden',$source,'hidden',
+						'hidden','year',
+						'string:10','string:10','string:10','string:100',
 						'none','none','none','string:100'
 					];					
 					$this->typeFields[1] = 'set:'.$id;
 					$this->typeFields[2] = 'set:'.$dt['jnl_frbr'];
 				}
 			$this->path = (PATH.MODULE.$MOD.'/index/edit_issue/');
-			$this->path_back = (PATH.MODULE.df('mod').'/index/oai_check/');
-			$tela .= form($this);
-			$tela = bs(bsc($tela,12));
-			return $tela;
+			if (get($this->primaryKey) != '')
+				{
+					$id = get($this->primaryKey);
+					$this->id = $id;
+					$dd = $this->find($id);
+					$this->path_back = (PATH.MODULE.$MOD.'/index/viewid/'.$dd['is_source']);
+				}
+
+			$sx .= form($this);
+			$sx = bs(bsc($sx,12));
+			return $sx;
+		}
+
+	function ArticlesIssue($id)
+		{
+			$sx = '';
+			$RDF = new \App\Models\RDF\RDF();
+			$dt = $RDF->le($id);
+
+			$art = $RDF->recover($dt,'hasIssueOf');
+			$args = array();
+			for($r=0;$r < count($art);$r++)
+				{
+					$d = $art[$r];
+					$sx .= $RDF->c($d);
+					$sx .= '<hr>';
+				}
+			return $sx;
 		}
 
 	function btn_new_issue($dt)
 		{
 			$MOD = df('MOD','/');
+			if (MODULE != 'res') { $MOD = ''; }
+			
 			$id_rdf = $dt['jnl_frbr'];
 			$id = $dt['id_jnl'];
-			$url = (PATH.MODULE.$MOD.'/index/edit_issue/0/'.$id.'/'.$id_rdf);
-			$tela = '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_issue_new').'</a>';
-			
-			$tela .= ' ';
-			$url = (PATH.MODULE.$MOD.'/index/oai_check/');
-			$tela .= '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_issue_harvesting').'</a>';			
-			return $tela;
+			$url = (PATH.MODULE.'/index/edit_issue/0/'.$id.'/'.$id_rdf);
+			$sx = '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_issue_new').'</a>';
+
+			/************************************************ JOURNAL */
+			if ($MOD == '/journal') 
+			{
+				$sx .= ' ';
+				$url = (PATH.MODULE.'/index/harvesting/'.$id);
+				$sx .= '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_issue_harvesting').'</a>';			
+
+				$sx .= ' ';
+				$url = (PATH.MODULE.'/index/inport_rdf/'.$id);
+				$sx .= '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_issue_import').'</a>';
+			}
+			return $sx;
 		}
+	function update_issue($id)	
+		{
+			$OaipmhListRecord = new \App\Models\Oaipmh\OaipmhListRecord();
+			$dts = $OaipmhListRecord
+					->where('lr_issue',$id)
+					->findAll();
+			$total = count($dts);			
+
+			$this->set('is_works',$total, true)->where('id_is',$id);
+			$this->update();
+			return '';
+		}
+
 	function view_issue_articles($id)
 		{
-			$tela = '';
-			$RDF = new \App\Models\Rdf\RDF();
+			$sx = '';
+			$RDF = new \App\Models\RDF\RDF();
 			$dt = $RDF->le($id,0,'brapci');
-
-			print_r($dt);
 
 			$dtd = $dt['data'];
 			$vol = '';
@@ -140,7 +210,7 @@ class JournalIssue extends Model
 								$nr = $RDF->le_content($id2);
 								break;
 							case 'hasIssueOf':
-								$tela .= bsc(bscard('',$RDF->content($id2)),12,'m-1');
+								$sx .= bsc(bscard('',$RDF->content($id2)),12,'m-1');
 								break;
 							case 'hasIssue':
 								$journal = $RDF->le_content($id2);
@@ -151,19 +221,76 @@ class JournalIssue extends Model
 								$IssueName = $value;
 								break;
 							default:
-								$tela .= '<br>'.$class.'==>'.$value.'=='.$id1.'=='.$id2;
+								$sx .= '<br>'.$class.'==>'.$value.'=='.$id1.'=='.$id2;
 								break;
 						}
 				}
-			$tela = h($journal.', '.$nr.', '.$vol.', ' .$year,5).$tela;
-			$tela .= $IssueName;
-			$tela = bs($tela);
-			return $tela;
+			$sx = h($journal.', '.$nr.', '.$vol.', ' .$year,5).$sx;
+			$sx .= $IssueName;
+			$sx = bs($sx);
+			return $sx;
+		}
+
+	function inport_rdf($id)
+		{
+			$sx = '';
+			$Journals = new \App\Models\Journal\Journals();
+			/********************************** RECUPERA DADOS */
+			$dt = $Journals->find($id);
+
+			$id = $dt['id_jnl'];
+			$id_rdf = $dt['jnl_frbr'];
+
+			$RDF = new \App\Models\RDF\RDF();
+			$dtr = $RDF->le($id_rdf);
+
+			if (isset($dtr['data']))
+				{
+					$data = $dtr['data'];
+					$ids = array();
+					for ($r=0;$r < count($data);$r++)
+						{
+							$ln = $data[$r];
+							if ($ln['c_class'] == 'hasIssue')
+								{
+									$id_issue = $ln['d_r1'];
+									$dti = $this->where('is_source_issue',$id_issue)->FindAll();
+									if (count($dti) == 0)
+										{
+											$ddd = $RDF->le($id_issue);
+											$vol = $RDF->get_content($ddd,'hasPublicationVolume');
+											$nur = $RDF->get_content($ddd,'hasPublicationNumber');
+											$year = $RDF->get_content($ddd,'dateOfPublication');
+											if (isset($vol[0])) 	{ $vol = $RDF->get_literal($vol[0]);   } else { $vol  = '';  }
+											if (isset($nur[0])) 	{ $num = $RDF->get_literal($nur[0]);   } else { $num  = '';  }	
+											if (isset($year[0])) 	{ $year = $RDF->get_literal($year[0]); } else { $year = ''; }
+
+											$dt = array();
+											$dt['is_source'] = $id;
+											$dt['is_source_rdf'] = $id_rdf;
+											$dt['is_source_issue'] = $id_issue;
+											$dt['is_year'] = $year;
+											$dt['is_issue'] = 
+											$dt['is_vol'] = $vol;
+											$dt['is_nr'] = $num;
+											$dt['is_place'] = '';
+											$dt['is_edition'] = '';
+											$dt['is_cover'] = '';
+											$dt['is_url_oai'] = '';
+											$this->insert($dt);
+											$sx .= bsmessage($id_issue.' - '.$year.' - '.$vol.' - '.$num.' - '.lang('brapci.insered'));
+										}
+								}
+						}
+				}	
+			return $sx;
 		}
 
 	function view_issue($idx = 0)
 		{
 			$MOD = df('MOD','/');
+			if (MODULE != 'res') { $MOD = ''; }
+
 			$this->where('is_source_rdf',$idx);
 
 			$this->orderBy('is_year desc, is_vol, is_nr');
@@ -171,40 +298,47 @@ class JournalIssue extends Model
 
 			if (count($dt) == 0)
 				{
-					$this->view_issue_import($idx);
-					$this->where('is_source_rdf',$idx);
-					$this->orderBy('is_year desc, is_vol, is_nr');
-					$dt = $this->FindAll();
+					return "";
 				}
-			$sx = '';
+
+			$sx = bsc(h(lang('brapci.issue_list'),2,'p-5'),12);
+			$xyear = '';
 			for ($r=0;$r < count($dt);$r++)
 				{
 					$dtx = $dt[$r];
-					$sx .= bsc(h($dtx['is_year'],3),1);
-					$sx .= bsc(h($dtx['is_vol'],3),1);
-					$sx .= bsc(h($dtx['is_nr'],3),1);
-					$sx .= bsc($dtx['is_place'],3);
-					$sx .= bsc($dtx['is_thema'],5);
-					$ed = bsicone('edit');
-					$sx .= bsc($ed,5);
-					$sx .= bsc('<hr>',12);
-					$link = '<a href="'.PATH.'res/v/'.$dtx['is_source_issue'].'">';
+					$link0 = '<a href="'.(PATH.MODULE.$MOD.'/index/issue/'.$dtx['id_is'].'/'.$dtx['is_source_rdf']).'">';
+					$link1 = '<a href="'.(PATH.MODULE.$MOD.'/index/edit_issue/'.$dtx['id_is']).'">';
+					$link2 = '<a href="'.PATH.MODULE.$MOD.'/index/harvesting/0/'.$dtx['id_is'].'">';
 					$linka = '</a>';
+
+					$year = $dtx['is_year'];
+					if ($year == $xyear) { $year = ''; } else { $xyear = $year; }
+					$sx .= bsc(h($link0.$year.$linka,3),1);
+					$sx .= bsc($link0.$dtx['is_nr'].' '.$dtx['is_vol'].$linka,3);
+					$sx .= bsc($link0.$dtx['is_place'].$linka,3);
+					$sx .= bsc($link0.$dtx['is_thema'].$linka,4);
+
+					$ed = $link1.bsicone('edit',24).$linka;
+					$ed .= ' ';
+					$ed .= $link2.bsicone('harversting',24).$linka;
+					$sx .= bsc($ed,1,'text-end');
+					$sx .= bsc('<hr>',12);
 					//'p-2 m-1 shadown bordered bw'
 				}
+			//$sx .= '<style> div { border: 1px solid #000000; } </style>';
 			$sx = bs($sx);
 			return $sx;
 		}
 
-	function view_issue_import($idx = 0)
+	function xxxxxxxxxxxxxxxxxxxxx_view_issue_import($idx = 0)
 	{
 		$this->setDatabase('brapci');
-		$RDF = new \App\Models\Rdf\RDF();
+		$RDF = new \App\Models\RDF\RDF();
 
 		$dt = $RDF->le_data($idx);
 		$dt = (array)$dt['data'];
 
-		$sx = '<h3>' . msg('ISSUE') . '</h3>';
+		$sx = '<h3>' . msg('brapci.issue') . '</h3>';
 		$ar = array();
 
 		for ($r = 0; $r < count($dt); $r++) {
@@ -227,7 +361,6 @@ class JournalIssue extends Model
 				$data['is_year'] = '';
 				$data['is_issue'] = '';
 				$data['is_vol'] = '';
-				$data['is_nr'] = '';
 				$data['is_nr'] = '';
 
 				/*********************** Le os dados */

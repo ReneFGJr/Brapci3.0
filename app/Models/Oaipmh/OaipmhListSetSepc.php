@@ -70,12 +70,15 @@ class OaiPMHListSetSepc extends Model
 					$data['ls_setName'] = (string)$reg->setName;
 					$data['ls_description'] = (string)$reg->setDescription;
 					$data['ls_journal'] = $dt['is_source_rdf'];
-					
+					$sx .= '<li>'.$data['ls_setName'] . ' <sup>('.$data['ls_setSpec'].')</sup>';
+
 					if ($this->register($data))
 						{
-						$sx .= '<li>'.$data['ls_setName'] . ' <sup>('.$data['ls_setSpec'].')</sup>';
-						$sx .= '</li>';
+							$sx .= ' - <span class="text-primary">'.lang('brapci.Registered').'</span>';
+						} else {
+							$sx .= ' - <span class="text-warning">'.lang('brapci.already_Registered').'</span>';
 						}
+					$sx .= '</li>';
 				}			
 			$sx .= '</ul>';
 			return $sx;

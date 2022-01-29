@@ -61,134 +61,14 @@ class Main extends BaseController
 		return $tela;
 	}	
 
-	public function pdf($d1 = '', $id = '')
-	{
-		$pdf = new \App\Models\PDF\PDF();
-		$cab = $this->cab('all');
-		$dt = array();
-		$sx = $pdf->index($d1,$id,$dt,$cab);
-		return $sx;
-	}	
-
-	public function proceeding($d1='',$d2='',$d3='',$d4='')
-	{
-		define("MOD","proceeding");
-		$Journals = new \App\Models\Journal\Journals();
-		define("PREFIX", "brapci_events.");
-
-		$tela = $this->cab('all');
-		$tela .= $Journals->index($d2,$d3,$d4);
-		$tela .= $this->cab('footer');
-
-		return $tela;
-	}	
-
-	public function index()
-	{
-		//
-		$tela = $this->cab('all');
-
-		#### Logado
-		if (isset($_SESSION['user']['id']))
-			{
-				$login = 'Welcome';
-			} else {
-				$login = $this->Socials->login(0);
-			}
-	
-        $MENU = bsc('Menu',12);
-        $menu = array();
-		$menu['main/aggregation'] = array('',lang("main.Aggregation"),lang("main.Aggregation"));
-		$menu['res'] = array('',lang("main.Brapci"),lang("main.Brapci_desc"));
-		$menu['res/painel'] = array('',lang("main.BrapciPainel"),lang("main.Brapci_desc"));
-        $menu['authority'] = array('',lang("main.Authority"),lang("main.Authority_desc"));
-        $menu['book'] = array('',lang("main.Books"),lang("main.Books_desc"));
-        $menu['journal'] = array('',lang("main.Journals"),lang("main.Journals_desc"));
-        $menu['proceeding'] = array('',lang("main.Proceedings"),lang("main.Proceedings_desc"));
-		$menu['patent'] = array('',lang("main.Patents"),lang("main.Patents"));
-        $menu['thesi'] = array('',lang("main.Thesis"),lang("main.Thesis_info_desc"));
-		$menu['api/doc'] = array('',lang("main.Api"),lang("main.Api_desc"));
-        
-        foreach($menu as $url => $dt)
-            {
-                $title = '';
-                $title .= $dt[1];
-                $link = '<a href="'.base_url(PATH.$url).'">';
-                $linka = '</a>';
-                $MENU .= bsc($link.bscard($title,$dt[2],'shadow-lg p-3 mb-5','min-height: 150px').$linka,4);
-            }
-    
-        $MENU = bs($MENU);
-
-        $tela .= '<div style="height: 50px;"></div>';
-
-		$tela .= bs(
-						bsc($MENU,12)
-					);	
-
-		$tela .= $this->EventProceedings->resume();		
-		
-		return $tela;
-	}
-
-	function aggregation($d1='',$d2='',$d3='',$d4='')
+	function index()
 		{
-			$Aggregation = new \App\Models\Search\Aggregation();
-			$tela = $this->cab('all');
-			$tela .= $Aggregation->index($d1,$d2,$d3,$d4);
-			return $tela;
+			$sx = $this->cab();
+
+			$sx .= h('PAINEL',1);
+			return $sx;
 		}
 
-	function oai($d1='',$d2='',$d3='',$d4='')
-		{
-			$Oaipmh = new \App\Models\Oaipmh\Oaipmh();
-			$tela = $this->cab('all');
-			$tela .= $Oaipmh->index($d1,$d2,$d3,$d4);
-			return $tela;
-		}		
-
-	public function news($cmd='',$id='')
-		{
-			$News = new \App\Models\Admin\News();
-			$tela = $this->cab('All');
-			switch($cmd)
-				{
-					case 'edit':
-						$tela .= $News->edit($id);
-					break;
-
-					default:
-					$tela .= $News->list();
-					break;
-				}
-
-			$tela .= $this->cab('footer');
-
-			return $tela;
-		}
-
-	public function dropall($tp='')
-		{
-			$sx = $this->cab('all');
-			$tela = '';
-			$this->RDF = new \App\Models\RDF();
-			$tables = array('OAI_SetSpec','OAI_ListRecords','OAI_log','rdf_concept','rdf_data','rdf_literal','');
-			for ($r=0;$r < count($tables);$r++)
-				{
-					$table = $tables[$r];
-					if (strlen($table) > 0) { $this->RDF->query('TRUNCATE '.$table); $tela .= bsmessage('Truncate '.$table,1); }
-				}
-
-			$dirs = array('.tmp/','.c','../.temp/oai','../.temp/ddi');
-			for ($r=0;$r < count($dirs);$r++)
-				{
-					$dirn = $dirs[$r];		
-					delTree($dirn);
-					$tela .= bsmessage('Remove '.$dirn,1);
-				}
-			$tela = $sx.bs($tela);
-			return $tela;
-		}   
 
 		function painel($p='')
 			{

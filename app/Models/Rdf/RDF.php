@@ -139,20 +139,6 @@ class RDF extends Model
 		return $IO->directory($id);
 	}
 
-	function content($id)
-	{
-		$dir = $this->directory($id);
-		$file = $dir . 'name.nm';
-		if (file_exists($file)) {
-			$tela = file_get_contents($file);
-		} else {
-			$tela = 'Content not found: ' . $id . '==' . $file . '<br>';
-			$RDFExport = new \App\Models\Rdf\RDFExport();
-			$RDFExport->export($id);
-			$tela = file_get_contents($file);
-		}
-		return $tela;
-	}
 
 	function le_content($id)
 	{
@@ -194,14 +180,60 @@ class RDF extends Model
 			return $id;
 		}
 
+	function get_literal($idc)
+		{
+			$RDFConcept = new \App\Models\Rdf\RDFConcept();
+			$dt = $RDFConcept->le($idc);
+			$n_name = $dt['n_name'];
+			return $n_name;
+		}
+
+	function get_content($dt=array(),$class='')
+		{
+			$rst = array();
+			$id = $dt['concept']['id_cc'];
+			$dt = $dt['data'];
+			for ($r = 0; $r < count($dt); $r++) {
+				$line = $dt[$r];
+				if ($line['c_class'] == $class) {
+					if (trim($line['n_name']) != '') {
+						array_push($rst, $line['n_name']);
+					} else {
+						if ($line['d_r1'] == $id) {
+							array_push($rst, $line['d_r2']);
+						} else {
+							array_push($rst, $line['d_r1']);
+						}
+					}
+				}
+			}
+			return $rst;
+		}
+
+	function c($id)
+	{
+		$dir = $this->directory($id);
+		$file = $dir . 'name.nm';
+		if (file_exists($file)) {
+			$tela = file_get_contents($file);
+		} else {
+			$tela = 'Content not found: ' . $id . '==' . $file . '<br>';
+			$RDFExport = new \App\Models\Rdf\RDFExport();
+			$RDFExport->export($id);
+			$tela = file_get_contents($file);
+		}
+		return $tela;
+	}
+
 	function recover($dt = array(), $class = '')
 	{
 		$rst = array();
+		$class = trim($class);
 		$id = $dt['concept']['id_cc'];
 		$dt = $dt['data'];
 		for ($r = 0; $r < count($dt); $r++) {
 			$line = $dt[$r];
-			if ($line['c_class'] == $class) {
+			if (trim($line['c_class']) == $class) {
 				if (trim($line['n_name']) != '') {
 					array_push($rst, $line['n_name']);
 				} else {

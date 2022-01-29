@@ -73,9 +73,9 @@ class RDFExport extends Model
 						$nr = $RDF->recovery($dt['data'],'hasPublicationNumber');
 						$year = $RDF->recovery($dt['data'],'dateOfPublication');
 
-						if (isset($vol[0][1])) { $vol = $RDF->content($vol[0][1]); } else { $vol = ''; }
-						if (isset($nr[0][1])) { $nr = $RDF->content($nr[0][1]); } else { $nr = ''; }
-						if (isset($year[0][1])) { $year = $RDF->content($year[0][1]); } else { $year = ''; }
+						if (isset($vol[0][1])) { $vol = $RDF->c($vol[0][1]); } else { $vol = ''; }
+						if (isset($nr[0][1])) { $nr = $RDF->c($nr[0][1]); } else { $nr = ''; }
+						if (isset($year[0][1])) { $year = $RDF->c($year[0][1]); } else { $year = ''; }
 						
 						$issue = '';
 						if (strlen($nr) > 0) { $issue .= ', '.$nr; }
@@ -86,7 +86,7 @@ class RDFExport extends Model
 						break;
 					case 'dc:Journal':
 						$name = $dt['concept']['n_name'];
-						$name = '<a href="'.base_url(URL.'v/'.$id).'" class="journal">'.$name.'</a>';
+						$name = '<a href="'.(URL.'v/'.$id).'" class="journal">'.$name.'</a>';
 						$this->saveRDF($id,$name,'name.nm');
 						break;
 					case 'brapci:Article':
@@ -98,11 +98,11 @@ class RDFExport extends Model
 							{
 								$idr = $authors[$r][1];
 								if (strlen($auths) > 0) { $auths .= '; '; }
-								$auths .= $RDF->content($idr);
+								$auths .= $RDF->c($idr);
 							}
 						/************************************************** Authors */
 						$publisher = $RDF->recovery($dt['data'],'isPubishIn');
-						$publisher = $RDF->content($publisher[0][1]);
+						$publisher = $RDF->c($publisher[0][1]);
 						/************************************************** Authors */
 						//$publisher = $RDF->recovery($dt['data'],'hasSource');
 						
@@ -113,14 +113,14 @@ class RDFExport extends Model
 
 						/***************************************************** Title */
 						$issue = $RDF->recovery($dt['data'],'hasIssueOf');
-						$issue = $RDF->content($issue[0][0]);
+						$issue = $RDF->c($issue[0][0]);
 						
 						/************************************************** Section */
 						//$section = $RDF->recovery($dt['data'],'hasSectionOf');						
 
 						/****************************************************** SAVE */
 						$name = strip_tags($auths.'. '.$title.'. $b$'.$publisher. '$/b$'.$issue);
-						$name = '<a href="'.base_url(URL.'v/'.$id).'" class="article">'.$name.'</a>';
+						$name = '<a href="'.(URL.'v/'.$id).'" class="article">'.$name.'</a>';
 						$name = troca($name,'$b$','<b>');
 						$name = troca($name,'$/b$','</b>');
 						$this->saveRDF($id,$name,'name.nm');
@@ -129,7 +129,7 @@ class RDFExport extends Model
 					case 'foaf:Person':
 						$tela .= 'ARTICLE';	
 						$name = nbr_author($dt['concept']['n_name'],1);
-						$name = '<a href="'.base_url(URL.'v/'.$id).'" class="author">'.$name.'</a>';
+						$name = '<a href="'.(URL.'v/'.$id).'" class="author">'.$name.'</a>';
 						$this->saveRDF($id,$name,'name.nm');
 						break;
 
@@ -145,7 +145,7 @@ class RDFExport extends Model
 						exit;
 						break;
 				}
-			$tela .= '<a href="'.base_url(PATH.'v/'.$id).'">'.$name.'</a>';
+			$tela .= '<a href="'.(PATH.MODULE.'v/'.$id).'">'.$name.'</a>';
 			return $tela;
 		}
 

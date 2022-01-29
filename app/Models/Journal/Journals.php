@@ -68,195 +68,263 @@ class Journals extends Model
 
 			switch ($d1)
 				{
+					/******************* Validade ******/
+					default:
+						$sx = $this->tableview();
+						break;
+						
+					case 'inport_rdf':
+						$JournalIssue = new \App\Models\Journal\JournalIssue();
+						$sx = $JournalIssue->inport_rdf($d2,$d3);
+						break;			
+									
+					/******************* Implementando */
+					case 'issue':
+						$sx = $this->issue($d1,$d2,$d3);
+						break;
+
+					case 'harvesting':
+						$JournalIssue = new \App\Models\Journal\JournalIssue();
+						$sx = $JournalIssue->harvesting_oaipmh($d2,$d3);
+						break;						
+					/******************* Para testes ***/
 					case 'edit_issue':
-						$tela = $this->editar_issue($d2,$d3);
+						$sx = $this->editar_issue($d2,$d3);
 						break;	
 					case 'oai_check':				
-						$tela = $this->oai_check();
+						$sx = $this->oai_check();
 						break;	
 					case 'edit':
-						$tela = $this->editar($d2);
+						$sx = $this->editar($d2);
 						break;
 					case 'viewid':
-						$tela = $this->viewid($d2);
+						$sx = $this->viewid($d2);
 						break;
+					case 'view_issue':
+						$sx = $this->view_issue_id($d2);
+						break;						
 					case 'oai':
-						$tela = $this->oai($d2,$d3);
+						$sx = $this->oai($d2,$d3);
 						break;						
 					case 'edit':
 						break;						
-					default:
-						$tela = $this->tableview();
-						break;
+
 				}
-			return $tela;
+			return $sx;
 		}
 	function oai($jnl,$id)
 		{
-			$tela = '';
+			$sx = '';
 			$OaipmhRegister = new \App\Models\Oaipmh\OaipmhRegister();
 			switch ($id)
 				{
 					case '0':
 					$idr = $OaipmhRegister->process_00($jnl);
-					$tela .= '==>'.$idr;
+					$sx .= '==>'.$idr;
 
 					case '1':
 					$idr = $OaipmhRegister->process_01($jnl);
-					$tela .= '==>'.$idr;
+					$sx .= '==>'.$idr;
 					break;
 				}
 			
 			
-			return $tela;
+			return $sx;
 		}
 	function oai_check()
 		{
 			$JournalIssue = new \App\Models\Journal\JournalIssue();
-			$tela = $JournalIssue->oai_check();
-			return $tela;
-
+			$sx = $JournalIssue->oai_check();
+			return $sx;
 		}
+
+	function issue($d1,$d2,$d3)
+		{
+			$sx = '';
+			$JournalIssue = new \App\Models\Journal\JournalIssue();
+			$dt = $JournalIssue->find($d2);
+
+			$issue_rdf = $dt['is_source_issue'];
+			$id_jnl = $dt['is_source'];
+			$id_jnl_rdf = $dt['is_source_rdf'];
+
+			$dt = $this->find($id_jnl);
+			$sx .= $this->journal_header($dt,false);
+			$sx .= $JournalIssue->ArticlesIssue($issue_rdf);
+			return $sx;
+		}
+
+	/*******************************************************/
 	function editar_issue($id,$jnl)
 		{
 			$JournalIssue = new \App\Models\Journal\JournalIssue();
-			$tela = $JournalIssue->edit($id,$jnl);
-			return $tela;
+			$sx = $JournalIssue->edit($id,$jnl);
+			return $sx;
 		}
+
+	/*******************************************************/
 	function editar($id)
 		{
 			$this->id = $id;
 			if ($id > 0)
 				{
 					$dt = $this->find($id);					
-					$tela = h($dt['jnl_name'],1);
+					$sx = h($dt['jnl_name'],1);
 				} else {
-					$tela = h(lang('Editar'),1);
+					$sx = h(lang('Editar'),1);
 				}
 			
-			$tela .= form($this);
-			$tela = bs(bsc($tela,12));
-			return $tela;
+			$sx .= form($this);
+			$sx = bs(bsc($sx,12));
+			return $sx;
 		}
 	function start_end($dt)
 		{
-			$tela = '';
+			$sx = '';
 			$ini = $dt['jnl_ano_inicio'];
 			$fim = $dt['jnl_ano_final'];
-			$tela = $ini;
+			$sx = $ini;
 			if ($fim > 1900)
 				{
-					$tela .= '-'.$fim;
+					$sx .= '-'.$fim;
 				} else {
-					$tela .= '-'.lang('brapci.Actual');
+					$sx .= '-'.lang('brapci.Actual');
 				}
-			return $tela;
+			return $sx;
 		}
 	function openaccess($dt)
 		{
-			$tela = '';
-			$tela .= '<img src="'.base_url(URL.'/img/icones/open_access.png?v0.').'" class="img-fluid" title="'.lang('brapci.icone_open_access').'">';
-			return $tela;
+			$sx = '';
+			$sx .= '<img src="'.base_url(URL.'/img/icones/open_access.png?v0.').'" class="img-fluid" title="'.lang('brapci.icone_open_access').'">';
+			return $sx;
 		}
 	function active($dt)
-		{
-			
-			$tela = '';
+		{			
+			$sx = '';
 			if ($dt['jnl_historic'] == 1)
 			{
-				$tela .= '<span style="color: red">';
-				$tela .= bsicone('off',24);
-				$tela .= '</span>';
-				$tela .= ' '.lang('brapci.journal_descontinue');
+				$sx .= '<span style="color: red">';
+				$sx .= bsicone('off',24);
+				$sx .= '</span>';
+				$sx .= ' '.lang('brapci.journal_descontinue');
 			} else {
 				if ($dt['jnl_active'] == '1')
 					{
-						$tela .= '<span style="color: green">';
-						$tela .= bsicone('on',24);
-						$tela .= '</span>';
-						$tela .= ' '.lang('brapci.journal_active');
+						$sx .= '<span style="color: green">';
+						$sx .= bsicone('on',24);
+						$sx .= '</span>';
+						$sx .= ' '.lang('brapci.journal_active');
 						
 					} else {
-						$tela .= '<span style="color: red">';
-						$tela .= bsicone('off',24);
-						$tela .= '</span>';
-						$tela .= ' '.lang('brapci.journal_inative');
+						$sx .= '<span style="color: red">';
+						$sx .= bsicone('off',24);
+						$sx .= '</span>';
+						$sx .= ' '.lang('brapci.journal_inative');
 					}
 			}
-		return $tela;
-		}		
+		return $sx;
+		}	
+
 	function url($dt)
 		{
-			$tela = '';
+			$sx = '';
 			if (strlen($dt['jnl_url']) != '')
 				{
-					$tela = '<a href="'.$dt['jnl_url'].'" target="_new'.$dt['id_jnl'].'" class="btn-outline-primary rounded-3 p-2">'.bsicone('url',24).' ';
-					$tela .= lang('brapci.journal_site');
-					$tela .= '</a>';
+					$sx = '<a href="'.$dt['jnl_url'].'" target="_new'.$dt['id_jnl'].'" class="btn-outline-primary rounded-3 p-2">'.bsicone('url',24).' ';
+					$sx .= lang('brapci.journal_site');
+					$sx .= '</a>';
 				}
-			return $tela;
+			return $sx;
 		}
 
 	function issn($dt)
 		{
 			//https://portal.issn.org/resource/ISSN/xxxx-xxxx
-			$tela = '';
+			$sx = '';
 			$url = $link = '<a href="https://portal.issn.org/resource/ISSN/$issn" target="new_.$issn." class="btn-outline-primary rounded-3 p-2">'.bsicone('url',24).' $issn</a>';
 			if ($dt['jnl_issn'] != '')
 				{
 					$issn = $dt['jnl_issn'];
 					$link = troca($url,'$issn',$issn);
-					$tela .= 'ISSN: '.$link;
+					$sx .= 'ISSN: '.$link;
 				}
 				if ($dt['jnl_eissn'] != '')
 				{
-					$tela .= ' - ';
+					$sx .= ' - ';
 					$issn = $dt['jnl_eissn'];
 					$link = troca($url,'$issn',$issn);
-					$tela .= 'eISSN: '.$link;
+					$sx .= 'eISSN: '.$link;
 				}
-			return $tela;
+			return $sx;
 		}
 
-	function viewid($id)
+	function view_issue_id($id)
 		{
-			$this->Cover = new \App\Models\Journal\Cover();
-			$dt = $this->find($id);
-			$img = '<img src="'.$this->Cover->image($id).'" class="img-fluid">';
-			$tela = '';
+			$JournalIssue = new \App\Models\Journal\JournalIssue();
+			$dd = $JournalIssue->find($id);
+			$dt = $this->find($dd['is_source']);
+			$sx = bs($this->journal_header($dt));
+
+			return $sx;
+		}
+
+	function journal_header($dt,$resume=true)
+		{
+			if (!is_array($dt)) { $sx = bsmessage('Erro de identificação do ISSUE/Jornal',3); return $sx; exit; }
+
+			$this->Cover = new \App\Models\Journal\Cover();	
+			$img = '<img src="'.$this->Cover->image($dt['id_jnl']).'" class="img-fluid">';
+			$sx = '';
 			$jnl = h($dt['jnl_name'],3);
 
-			$openaccess = $this->openaccess($dt);
-			
-			$jnl .= '<div class="row ">';
+			$jnl .= '<div class="row">';
 			$jnl .= bsc($this->start_end($dt),4);
 			$jnl .= bsc($this->issn($dt),8);
 			$jnl .= bsc($this->url($dt),4);
 			$jnl .= bsc($this->active($dt),8);
-			$jnl .= '</div>';
+			$jnl .= '</div>';			
 
-			$Oaipmh = new \App\Models\Oaipmh\Oaipmh();
-			$idj = $dt['jnl_frbr'];
-			$jnl .= '<div class="row mt-5">';
-			$jnl .= bsc('<img src="'.base_url('img/icones/oaipmh.png').'" class="img-fluid">',2);
-			$jnl .= $Oaipmh->resume($idj);
-			$jnl .= '</div>';
+			if ($resume)
+			{
+				$Oaipmh = new \App\Models\Oaipmh\Oaipmh();
+				$idj = $dt['jnl_frbr'];
+				$jnl .= '<div class="row mt-5" style="border-bottom: 2px solid #888">';
+				$jnl .= bsc('<img src="'.base_url('img/icones/oaipmh.png').'" class="img-fluid p-4">',2);
+				$jnl .= $Oaipmh->resume($idj);
+				$jnl .= '</div>';	
+			}
 			
-			$tela = bsc($jnl,9);
-			$tela .= bsc($openaccess,1);
-			$tela .= bsc($img,2);
-			$tela = bs($tela);
+			$openaccess = $this->openaccess($dt);
+			
+			$sx = bsc($jnl,10);
+			$sx .= bsc($openaccess,1,'p-4');
+			$sx .= bsc($img,1,'p-2');
+			$sx = bs($sx);	
+
+			return $sx;
+		}
+
+	function viewid($id)
+		{
+			$sx = '';
+			$dt = $this->find($id);		
 
 			/************** ISSUES */
 			$JournalIssue = new \App\Models\Journal\JournalIssue();
 			$jn_rdf = $dt['jnl_frbr'];
-			$tela .= $JournalIssue->view_issue($jn_rdf);
 
-			$tela .= $JournalIssue->btn_new_issue($dt);
+			$sx = $this->journal_header($dt);
 
-			return $tela;
+			/************************************************* Mostra edições */
+			$sx .= $JournalIssue->view_issue($jn_rdf);
+
+			/********************************************** Botoes de edições */
+			$sx .= bs(bsc($JournalIssue->btn_new_issue($dt),12,'mt-4'));
+
+			return $sx;
 		}
 
+	/******************************************** MOSTRA LISTA DE PUBLICAÇÕES */
 	function tableview()
 		{	
 			switch(MOD)
@@ -268,9 +336,9 @@ class Journals extends Model
 					$this->where("jnl_collection = 'JA'");
 					break;
 				}	
-			$this->path = base_url(PATH.MODULE.'/'.MOD.'/index/');
-			$tela = tableview($this);
-			$tela = bs(bsc($tela,12));
-			return $tela;
+			$this->path = (PATH.MODULE.'/index');
+			$sx = tableview($this);
+			$sx = bs(bsc($sx,12));
+			return $sx;
 		}
 }

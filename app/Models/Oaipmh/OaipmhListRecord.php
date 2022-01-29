@@ -44,13 +44,19 @@ class OaiPMHListRecord extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function resume($id)
+	function resume($id,$issue=0)
 		{
 			$MOD = df('MOD','/');
 			$tela = '';
+			$wh = 'lr_jnl = '.$id;
+			if ($issue > 0)
+				{
+					$wh = 'lr_issue = '.$issue;
+				}
+
 			$sql = "select count(*) as total, lr_procees 
 					from ".$this->table."
-					where lr_jnl = $id
+					where $wh
 					group by lr_procees";
 
 			$dt = $this->query($sql)->getResult();
@@ -93,6 +99,7 @@ class OaiPMHListRecord extends Model
 				}
 
 			/* Load Url */
+			$sx = h($url,2);
 			$xml = file_get_contents($url);
 			$xml = simplexml_load_string($xml);
 			//$xml = simplexml_load_file('d:/lixo/xml.xml');
@@ -133,16 +140,28 @@ class OaiPMHListRecord extends Model
 									$data['lr_procees'] = 9;
 								}
 						}
-
+					$sx .= '<li>'.$data['lr_identifier'];
 					if ($this->register($data))
 						{
-						$sx .= '<li>'.$data['lr_identifier'];
-						$sx .= '</li>';
+							$sx .= ' - <span class="text-primary">'.lang('brapci.Registered').'</span>';
+						} else {
+							$sx .= ' - <span class="text-warning">'.lang('brapci.already_Registered').'</span>';
 						}
+					$sx .= '</li>';
 				}			
 			$sx .= '</ul>';
 			return $sx;
-		}	
+		}
+
+	function update_journal($id)	
+		{
+			$OaipmhListRecord = new \App\Models\Oaipmh\OaipmhListRecord();
+			$dts = $OaipmhListRecord
+					->where('lr_issue',$id)
+					->findAll();
+			print_r($dts);
+			exit;
+		}		
 
 	function register($data)
 		{

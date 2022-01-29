@@ -202,9 +202,21 @@ class Res extends BaseController
 		return $sx;
 	}
 
+	function security($url='')
+		{
+			if (isset($_SESSION['id']) == true)
+				{
+					$user = $_SESSION['id'];
+				} else {
+					echo '===>REDIRECT '.$url;
+					return 0;
+				}
+		}
+
 	function painel($p = '')
 	{
 		//$tela = view('Pages/virtual-reality');
+		$this->security(PATH.MODULE);		
 		switch ($p) {
 			default:
 				$tela = view('Pages/_head');

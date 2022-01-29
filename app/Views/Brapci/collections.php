@@ -7,6 +7,11 @@
             $menu['Benancib'] = URL . 'index.php/res/benancib/';
             $menu['Ontology'] = URL . 'index.php/res/ontology/';
             $menu['Patent'] = URL . 'index.php/res/Patent/';
+            if (isset($_SESSION['id']))
+            { 
+                $menu['Painel'] = URL . 'index.php/res/painel/';
+            }
+            
             foreach ($menu as $label => $url) {
                 echo '<li class="nav-item">' . cr();
                 echo '    <a class="list-group-item" aria-current="page" href="' . $url . '">' . lang('brapci.' . $label) . '</a>' . cr();

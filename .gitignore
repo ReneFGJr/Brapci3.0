@@ -53,6 +53,7 @@ writable/cache/*
 
 writable/logs/*
 !writable/logs/index.html
+.c/
 public/_c/*
 public/.c/*
 public/_tmp/*

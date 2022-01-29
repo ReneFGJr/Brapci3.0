@@ -40,5 +40,6 @@ return [
     'Ontology'=>'OntologiaBrapci',
     'prefTerm'=>'Entrada principal',
     'Country'=>'Pais',
+    'Painel'=>'PainelControle'
 
 ];
