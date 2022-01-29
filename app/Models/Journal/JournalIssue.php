@@ -99,10 +99,13 @@ class JournalIssue extends Model
 				} else {
 					$sx = h(lang('Editar'),1);
 					$Journal = new \App\Models\Journal\Journals();
+					if ($id > 0)
+					{
 					$dt = $Journal->find($id);
-					$_POST['is_source']	= $dt['id_jnl'];
-					$_POST['is_source_rdf']	= $dt['id_jnl'];
-					$this->typeFields[2] = 'set:'.$dt['jnl_frbr'];
+						$_POST['is_source']	= $dt['id_jnl'];
+						$_POST['is_source_rdf']	= $dt['jnl_frbr'];
+						$this->typeFields[2] = 'set:'.$dt['jnl_frbr'];
+					}
 					$this->path_back = (PATH.MODULE.$MOD.'/index/viewid/'.get('is_source'));
 				}
 			$this->path = (PATH.MODULE.$MOD.'/index/edit_issue/');
