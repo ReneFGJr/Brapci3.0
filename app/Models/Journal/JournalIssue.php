@@ -79,7 +79,7 @@ class JournalIssue extends Model
 			return $sx;		
 		}
 
-	function edit($reg,$id=0)
+	function edit($reg,$idj=0)
 		{
 			$MOD = df('MOD','/');
 			if (MODULE != 'res') { $MOD = ''; }
@@ -92,16 +92,17 @@ class JournalIssue extends Model
 				}
 			$this->typeFields[1] = $source;
 
+			$sx = h(lang('Editar'),1);
+
 			if ($reg > 0)
 				{
 					$this->id = $reg;					
 					$sx = '';
-				} else {
-					$sx = h(lang('Editar'),1);
+				} else {					
 					$Journal = new \App\Models\Journal\Journals();
-					if ($id > 0)
+					if ($idj > 0)
 					{
-					$dt = $Journal->find($id);
+						$dt = $Journal->find($idj);
 						$_POST['is_source']	= $dt['id_jnl'];
 						$_POST['is_source_rdf']	= $dt['jnl_frbr'];
 						$this->typeFields[2] = 'set:'.$dt['jnl_frbr'];
