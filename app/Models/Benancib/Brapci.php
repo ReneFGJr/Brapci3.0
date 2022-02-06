@@ -50,6 +50,7 @@ class Brapci extends Model
 		$file2 = $dir . 'benancib_' . $id . '.pdf';
 
 		$xml = simplexml_load_file($file1);
+		$auths = array();
 
 		/***************************************************** Publicação *********/
 		$name = 'Encontro Nacional de Pesquisa e Pós-graduação em Ciência da Informação';
