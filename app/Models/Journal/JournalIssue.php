@@ -126,7 +126,7 @@ class JournalIssue extends Model
 	function ArticlesIssue($id)
 		{
 			$sx = '';
-			$RDF = new \App\Models\RDF\RDF();
+			$RDF = new \App\Models\Rdf\RDF();
 			$dt = $RDF->le($id);
 
 			$art = $RDF->recover($dt,'hasIssueOf');
@@ -179,7 +179,7 @@ class JournalIssue extends Model
 	function view_issue_articles($id)
 		{
 			$sx = '';
-			$RDF = new \App\Models\RDF\RDF();
+			$RDF = new \App\Models\Rdf\RDF();
 			$dt = $RDF->le($id,0,'brapci');
 
 			$dtd = $dt['data'];
@@ -237,7 +237,7 @@ class JournalIssue extends Model
 			$id = $dt['id_jnl'];
 			$id_rdf = $dt['jnl_frbr'];
 
-			$RDF = new \App\Models\RDF\RDF();
+			$RDF = new \App\Models\Rdf\RDF();
 			$dtr = $RDF->le($id_rdf);
 
 			if (isset($dtr['data']))
@@ -329,7 +329,7 @@ class JournalIssue extends Model
 	function xxxxxxxxxxxxxxxxxxxxx_view_issue_import($idx = 0)
 	{
 		$this->setDatabase('brapci');
-		$RDF = new \App\Models\RDF\RDF();
+		$RDF = new \App\Models\Rdf\RDF();
 
 		$dt = $RDF->le_data($idx);
 		$dt = (array)$dt['data'];
