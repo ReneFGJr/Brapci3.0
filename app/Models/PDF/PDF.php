@@ -72,7 +72,7 @@ class Pdf extends Model
 	function pdf_download($dt)
 		{
 			$sx = '';
-			$pdf = 'xx';
+			$pdf = '';
 			if (isset($dt['n_name2']))
 				{
 					$pdf = $dt['n_name2'];
@@ -81,13 +81,13 @@ class Pdf extends Model
 
 			if (file_exists($pdf))
 				{
-					$link = onclick(base_url(URL.'res/download/'.$id),800,800);
+					$link = onclick((PATH.'res/download/'.$id),800,800);
 					$linka = '</a>';
-					$img = $link.'<img src="'.base_url(URL.'img/icones/pdf.png').'" class="img-fluid">'.$linka;
+					$img = $link.'<img src="'.(URL.'img/icones/pdf.png').'" class="img-fluid">'.$linka;
 					$sx .= $img;
 				} else {
 					echo "ERRO";
-					$img = '<img src="'.base_url(URL.'img/icones/pdf_off.png').'" class="img-fluid">';
+					$img = '<img src="'.(URL.'img/icones/pdf_off.png').'" class="img-fluid">';
 					$sx .= '<a href="#">'.$img.'</a>';
 					$sx .= $this->btn_inport($id);
 				}						
@@ -96,7 +96,7 @@ class Pdf extends Model
 	function btn_inport($id)
 		{
 			$sx = '';
-			$link = onclick(base_url(PATH.'main/pdf/inport/'.$id),100,50,'btn btn-outline-primary');
+			$link = onclick((PATH.'main/pdf/inport/'.$id),100,50,'btn btn-outline-primary');
 			$linka = '</a>';
 			$sx .= $link.'import'.$linka;
 			return $sx;
