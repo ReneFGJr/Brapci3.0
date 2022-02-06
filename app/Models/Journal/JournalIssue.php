@@ -169,9 +169,16 @@ class JournalIssue extends Model
 											$year = $RDF->recover($issue_rdf,'dateOfPublication');
 											echo h('YEAR');
 											echo '<pre>';
-											print_r($issue_rdf);
-											print_r($year);
-											$year = $RDF->c($year[0]);
+											//print_r($issue_rdf);
+											//print_r($year);
+											if (count($year) == 0) 
+												{
+													$year = sonumero($issue_name);
+													$year = substr($year,strlen($year)-4,4);
+												} else {
+													$year = $RDF->c($year[0]);
+												}
+											
 											if (isset($dtj[0]))
 											{
 												echo '<pre>';
