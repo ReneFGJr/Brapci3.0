@@ -158,9 +158,14 @@ class JournalIssue extends Model
 							$issue2 = $RDF->recover($dissue,'hasIssueProceeding');							
 							$issue = array_merge($issue1,$issue2);
 
-							echo '<pre>';
-							print_r($issue);
-							exit;
+							for ($q=0;$q < count($issue);$q++)
+								{
+									$issue_rdf = $RDF->le($issue[$q]);
+									echo '<pre>';
+									print_r($issue);
+									exit;
+								}
+
 							$dt = array();
 							$dt['is_source'] = $id;
 							$dt['is_source_rdf'] = $id_rdf;
