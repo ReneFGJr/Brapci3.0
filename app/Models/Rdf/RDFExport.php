@@ -100,6 +100,12 @@ class RDFExport extends Model
 						$this->saveRDF($id,$name,'name.nm');
 						break;
 
+					case 'IssueProceeding':
+						$name = $dt['concept']['n_name'];
+						$name = '<a href="'.(URL.'v/'.$id).'" class="journal">'.$name.'</a>';
+						$this->saveRDF($id,$name,'name.nm');
+						break;						
+
 					case 'brapci:Proceeding':
 						$publisher = '';
 						$tela .= 'Proceeding';	
@@ -184,16 +190,22 @@ class RDFExport extends Model
 						break;
 
 					default:
-						$name = $RDF->recovery($dt['data'],'prefLabel');
-						$name = trim($name[0][2]);
+						if (!isset($dt['concept']['id_cc'])) { return 'NoN'; }
+						
+						$name = trim($dt['concept']['n_name']);
+						
+						if (strlen($name) == 0)
+							{
+								$name = $RDF->recovery($dt['data'],'prefLabel');
+								$name = trim($name[0][2]);
+							}
+
 					
 						if (strlen($name) > 0)
 							{
 								$this->saveRDF($id,$name,'name.nm');
 								break;
 							}
-							echo $class.'<hr>';
-						exit;
 						break;
 				}
 			$tela .= '<a href="'.(PATH.MODULE.'v/'.$id).'">'.$name.'</a>';

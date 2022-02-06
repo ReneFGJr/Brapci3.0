@@ -60,14 +60,14 @@ class Brapci extends Model
 		$idpub = 101894;
 
 		/***************************************************** Unidade Proceeding */
-		$class = "Brapci:Proceeding";
+		$class = "brapci:Proceeding";
 		$reg = (array)$xml->record;
 		$year = $reg['dc.ano.evento'];
 		$name = "enancib.org." . $year . "." . $id;
 		$idc = $RDF->conecpt($name, $class);
 
 		/***************************************************** ISSUE */
-		$class = "Brapci:IssueProceeding";
+		$class = "brapci:IssueProceeding";
 		$name = 'Encontro Nacional de Pesquisa e Pós-graduação em Ciência da Informação';
 		$name .= ', ' . troca($reg['dc.edicao.evento'], 'º', '');
 		$name .= '.';

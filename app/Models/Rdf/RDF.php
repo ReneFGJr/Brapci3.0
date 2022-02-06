@@ -255,7 +255,11 @@ class RDF extends Model
 			$tela = 'Content not found: ' . $id . '==' . $file . '<br>';
 			$RDFExport = new \App\Models\Rdf\RDFExport();
 			$RDFExport->export($id);
-			$tela = file_get_contents($file);
+			if (file_exists($file)) {
+				$tela = file_get_contents($file);
+			} else {
+				$tela = 'Content not found: ' . $id . '==' . $file . '<br>';
+			}
 		}
 		return $tela;
 	}

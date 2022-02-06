@@ -77,10 +77,13 @@ class V extends Model
 						break;
 					case 'Journal':
 						$tela .= $this->Issue($id);
-						break;						
+						break;	
+					case 'IssueProceeding':
+						//$tela = $this->Issue($id);
+						$tela .= bs(bsc($RDF->view_data($id),12));
+						break;					
 					default:
 						$sx = h($class,4);
-						echo $sx;
 						$sx .= h(lang('rdf.class').': '.$class,6);
 						$tela .= bs(bsc($sx,12));
 						$tela .= bs(bsc($RDF->view_data($id),12));
@@ -100,7 +103,7 @@ class V extends Model
 				echo '<pre>';
 				print_r($dd['concept']);
 				echo '</pre>';
-				$dt = $Journal->find($dd['is_source']);
+				$dt = $dd['concept'];
 				$sx = bs($Journal->journal_header($dt));
 				$sx .= $JournalIssue->view_issue($id);
 				return $sx;
