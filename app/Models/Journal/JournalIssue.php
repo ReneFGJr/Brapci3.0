@@ -162,7 +162,7 @@ class JournalIssue extends Model
 								{
 									$issue_rdf = $RDF->le($issue[$q]);
 									echo '<pre>';
-									print_r($issue);
+									print_r($issue_rdf);
 									exit;
 								}
 
