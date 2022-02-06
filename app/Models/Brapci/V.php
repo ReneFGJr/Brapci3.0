@@ -99,13 +99,11 @@ class V extends Model
 				$Journal = new \App\Models\Journal\Journals();
 				$JournalIssue = new \App\Models\Journal\JournalIssue();
 				$dd = $Journal->le_rdf($id);
-				echo h($id);
-				echo '<pre>';
-				print_r($dd);
-				echo '</pre>';
-				$dt = $dd['concept'];
+				$id_rdf = $dd['jnl_frbr'];
+				
 				$sx = bs($Journal->journal_header($dd));
-				$sx .= $JournalIssue->view_issue($id);
+				$sx .= $JournalIssue->view_issue($id_rdf);
+
 				return $sx;
 			}
 		function bt_export($id)
