@@ -75,6 +75,9 @@ class V extends Model
 						$tela .= $JournalIssue->view_issue_articles($id);
 						$tela .= bs(bsc($RDF->view_data($id),12));
 						break;
+					case 'Journal':
+						$tela = $this->Issue($id);
+						break;						
 					default:
 						$sx = h($class,4);
 						echo $sx;
@@ -87,6 +90,12 @@ class V extends Model
 			$tela .= $th->cab('footer');
 			return $tela;
 		}
+		function Issue($id)
+			{
+				$JournalIssue = new \App\Models\Journal\JournalIssue();
+				$sx = $JournalIssue->view_issue($id);
+				return $sx;
+			}
 		function bt_export($id)
 			{
 				$link = URL.'/res/v/'.$id.'/export/';
