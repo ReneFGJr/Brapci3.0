@@ -105,7 +105,6 @@ class V extends Model
 				
 				$sx = bs($Journal->journal_header($dd));
 				$sx .= $JournalIssue->view_issue($id_rdf);
-
 				return $sx;
 			}
 		function bt_export($id)

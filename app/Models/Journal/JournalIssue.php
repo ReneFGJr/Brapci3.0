@@ -140,6 +140,13 @@ class JournalIssue extends Model
 			return $sx;
 		}
 
+	function btn_check_issues($id)
+		{
+			$url = (PATH.MODULE.'/index/check_issue/'.$id);
+			$sx = '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_check_issue').'</a>';
+			return $sx;
+		}
+
 	function btn_new_issue($dt)
 		{
 			$MOD = df('MOD','/');
@@ -319,9 +326,11 @@ class JournalIssue extends Model
 					$ed .= $link2.bsicone('harversting',24).$linka;
 					$sx .= bsc($ed,1,'text-end');
 					$sx .= bsc('<hr>',12);
+					
 					//'p-2 m-1 shadown bordered bw'
 				}
 			//$sx .= '<style> div { border: 1px solid #000000; } </style>';
+			$sx .= bsc($this->btn_check_issues($idx),12);
 			$sx = bs($sx);
 			return $sx;
 		}
