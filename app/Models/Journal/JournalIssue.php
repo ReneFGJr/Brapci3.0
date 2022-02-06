@@ -160,7 +160,7 @@ class JournalIssue extends Model
 							for ($q=0;$q < count($issueX);$q++)
 								{
 									$issue_rdf = $RDF->le($issueX[$q]);
-									$issue_name = trim($issue_rdf['n_name']);
+									$issue_name = trim($issue_rdf['concept']['n_name']);
 									if ($issue_name != 'ISSUE:')
 										{
 											echo '<pre>';
