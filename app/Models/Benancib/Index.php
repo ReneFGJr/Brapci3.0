@@ -102,6 +102,7 @@ class Index extends Model
 					$sx .= bsmessage('Process - '.$file1,1);
 					$Brapci = new \App\Models\Benancib\Brapci();
 					$sx .= $Brapci->export($id);
+					$sx .= metarefresh(PATH . MODULE . 'benancib/export/' . ($offset), 2);
 				} else {
 					$sx .= bsmessage('File not found - '.$file1,3);
 					$sx .= metarefresh(PATH . MODULE . 'benancib/export/' . ($offset), 1);
