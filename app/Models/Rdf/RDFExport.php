@@ -168,6 +168,8 @@ class RDFExport extends Model
 						if ((is_array($title)) and (count($title) > 0))
 							{
 							$title = nbr_title($title[0][2]);
+							} else {
+								$title = '';
 							}
 
 						/***************************************************** Title */
