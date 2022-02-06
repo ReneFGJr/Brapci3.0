@@ -150,7 +150,7 @@ class JournalIssue extends Model
 			for ($r=0;$r < count($issue);$r++)
 				{
 					$idx = $issue[$r];
-					$di = $this->where('is_source_rdf',$idx)->findAll();
+					$di = $this->where('is_source_issue',$idx)->findAll();
 					if (count($di) == 0)
 						{
 							$dissue = $RDF->le($id_rdf);
