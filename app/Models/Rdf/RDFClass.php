@@ -44,7 +44,7 @@ class RDFClass extends Model
 
 	function class($c, $force = True)
 	{
-		$this->Prefix = new \App\Models\RDF\RDFPrefix();
+		$this->Prefix = new \App\Models\Rdf\RDFPrefix();
 		$this->Prefix->DBGroup = $this->DBGroup;
 
 		if (strpos($c, ':')) {
