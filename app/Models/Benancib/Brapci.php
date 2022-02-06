@@ -119,11 +119,8 @@ class Brapci extends Model
 				$RDF->propriety($idc,'brapci:hasAuthor',$ida);
 			}
 		/************************************** Subject */
-		if (isset($reg['dc.keywords']))
+		if (isset($reg['dc.keywords'][0]))
 		{
-			echo h('Hello');
-			echo '<pre>';
-			print_r($reg);
 		for ($r=0;$r < count($reg['dc.keywords']);$r++)
 			{
 				$term = (string)$reg['dc.keywords'][$r];
