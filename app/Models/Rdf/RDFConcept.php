@@ -47,7 +47,7 @@ class RDFConcept extends Model
 		{
 			if ($class != sonumero($class))
 				{
-					$RDFClass = new \App\Models\RDF\RDFClass();
+					$RDFClass = new \App\Models\Rdf\RDFClass();
 					$class = $RDFClass->class($class,false);
 				}
 
@@ -84,13 +84,13 @@ class RDFConcept extends Model
 			$Language = new \App\Models\AI\NLP\Language();
 
 			/* Definição da Classe */
-			$Class = new \App\Models\RDF\RDFClass();			
+			$Class = new \App\Models\Rdf\RDFClass();			
 			$Class->DBGroup = $this->DBGroup;
-			$RDFdata = new \App\Models\RDF\RDFData();
+			$RDFdata = new \App\Models\Rdf\RDFData();
 			$RDFdata->DBGroup = $this->DBGroup;
-			$RDFLiteral = new \App\Models\RDF\RDFLiteral();
+			$RDFLiteral = new \App\Models\Rdf\RDFLiteral();
 			$RDFLiteral->DBGroup = $this->DBGroup;
-			$Property = new \App\Models\RDF\RDFClassProperty();
+			$Property = new \App\Models\Rdf\RDFClassProperty();
 			$Property->DBGroup = $this->DBGroup;
 
 			$cl = $dt['Class'];
