@@ -167,9 +167,14 @@ class JournalIssue extends Model
 										{
 											$dtj = $Journal->where('jnl_frbr',$id_rdf)->findAll();
 											$year = $RDF->recover($issue_rdf,'dateOfPublication');
+											echo h('YEAR');
+											echo '<pre>';
+											print_r($issue_rdf);
 											$year = $RDF->c($year[0]);
 											if (isset($dtj[0]))
 											{
+												echo '<pre>';
+												print_r($dtj);
 												$dtj = $dtj[0];
 												$dt = array();
 												$dt['is_source'] = $dtj['id_jnl'];
