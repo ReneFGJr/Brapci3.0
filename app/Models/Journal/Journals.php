@@ -112,6 +112,11 @@ class Journals extends Model
 				}
 			return $sx;
 		}
+	function le_rdf($id)
+		{
+			$dt = $this->where('jnl_frbr',$id)->FindAll();
+			return $dt;
+		}
 	function oai($jnl,$id)
 		{
 			$sx = '';

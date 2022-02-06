@@ -98,13 +98,13 @@ class V extends Model
 				$RDF = new \App\Models\Rdf\RDF();
 				$Journal = new \App\Models\Journal\Journals();
 				$JournalIssue = new \App\Models\Journal\JournalIssue();
-				$dd = $RDF->le($id);
+				$dd = $Journal->le_rdf($id);
 				echo h($id);
 				echo '<pre>';
-				print_r($dd['concept']);
+				print_r($dd);
 				echo '</pre>';
 				$dt = $dd['concept'];
-				$sx = bs($Journal->journal_header($dt));
+				$sx = bs($Journal->journal_header($dd));
 				$sx .= $JournalIssue->view_issue($id);
 				return $sx;
 			}
