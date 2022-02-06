@@ -166,15 +166,9 @@ class JournalIssue extends Model
 									if ($issue_name != 'ISSUE:')
 										{
 											$dtj = $Journal->where('jnl_frbr',$id_rdf)->findAll();
-											print_r($dtj);
-											exit;
 											$year = $RDF->recover($issue_rdf,'dateOfPublication');
 											$year = $RDF->c($year[0]);
 											echo '<pre>';
-											print_r($year);
-											print_r($name);
-											print_r($issue_rdf);
-											exit;
 
 											$dt = array();
 											$dt['is_source'] = $id;
@@ -188,6 +182,8 @@ class JournalIssue extends Model
 											$dt['is_edition'] = '';
 											$dt['is_cover'] = '';
 											$dt['is_url_oai'] = '';
+											print_r($dt);
+											exit;
 											$this->insert($dt);												
 										}
 								}
