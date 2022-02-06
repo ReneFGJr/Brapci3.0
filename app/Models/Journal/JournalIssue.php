@@ -209,7 +209,9 @@ class JournalIssue extends Model
 
 	function btn_check_issues($id)
 		{
-			$url = (PATH.MODULE.'admin/issue/check/'.$id);
+			$MOD = df('MOD','/');
+			if (MODULE != 'res') { $MOD = ''; }
+			$url = (PATH.MODULE.$MOD.'admin/issue/check/'.$id);
 			$sx = '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_check_issue').'</a>';
 			return $sx;
 		}
