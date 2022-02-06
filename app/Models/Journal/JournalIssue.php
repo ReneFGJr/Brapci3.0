@@ -140,10 +140,11 @@ class JournalIssue extends Model
 			return $sx;
 		}
 
-	function check_issue($id)
+	function check_issue($id_rdf)
 		{		
 			$RDF = new \App\Models\Rdf\RDF();
-			$dt = $RDF->le($id);
+			$Journal = new \App\Models\Journal\Journals();
+			$dt = $RDF->le($id_rdf);
 
 			$issue = $RDF->recover($dt,'hasIssue');
 			for ($r=0;$r < count($issue);$r++)
@@ -159,35 +160,39 @@ class JournalIssue extends Model
 
 							for ($q=0;$q < count($issueX);$q++)
 								{
-									$issue_rdf = $RDF->le($issueX[$q]);
+									$id_issue = $issueX[$q];	
+									$issue_rdf = $RDF->le($id_issue);
 									$issue_name = trim($issue_rdf['concept']['n_name']);
 									if ($issue_name != 'ISSUE:')
 										{
+											$dtj = $Journal->where('jnl_frbr',$id_rdf)->findAll();
+											print_r($dtj);
+											exit;
 											$year = $RDF->recover($issue_rdf,'dateOfPublication');
 											$year = $RDF->c($year[0]);
-											$name = $RDF->recover($issue_rdf,'hasIssue');
-											$name = $RDF->c($name[0]);
 											echo '<pre>';
 											print_r($year);
 											print_r($name);
 											print_r($issue_rdf);
 											exit;
+
+											$dt = array();
+											$dt['is_source'] = $id;
+											$dt['is_source_rdf'] = $id_rdf;
+											$dt['is_source_issue'] = $id_issue;
+											$dt['is_year'] = $year;
+											$dt['is_issue'] = '';
+											$dt['is_vol'] = '';
+											$dt['is_nr'] = '';
+											$dt['is_place'] = '';
+											$dt['is_edition'] = '';
+											$dt['is_cover'] = '';
+											$dt['is_url_oai'] = '';
+											$this->insert($dt);												
 										}
 								}
 
-							$dt = array();
-							$dt['is_source'] = $id;
-							$dt['is_source_rdf'] = $id_rdf;
-							$dt['is_source_issue'] = $id_issue;
-							$dt['is_year'] = $year;
-							$dt['is_issue'] = 
-							$dt['is_vol'] = $vol;
-							$dt['is_nr'] = $num;
-							$dt['is_place'] = '';
-							$dt['is_edition'] = '';
-							$dt['is_cover'] = '';
-							$dt['is_url_oai'] = '';
-							$this->insert($dt);							
+						
 						}
 				}
 		}
