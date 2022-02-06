@@ -146,13 +146,30 @@ class JournalIssue extends Model
 			$dt = $RDF->le($id);
 
 			$issue = $RDF->recover($dt,'hasIssue');
-			echo '<pre>';
-			print_r($issue);
 			for ($r=0;$r < count($issue);$r++)
 				{
-					$line = $issue[$r];
-					print_r($line);
-					echo '<hr>';
+					$id = $issue[$r];
+					$di = $this->where('is_source_rdf',$id)->findAll();
+					if (count($di) == 0)
+						{
+							$dissue = $RDF->le($id);
+							echo '<pre>';
+							print_r($dissue);
+							exit;
+							$dt = array();
+							$dt['is_source'] = $id;
+							$dt['is_source_rdf'] = $id_rdf;
+							$dt['is_source_issue'] = $id_issue;
+							$dt['is_year'] = $year;
+							$dt['is_issue'] = 
+							$dt['is_vol'] = $vol;
+							$dt['is_nr'] = $num;
+							$dt['is_place'] = '';
+							$dt['is_edition'] = '';
+							$dt['is_cover'] = '';
+							$dt['is_url_oai'] = '';
+							$this->insert($dt);							
+						}
 				}
 		}
 
