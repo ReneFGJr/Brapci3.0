@@ -92,9 +92,10 @@ class V extends Model
 		}
 		function Issue($id)
 			{
+				$RDF = new \App\Models\Rdf\RDF();
 				$Journal = new \App\Models\Journal\Journals();
 				$JournalIssue = new \App\Models\Journal\JournalIssue();
-				$dd = $JournalIssue->find($id);
+				$dd = $RDF->le($id);
 				echo h($id);
 				print_r($dd);
 				$dt = $Journal->find($dd['is_source']);
