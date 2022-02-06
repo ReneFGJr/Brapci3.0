@@ -170,6 +170,7 @@ class JournalIssue extends Model
 											echo h('YEAR');
 											echo '<pre>';
 											print_r($issue_rdf);
+											print_r($year);
 											$year = $RDF->c($year[0]);
 											if (isset($dtj[0]))
 											{
