@@ -169,6 +169,7 @@ class JournalIssue extends Model
 											$year = $RDF->recover($issue_rdf,'dateOfPublication');
 											$year = $RDF->c($year[0]);
 											echo '<pre>';
+											print_r($dtj);
 
 											$dt = array();
 											$dt['is_source'] = $id;
