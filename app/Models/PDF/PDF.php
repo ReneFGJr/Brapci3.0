@@ -81,7 +81,7 @@ class Pdf extends Model
 
 			if (file_exists($pdf))
 				{
-					$link = onclick((PATH.'res/download/'.$id),800,800);
+					$link = onclick((PATH.'download/'.$id),800,800);
 					$linka = '</a>';
 					$img = $link.'<img src="'.(URL.'img/icones/pdf.png').'" class="img-fluid">'.$linka;
 					$sx .= $img;
@@ -96,7 +96,7 @@ class Pdf extends Model
 	function btn_inport($id)
 		{
 			$sx = '';
-			$link = onclick((PATH.'main/pdf/inport/'.$id),100,50,'btn btn-outline-primary');
+			$link = onclick((PATH.'pdf/inport/'.$id),100,50,'btn btn-outline-primary');
 			$linka = '</a>';
 			$sx .= $link.'import'.$linka;
 			return $sx;
