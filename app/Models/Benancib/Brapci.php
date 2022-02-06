@@ -128,13 +128,15 @@ class Brapci extends Model
 				$RDF->propriety($idc,'brapci:hasSubject',$idt);
 			}
 		}
+		if (isset($reg['dc.subject']))
+		{		
 		for ($r=0;$r < count($reg['dc.subject']);$r++)
 			{
 				$term = (string)$reg['dc.subject'][$r];
 				$idt = $RDF->conecpt($term,'dc:Subject');
 				$RDF->propriety($idc,'brapci:hasSubject',$idt);
 			}
-			
+		}	
 		/************************************** Subject */
 		if (isset($reg['dc.resumo']))		
 			{
