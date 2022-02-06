@@ -113,7 +113,7 @@ class Pdf extends Model
 	function download($id)
 		{
 			$Click = new \App\Models\PDF\Click();
-			$RDF = new \App\Models\RDF\RDF();
+			$RDF = new \App\Models\Rdf\RDF();
 
 			$dt = $RDF->le($id);
 			$file = $dt['concept']['n_name'];
@@ -140,7 +140,7 @@ class Pdf extends Model
 
 	function inport($id)
 		{			
-			$RDF = new \App\Models\RDF\RDF();			
+			$RDF = new \App\Models\Rdf\RDF();			
 			$Pdf_ojs = new \App\Models\PDF\Pdf_ojs();
 			$dt = $RDF->le($id,0,'brapci');
 			$urls = $Pdf_ojs->urls($dt);
