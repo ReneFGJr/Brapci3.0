@@ -165,9 +165,10 @@ class RDFExport extends Model
 
 						/***************************************************** Title */
 						$title = $RDF->recovery($dt['data'],'hasTitle');
-						echo '<pre>';
-						print_r($title);
-						$title = nbr_title($title[0][2]);
+						if (is_array($title))
+							{
+							$title = nbr_title($title[0][2]);
+							}
 
 						/***************************************************** Title */
 						$issue = $RDF->recovery($dt['data'],'hasIssueOf');
