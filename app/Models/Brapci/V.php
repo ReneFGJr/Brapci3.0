@@ -77,6 +77,7 @@ class V extends Model
 						break;
 					default:
 						$sx = h($name,4);
+						echo $sx;
 						$sx .= h(lang('rdf.class').': '.$class,6);
 						$tela .= bs(bsc($sx,12));
 						$tela .= bs(bsc($RDF->view_data($id),12));
