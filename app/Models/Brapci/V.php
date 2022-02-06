@@ -97,7 +97,9 @@ class V extends Model
 				$JournalIssue = new \App\Models\Journal\JournalIssue();
 				$dd = $RDF->le($id);
 				echo h($id);
-				print_r($dd);
+				echo '<pre>';
+				print_r($dd['concept']);
+				echo '</pre>';
 				$dt = $Journal->find($dd['is_source']);
 				$sx = bs($Journal->journal_header($dt));
 				$sx .= $JournalIssue->view_issue($id);
