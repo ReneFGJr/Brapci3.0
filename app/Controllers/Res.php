@@ -120,7 +120,19 @@ class Res extends BaseController
 	{
 		//
 		$tela = $this->cab("user");
-		print_r($_SESSION);		
+		switch($d1)
+			{
+				case 'issue':
+					$JournalIssue = new \App\Models\Journal\JournalIssue();
+					switch($d2)
+						{
+							case 'check':
+								$d3 = round($d3);
+								$tela = $JournalIssue->check_issue($d3);
+								break;
+						}
+					
+			}
 		return $tela;
 	}	
 
