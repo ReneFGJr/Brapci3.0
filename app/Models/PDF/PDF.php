@@ -81,7 +81,7 @@ class Pdf extends Model
 
 			if (file_exists($pdf))
 				{
-					$link = onclick((PATH.'download/'.$id),800,800);
+					$link = onclick((PATH.MODULE.'download/'.$id),800,800);
 					$linka = '</a>';
 					$img = $link.'<img src="'.(URL.'img/icones/pdf.png').'" class="img-fluid">'.$linka;
 					$sx .= $img;
