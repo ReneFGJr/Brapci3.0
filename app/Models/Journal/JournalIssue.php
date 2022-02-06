@@ -149,7 +149,6 @@ class JournalIssue extends Model
 			for ($r=0;$r < count($issue);$r++)
 				{
 					$idx = $issue[$r];
-					echo h($idx);
 					$di = $this->where('is_source_rdf',$idx)->findAll();
 					if (count($di) == 0)
 						{
@@ -161,9 +160,13 @@ class JournalIssue extends Model
 							for ($q=0;$q < count($issueX);$q++)
 								{
 									$issue_rdf = $RDF->le($issueX[$q]);
-									echo '<pre>';
-									print_r($issue_rdf);
-									exit;
+									$issue_name = $issue_rdf['n_name'];
+									if ($issue_name != '')
+										{
+											echo '<pre>';
+											print_r($issue_rdf);
+											exit;
+										}
 								}
 
 							$dt = array();
