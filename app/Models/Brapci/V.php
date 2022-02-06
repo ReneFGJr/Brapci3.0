@@ -76,7 +76,7 @@ class V extends Model
 						$tela .= bs(bsc($RDF->view_data($id),12));
 						break;
 					case 'Journal':
-						$tela = $this->Issue($id);
+						$tela .= $this->Issue($id);
 						break;						
 					default:
 						$sx = h($class,4);
