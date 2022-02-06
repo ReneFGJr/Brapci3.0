@@ -164,7 +164,9 @@ class JournalIssue extends Model
 									if ($issue_name != 'ISSUE:')
 										{
 											$year = $RDF->recover($issue_rdf,'dateOfPublication');
+											$year = $RDF->c($year[0]);
 											$name = $RDF->recover($issue_rdf,'hasIssue');
+											$name = $RDF->c($name[0]);
 											echo '<pre>';
 											print_r($year);
 											print_r($name);
