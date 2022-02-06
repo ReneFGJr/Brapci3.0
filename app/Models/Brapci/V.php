@@ -95,6 +95,8 @@ class V extends Model
 				$Journal = new \App\Models\Journal\Journals();
 				$JournalIssue = new \App\Models\Journal\JournalIssue();
 				$dd = $JournalIssue->find($id);
+				echo h($id);
+				print_r($dd);
 				$dt = $Journal->find($dd['is_source']);
 				$sx = bs($Journal->journal_header($dt));
 				$sx .= $JournalIssue->view_issue($id);
