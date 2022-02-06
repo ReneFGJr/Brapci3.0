@@ -144,13 +144,21 @@ class JournalIssue extends Model
 		{		
 			$RDF = new \App\Models\Rdf\RDF();
 			$dt = $RDF->le($id);
+
+			$issue = $RDF->recover($dt,'hasIssue');
 			echo '<pre>';
-			print_r($dt);
+			print_r($issue);
+			for ($r=0;$r < count($issue);$r++)
+				{
+					$line = $issue[$r];
+					print_r($line);
+					echo '<hr>';
+				}
 		}
 
 	function btn_check_issues($id)
 		{
-			$url = (PATH.MODULE.'/admin/issue/check/'.$id);
+			$url = (PATH.MODULE.'admin/issue/check/'.$id);
 			$sx = '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_check_issue').'</a>';
 			return $sx;
 		}
