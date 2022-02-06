@@ -179,7 +179,7 @@ class JournalIssue extends Model
 													$year = $RDF->c($year[0]);
 												}
 											
-											if (isset($dtj[0]))
+											if ((isset($dtj[0])) and (strlen($year) != ''))
 											{
 												//echo '<pre>';
 												//print_r($dtj);
