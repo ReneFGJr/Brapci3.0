@@ -212,7 +212,7 @@ class Brapci extends Model
 			}
 					
 		
-		$link = '<a href="'.URL.'/res/v/'.$idc.'" target="new'.$idc.'">'.$title.'</a>';
+		$link = '<a href="'.PATH.'/res/v/'.$idc.'" target="new'.$idc.'">'.$title.'</a>';
 		$sx = '';
 		$sx .= $link;
 		return $sx;
