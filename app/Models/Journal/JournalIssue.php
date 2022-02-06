@@ -153,7 +153,7 @@ class JournalIssue extends Model
 					$di = $this->where('is_source_rdf',$idx)->findAll();
 					if (count($di) == 0)
 						{
-							$dissue = $RDF->le($id);
+							$dissue = $RDF->le($id_rdf);
 							$issue1 = $RDF->recover($dissue,'hasIssue');
 							$issue2 = $RDF->recover($dissue,'hasIssueProceeding');							
 							$issueX = array_merge($issue1,$issue2);
