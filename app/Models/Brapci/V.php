@@ -101,7 +101,7 @@ class V extends Model
 				$dd = $Journal->le_rdf($id);
 				echo '<pre>';
 				print_r($dd);
-				$id_rdf = $dd['jnl_frbr'];
+				$id_rdf = $dd[0]['jnl_frbr'];
 				
 				$sx = bs($Journal->journal_header($dd));
 				$sx .= $JournalIssue->view_issue($id_rdf);
