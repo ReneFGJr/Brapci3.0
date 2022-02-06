@@ -99,9 +99,9 @@ class V extends Model
 				$Journal = new \App\Models\Journal\Journals();
 				$JournalIssue = new \App\Models\Journal\JournalIssue();
 				$dd = $Journal->le_rdf($id);
-				echo '<pre>';
-				print_r($dd);
-				$id_rdf = $dd[0]['jnl_frbr'];
+
+				$dd = $dd[0];
+				$id_rdf = $dd['jnl_frbr'];
 				
 				$sx = bs($Journal->journal_header($dd));
 				$sx .= $JournalIssue->view_issue($id_rdf);
