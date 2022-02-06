@@ -54,167 +54,152 @@ class Brapci extends Model
 		/***************************************************** Publicação *********/
 		$name = 'Encontro Nacional de Pesquisa e Pós-graduação em Ciência da Informação';
 		$class = "Brapci:Event";
-		$idpub = $RDF->conecpt($name,$class);
+		$idpub = $RDF->conecpt($name, $class);
 
 		/***************************************************** Unidade Proceeding */
 		$class = "Brapci:Proceeding";
 		$reg = (array)$xml->record;
 		$year = $reg['dc.ano.evento'];
-		$name = "enancib.org.".$year.".".$id;		
-		$idc = $RDF->conecpt($name,$class);
+		$name = "enancib.org." . $year . "." . $id;
+		$idc = $RDF->conecpt($name, $class);
 
 		/***************************************************** ISSUE */
 		$class = "Brapci:IssueProceeding";
 		$name = 'Encontro Nacional de Pesquisa e Pós-graduação em Ciência da Informação';
-		$name .= ', '.troca($reg['dc.edicao.evento'],'º','');
-		$name .= '.';	
-		$name .= ', '.trim($reg['dc.ano.evento']);
-		$name .= ', '.trim($reg['dc.cidade.evento']);		
-		$id_issue = $RDF->conecpt($name,$class);
+		$name .= ', ' . troca($reg['dc.edicao.evento'], 'º', '');
+		$name .= '.';
+		$name .= ', ' . trim($reg['dc.ano.evento']);
+		$name .= ', ' . trim($reg['dc.cidade.evento']);
+		$id_issue = $RDF->conecpt($name, $class);
 
 		/******************************************************* ISSUE YEAR */
 		$class = "Date";
 		$term = $reg['dc.ano.evento'];
-		$id_year = $RDF->conecpt($term,$class);
-		$RDF->propriety($id_issue,'brapci:hasDateTime',$id_year);
+		$id_year = $RDF->conecpt($term, $class);
+		$RDF->propriety($id_issue, 'brapci:hasDateTime', $id_year);
 
 		/******************************************************* ISSUE YEAR */
 		$class = "frbr:Place";
 		$term = $reg['dc.cidade.evento'];
-		$id_place = $RDF->conecpt($term,$class);
-		$RDF->propriety($id_issue,'brapci:hasPlace',$id_place);			
+		$id_place = $RDF->conecpt($term, $class);
+		$RDF->propriety($id_issue, 'brapci:hasPlace', $id_place);
 
 		/****************************************************** ASSOCIA ISSUE AO LINK */
-		$RDF->assoc($id_issue,$idc,'brapci:hasIssueProceedingOf');		
+		$RDF->assoc($id_issue, $idc, 'brapci:hasIssueProceedingOf');
 		/****************************************************** ASSOCIA EVENTO A ISSUE */
-		$RDF->assoc($idpub,$id_issue,'brapci:hasIssueProceeding');		
+		$RDF->assoc($idpub, $id_issue, 'brapci:hasIssueProceeding');
 
 
 		/*********************************** TITLES */
 		$title = (string)$reg['dc.title'];
 		$lang = $Language->getTextLanguage($title);
-		$idt = $RDF->literal($title,$lang,$idc,'brapci:hasTitle');
-	
-		if (isset($reg['dc.title.alternative']))
-			{
-				$title = (string)$reg['dc.title.alternative'];
-				$lang = $Language->getTextLanguage($title);
-				$idt = $RDF->literal($title,$lang,$idc,'brapci:hasTitle');
-			}
+		$idt = $RDF->literal($title, $lang, $idc, 'brapci:hasTitle');
+
+		if (isset($reg['dc.title.alternative'])) {
+			$title = (string)$reg['dc.title.alternative'];
+			$lang = $Language->getTextLanguage($title);
+			$idt = $RDF->literal($title, $lang, $idc, 'brapci:hasTitle');
+		}
 
 		/************************************* Author */
-		$auths = $reg['dc.contributor.author'];
-		if (is_array($auths))
-			{
-				
+		if (isset($reg['dc.contributor.author'])) {
+			$auths = $reg['dc.contributor.author'];
+			if (is_array($auths)) {
 			} else {
 				$auths = array();
 				$auths[0] = $reg['dc.contributor.author'];
 			}
-		
-		for ($r=0;$r < count($auths);$r++)
-			{
-				$auth = (string)$auths[$r];
-				$ida = $RDF->conecpt($auth,'foaf:Person');
-				$RDF->propriety($idc,'brapci:hasAuthor',$ida);
-			}
+		}
+
+		for ($r = 0; $r < count($auths); $r++) {
+			$auth = (string)$auths[$r];
+			$ida = $RDF->conecpt($auth, 'foaf:Person');
+			$RDF->propriety($idc, 'brapci:hasAuthor', $ida);
+		}
 		/************************************** Subject */
-		if (isset($reg['dc.keywords'][0]))
-		{
-		for ($r=0;$r < count($reg['dc.keywords']);$r++)
-			{
+		if (isset($reg['dc.keywords'][0])) {
+			for ($r = 0; $r < count($reg['dc.keywords']); $r++) {
 				$term = (string)$reg['dc.keywords'][$r];
-				$idt = $RDF->conecpt($term,'dc:Subject');
-				$RDF->propriety($idc,'brapci:hasSubject',$idt);
+				$idt = $RDF->conecpt($term, 'dc:Subject');
+				$RDF->propriety($idc, 'brapci:hasSubject', $idt);
 			}
 		}
-		if (isset($reg['dc.subject']))
-		{	
-		for ($r=0;$r < count($reg['dc.subject']);$r++)
-			{
+		if (isset($reg['dc.subject'])) {
+			for ($r = 0; $r < count($reg['dc.subject']); $r++) {
 				$term = (string)$reg['dc.subject'][$r];
-				$idt = $RDF->conecpt($term,'dc:Subject');
-				$RDF->propriety($idc,'brapci:hasSubject',$idt);
+				$idt = $RDF->conecpt($term, 'dc:Subject');
+				$RDF->propriety($idc, 'brapci:hasSubject', $idt);
 			}
-		}	
+		}
 		/************************************** Subject */
-		if (isset($reg['dc.resumo']))		
-			{
-				$term = (string)$reg['dc.resumo'];
-				$lang = $Language->getTextLanguage($term);
-				$prop = 'brapci:hasAbstract';
-				$RDF->RDF_literal($term,$lang, $idc, $prop);
-			}		
-		if (isset($reg['dc.description.abstract']))		
-			{
-				$term = (string)$reg['dc.description.abstract'];
-				$lang = $Language->getTextLanguage($term);
-				$prop = 'brapci:hasAbstract';
-				$RDF->RDF_literal($term,$lang, $idc, $prop);
-			}	
+		if (isset($reg['dc.resumo'])) {
+			$term = (string)$reg['dc.resumo'];
+			$lang = $Language->getTextLanguage($term);
+			$prop = 'brapci:hasAbstract';
+			$RDF->RDF_literal($term, $lang, $idc, $prop);
+		}
+		if (isset($reg['dc.description.abstract'])) {
+			$term = (string)$reg['dc.description.abstract'];
+			$lang = $Language->getTextLanguage($term);
+			$prop = 'brapci:hasAbstract';
+			$RDF->RDF_literal($term, $lang, $idc, $prop);
+		}
 
 		/************************************** Section */
-		if (isset($reg['dc.type']))		
-			{
-				$term = (string)$reg['dc.type'];
-				$lang = $Language->getTextLanguage($term);
-				$idt = $RDF->conecpt($term,'brapci:ProceedingSection');
-				$RDF->propriety($idc,'brapci:hasSectionOf',$idt);				
-			}
+		if (isset($reg['dc.type'])) {
+			$term = (string)$reg['dc.type'];
+			$lang = $Language->getTextLanguage($term);
+			$idt = $RDF->conecpt($term, 'brapci:ProceedingSection');
+			$RDF->propriety($idc, 'brapci:hasSectionOf', $idt);
+		}
 
 		$section = '';
-		if (isset($reg['dc.numero.gt']))		
-			{
-				$section = 'GT'.(string)$reg['dc.numero.gt'];
-			}	
+		if (isset($reg['dc.numero.gt'])) {
+			$section = 'GT' . (string)$reg['dc.numero.gt'];
+		}
 
-		if (isset($reg['dc.titulo.gt']))		
-			{
-				$section .= ' '.(string)$reg['dc.titulo.gt'];
-				$section = trim($section);
-			}	
-		if (strlen($section) > 0)
-			{
-				$lang = $Language->getTextLanguage($section);
-				$idt = $RDF->conecpt($section,'brapci:ProceedingSection');
-				$RDF->propriety($idc,'brapci:hasSectionOf',$idt);				
-			}
+		if (isset($reg['dc.titulo.gt'])) {
+			$section .= ' ' . (string)$reg['dc.titulo.gt'];
+			$section = trim($section);
+		}
+		if (strlen($section) > 0) {
+			$lang = $Language->getTextLanguage($section);
+			$idt = $RDF->conecpt($section, 'brapci:ProceedingSection');
+			$RDF->propriety($idc, 'brapci:hasSectionOf', $idt);
+		}
 
 		/************************************************* Cited */
 		$Cited = new \App\Models\Brapci\Cited();
 		$cited = (array)$reg['dc.referencias'];
 		$cites = (array)$cited['cited'];
 
-		for ($r=0;$r < count($cites);$r++)
-			{
-				$cit = $cites[$r];
-				$ord = $r+1;
-				$Cited->cited($idc,$cit,$ord);
+		for ($r = 0; $r < count($cites); $r++) {
+			$cit = $cites[$r];
+			$ord = $r + 1;
+			$Cited->cited($idc, $cit, $ord);
+		}
+
+		/************************************************* Arquivo PDF */
+		if (file_exists($file2)) {
+			dircheck('_repository');
+			dircheck('_repository/enancib');
+			dircheck('_repository/enancib/' . $year);
+			$dir = '_repository/enancib/' . $year . '/';
+			$file3 = $dir . 'work_' . $idc . '.pdf';
+
+			if (!copy($file2, $file3)) {
+				echo "falha ao copiar $file3...\n";
 			}
 
-		/************************************************* Arquivo PDF */	
-		if (file_exists($file2))
-			{				
-				dircheck('_repository');
-				dircheck('_repository/enancib');
-				dircheck('_repository/enancib/'.$year);
-				$dir = '_repository/enancib/'.$year.'/';
-				$file3 = $dir.'work_'.$idc.'.pdf';
+			$class = 'brapci:FileStorage';
+			$idf = $RDF->conecpt($file3, $class);
 
-				if (!copy($file2, $file3)) {
-					echo "falha ao copiar $file3...\n";
-				}
+			$RDF->propriety($idc, 'brapci:hasFileStorage', $idf);
 
-				$class = 'brapci:FileStorage';
-				$idf = $RDF->conecpt($file3,$class);
+			//exit;
+		}
 
-				$RDF->propriety($idc,'brapci:hasFileStorage',$idf);
-
-				//exit;
-			}
-					
-		
-		$link = '<a href="'.PATH.MODULE.'v/'.$idc.'" target="new'.$idc.'">'.$title.'</a>';
+		$link = '<a href="' . PATH . MODULE . 'v/' . $idc . '" target="new' . $idc . '">' . $title . '</a>';
 		$sx = '';
 		$sx .= $link;
 		return $sx;
