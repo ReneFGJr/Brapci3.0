@@ -103,6 +103,9 @@ class JournalIssue extends Model
 					if ($idj > 0)
 					{
 						$dt = $Journal->find($idj);
+						echo h($idj);
+						echo '<pre>';
+						print_r($dt);
 						$_POST['is_source']	= $dt['id_jnl'];
 						$_POST['is_source_rdf']	= $dt['jnl_frbr'];
 						$this->typeFields[2] = 'set:'.$dt['jnl_frbr'];
