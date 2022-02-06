@@ -204,6 +204,7 @@ class JournalIssue extends Model
 						
 						}
 				}
+				return 'Exported';
 		}
 
 	function btn_check_issues($id)
