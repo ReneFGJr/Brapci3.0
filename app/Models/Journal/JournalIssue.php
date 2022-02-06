@@ -98,12 +98,9 @@ class JournalIssue extends Model
 				{
 					$this->id = $reg;					
 					$sx = '';
-				} else {
-					echo '<pre>';					
-					print_r($_POST);
-					exit;
+				} else {					
 					$Journal = new \App\Models\Journal\Journals();
-					if ($idj > 0)
+					if (($idj == 0) and ($_POST['is_source'] == ''))
 					{
 						$dt = $Journal->find($idj);
 						$_POST['is_source']	= $dt['id_jnl'];
