@@ -51,16 +51,26 @@ class Brapci extends Model
 
 		$xml = simplexml_load_file($file1);
 
+		/***************************************************** Publicação *********/
+		$name = 'Encontro Nacional de Pesquisa e Pós-graduação em Ciência da Informação';
+		$class = "Brapci:Event";
+		$idpub = $RDF->conecpt($name,$class);
+
+		/***************************************************** Unidade Proceeding */
 		$class = "Brapci:Proceeding";
 		$reg = (array)$xml->record;
 		$year = $reg['dc.ano.evento'];
-		$name = "enancib.org.".$year.".".$id;
+		$name = "enancib.org.".$year.".".$id;		
 		$idc = $RDF->conecpt($name,$class);
 
 		/***************************************************** ISSUE */
-		$class = "Brapci:Issue";
-		$term = 'Enancib-'.$reg['dc.ano.evento'];
-		$id_issue = $RDF->conecpt($term,'brapci:Issue');
+		$class = "Brapci:IssueProceeding";
+		$name = 'Encontro Nacional de Pesquisa e Pós-graduação em Ciência da Informação';
+		$name .= ', '.troca($reg['dc.edicao.evento'],'º','');
+		$name .= '.';	
+		$name .= ', '.trim($reg['dc.ano.evento']);
+		$name .= ', '.trim($reg['dc.cidade.evento']);		
+		$id_issue = $RDF->conecpt($name,$class);
 
 		/******************************************************* ISSUE YEAR */
 		$class = "Date";
@@ -72,22 +82,13 @@ class Brapci extends Model
 		$class = "frbr:Place";
 		$term = $reg['dc.cidade.evento'];
 		$id_place = $RDF->conecpt($term,$class);
-		$RDF->propriety($id_issue,'brapci:hasPlace',$id_place);	
+		$RDF->propriety($id_issue,'brapci:hasPlace',$id_place);			
 
-		/******************************************************* ISSUE YEAR */
-		$class = "brapci:Edition";
-		$term = romano($reg['dc.edicao.evento']);
-		$id_edition = $RDF->conecpt($term,$class);
-		$RDF->propriety($id_issue,'brapci:isEdition',$id_edition);	
+		/****************************************************** ASSOCIA ISSUE AO LINK */
+		$RDF->assoc($id_issue,$idc,'brapci:hasIssueProceedingOf');		
+		/****************************************************** ASSOCIA EVENTO A ISSUE */
+		$RDF->assoc($idpub,$id_issue,'brapci:hasIssueProceeding');		
 
-		/******************************************************* ISSUE YEAR */
-		$class = "brapci:Proceeding";
-		$term = 'Encontro Nacional de Pesquisa e Pós-graduação em Ciência da Informação';
-		$id_journal = $RDF->conecpt($term,$class);
-		$RDF->propriety($id_journal,'brapci:isEdition',$id_issue);
-
-		/* Associa trabalho ao issue */
-		$RDF->assoc($id_issue,$idc,'brapci:hasIssue');		
 
 		/*********************************** TITLES */
 		$title = (string)$reg['dc.title'];
@@ -118,12 +119,15 @@ class Brapci extends Model
 				$RDF->propriety($idc,'brapci:hasAuthor',$ida);
 			}
 		/************************************** Subject */
+		if (isset($reg['dc.keywords']))
+		{
 		for ($r=0;$r < count($reg['dc.keywords']);$r++)
 			{
 				$term = (string)$reg['dc.keywords'][$r];
 				$idt = $RDF->conecpt($term,'dc:Subject');
 				$RDF->propriety($idc,'brapci:hasSubject',$idt);
 			}
+		}
 		for ($r=0;$r < count($reg['dc.subject']);$r++)
 			{
 				$term = (string)$reg['dc.subject'][$r];
@@ -153,7 +157,6 @@ class Brapci extends Model
 				$term = (string)$reg['dc.type'];
 				$lang = $Language->getTextLanguage($term);
 				$idt = $RDF->conecpt($term,'brapci:ProceedingSection');
-				echo '=====>'.$idt;
 				$RDF->propriety($idc,'brapci:hasSectionOf',$idt);				
 			}
 
@@ -174,13 +177,46 @@ class Brapci extends Model
 				$idt = $RDF->conecpt($section,'brapci:ProceedingSection');
 				$RDF->propriety($idc,'brapci:hasSectionOf',$idt);				
 			}
-						
+
+		/************************************************* Cited */
+		$Cited = new \App\Models\Brapci\Cited();
+		$cited = (array)$reg['dc.referencias'];
+		$cites = (array)$cited['cited'];
+
+		for ($r=0;$r < count($cites);$r++)
+			{
+				$cit = $cites[$r];
+				$ord = $r+1;
+				$Cited->cited($idc,$cit,$ord);
+			}
+
+		/************************************************* Arquivo PDF */	
+		if (file_exists($file2))
+			{				
+				dircheck('_repository');
+				dircheck('_repository/enancib');
+				dircheck('_repository/enancib/'.$year);
+				$dir = '_repository/enancib/'.$year.'/';
+				$file3 = $dir.'work_'.$idc.'.pdf';
+
+				echo '<tt>'.$file2;
+				echo '<br>'.$file3;
+				if (!copy($file2, $file3)) {
+					echo "falha ao copiar $file3...\n";
+				}
+
+				$class = 'brapci:FileStorage';
+				$idf = $RDF->conecpt($file3,$class);
+
+				$RDF->propriety($idc,'brapci:hasFileStorage',$idf);
+
+				//exit;
+			}
 					
 		
 		$link = '<a href="'.URL.'/res/v/'.$idc.'" target="new'.$idc.'">'.$title.'</a>';
 		$sx = '';
 		$sx .= $link;
-		echo $sx;
 		return $sx;
 	}
 }

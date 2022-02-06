@@ -69,18 +69,24 @@ class Pdf extends Model
 			return $sx;
 		}
 
-	function pdf_download($id)
+	function pdf_download($dt)
 		{
 			$sx = '';
-			$pdf = $this->pdf_file($id);
+			$pdf = 'xx';
+			if (isset($dt['n_name2']))
+				{
+					$pdf = $dt['n_name2'];
+					$id = $dt['d_r2'];
+				}
 
 			if (file_exists($pdf))
 				{
-					$link = onclick(base_url(URL.'download/'.$id),800,800);
+					$link = onclick(base_url(URL.'res/download/'.$id),800,800);
 					$linka = '</a>';
 					$img = $link.'<img src="'.base_url(URL.'img/icones/pdf.png').'" class="img-fluid">'.$linka;
 					$sx .= $img;
 				} else {
+					echo "ERRO";
 					$img = '<img src="'.base_url(URL.'img/icones/pdf_off.png').'" class="img-fluid">';
 					$sx .= '<a href="#">'.$img.'</a>';
 					$sx .= $this->btn_inport($id);
@@ -106,13 +112,18 @@ class Pdf extends Model
 
 	function download($id)
 		{
-			$Files = new \App\Models\IO\Files();
-			$file = $Files->directory($id);
-			$file .= strzero($id,8).'.pdf';
+			$Click = new \App\Models\PDF\Click();
+			$RDF = new \App\Models\RDF\RDF();
+
+			$dt = $RDF->le($id);
+			$file = $dt['concept']['n_name'];
+
 			if (file_exists($file))			
 				{
-					$Click = new \App\Models\PDF\Click();
-					$data['dw_rdf'] = $id;
+					$idc = $RDF->recover($dt,'hasFileStorage');
+					$idc = $idc[0];
+					
+					$data['dw_rdf'] = $idc;
 					$data['dw_ip'] = ip();
 					$daat['dw_download'] = 1;
 					$data['dw_type'] = 1;

@@ -91,7 +91,6 @@ function viewid($id)
 
 	function PersonPublications($id)	
 		{
-			echo '==========>'.$id;
 			$LattesProducao = new \App\Models\Lattes\LattesProducao();
 			$tela = $LattesProducao->producao($id);
 			/*

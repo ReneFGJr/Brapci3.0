@@ -41,4 +41,6 @@ class Click extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+	var $sql = '';
 }

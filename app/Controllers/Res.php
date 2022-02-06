@@ -172,10 +172,10 @@ class Res extends BaseController
 		return $tela;
 	}	
 
-	function v($id)
+	function v($id,$act='')
 	{
 		$V = new \App\Models\Brapci\V();
-		$tela = $V->index($this, $id);
+		$tela = $V->index($this, $id,$act);
 		return $tela;
 	}
 

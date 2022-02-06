@@ -40,23 +40,22 @@ class V extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function index($th,$id)
-		{
+	function index($th,$id,$act='')
+		{			
 			$Checked = new \App\Models\Brapci\Checked();
 			$RDF = new \App\Models\Rdf\RDF();
+
+			if ($act == 'export')
+				{
+					$RDF->c($id,true);
+				}
 
 			$tela = $th->cab();			
 			$dt = $RDF->le($id,1);
 
 			$class = $dt['concept']['c_class'];
 			$name = $dt['concept']['n_name'];
-			if (1==2) 
-			{ 
-			echo '<pre>';
-			print_r($dt);
-			echo '</pre>';
-			echo '===============>'.$class;
-			}
+			
 			switch ($class)
 				{
 					case 'Article':
@@ -68,9 +67,11 @@ class V extends Model
 						$Checked->check($id,100);
 						$Articles = new \App\Models\Journal\Articles();
 						$tela .= $Articles->view_articles($id);
+						$tela .= bs(bsc($RDF->view_data($id),12));
 						break;											
 					case 'Issue':
 						$JournalIssue = new \App\Models\Journal\JournalIssue();
+						$tela .= bs(bsc(h('Class: '.$class,2),12));
 						$tela .= $JournalIssue->view_issue_articles($id);
 						$tela .= bs(bsc($RDF->view_data($id),12));
 						break;
@@ -81,8 +82,14 @@ class V extends Model
 						$tela .= bs(bsc($RDF->view_data($id),12));
 					break;
 				}
-
+			$tela .= bs(bsc($this->bt_export($id),12));
 			$tela .= $th->cab('footer');
 			return $tela;
 		}
+		function bt_export($id)
+			{
+				$link = URL.'/res/v/'.$id.'/export/';
+				$sx = '<a href="'.$link.'" class="btn btn-outline-primary btn-sm" onclick="export_rdf('.$id.');">'.lang('rdf.export').'</a>';
+				return $sx;
+			}
 }

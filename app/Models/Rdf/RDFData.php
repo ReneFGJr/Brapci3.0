@@ -126,7 +126,7 @@ class RDFData extends Model
 								if ($ID == $line['d_r2'])
 									{
 										$link = base_url(PATH.MODULE.'/v/'.$line['d_r1']);
-										$txt = $RDF->info($line['d_r1'],1);
+										$txt = $RDF->c($line['d_r1'],1);
 										if (strlen($txt) > 0)
 											{
 												$link = '<a href="'.$link.'">'.$txt.'</a>';
@@ -137,7 +137,7 @@ class RDFData extends Model
 										
 									} else {
 										$link = base_url(PATH.MODULE.'/v/'.$line['d_r2']);
-										$txt = $RDF->info($line['d_r2'],1);
+										$txt = $RDF->c($line['d_r2'],1);
 										if (strlen($txt) > 0)
 											{
 												$link = '<a href="'.$link.'">'.$txt.'</a>';

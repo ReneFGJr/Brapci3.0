@@ -206,7 +206,7 @@ class JournalIssue extends Model
 								$nr = $RDF->le_content($id2);
 								break;
 							case 'hasIssueOf':
-								$sx .= bsc(bscard('',$RDF->content($id2)),12,'m-1');
+								//$sx .= bsc(bscard('',$RDF->content($id2)),12,'m-1');
 								break;
 							case 'hasIssue':
 								$journal = $RDF->le_content($id2);

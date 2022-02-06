@@ -136,8 +136,42 @@ class RDF extends Model
 	function directory($id)
 	{
 		$IO = new \App\Models\IO\Files();
-		return $IO->directory($id);
+		$idc = round($id);
+		if ($idc == 0) { 
+			print_r($id);
+			echo 'ERROR: directory ID invalid'; exit; 
+
+			}
+		return $IO->directory($idc);
 	}
+
+	function remove($id,$class)
+		{
+			$RDFClass = new \App\Models\RDF\RDFClass();
+			$RDFData = new \App\Models\RDF\RDFData();
+			$class = $RDFClass->Class($class,false);
+			$dt = $RDFData->where('d_r1', $id)->where('d_p',$class)->FindAll();
+			for ($r=0;$r < count($dt);$r++)
+				{
+					$line = $dt[$r];
+					$idd = $line['id_d'];
+					$d_r1 = $line['d_r1']*(-1);
+					$d_r2 = $line['d_r2']*(-1);
+					$d_p = $line['d_p']*(-1);
+					$RDFData->set(array('d_r1' => $d_r1, 'd_r2' => $d_r2, 'd_p' => $d_p))->where('id_d',$idd)->update();
+				}
+			$dt = $RDFData->where('d_r2', $id)->where('d_p',$class)->FindAll();
+			for ($r=0;$r < count($dt);$r++)
+				{
+					$line = $dt[$r];
+					$idd = $line['id_d'];
+					$d_r1 = $line['d_r1']*(-1);
+					$d_r2 = $line['d_r2']*(-1);
+					$d_p = $line['d_p']*(-1);
+					$RDFData->set(array('d_r1' => $d_r1, 'd_r2' => $d_r2, 'd_p' => $d_p))->where('id_d',$idd)->update();
+				}
+			return true;
+		}
 
 
 	function le_content($id)
@@ -210,11 +244,12 @@ class RDF extends Model
 			return $rst;
 		}
 
-	function c($id)
+	function c($id,$export=false)
 	{
 		$dir = $this->directory($id);
 		$file = $dir . 'name.nm';
-		if (file_exists($file)) {
+		
+		if ((file_exists($file)) and ($export==false)) {
 			$tela = file_get_contents($file);
 		} else {
 			$tela = 'Content not found: ' . $id . '==' . $file . '<br>';

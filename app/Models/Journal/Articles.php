@@ -50,11 +50,15 @@ class Articles extends Model
 		$dt = $RDF->le($id);
 		$dados = $RDFData->view_data($dt);
 
-		$tela = '';
+		$parts = array();
 		$telax = '';
+
 		$data = $dt['data'];
+		$right_side = '';
+	
 		$d = array();
 		$d['section'] = 'Nome da seção';
+		$d['issue'] = 'Número da edição';
 		$url = '';
 
 		for ($r = 0; $r < count($data); $r++) {
@@ -66,6 +70,20 @@ class Articles extends Model
 				$lang = 'pt-BR';
 			}
 			switch ($class) {
+				case 'hasSectionOf':
+					$sec = $RDF->le_content($line['d_r2']);
+					$d['section'] = $sec;
+					break;
+				case 'hasIssueOf':
+					$issue = $RDF->le_content($line['d_r1']);
+					$issue = anchor(URL.'res/v/'.$line['d_r1'],$issue);
+					$d['issue'] = $issue;
+					break;	
+				case 'hasIssueProceedingOf':
+					$issue = $RDF->le_content($line['d_r1']);
+					$issue = anchor(URL.'res/v/'.$line['d_r1'],$issue);
+					$d['issue'] = $issue;
+					break;									
 				case 'hasPageStart':
 					/* none */
 					break;
@@ -85,6 +103,11 @@ class Articles extends Model
 					/* none */
 					//echo $txt.'<br>';
 					break;
+				case 'hasFileStorage':
+					$pdf = $line['n_name2'];
+					$right_side = $PDF->pdf_download($line);
+					break;
+					
 				case 'hasAuthor':
 					$txt = $RDF->le_content($line['d_r2']);
 					$d['author'][$txt] = $line['d_r2'];
@@ -99,7 +122,10 @@ class Articles extends Model
 					$url .= '<a href="' . $txt . '" class="btn btn-warning m-2 p-2">URL</a> ';
 					break;
 				case 'hasSubject':
-					$txt = $RDF->le_content($line['d_r2']);
+					//$txt = $RDF->le_content($line['d_r2']);
+					$txt = $RDF->le($line['d_r2']);
+					$lang = $txt['concept']['n_lang'];
+					$name = $txt['concept']['n_name'];
 					if (!isset($d['subject'][$lang])) {
 						$d['subject'][$lang] = array();
 					}
@@ -107,7 +133,7 @@ class Articles extends Model
 								style="padding: 1px 6px;
 								background-color: #ddd;
 								color: #000;"
-								>' . trim($txt).'</a>&nbsp;';
+								>' . trim($name).'</a>&nbsp;';
 					array_push($d['subject'][$lang], $keyw);
 					break;
 				default:
@@ -141,10 +167,21 @@ class Articles extends Model
 		/********************************************************************* MOSTRA *****/
 		/**********************************************************************************/
 		/**********************************************************************************/
-		$pref = array('pt-BR', 'es', 'es-ES', 'en');
-		$cl = 'h3';
 
-		$tela .= '<div class="row">';
+		/***************************************************************************************/		
+
+
+		$SubHeaders = new \App\Models\Brapci\SubHeaders();
+		$dt['section'] = $d['section'];
+		$top = $SubHeaders->headers($dt);
+		$parts[0] = $top;
+
+		/************************************************************** Title and Abstract  */
+		$tit = '';
+		$abs = '';
+
+		$pref = array('pt-BR', 'es', 'es-ES', 'en');
+		$cl = 'h3';		
 
 		for ($r = 0; $r < count($pref); $r++) {
 			$lg = $pref[$r];
@@ -152,49 +189,46 @@ class Articles extends Model
 			/********************************************************************* TITLE ****/
 			if (isset($d['title'][$lg])) {
 				//p-1 m-1 px-2 mt-6
-				$tela .= '<div class="text-center mt-6 ' . $cl . ' ">' . $d['title'][$lg] . '</div>';
+				$tit .= '<div class="text-center mt-6 ' . $cl . ' ">' . $d['title'][$lg] . '</div>';
 				$cl = ' h4 fst-italic';
 			}
 
 			/********************************************************************* URL ****/
 			if (strlen($url) > 0) {
-				$tela .= '<div class="url">' . $url . '</div>';
+				$tit .= '<div class="url">' . $url . '</div>';
 				$url = '';
 			}
+		}
 
-
-			if (strlen($auth) > 0) {
-				//$tela .=  '<div class="author text-end row">' . $auth . '</div>';
-				$tela .=  bsc($auth,12,'author text-end');
+		if (strlen($auth) > 0) {
+				$tit .=  bsc($auth,12,'author text-end');
 				$auth = '';
 			}
-
+		
+			
 			/********************************************************************* ABSTRACT **/
-			$pref = array('pt-BR','es','en','es-ES');
-
+		for ($r = 0; $r < count($pref); $r++) 
+		{
 			$lg = $pref[$r];
+			
 			if (isset($d['abs'][$lg])) {
-				$tela .=
+				$lang = ' <sup>('.$lg.')</sup>';
+				$abs .=
 					bsc(lang('brapci.abstract_' . $lg),12,'abs_title fw-bold').
-					bsc('<p style="text-align: justify; text-justify: inter-word;">'.$d['abs'][$lg].'</p>',12).
-					bsc($lg,12);
+					bsc('<p style="text-align: justify; text-justify: inter-word;">'.$d['abs'][$lg].$lang.'</p>',12);
 				
 				/***************************************************************** SUBJECT ****/
 				$subj = '';
-				//$tela .= '<style> div { border: 1px solid #ccc; } </style>'.cr();
-				$tela .= '<style> .keywords { line-height: 150%; } </style>'.cr();
-				if (isset($d['subject'][$lg])) {
-	//				echo '<pre>';
-	//				print_r($d['subject']);
-	//				exit;
+				$abs .= '<style> .keywords { line-height: 150%; } </style>'.cr();
 
+				if (isset($d['subject'][$lg])) {
 					for ($z = 0; $z < count($d['subject'][$lg]); $z++) {
 						$key = $d['subject'][$lg][$z];
 						$subj .= $key.cr();
 					}
 					if (strlen($subj)) {
-						$tela .= bsc(
-							'<span class="abs_keyword fw-bold">'.lang('brapci.keyword_' . $lang) . '</span>'.
+						$abs .= bsc(
+							'<span class="abs_keyword fw-bold">'.lang('brapci.keyword_' . $pref[$r]) . '</span>'.
 							': ' .cr() .
 							$subj,12,'mb-5 keywords');
 					}					
@@ -202,31 +236,28 @@ class Articles extends Model
 				
 			}
 		}
-		$tela .= '</div>';
 
-		/***************************************************************************************/		
-		$right_side = $PDF->pdf_download($id);
+		/********************************* CITED */
+		$cited = new \App\Models\Brapci\Cited();
+		$cites = $cited->show($id);
 
-		$top = '';
-		$top .= '<div class="col-12 text-center mb-5" style="position: relative;">';
-		$top .= '<img src="'.URL.'img/subheads/0001.png'.'" 
-					class="img-fluid" style="width: 100%;"> ';
-		$top .= '<span class="btn-primary pt-2 pb-2 ps-4 pe-4 rounded-pill" 
-						style="position: absolute; 
-						left: 50%;
-						transform: translateX(-50%); 
-						bottom: -15px;">'.$d['section'].'</span>';
-		$top .= '</div>';			
-		$top = bs($top,array('fluid'=>true));
+		/*************************************************** Screen */				
+		//$parts[0] = $d['issue'];
+		$parts[1] = $tit;
+		$parts[2] = $abs;
+		$parts[3] = $cites;
+		$sx = '';
 
+		$sxh = bs(bsc($parts[0],12),array('fluid'=>'1','class'=>'text-center'));
+		$sx .= bsc(h($d['issue'],6),12);
+		$sx .= bsc($parts[1],12);
 		
-		$tela = $top . bs(bsc($tela,11).bsc($right_side,1,'mt-6'));
+		$sx .= bsc($parts[2],11);
+		$sx .= bsc($right_side,1);
 
+		$sx .= bsc($parts[3],12);
 
-		$tela .= $dados;
-		$tela .= $telax;
-
-		/************ PDF */
-		return $tela;
+		$sx = $sxh.bs($sx);
+		return $sx;
 	}
 }

@@ -60,11 +60,12 @@ class RDFExport extends Model
 		{
 			$tela = '';
 			$RDF = new \App\Models\RDF\RDF();
-			$dir = $RDF->directory($id);
+			$dir = $RDF->directory($id);			
 
 			$dt = $RDF->le($id,0);
 			$prefix = $dt['concept']['prefix_ref'];
 			$class = $prefix.':'.$dt['concept']['c_class'];
+			$name = ':::: ?'.$class.'? ::::';
 
 			switch($class)
 				{
@@ -72,23 +73,72 @@ class RDFExport extends Model
 						$vol = $RDF->recovery($dt['data'],'hasPublicationVolume');
 						$nr = $RDF->recovery($dt['data'],'hasPublicationNumber');
 						$year = $RDF->recovery($dt['data'],'dateOfPublication');
+						$year2 = $RDF->recovery($dt['data'],'hasDateTime');
+						$place = $RDF->recovery($dt['data'],'hasPlace');
+						//$edition = $RDF->c($dt['concept']['id_cc']);
+						$edition = '';
 
 						if (isset($vol[0][1])) { $vol = $RDF->c($vol[0][1]); } else { $vol = ''; }
 						if (isset($nr[0][1])) { $nr = $RDF->c($nr[0][1]); } else { $nr = ''; }
 						if (isset($year[0][1])) { $year = $RDF->c($year[0][1]); } else { $year = ''; }
-						
-						$issue = '';
+						if (isset($year2[0][1])) { $year = $RDF->c($year2[0][1]); } else { $year = ''; }
+						if (isset($place[0][1])) { $place = $RDF->c($place[0][1]); } else { $place = ''; }
+
+						$issue = $edition;
 						if (strlen($nr) > 0) { $issue .= ', '.$nr; }
+						if (strlen($place) > 0) { $issue .= ', '.$place; }
 						if (strlen($vol) > 0) { $issue .= ', '.$vol; }
 						if (strlen($year) > 0) { $issue .= ', '.$year; }
 						$issue .= '.';
-						$this->saveRDF($id,$issue,'name.nm');
+
+						$name = $issue;
+						$this->saveRDF($id,$name,'name.nm');
 						break;
 					case 'dc:Journal':
 						$name = $dt['concept']['n_name'];
 						$name = '<a href="'.(URL.'v/'.$id).'" class="journal">'.$name.'</a>';
 						$this->saveRDF($id,$name,'name.nm');
 						break;
+
+					case 'brapci:Proceeding':
+						$publisher = '';
+						$tela .= 'Proceeding';	
+						/************************************************** Authors */
+						$authors = $RDF->recovery($dt['data'],'hasAuthor');
+						$auths = '';
+						for ($r=0;$r < count($authors);$r++)
+							{
+								$idr = $authors[$r][1];
+								if (strlen($auths) > 0) { $auths .= '; '; }
+								$auths .= $RDF->c($idr);
+							}
+						/************************************************** Authors */
+						//echo '<pre>';
+						//print_r($dt);
+						//$publisher = $RDF->recovery($dt['data'],'isIssue');
+						//$publisher = $RDF->c($publisher[0][1]);
+
+						/***************************************************** Title */
+						$title = $RDF->recovery($dt['data'],'hasTitle');
+						$title = nbr_title($title[0][2]);
+
+						/***************************************************** Title */
+						$issue = $RDF->recovery($dt['data'],'hasIssueProceedingOf');
+						if (!isset($issue[0])) { $issue = 'NoN'; } else { $issue = $RDF->c($issue[0][0]); }
+						
+						/************************************************** Section */
+						//$section = $RDF->recovery($dt['data'],'hasSectionOf');						
+
+						/****************************************************** SAVE */
+						$publisher = 'Anais... ';
+						$name = strip_tags($auths.'. '.$title.'. $b$'.$publisher. '$/b$'.$issue);
+						$name = '<a href="'.(URL.'v/'.$id).'" class="article">'.$name.'</a>';
+						$name = troca($name,'$b$','<b>');
+						$name = troca($name,'$/b$','</b>');
+						$name .= '.';
+						$this->saveRDF($id,$name,'name.nm');
+						break;
+
 					case 'brapci:Article':
 						$tela .= 'ARTICLE';	
 						/************************************************** Authors */
@@ -136,6 +186,7 @@ class RDFExport extends Model
 					default:
 						$name = $RDF->recovery($dt['data'],'prefLabel');
 						$name = trim($name[0][2]);
+					
 						if (strlen($name) > 0)
 							{
 								$this->saveRDF($id,$name,'name.nm');
