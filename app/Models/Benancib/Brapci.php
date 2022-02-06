@@ -129,7 +129,8 @@ class Brapci extends Model
 			}
 		}
 		if (isset($reg['dc.subject']))
-		{		
+		{	
+		print_r($reg['dc.subject']);	
 		for ($r=0;$r < count($reg['dc.subject']);$r++)
 			{
 				$term = (string)$reg['dc.subject'][$r];
