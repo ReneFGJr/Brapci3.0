@@ -199,8 +199,6 @@ class Brapci extends Model
 				$dir = '_repository/enancib/'.$year.'/';
 				$file3 = $dir.'work_'.$idc.'.pdf';
 
-				echo '<tt>'.$file2;
-				echo '<br>'.$file3;
 				if (!copy($file2, $file3)) {
 					echo "falha ao copiar $file3...\n";
 				}
