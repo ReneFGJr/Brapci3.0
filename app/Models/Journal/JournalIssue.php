@@ -148,8 +148,9 @@ class JournalIssue extends Model
 			$issue = $RDF->recover($dt,'hasIssue');
 			for ($r=0;$r < count($issue);$r++)
 				{
-					$id = $issue[$r];
-					$di = $this->where('is_source_rdf',$id)->findAll();
+					$idx = $issue[$r];
+					echo h($idx);
+					$di = $this->where('is_source_rdf',$idx)->findAll();
 					if (count($di) == 0)
 						{
 							$dissue = $RDF->le($id);
