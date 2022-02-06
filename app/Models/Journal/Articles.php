@@ -44,9 +44,9 @@ class Articles extends Model
 	/******************************************************************* GERA ARQUIVO DE TEXTO */
 	function view_articles($id)
 	{		
-		$RDF = new \App\Models\RDF\RDF();
+		$RDF = new \App\Models\Rdf\RDF();
 		$PDF = new \App\Models\PDF\PDF();
-		$RDFData = new \App\Models\RDF\RDFData();
+		$RDFData = new \App\Models\Rdf\RDFData();
 		$dt = $RDF->le($id);
 		$dados = $RDFData->view_data($dt);
 
@@ -107,7 +107,7 @@ class Articles extends Model
 					$pdf = $line['n_name2'];
 					$right_side = $PDF->pdf_download($line);
 					break;
-					
+
 				case 'hasAuthor':
 					$txt = $RDF->le_content($line['d_r2']);
 					$d['author'][$txt] = $line['d_r2'];
