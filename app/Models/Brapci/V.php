@@ -92,8 +92,12 @@ class V extends Model
 		}
 		function Issue($id)
 			{
+				$Journal = new \App\Models\Journal\Journal();
 				$JournalIssue = new \App\Models\Journal\JournalIssue();
-				$sx = $JournalIssue->view_issue($id);
+				$dd = $JournalIssue->find($id);
+				$dt = $this->find($dd['is_source']);
+				$sx = bs($this->journal_header($dt));
+				$sx .= $JournalIssue->view_issue($id);
 				return $sx;
 			}
 		function bt_export($id)
