@@ -56,7 +56,8 @@ class Brapci extends Model
 		$name = 'Encontro Nacional de Pesquisa e Pós-graduação em Ciência da Informação';
 		$name = 'Encontro Nacional de Pesquisa em Ciência da Informação';
 		$class = "Brapci:Event";
-		$idpub = $RDF->conecpt($name, $class);
+		//$idpub = $RDF->conecpt($name, $class);
+		$idpub = 101894;
 
 		/***************************************************** Unidade Proceeding */
 		$class = "Brapci:Proceeding";
