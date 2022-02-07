@@ -77,6 +77,7 @@ class Index extends Model
 				$sx .= $this->export($d2,$d3,$d4);
 				break;				
 			default:
+				$sx .= anchor(PATH.MODULE.'res/v/101894','Publicações do Enanvcib');
 				$sx .= '<ul>';				
 				$sx .= '<li>'.anchor(PATH.MODULE.'benancib/check','Check Harvesting').'</li>';
 				$sx .= '<li>'.anchor('http://repositorios.questoesemrede.uff.br/repositorios/handle/123456789/2','Repositório BENANCIB').'</li>';
