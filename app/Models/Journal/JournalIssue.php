@@ -23,7 +23,7 @@ class JournalIssue extends Model
 	];
 	var $typeFields        = [	
 		'hidden', 'sql:id_jnl:jnl_name:brapci.source_source', 'hidden',
-		'hidden','year', 'none',
+		'string:10','year', 'string:10',
 		'string:10','string:10','string:10',
 		'none','string:100','none',
 		'string:100','none','none'
