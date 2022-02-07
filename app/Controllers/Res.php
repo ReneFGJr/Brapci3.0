@@ -122,17 +122,23 @@ class Res extends BaseController
 		$tela = $this->cab("user");
 		switch($d1)
 			{
+				case 'proceeding':
+					$Journal = new \App\Models\Journal\Journals();
+					$tela .= $Journal->index($d2,$d3,$d4);
+					break;
+				case 'journal':
+					$Journal = new \App\Models\Journal\Journals();
+					$tela .= $Journal->index($d2,$d3,$d4);
+					break;					
+
 				case 'issue':
 					$JournalIssue = new \App\Models\Journal\JournalIssue();
 					switch($d2)
 						{
-							case 'edit_issue':
-								$tela .= $JournalIssue->edit($d3);
-								break;
-							case 'check':
-								$d3 = round($d3);
-								$tela = $JournalIssue->check_issue($d3);
-								break;
+						case 'check':
+							$d3 = round($d3);
+							$tela = $JournalIssue->check_issue($d3);
+							break;
 						}
 					
 			}

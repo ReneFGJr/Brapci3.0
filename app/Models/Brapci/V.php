@@ -59,32 +59,41 @@ class V extends Model
 					exit;
 				}
 
-			$class = $dt['concept']['c_class'];
+			$class = trim($dt['concept']['c_class']);
 			$name = $dt['concept']['n_name'];
 			$sx .= bsc(h($class,4),12);
+
+			echo h($class);
 			
 			switch ($class)
 				{
-					case 'Journal':
-						$Journals = new \App\Models\Journal\Journals();
-						$JournalsIssue = new \App\Models\Journal\JournalIssue();
-						$dt = $Journals->where('jnl_frbr',$id)->FindAll();
-						$sx .= $Journals->header($dt[0],false);
-						$sx .= $JournalsIssue->view_issue($id);						
-						break;
-
 					case 'Article':
 						$Checked->check($id,100);
 						$Articles = new \App\Models\Journal\Articles();
 						$sx .= $Articles->view_articles($id);
-						break;
+						break;						
 
 					case 'Proceeding':
 						$Checked->check($id,100);
 						$Articles = new \App\Models\Journal\Articles();
 						$sx .= $Articles->view_articles($id);
 						$sx .= bs(bsc($RDF->view_data($id),12));
-						break;		
+						break;
+
+					case 'Journal':
+						/******************************************* Publicação */
+						$Journals = new \App\Models\Journal\Journals();
+						$JournalsIssue = new \App\Models\Journal\JournalIssue();
+						$dt = $Journals->where('jnl_frbr',$id)->find();
+						$dt = $dt[0];
+						$adm = false;
+						$sx .= $Journals->header($dt,$adm);
+						$sx .= $JournalsIssue->view_issue($id);
+
+						//$Articles = new \App\Models\Journal\Articles();
+						//$sx .= $Articles->view_articles($id);
+						//$sx .= bs(bsc($RDF->view_data($id),12));					
+						break;								
 
 					case 'Issue':
 						$sx .= $this->Issue($th,$id,$act);
@@ -93,6 +102,7 @@ class V extends Model
 						//$sx .= $JournalIssue->view_issue_articles($id);
 						//$sx .= bs(bsc($RDF->view_data($id),12));
 						break;	
+
 					case 'IssueProceeding':
 						$sx .= $this->Issue($th,$id,$act);
 						//$sx .= bs(bsc($RDF->view_data($id),12));

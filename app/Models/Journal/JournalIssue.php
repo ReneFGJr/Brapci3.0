@@ -53,6 +53,72 @@ class JournalIssue extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
+	function MOD()
+		{
+			$url = $_SERVER['HTTP_REFERER'];
+			if (strpos($url,'proceeding') > 0)
+				{
+					$MOD = 'proceeding';
+				} else {
+					$MOD = 'journal';
+				}
+			return $MOD;
+		}	
+
+	function view_issue($idx = 0)
+	{
+		$MOD = $this->MOD();
+		$this->where('is_source_rdf', $idx);
+		$this->orderBy('is_year desc, is_vol, is_nr');
+		$dt = $this->FindAll();
+
+		if (count($dt) == 0) {
+			$sx = '';
+			$sx .= bs(bsc(lang('brapci.empty_issue'),12));
+			$sx .= bs(bsc($this->btn_check_issues($idx), 12));
+			return $sx;
+		}
+
+		$sx = bsc(h(lang('brapci.issue_list'), 2, 'p-5'), 12);
+		$xyear = '';
+		for ($r = 0; $r < count($dt); $r++) {
+			$dtx = $dt[$r];
+			$link0 = '<a href="' . (PATH . 'res/v/' . $dtx['is_source_issue']) . '">';
+			$link1 = '<a href="' . (PATH . 'res/admin/'.$MOD.'/edit_issue/' . $dtx['id_is']) . '">';
+			$link2 = '<a href="' . PATH . 'res/admin/issue/harvesting/' . $dtx['id_is'] . '">';
+			$linka = '</a>';
+
+			if ($dtx['is_source_issue'] <= 0) {
+				$link0 = '<a name="tag">';
+				$link2 = '<a name="tag">';
+			}
+
+			$year = $dtx['is_year'];
+			if ($year == $xyear) {
+				$sz = 6;
+			} else {
+				$xyear = $year;
+				$sz = 3;
+			}
+			$sx .= bsc(h($link0 . $year . $linka, $sz), 1, 'text-end');
+			$sx .= bsc($link0 . $dtx['is_nr'] . ' ' . $dtx['is_vol'] . $linka, 3);
+			$sx .= bsc($link0 . $dtx['is_place'] . $linka, 3);
+			$sx .= bsc($link0 . $dtx['is_thema'] . $linka, 4);
+
+			$ed = $link1 . bsicone('edit', 24) . $linka;
+			$ed .= ' ';
+			$ed .= $link2 . bsicone('harversting', 24) . $linka;
+			$sx .= bsc($ed, 1, 'text-end');
+			$sx .= bsc('<hr>', 12);
+
+			//'p-2 m-1 shadown bordered bw'
+		}
+		//$sx .= '<style> div { border: 1px solid #000000; } </style>';
+		$sx .= bsc($this->btn_check_issues($idx), 12);
+		$sx = bs($sx);
+		return $sx;
+	}
+
 	function harvesting_oaipmh($jnl = 0, $issue = 0)
 	{
 		$sx = '';
@@ -85,12 +151,8 @@ class JournalIssue extends Model
 
 	function edit($reg, $idj = 0)
 	{
-		$MOD = df('MOD', '/');
-		if (MODULE != 'res') {
-			$MOD = '';
-		}
-
-		if (MOD == 'proceeding') {
+		$MOD = $this->MOD();
+		if ($MOD == 'proceeding') {
 			$source = 'sql:id_jnl:jnl_name:brapci.source_source where jnl_collection = \'EV\' order by jnl_name';
 		} else {
 			$source = 'sql:id_jnl:jnl_name:brapci.source_source where jnl_collection = \'JA\' order by jnl_name';
@@ -101,10 +163,13 @@ class JournalIssue extends Model
 		$this->id = $reg;
 
 		if ($reg > 0) {
-			$this->path_back = (PATH . MODULE . $MOD . '/index/viewid/' . get('is_source'));
+			$this->path_back = (PATH . MODULE . 'admin/' . $MOD . "/viewid/" . get('is_source'));
 		}
 
-		$this->path = (PATH . MODULE . $MOD . '/index/edit_issue/');
+		echo h($this->path_back);
+
+		$this->path = (PATH . MODULE . 'admin/' . $MOD . '/edit_issue/'.$reg.'/'.$idj);
+		echo h($this->path);
 		$sx .= form($this);
 		$sx = bs(bsc($sx, 12));
 		return $sx;
@@ -159,10 +224,18 @@ class JournalIssue extends Model
 
 					/************************************************ VOL */
 					$nr = $RDF->recover($issue_rdf, 'hasPublicationNumber');
-					if (count($nr) > 0) { $nr = $RDF->c($nr[0]); } else { $nr = ''; }
+					if (count($nr) > 0) {
+						$nr = $RDF->c($nr[0]);
+					} else {
+						$nr = '';
+					}
 					$vl = $RDF->recover($issue_rdf, 'hasPublicationVolume');
-					if (count($vl) > 0) { $vl = $RDF->c($vl[0]); } else { $vl = ''; }
-	
+					if (count($vl) > 0) {
+						$vl = $RDF->c($vl[0]);
+					} else {
+						$vl = '';
+					}
+
 					$year = $RDF->recover($issue_rdf, 'dateOfPublication');
 					if (count($year) == 0) {
 						$year = sonumero($issue_name);
@@ -186,7 +259,7 @@ class JournalIssue extends Model
 						$dt['is_cover'] = '';
 						$dt['is_url_oai'] = '';
 						$this->insert($dt);
-						$sx .= bsmessage('Issue: '.$year.' '.$nr.' '.$vl.' Insered',1);
+						$sx .= bsmessage('Issue: ' . $year . ' ' . $nr . ' ' . $vl . ' Insered', 1);
 					}
 				}
 			} else {
@@ -198,13 +271,14 @@ class JournalIssue extends Model
 
 	function btn_check_issues($id)
 	{
-		$MOD = df('MOD', '/');
-		if (MODULE != 'res') {
-			$MOD = '';
+		$Social = new \App\Models\Socials();
+		$sx = '';
+		if ($Social->perfil("#ADM"))
+		{
+			$url = (PATH . 'res/admin/issue/check/' . $id);
+			$sx = onclick($url, 800, 200, 'btn btn-outline-primary') . lang('brapci.check_issues') . '<span>';
+			//$sx = '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_check_issue').'</a>';
 		}
-		$url = (PATH . 'res/admin/issue/check/' . $id);
-		$sx = onclick($url, 800, 200, 'btn btn-outline-primary') . lang('brapci.check_issues') . '<span>';
-		//$sx = '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_check_issue').'</a>';
 		return $sx;
 	}
 
@@ -357,57 +431,7 @@ class JournalIssue extends Model
 		return $sx;
 	}
 
-	function view_issue($idx = 0)
-	{
-		$this->where('is_source_rdf', $idx);
 
-		$this->orderBy('is_year desc, is_vol, is_nr');
-		$dt = $this->FindAll();
-
-		if (count($dt) == 0) {
-			return "";
-		}
-
-		$sx = bsc(h(lang('brapci.issue_list'), 2, 'p-5'), 12);
-		$xyear = '';
-		for ($r = 0; $r < count($dt); $r++) {
-			$dtx = $dt[$r];
-			$link0 = '<a href="' . (PATH . 'res/v/' . $dtx['is_source_issue']) . '">';
-			$link1 = '<a href="' . (PATH . 'res/admin/issue/edit_issue/' . $dtx['id_is']) . '">';
-			$link2 = '<a href="' . PATH . 'res/admin/issue/harvesting/' . $dtx['id_is'] . '">';
-			$linka = '</a>';
-
-			if ($dtx['is_source_issue'] <= 0) 
-				{ 
-					$link0 = '<a name="tag">';
-					$link2 = '<a name="tag">';
-				}
-
-			$year = $dtx['is_year'];
-			if ($year == $xyear) {
-				$sz = 6;
-			} else {
-				$xyear = $year;
-				$sz = 3;
-			}
-			$sx .= bsc(h($link0 . $year . $linka, $sz), 1, 'text-end');
-			$sx .= bsc($link0 . $dtx['is_nr'] . ' ' . $dtx['is_vol'] . $linka, 3);
-			$sx .= bsc($link0 . $dtx['is_place'] . $linka, 3);
-			$sx .= bsc($link0 . $dtx['is_thema'] . $linka, 4);
-
-			$ed = $link1 . bsicone('edit', 24) . $linka;
-			$ed .= ' ';
-			$ed .= $link2 . bsicone('harversting', 24) . $linka;
-			$sx .= bsc($ed, 1, 'text-end');
-			$sx .= bsc('<hr>', 12);
-
-			//'p-2 m-1 shadown bordered bw'
-		}
-		//$sx .= '<style> div { border: 1px solid #000000; } </style>';
-		$sx .= bsc($this->btn_check_issues($idx), 12);
-		$sx = bs($sx);
-		return $sx;
-	}
 
 	function xxxxxxxxxxxxxxxxxxxxx_view_issue_import($idx = 0)
 	{

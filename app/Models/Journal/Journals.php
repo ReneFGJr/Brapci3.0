@@ -70,6 +70,14 @@ class Journals extends Model
 				{
 					/******************* Validade ******/
 					default:
+						$sx = $this->menu();						
+						break;
+
+					case 'menu':
+						$sx = $this->menu();
+						break;
+
+					case 'tableview':
 						$sx = $this->tableview();
 						break;
 						
@@ -90,7 +98,8 @@ class Journals extends Model
 					/******************* Para testes ***/
 					case 'edit_issue':
 						$sx = $this->editar_issue($d2,$d3);
-						break;	
+						break;
+							
 					case 'oai_check':				
 						$sx = $this->oai_check();
 						break;	
@@ -108,8 +117,20 @@ class Journals extends Model
 						break;						
 					case 'edit':
 						break;						
-
 				}
+			return $sx;
+		}
+	function menu()
+		{
+			$sx = '';
+			$items = array();
+			$items['admin/proceeding/tableview'] = 'TableView';
+			foreach($items as $it=>$tx)
+				{
+					$link = '<a href="'.PATH.MODULE.$it.'">'.$tx.'</a>';
+					$sx .= '<li>'.$link.'</li>';
+				}
+			$sx = bs(bsc($sx));
 			return $sx;
 		}
 	function le_rdf($id)
@@ -325,11 +346,22 @@ class Journals extends Model
 
 			return $sx;
 		}
-
+	function MOD()
+		{
+			$url = $_SERVER['HTTP_REFERER'];
+			if (strpos($url,'proceeding') > 0)
+				{
+					$MOD = 'proceeding';
+				} else {
+					$MOD = 'journal';
+				}
+			return $MOD;
+		}
 	/******************************************** MOSTRA LISTA DE PUBLICAÇÕES */
 	function tableview()
 		{	
-			switch(MOD)
+			$MOD = $this->MOD();
+			switch($MOD)
 				{
 				case 'proceeding':
 					$this->where("jnl_collection = 'EV'");
@@ -338,7 +370,7 @@ class Journals extends Model
 					$this->where("jnl_collection = 'JA'");
 					break;
 				}	
-			$this->path = (PATH.MODULE.'/index');
+			$this->path = (PATH.MODULE.'admin/'.$MOD);
 			$sx = tableview($this);
 			$sx = bs(bsc($sx,12));
 			return $sx;

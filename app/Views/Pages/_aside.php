@@ -7,9 +7,9 @@ if (!isset($subtitle)) {
 $items = array();
 $items['main/'] = 'Main';
 $items['main/painel'] = 'Painel';
-$items['journal'] = 'Journal';
+$items['res/admin/journal/menu'] = 'Journal';
 $items['book'] = 'Book';
-$items['proceeding'] = 'Proceeding';
+$items['res/admin/proceeding/menu'] = 'Proceeding';
 $items['authority'] = 'Authority';
 $items['patent'] = 'Patent';
 $items['these'] = 'Thesis';
