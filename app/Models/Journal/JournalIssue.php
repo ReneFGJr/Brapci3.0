@@ -368,7 +368,7 @@ class JournalIssue extends Model
 			for ($r=0;$r < count($dt);$r++)
 				{
 					$dtx = $dt[$r];
-					$link0 = '<a href="'.(PATH.MODULE.'/res/v/'.$dtx['is_source_rdf']).'">';
+					$link0 = '<a href="'.(PATH.'/res/v/'.$dtx['is_source_rdf']).'">';
 					$link1 = '<a href="'.(PATH.MODULE.$MOD.'/index/edit_issue/'.$dtx['id_is']).'">';
 					$link2 = '<a href="'.PATH.MODULE.$MOD.'/index/harvesting/0/'.$dtx['id_is'].'">';
 					$linka = '</a>';
