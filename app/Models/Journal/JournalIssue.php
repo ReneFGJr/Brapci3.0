@@ -161,8 +161,8 @@ class JournalIssue extends Model
 												} else {
 													$year = $RDF->c($year[0]);
 												}
-											
-											if ((isset($dtj[0])) and (strlen($year) != ''))
+											$year = round($year);
+											if ((isset($dtj[0])) and ($year > 1950))
 											{
 												//echo '<pre>';
 												//print_r($dtj);
