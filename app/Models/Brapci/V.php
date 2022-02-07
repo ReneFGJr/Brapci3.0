@@ -55,6 +55,7 @@ class V extends Model
 
 			$class = $dt['concept']['c_class'];
 			$name = $dt['concept']['n_name'];
+			$tela = h($class,4);
 			
 			switch ($class)
 				{
