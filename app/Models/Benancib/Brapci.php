@@ -122,9 +122,6 @@ class Brapci extends Model
 		}
 		/************************************** Subject */
 		if (isset($reg['dc.keywords'][0])) {
-			echo '<pre>';
-			print_r($reg['dc.keywords']);
-			echo '</pre>';
 			if (!is_array($reg['dc.keywords']))
 				{
 					$reg['dc.keywords'] = array($reg['dc.keywords']);
@@ -135,7 +132,12 @@ class Brapci extends Model
 				$RDF->propriety($idc, 'brapci:hasSubject', $idt);
 			}
 		}
+
 		if (isset($reg['dc.subject'])) {
+			if (!is_array($reg['dc.subject']))
+				{
+					$reg['dc.subject'] = array($reg['dc.subject']);
+				}			
 			for ($r = 0; $r < count($reg['dc.subject']); $r++) {
 				$term = (string)$reg['dc.subject'][$r];
 				$idt = $RDF->conecpt($term, 'dc:Subject');
