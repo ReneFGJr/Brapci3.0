@@ -42,6 +42,7 @@ return [
     'Country'=>'Pais',
     'Painel'=>'PainelControle',
     'References'=>'Referências',
+    'articles'=>'Artigos',
 
 
 ];

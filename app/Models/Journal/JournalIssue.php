@@ -79,6 +79,14 @@ class JournalIssue extends Model
 			return $sx;		
 		}
 
+	function header($dt)
+		{
+			$name = $dt['concept']['n_name'];
+			$name = bs(bsc(h($name,5),12,'border border-dark text-center mb-5'));
+			return $name;
+
+		}
+
 	function edit($reg,$idj=0)
 		{
 			$MOD = df('MOD','/');

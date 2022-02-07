@@ -113,9 +113,10 @@ class V extends Model
 							}
 					}
 							
-				$dt = $Journal->where('jnl_frbr',$idj)->findAll();
+				$dtj = $Journal->where('jnl_frbr',$idj)->findAll();
 				$sx = '';								
-				$sx .= $Journal->header($dt[0],false);
+				$sx .= $Journal->header($dtj[0],false);
+				$sx .= $JournalIssue->header($dt);
 				$sx .= bs(bsc(h(lang('brapci.articles'),4),12));
 				$sx .= $JournalIssue->ArticlesIssue($id);
 				return $sx;
