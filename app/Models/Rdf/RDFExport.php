@@ -130,8 +130,7 @@ class RDFExport extends Model
 							{
 								$title = nbr_title($title[0][2]);
 							} else {
-								print_r($title);
-								$title = '## FALHA NO TÍTULO ## - '.$title;
+								$title = '## FALHA NO TÍTULO ##';
 							}
 
 
