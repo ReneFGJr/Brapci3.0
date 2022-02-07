@@ -382,7 +382,11 @@ class JournalIssue extends Model
 			$link2 = '<a href="' . PATH . MODULE . $MOD . '/index/harvesting/0/' . $dtx['id_is'] . '">';
 			$linka = '</a>';
 
-			if ($dtx['is_source_issue'] <= 0) { $link0 = '<a name="tag">';}
+			if ($dtx['is_source_issue'] <= 0) 
+				{ 
+					$link0 = '<a name="tag">';
+					$link2 = '<a name="tag">';
+				}
 
 			$year = $dtx['is_year'];
 			if ($year == $xyear) {
