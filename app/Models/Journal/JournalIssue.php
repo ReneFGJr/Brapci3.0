@@ -361,7 +361,7 @@ class JournalIssue extends Model
 	{
 		$MOD = df('MOD', '/');
 		if (MODULE != 'res') {
-			$MOD = '';
+			$MOD = 'journal/';
 		}
 
 		$this->where('is_source_rdf', $idx);
@@ -378,8 +378,8 @@ class JournalIssue extends Model
 		for ($r = 0; $r < count($dt); $r++) {
 			$dtx = $dt[$r];
 			$link0 = '<a href="' . (PATH . 'res/v/' . $dtx['is_source_issue']) . '">';
-			$link1 = '<a href="' . (PATH . MODULE . $MOD . '/index/edit_issue/' . $dtx['id_is']) . '">';
-			$link2 = '<a href="' . PATH . MODULE . $MOD . '/index/harvesting/0/' . $dtx['id_is'] . '">';
+			$link1 = '<a href="' . (PATH . MODULE . $MOD . 'index/edit_issue/' . $dtx['id_is']) . '">';
+			$link2 = '<a href="' . PATH . MODULE . $MOD . 'index/harvesting/0/' . $dtx['id_is'] . '">';
 			$linka = '</a>';
 
 			if ($dtx['is_source_issue'] <= 0) 
