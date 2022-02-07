@@ -194,8 +194,9 @@ class JournalIssue extends Model
 		{
 			$MOD = df('MOD','/');
 			if (MODULE != 'res') { $MOD = ''; }
-			$url = (PATH.MODULE.$MOD.'admin/issue/check/'.$id);
-			$sx = '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_check_issue').'</a>';
+			$url = (PATH.'res/admin/issue/check/'.$id);
+			$sx = onclick($url,800,200,'btn btn-outline-primary').lang('brapci.check_issues').'<span>';
+			//$sx = '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_check_issue').'</a>';
 			return $sx;
 		}
 
