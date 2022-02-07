@@ -173,13 +173,15 @@ class Brapci extends Model
 
 		/************************************************* Cited */
 		$Cited = new \App\Models\Brapci\Cited();
-		$cited = (array)$reg['dc.referencias'];
-		$cites = (array)$cited['cited'];
+		if (isset($reg['dc.referencias'])) {
+			$cited = (array)$reg['dc.referencias'];
+			$cites = (array)$cited['cited'];
 
-		for ($r = 0; $r < count($cites); $r++) {
-			$cit = $cites[$r];
-			$ord = $r + 1;
-			$Cited->cited($idc, $cit, $ord);
+			for ($r = 0; $r < count($cites); $r++) {
+				$cit = $cites[$r];
+				$ord = $r + 1;
+				$Cited->cited($idc, $cit, $ord);
+			}
 		}
 
 		/************************************************* Arquivo PDF */
