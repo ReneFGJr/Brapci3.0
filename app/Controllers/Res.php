@@ -126,6 +126,9 @@ class Res extends BaseController
 					$JournalIssue = new \App\Models\Journal\JournalIssue();
 					switch($d2)
 						{
+							case 'edit_issue':
+								$tela .= $JournalIssue->edit($d3);
+								break;
 							case 'check':
 								$d3 = round($d3);
 								$tela = $JournalIssue->check_issue($d3);

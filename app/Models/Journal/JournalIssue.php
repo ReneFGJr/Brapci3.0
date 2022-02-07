@@ -359,11 +359,6 @@ class JournalIssue extends Model
 
 	function view_issue($idx = 0)
 	{
-		$MOD = df('MOD', '/');
-		if (MODULE != 'res') {
-			$MOD = 'journal/';
-		}
-
 		$this->where('is_source_rdf', $idx);
 
 		$this->orderBy('is_year desc, is_vol, is_nr');
@@ -378,7 +373,7 @@ class JournalIssue extends Model
 		for ($r = 0; $r < count($dt); $r++) {
 			$dtx = $dt[$r];
 			$link0 = '<a href="' . (PATH . 'res/v/' . $dtx['is_source_issue']) . '">';
-			$link1 = '<a href="' . (PATH . MODULE . $MOD . 'index/edit_issue/' . $dtx['id_is']) . '">';
+			$link1 = '<a href="' . (PATH . 'res/admin/issue/edit_issue/' . $dtx['id_is']) . '">';
 			$link2 = '<a href="' . PATH . MODULE . $MOD . 'index/harvesting/0/' . $dtx['id_is'] . '">';
 			$linka = '</a>';
 
