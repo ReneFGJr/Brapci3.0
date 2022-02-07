@@ -136,6 +136,7 @@ class Brapci extends Model
 		if (isset($reg['dc.subject'])) {
 			if (!is_array($reg['dc.subject']))
 				{
+					print_r($reg['dc.subject']);
 					$reg['dc.subject'] = array($reg['dc.subject']);
 				}			
 			for ($r = 0; $r < count($reg['dc.subject']); $r++) {
