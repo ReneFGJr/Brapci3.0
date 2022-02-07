@@ -273,10 +273,12 @@ class Journals extends Model
 		{
 			if (!is_array($dt)) { $sx = bsmessage('Erro de identificação do ISSUE/Jornal',3); return $sx; exit; }
 
+			$idj = $dt['jnl_frbr'];
 			$this->Cover = new \App\Models\Journal\Cover();	
 			$img = '<img src="'.$this->Cover->image($dt['id_jnl']).'" class="img-fluid">';
 			$sx = '';
-			$jnl = h($dt['jnl_name'],3);
+			$url = PATH.MODULE.'v/'.$idj;
+			$jnl = h(anchor($url,$dt['jnl_name']),3);
 
 			$jnl .= '<div class="row">';
 			$jnl .= bsc($this->start_end($dt),4);
@@ -287,8 +289,7 @@ class Journals extends Model
 
 			if ($resume)
 			{
-				$Oaipmh = new \App\Models\Oaipmh\Oaipmh();
-				$idj = $dt['jnl_frbr'];
+				$Oaipmh = new \App\Models\Oaipmh\Oaipmh();				
 				$jnl .= '<div class="row mt-5" style="border-bottom: 2px solid #888">';
 				$jnl .= bsc('<img src="'.base_url('img/icones/oaipmh.png').'" class="img-fluid p-4">',2);
 				$jnl .= $Oaipmh->resume($idj);

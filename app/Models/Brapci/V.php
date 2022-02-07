@@ -50,49 +50,58 @@ class V extends Model
 					$RDF->c($id,true);
 				}
 
-			$tela = $th->cab();			
+			$sx = $th->cab();			
 			$dt = $RDF->le($id,1);
 
 			$class = $dt['concept']['c_class'];
 			$name = $dt['concept']['n_name'];
-			$tela .= bsc(h($class,4),12);
+			$sx .= bsc(h($class,4),12);
 			
 			switch ($class)
 				{
+					case 'Journal':
+						$Journals = new \App\Models\Journal\Journals();
+						$JournalsIssue = new \App\Models\Journal\JournalIssue();
+						$dt = $Journals->where('jnl_frbr',$id)->FindAll();
+						$sx .= $Journals->header($dt[0],false);
+						$sx .= $JournalsIssue->view_issue($id);						
+						break;
+
 					case 'Article':
 						$Checked->check($id,100);
 						$Articles = new \App\Models\Journal\Articles();
-						$tela .= $Articles->view_articles($id);
+						$sx .= $Articles->view_articles($id);
 						break;
+
 					case 'Proceeding':
 						$Checked->check($id,100);
 						$Articles = new \App\Models\Journal\Articles();
-						$tela .= $Articles->view_articles($id);
-						$tela .= bs(bsc($RDF->view_data($id),12));
-						break;											
+						$sx .= $Articles->view_articles($id);
+						$sx .= bs(bsc($RDF->view_data($id),12));
+						break;		
+
 					case 'Issue':
-						$JournalIssue = new \App\Models\Journal\JournalIssue();
-						$tela .= bs(bsc(h('Class: '.$class,2),12));
-						$tela .= $JournalIssue->view_issue_articles($id);
-						//$tela .= bs(bsc($RDF->view_data($id),12));
-						break;
-					case 'Journal':
-						$tela .= $this->Issue($th,$id,$act);
+						$sx .= $this->Issue($th,$id,$act);
+						//$JournalIssue = new \App\Models\Journal\JournalIssue();
+						//$sx .= bs(bsc(h('Class: '.$class,2),12));
+						//$sx .= $JournalIssue->view_issue_articles($id);
+						//$sx .= bs(bsc($RDF->view_data($id),12));
 						break;	
 					case 'IssueProceeding':
-						$tela .= $this->Issue($th,$id,$act);
-						//$tela .= bs(bsc($RDF->view_data($id),12));
+						$sx .= $this->Issue($th,$id,$act);
+						//$sx .= bs(bsc($RDF->view_data($id),12));
 						break;					
 					default:
 						$sx = h($class,4);
 						$sx .= h(lang('rdf.class').': '.$class,6);
-						$tela .= bs(bsc($sx,12));
-						$tela .= bs(bsc($RDF->view_data($id),12));
+						$sx .= h('Method not defined',4);
+						$sx .= bs(bsc($sx,12));
+						$sx .= bs(bsc($RDF->view_data($id),12));
 					break;
 				}
-			$tela .= bs(bsc($this->bt_export($id),12));
-			$tela .= $th->cab('footer');
-			return $tela;
+			$sx .= bs(bsc($this->bt_export($id),12));
+			$sx .= $th->cab('footer');
+			return $sx;
 		}
 		function Issue($th,$id,$act)
 			{
@@ -112,13 +121,16 @@ class V extends Model
 								$idj = $idx[0];
 							}
 					}
-							
+						
 				$dtj = $Journal->where('jnl_frbr',$idj)->findAll();
-				$sx = '';								
-				$sx .= $Journal->header($dtj[0],false);
-				$sx .= $JournalIssue->header($dt);
-				$sx .= bs(bsc(h(lang('brapci.articles'),4),12));
-				$sx .= $JournalIssue->ArticlesIssue($id);
+				$sx = '';			
+				if (count($dtj) > 0)
+				{				
+					$sx .= $Journal->header($dtj[0],false);
+					$sx .= $JournalIssue->header($dt);
+					$sx .= bs(bsc(h(lang('brapci.articles'),4),12));
+					$sx .= $JournalIssue->ArticlesIssue($id);
+				}
 				return $sx;
 			}
 		function bt_export($id)
