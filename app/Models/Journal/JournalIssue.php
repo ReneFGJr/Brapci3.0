@@ -111,15 +111,21 @@ class JournalIssue extends Model
 			$sx = '';
 			$RDF = new \App\Models\Rdf\RDF();
 			$dt = $RDF->le($id);
-
-			$art = $RDF->recover($dt,'hasIssueOf');
 			$args = array();
-			for($r=0;$r < count($art);$r++)
+
+			$tps = array('hasIssueOf','hasIssueProceedingOf');
+
+			for ($q=0;$q < count($tps);$q++)
 				{
-					$d = $art[$r];
-					$sx .= $RDF->c($d);
-					$sx .= '<hr>';
+					$art = $RDF->recover($dt,$tps[$q]);
+					for($r=0;$r < count($art);$r++)
+						{
+							$d = $art[$r];
+							$sx .= $RDF->c($d);
+							$sx .= '<hr>';
+						}
 				}
+			$sx = bs(bsc($sx,12));
 			return $sx;
 		}
 

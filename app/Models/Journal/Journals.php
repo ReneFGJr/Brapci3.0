@@ -143,19 +143,10 @@ class Journals extends Model
 			return $sx;
 		}
 
-	function issue($d1,$d2,$d3)
+	function issue($th,$d2,$d3)
 		{
-			$sx = '';
 			$JournalIssue = new \App\Models\Journal\JournalIssue();
-			$dt = $JournalIssue->find($d2);
-
-			$issue_rdf = $dt['is_source_issue'];
-			$id_jnl = $dt['is_source'];
-			$id_jnl_rdf = $dt['is_source_rdf'];
-
-			$dt = $this->find($id_jnl);
-			$sx .= $this->journal_header($dt,false);
-			$sx .= $JournalIssue->ArticlesIssue($issue_rdf);
+			$sx = $JournalIssue->ArticlesIssue($d2);
 			return $sx;
 		}
 
@@ -271,6 +262,11 @@ class Journals extends Model
 			$sx = bs($this->journal_header($dt));
 
 			return $sx;
+		}
+	
+	function header($dt,$resume=true)
+		{
+			return $this->journal_header($dt,$resume);
 		}
 
 	function journal_header($dt,$resume=true)

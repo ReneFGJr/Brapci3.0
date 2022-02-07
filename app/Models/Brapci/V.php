@@ -74,14 +74,14 @@ class V extends Model
 						$JournalIssue = new \App\Models\Journal\JournalIssue();
 						$tela .= bs(bsc(h('Class: '.$class,2),12));
 						$tela .= $JournalIssue->view_issue_articles($id);
-						$tela .= bs(bsc($RDF->view_data($id),12));
+						//$tela .= bs(bsc($RDF->view_data($id),12));
 						break;
 					case 'Journal':
-						$tela .= $this->Issue($id);
+						$tela .= $this->Issue($th,$id,$act);
 						break;	
 					case 'IssueProceeding':
-						//$tela = $this->Issue($id);
-						$tela .= bs(bsc($RDF->view_data($id),12));
+						$tela .= $this->Issue($th,$id,$act);
+						//$tela .= bs(bsc($RDF->view_data($id),12));
 						break;					
 					default:
 						$sx = h($class,4);
@@ -94,18 +94,30 @@ class V extends Model
 			$tela .= $th->cab('footer');
 			return $tela;
 		}
-		function Issue($id)
+		function Issue($th,$id,$act)
 			{
-				$RDF = new \App\Models\Rdf\RDF();
 				$Journal = new \App\Models\Journal\Journals();
-				$JournalIssue = new \App\Models\Journal\JournalIssue();
-				$dd = $Journal->le_rdf($id);
+				$JournalIssue = new \App\Models\Journal\JournalIssue();	
 
-				$dd = $dd[0];
-				$id_rdf = $dd['jnl_frbr'];
-				
-				$sx = bs($Journal->journal_header($dd));
-				$sx .= $JournalIssue->view_issue($id_rdf);
+				$RDF = new \App\Models\Rdf\RDF();
+				$dt = $RDF->le($id);
+				$tps = array('hasIssue','hasIssueProceeding');
+				$idj = 0;
+				for ($r=0;$r < count($tps);$r++)
+					{
+						$tp = $tps[$r];
+						$idx = $RDF->recover($dt,$tp);
+						if (count($idx) > 0)
+							{
+								$idj = $idx[0];
+							}
+					}
+							
+				$dt = $Journal->where('jnl_frbr',$idj)->findAll();
+				$sx = '';								
+				$sx .= $Journal->header($dt[0],false);
+				$sx .= bs(bsc(h(lang('brapci.articles'),4),12));
+				$sx .= $JournalIssue->ArticlesIssue($id);
 				return $sx;
 			}
 		function bt_export($id)

@@ -191,6 +191,13 @@ class Res extends BaseController
 		return $tela;
 	}
 
+	function a($id,$act='')
+	{
+		$V = new \App\Models\Brapci\V();
+		$tela = $V->index($this, $id,$act);
+		return $tela;
+	}
+
 	function ontology($d1='',$d2='',$d3='',$d4='')
 	{
 		$Ontology = new \App\Models\Brapci\Ontology();
