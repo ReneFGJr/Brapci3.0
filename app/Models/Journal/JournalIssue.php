@@ -368,14 +368,14 @@ class JournalIssue extends Model
 			for ($r=0;$r < count($dt);$r++)
 				{
 					$dtx = $dt[$r];
-					$link0 = '<a href="'.(PATH.MODULE.$MOD.'/index/issue/'.$dtx['id_is'].'/'.$dtx['is_source_rdf']).'">';
+					$link0 = '<a href="'.(PATH.MODULE.$MOD.'/index/issue/'.$dtx['is_source_rdf']).'">';
 					$link1 = '<a href="'.(PATH.MODULE.$MOD.'/index/edit_issue/'.$dtx['id_is']).'">';
 					$link2 = '<a href="'.PATH.MODULE.$MOD.'/index/harvesting/0/'.$dtx['id_is'].'">';
 					$linka = '</a>';
 
 					$year = $dtx['is_year'];
-					if ($year == $xyear) { $year = ''; } else { $xyear = $year; }
-					$sx .= bsc(h($link0.$year.$linka,3),1);
+					if ($year == $xyear) { $sz = 6; } else { $xyear = $year; $sz = 3; }
+					$sx .= bsc(h($link0.$year.$linka,$sz),1,'text-end');
 					$sx .= bsc($link0.$dtx['is_nr'].' '.$dtx['is_vol'].$linka,3);
 					$sx .= bsc($link0.$dtx['is_place'].$linka,3);
 					$sx .= bsc($link0.$dtx['is_thema'].$linka,4);
