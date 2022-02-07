@@ -53,6 +53,12 @@ class V extends Model
 			$sx = $th->cab();			
 			$dt = $RDF->le($id,1);
 
+			if (!isset($dt['concept']['c_class']))
+				{
+					return "ERRO DE ACESSO - ".$id;
+					exit;
+				}
+
 			$class = $dt['concept']['c_class'];
 			$name = $dt['concept']['n_name'];
 			$sx .= bsc(h($class,4),12);
