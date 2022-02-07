@@ -70,6 +70,7 @@ class Brapci extends Model
 		$class = "brapci:IssueProceeding";
 		$name = 'Encontro Nacional de Pesquisa e Pós-graduação em Ciência da Informação';
 		$name .= ', ' . troca($reg['dc.edicao.evento'], 'º', '');
+		$name = troca($name, '°', '');
 		$name .= '.';
 		$name .= ', ' . trim($reg['dc.ano.evento']);
 		$name .= ', ' . trim($reg['dc.cidade.evento']);
