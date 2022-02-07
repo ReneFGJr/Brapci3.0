@@ -122,6 +122,9 @@ class Brapci extends Model
 		}
 		/************************************** Subject */
 		if (isset($reg['dc.keywords'][0])) {
+			echo '<pre>';
+			print_r($reg['dc.keywords']);
+			echo '</pre>';
 			for ($r = 0; $r < count($reg['dc.keywords']); $r++) {
 				$term = (string)$reg['dc.keywords'][$r];
 				$idt = $RDF->conecpt($term, 'dc:Subject');
