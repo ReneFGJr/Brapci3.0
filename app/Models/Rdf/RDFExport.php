@@ -126,7 +126,13 @@ class RDFExport extends Model
 
 						/***************************************************** Title */
 						$title = $RDF->recovery($dt['data'],'hasTitle');
-						$title = nbr_title($title[0][2]);
+						if (isset($title[0][2]))
+							{
+								$title = nbr_title($title[0][2]);
+							} else {
+								$title = '## FALHA NO TÍTULO ## - '.$title;
+							}
+
 
 						/***************************************************** Title */
 						$issue = $RDF->recovery($dt['data'],'hasIssueProceedingOf');
