@@ -105,7 +105,6 @@ class SubHeaders extends Model
 							transform: translateX(-50%); 
 							bottom: -15px;">' . $dt['section'] . '</span>';
 		$top .= '</div>';
-		$top .= bsc($idp, 12);
 		return $top;
 	}
 }
