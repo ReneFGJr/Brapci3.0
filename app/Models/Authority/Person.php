@@ -67,7 +67,7 @@ function viewid($id,$loop=0)
 				$dt['a_orcid'] = '';
 				$dt['a_master'] = '';
 				$dt['a_brapci'] = $id;
-				$AuthorityNames->insert($dta);
+				$AuthorityNames->insert($dt);
 			} else {
 				$dt = $dt[0];
 			}
