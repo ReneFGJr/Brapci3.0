@@ -63,7 +63,7 @@ class Brapci extends Model
 		$class = "brapci:Proceeding";
 		$reg = (array)$xml->record;
 		echo '<pre>';
-		print_r(reg);
+		print_r($reg);
 		$year = $reg['dc.ano.evento'];
 		$name = "enancib.org." . $year . "." . $id;
 		$idc = $RDF->conecpt($name, $class);
