@@ -50,21 +50,32 @@ class SubHeaders extends Model
 			$issue1 = $RDF->recover($dt,'hasIssue');
 			$issue2 = $RDF->recover($dt,'hasIssueProceedingOf');
 			$issue = array_merge($issue1,$issue2);
-			
+
 			echo '<pre>';
 			print_r($issue);
 			echo '</pre>';
 
 			$class = $dt['concept']['c_class'];
 			$img1 = 'img/subheads/0001.png';
+			$imgx = '';
 
-			$idp = strzero($dt['concept']['id_cc'],10);
-			$file = 'img/subheads/'.$idp.'.png';
-			if (file_exists($file))
+			for ($r=0;$r < count($issue);$r++)
 				{
-					$img1 = $file;
-				} else {
-					echo "File Not found ".$file;
+					$idp = strzero($dt['concept']['id_cc'],10);
+					$file = 'img/subheads/'.$idp.'.png';
+					if (file_exists($file))
+						{
+							$img1 = $file;
+						}		
+				}
+
+				if (perfil("#ADM",$this))
+				{
+					if ($imgx = '')
+						{
+							print_r($issue);
+						}
+					
 				}
 
 			switch($class)
