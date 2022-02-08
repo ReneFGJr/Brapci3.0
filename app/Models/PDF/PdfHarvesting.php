@@ -91,7 +91,6 @@ class Harvesting extends Model
 		echo '<h1>' . $id . '</h1>';
 
 		if ((count($links) == 0) and (count($links2) > 0)) {
-			echo "OK";
 			for ($r = 0; $r < count($links2); $r++) {
 				$link = $links2[$r];
 				$rsp = load_page($link);

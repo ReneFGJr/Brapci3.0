@@ -42,7 +42,7 @@ class Articles extends Model
 
 
 	/******************************************************************* GERA ARQUIVO DE TEXTO */
-	function xxx_view_articles($id)
+	function view_articles($id) /* OK */
 	{		
 		$RDF = new \App\Models\Rdf\RDF();
 		$PDF = new \App\Models\PDF\PDF();

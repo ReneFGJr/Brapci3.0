@@ -61,9 +61,10 @@ class V extends Model
 
 			$class = trim($dt['concept']['c_class']);
 			$name = $dt['concept']['n_name'];
-			$sx .= bsc(h($class,4),12);
-
-			echo h($class);
+		
+			$items['home'] = PATH;
+			$items[$class] = '';
+			$sx .= breadcrumbs($items);
 			
 			switch ($class)
 				{
@@ -102,13 +103,16 @@ class V extends Model
 						//$sx .= $JournalIssue->view_issue_articles($id);
 						//$sx .= bs(bsc($RDF->view_data($id),12));
 						break;	
+					case 'Subject':
+						$sx .= $this->Subject($th,$id,$dt);
+						break;
 
 					case 'IssueProceeding':
 						$sx .= $this->Issue($th,$id,$act);
 						//$sx .= bs(bsc($RDF->view_data($id),12));
 						break;					
 					default:
-						$sx = h($class,4);
+						//$sx = h($class,4);
 						$sx .= h(lang('rdf.class').': '.$class,6);
 						$sx .= h('Method not defined',4);
 						$sx .= bs(bsc($sx,12));
@@ -119,6 +123,21 @@ class V extends Model
 			$sx .= $th->cab('footer');
 			return $sx;
 		}
+
+		function Subject($th,$id,$dt)
+			{
+				$RDF = new \App\Models\Rdf\RDF();
+				$dt = $RDF->le($id);
+
+				$sx = '';
+				$sx .= bsc(h($dt['concept']['c_class'],6),12);
+				$sx .= bsc(h($dt['concept']['n_name'],1),12);
+				$sx .= bsc(lang('brapci.total').' <b>'.count($dt['data']).' '.lang('brapci.records').'</b>',12);
+				$sx = bs($sx);
+				
+				$sx .= bs(bsc($RDF->view_data($id),12));
+				return $sx;
+			}
 		function Issue($th,$id,$act)
 			{
 				$Journal = new \App\Models\Journal\Journals();

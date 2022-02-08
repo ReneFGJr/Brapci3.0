@@ -166,10 +166,8 @@ class JournalIssue extends Model
 			$this->path_back = (PATH . MODULE . 'admin/' . $MOD . "/viewid/" . get('is_source'));
 		}
 
-		echo h($this->path_back);
-
 		$this->path = (PATH . MODULE . 'admin/' . $MOD . '/edit_issue/'.$reg.'/'.$idj);
-		echo h($this->path);
+
 		$sx .= form($this);
 		$sx = bs(bsc($sx, 12));
 		return $sx;

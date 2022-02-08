@@ -206,7 +206,6 @@ class RDF extends Model
 	
 	function find($sr='', $class = '')
 		{
-			echo '<h1>'.$class.'</h1>';
 			$RDFClass = new \App\Models\Rdf\RDFClass();
 			$RDFLiteral = new \App\Models\Rdf\RDFLiteral();
 			$prop = $RDFClass->class($class);

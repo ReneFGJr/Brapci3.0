@@ -40,6 +40,11 @@ class Index extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
+	public function __construct()
+	{
+		$this->Socials = new \App\Models\Socials();
+	}	
+
 	function cab()
 		{
 			$sx = bsc('<img src="'.URL.'img/logo/benancib.png" class="img-fluid"',2);
@@ -77,18 +82,36 @@ class Index extends Model
 				$sx .= $this->export($d2,$d3,$d4);
 				break;				
 			default:
-				$sx .= anchor(PATH.MODULE.'v/101894',h('Publicações do Enanvcib'));
-				$sx .= '<ul>';				
-				$sx .= '<li>'.anchor(PATH.MODULE.'benancib/check','Check Harvesting').'</li>';
-				$sx .= '<li>'.anchor('http://repositorios.questoesemrede.uff.br/repositorios/handle/123456789/2','Repositório BENANCIB').'</li>';
-				$sx .= '<hr>';
-				$sx .= '<li>'.anchor(PATH.MODULE.'benancib/harvesting_auto/5','Auto Harvesting').'</li>';
-				$sx .= '<li>'.anchor(PATH.MODULE.'benancib/harvesting_pdf/5','Auto Harvesting PDF').'</li>';
-				$sx .= '<li>'.anchor(PATH.MODULE.'benancib/export','Export to Brapci (RDF)').'</li>';
-				$sx .= '</ul>';
+				$items['home'] = PATH.'res/benancib';
+				$sx .= breadcrumbs($items);
+
+				$sx .= $this->painel();
+				$sx .= '<a class="btn btn-outline-primary m-3" style="font-size: 150%; width: 100%" href="'.PATH.MODULE.'v/101894">'.lang('brapci.Publicações do Enancib').'</a>';
+	
+				//$sx .= '<li>'.anchor(PATH.MODULE.'benancib/check','Check Harvesting').'</li>';
+				//$sx .= '<li>'.anchor('http://repositorios.questoesemrede.uff.br/repositorios/handle/123456789/2','Repositório BENANCIB').'</li>';
+				//$sx .= '<hr>';
+				//$sx .= '<li>'.anchor(PATH.MODULE.'benancib/harvesting_auto/5','Auto Harvesting').'</li>';
+				//$sx .= '<li>'.anchor(PATH.MODULE.'benancib/harvesting_pdf/5','Auto Harvesting PDF').'</li>';
+				if ($this->Socials->perfil('#ADM'))
+				{
+					$sx .= '<span class="btn btn-outline-primary">'.anchor(PATH.MODULE.'benancib/export','Export to Brapci (RDF)').'</a>';
+				}		
+
 		}
 		return $sx;
 	}
+
+	function painel()
+		{
+			$data = array();
+			$pn1 = view('Benancib/painel_1',$data);
+			$pn2 = view('Benancib/painel_2',$data);
+			$pn3 = view('Benancib/painel_3',$data);
+
+			$sx = bs(bsc($pn1,4).bsc($pn2,4).bsc($pn3,4));
+			return $sx;
+		}
 
 	function export($id=0)
 		{			

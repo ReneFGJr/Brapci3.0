@@ -20,8 +20,8 @@ class Res extends BaseController
 {
 	public function __construct()
 	{
-		$this->Socials = new \App\Models\Socials();
 		$this->Search = new \App\Models\Search\Search();
+		$this->Socials = new \App\Models\Socials();
 	}
 	function cab($tp = '',$dt=array())
 	{

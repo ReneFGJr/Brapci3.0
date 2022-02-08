@@ -139,6 +139,27 @@ function bsicone($type='',$w=16)
         $sx .= '</svg>';
         return $sx;
     }
+
+function breadcrumbs($its)
+        {
+            $sx ='';
+            $sx .= '<nav aria-label="breadcrumb">'.cr();
+            $sx .= '<ol class="breadcrumb">'.cr();
+            foreach($its as $label=>$link)
+                {
+                    $linkl = '<a href="'.$link.'">';
+                    $linka = '</a>';
+                    if (strlen($link) == 0) 
+                        { 
+                            $linka = ''; 
+                            $linkl = ''; 
+                        }
+                    $sx .= '<li class="breadcrumb-item active" aria-current="page">'.$linkl.lang('brapci.'.$label).$linka.'</li>';
+                }
+            $sx .= ' </ol></nav>';
+            $sx = bs(bsc($sx,12));
+            return $sx;
+        }
 function bssmall($t)
     {
         $sx = '<small>'.$t.'</small>';
