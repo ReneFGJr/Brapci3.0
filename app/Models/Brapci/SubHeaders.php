@@ -53,6 +53,8 @@ class SubHeaders extends Model
 			if (file_exists($file))
 				{
 					$img1 = $file;
+				} else {
+					echo "File Not found ".$file;
 				}
 
 			switch($class)
