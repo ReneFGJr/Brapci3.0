@@ -69,7 +69,6 @@ class SubHeaders extends Model
 				{
 					$idp = strzero($issue[$r],10);
 					$file = 'img/subheads/'.$idp.'.png';
-					echo '<br>'.$file;
 					if (file_exists($file))
 						{
 							$img1 = $file;
@@ -85,23 +84,11 @@ class SubHeaders extends Model
 			{
 				$idp = strzero($issue[$r],10);
 				$file = 'img/subheads/'.$idp.'.png';
-				echo '<br>'.$file;
 				if (file_exists($file))
 					{
 						$img0 = $file;
 					}		
 			}
-
-				if (perfil("#ADM",$this))
-				{
-					if ($imgx = '')
-						{
-							print_r($issue);
-						}
-					
-				}
-
-
 
 			$top = '';
 			$top .= '<div class="col-12 text-center mb-5" style="position: relative;">';
