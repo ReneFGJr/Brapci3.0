@@ -42,58 +42,7 @@ class SubHeaders extends Model
 
 	function headers($dt)
 		{
-			$RDF = new \App\Models\Rdf\RDF();
-
-			$issue1 = $RDF->recover($dt,'hasIssue');
-			$issue2 = $RDF->recover($dt,'hasIssueProceedingOf');
-			$issue = array_merge($issue1,$issue2);
-
 			$class = $dt['concept']['c_class'];
-			$img1 = 'img/subheads/0001.png';
-			$imgx = '';
-
-			for ($r=0;$r < count($issue);$r++)
-				{
-					$idp = strzero($issue[$r],10);
-					$file = 'img/subheads/'.$idp.'.png';
-					if (file_exists($file))
-						{
-							$imgx = $file;
-						}		
-				}
-
-			if (($imgx == '') and (round($idp) > 0))	
-				{
-					$di = $RDF->le(round($idp));
-					$issue1 = $RDF->recover($dt,'hasIssue');
-					$issue2 = $RDF->recover($dt,'hasIssueProceeding');
-					$issue = array_merge($issue1,$issue2);
-					
-					for ($r=0;$r < count($issue);$r++)
-					{
-						$idp = strzero($issue[$r],10);
-						$file = 'img/subheads/'.$idp.'.png';
-						if (file_exists($file))
-							{
-								$imgx = $file;
-							}		
-					}
-				}
-
-				if (strlen($imgx) > 0)
-					{
-						$img1 = $imgx;
-					}
-
-				if (perfil("#ADM",$this))
-				{
-					if ($imgx = '')
-						{
-							print_r($issue);
-						}
-					
-				}
-
 			switch($class)
 				{
 					case 'Proceeding':
@@ -106,6 +55,53 @@ class SubHeaders extends Model
 						$img0 = 'img/subheads/0001.png';
 						break;		
 				}
+
+			$RDF = new \App\Models\Rdf\RDF();
+
+			$issue1 = $RDF->recover($dt,'hasIssue');
+			$issue2 = $RDF->recover($dt,'hasIssueProceedingOf');
+			$issue = array_merge($issue1,$issue2);
+			
+			$img1 = 'img/subheads/0001.png';
+			$imgx = '';
+
+			for ($r=0;$r < count($issue);$r++)
+				{
+					$idp = strzero($issue[$r],10);
+					$file = 'img/subheads/'.$idp.'.png';
+					echo '<br>'.$file;
+					if (file_exists($file))
+						{
+							$img1 = $file;
+						}		
+				}
+
+			$di = $RDF->le(round($idp));
+			$issue1 = $RDF->recover($di,'hasIssue');
+			$issue2 = $RDF->recover($di,'hasIssueProceeding');
+			$issue = array_merge($issue1,$issue2);
+			
+			for ($r=0;$r < count($issue);$r++)
+			{
+				$idp = strzero($issue[$r],10);
+				$file = 'img/subheads/'.$idp.'.png';
+				echo '<br>'.$file;
+				if (file_exists($file))
+					{
+						$img0 = $file;
+					}		
+			}
+
+				if (perfil("#ADM",$this))
+				{
+					if ($imgx = '')
+						{
+							print_r($issue);
+						}
+					
+				}
+
+
 
 			$top = '';
 			$top .= '<div class="col-12 text-center mb-5" style="position: relative;">';
