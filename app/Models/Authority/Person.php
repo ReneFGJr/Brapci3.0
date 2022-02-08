@@ -69,6 +69,7 @@ function viewid($id,$loop=0)
 				$dt['a_brapci'] = $id;
 				$AuthorityNames->insert($dta);
 			} else {
+				print_r($dt);
 				$dt = $dt[0];
 			}
 
