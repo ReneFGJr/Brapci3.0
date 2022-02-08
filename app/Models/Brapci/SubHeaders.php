@@ -42,9 +42,6 @@ class SubHeaders extends Model
 
 	function headers($dt)
 		{
-			echo '<pre>';
-			print_r($dt);
-			echo '</pre>';
 			$RDF = new \App\Models\Rdf\RDF();
 
 			$issue1 = $RDF->recover($dt,'hasIssue');
@@ -68,6 +65,16 @@ class SubHeaders extends Model
 							$img1 = $file;
 						}		
 				}
+
+			if (($imgx = '') and (round($idp) > 0))	
+				{
+					$di = $RDF->le(round($idp));
+					echo '<pre>';
+					print_r($di);
+					echo '</pre>';
+				}
+
+
 
 				if (perfil("#ADM",$this))
 				{
