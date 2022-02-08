@@ -58,7 +58,7 @@ function viewid($id,$loop=0)
 		$idc = $da['concept']['id_cc'];
 
 		$dt = $this->where('a_brapci',$idc)->findAll();
-		if (count($da) == 0)
+		if (count($dt) == 0)
 			{
 				$dt['a_uri'] = 'https://brapci.inf.br/v/'.$id;
 				$dt['a_use'] = 0;
@@ -69,7 +69,6 @@ function viewid($id,$loop=0)
 				$dt['a_brapci'] = $id;
 				$AuthorityNames->insert($dta);
 			} else {
-				print_r($dt);
 				$dt = $dt[0];
 			}
 
