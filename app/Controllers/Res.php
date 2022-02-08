@@ -23,6 +23,7 @@ class Res extends BaseController
 		$this->Search = new \App\Models\Search\Search();
 		$this->Socials = new \App\Models\Socials();
 	}
+
 	function cab($tp = '',$dt=array())
 	{
 		$hd = new \App\Models\Header\Header();
@@ -122,6 +123,10 @@ class Res extends BaseController
 		$tela = $this->cab("user");
 		switch($d1)
 			{
+				case 'lattes':
+					$Lattes = new \App\Models\Journal\Journals();
+					$tela .= $Lattes->index($d2,$d3,$d4);
+					break;
 				case 'proceeding':
 					$Journal = new \App\Models\Journal\Journals();
 					$tela .= $Journal->index($d2,$d3,$d4);
@@ -129,8 +134,7 @@ class Res extends BaseController
 				case 'journal':
 					$Journal = new \App\Models\Journal\Journals();
 					$tela .= $Journal->index($d2,$d3,$d4);
-					break;					
-
+					break;		
 				case 'issue':
 					$JournalIssue = new \App\Models\Journal\JournalIssue();
 					switch($d2)
