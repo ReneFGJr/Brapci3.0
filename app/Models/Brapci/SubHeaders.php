@@ -42,6 +42,10 @@ class SubHeaders extends Model
 
 	function headers($dt)
 		{
+			$link1a = '';
+			$link2a = '';
+			$link1b = '';
+			$link2b = '';
 			$class = $dt['concept']['c_class'];
 			switch($class)
 				{
@@ -72,7 +76,9 @@ class SubHeaders extends Model
 					if (file_exists($file))
 						{
 							$img1 = $file;
-						}		
+						}	
+					$link1a = '<a href="'.PATH.'res/v/'.$issue[0].'" border=0>';
+					$link1b = '</a>';
 				}
 
 			$di = $RDF->le(round($idp));
@@ -87,13 +93,16 @@ class SubHeaders extends Model
 				if (file_exists($file))
 					{
 						$img0 = $file;
+						$link2a = '<a href="'.PATH.'res/v/'.$issue[$r].'" border=0>';
+						$link2b = '</a>';
+
 					}		
 			}
 
 			$top = '';
 			$top .= '<div class="col-12 text-center mb-5" style="position: relative;">';
-			$top .= '<img src="'.URL.$img0.'" class="img-fluid" style="width: 100%;">';
-			$top .= '<img src="'.URL.$img1.'" class="img-fluid" style="width: 100%;"> ';
+			$top .= $link2a.'<img src="'.URL.$img0.'" class="img-fluid" style="width: 100%;">'.$link2b;
+			$top .= $link1a.'<img src="'.URL.$img1.'" class="img-fluid" style="width: 100%;">'.$link1b;
 			$top .= '<span class="btn-primary pt-2 pb-2 ps-4 pe-4 rounded-pill" 
 							style="position: absolute; 
 							left: 50%;
