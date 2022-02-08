@@ -41,75 +41,71 @@ class SubHeaders extends Model
 	protected $afterDelete          = [];
 
 	function headers($dt)
-		{
-			$link1a = '';
-			$link2a = '';
-			$link1b = '';
-			$link2b = '';
-			$class = $dt['concept']['c_class'];
-			switch($class)
-				{
-					case 'Proceeding':
-						$img0 = 'img/subheads/collection_proceedings.png';
-						break;
-					case 'Article':
-						$img0 = 'img/subheads/collection_articles.png';
-						break;
-					default: 
-						$img0 = 'img/subheads/0001.png';
-						break;		
-				}
+	{
+		$link1a = '';
+		$link2a = '';
+		$link1b = '';
+		$link2b = '';
+		$class = $dt['concept']['c_class'];
+		switch ($class) {
+			case 'Proceeding':
+				$img0 = 'img/subheads/collection_proceedings.png';
+				break;
+			case 'Article':
+				$img0 = 'img/subheads/collection_articles.png';
+				break;
+			default:
+				$img0 = 'img/subheads/0001.png';
+				break;
+		}
 
-			$RDF = new \App\Models\Rdf\RDF();
+		$RDF = new \App\Models\Rdf\RDF();
 
-			$issue1 = $RDF->recover($dt,'hasIssue');
-			$issue2 = $RDF->recover($dt,'hasIssueProceedingOf');
-			$issue = array_merge($issue1,$issue2);
-			
-			$img1 = 'img/subheads/0001.png';
-			$imgx = '';
+		$issue1 = $RDF->recover($dt, 'hasIssue');
+		$issue2 = $RDF->recover($dt, 'hasIssueProceedingOf');
+		$issue = array_merge($issue1, $issue2);
 
-			for ($r=0;$r < count($issue);$r++)
-				{
-					$idp = strzero($issue[$r],10);
-					$file = 'img/subheads/'.$idp.'.png';
-					if (file_exists($file))
-						{
-							$img1 = $file;
-						}	
-					$link1a = '<a href="'.PATH.'res/v/'.$issue[0].'" border=0>';
-					$link1b = '</a>';
-				}
+		$img1 = 'img/subheads/0001.png';
+		$imgx = '';
 
-			$di = $RDF->le(round($idp));
-			$issue1 = $RDF->recover($di,'hasIssue');
-			$issue2 = $RDF->recover($di,'hasIssueProceeding');
-			$issue = array_merge($issue1,$issue2);
-			
-			for ($r=0;$r < count($issue);$r++)
-			{
-				$idp = strzero($issue[$r],10);
-				$file = 'img/subheads/'.$idp.'.png';
-				if (file_exists($file))
-					{
-						$img0 = $file;
-						$link2a = '<a href="'.PATH.'res/v/'.$issue[$r].'" border=0>';
-						$link2b = '</a>';
-
-					}		
+		for ($r = 0; $r < count($issue); $r++) {
+			$idp = strzero($issue[$r], 10);
+			$file = 'img/subheads/' . $idp . '.png';
+			if (file_exists($file)) {
+				$img1 = $file;
 			}
+			$link1a = '<a href="' . PATH . 'res/v/' . $issue[0] . '" border=0>';
+			$link1b = '</a>';
+		}
 
-			$top = '';
-			$top .= '<div class="col-12 text-center mb-5" style="position: relative;">';
-			$top .= $link2a.'<img src="'.URL.$img0.'" class="img-fluid" style="width: 100%;">'.$link2b;
-			$top .= $link1a.'<img src="'.URL.$img1.'" class="img-fluid" style="width: 100%;">'.$link1b;
-			$top .= '<span class="btn-primary pt-2 pb-2 ps-4 pe-4 rounded-pill" 
+		if (isset($idp)) {
+			$di = $RDF->le(round($idp));
+			$issue1 = $RDF->recover($di, 'hasIssue');
+			$issue2 = $RDF->recover($di, 'hasIssueProceeding');
+			$issue = array_merge($issue1, $issue2);
+
+			for ($r = 0; $r < count($issue); $r++) {
+				$idp = strzero($issue[$r], 10);
+				$file = 'img/subheads/' . $idp . '.png';
+				if (file_exists($file)) {
+					$img0 = $file;
+					$link2a = '<a href="' . PATH . 'res/v/' . $issue[$r] . '" border=0>';
+					$link2b = '</a>';
+				}
+			}
+		}
+
+		$top = '';
+		$top .= '<div class="col-12 text-center mb-5" style="position: relative;">';
+		$top .= $link2a . '<img src="' . URL . $img0 . '" class="img-fluid" style="width: 100%;">' . $link2b;
+		$top .= $link1a . '<img src="' . URL . $img1 . '" class="img-fluid" style="width: 100%;">' . $link1b;
+		$top .= '<span class="btn-primary pt-2 pb-2 ps-4 pe-4 rounded-pill" 
 							style="position: absolute; 
 							left: 50%;
 							transform: translateX(-50%); 
-							bottom: -15px;">'.$dt['section'].'</span>';
-			$top .= '</div>';	
-			$top .= bsc($idp,12);
-		return $top;			
-		}
+							bottom: -15px;">' . $dt['section'] . '</span>';
+		$top .= '</div>';
+		$top .= bsc($idp, 12);
+		return $top;
+	}
 }
