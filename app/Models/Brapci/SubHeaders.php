@@ -42,9 +42,9 @@ class SubHeaders extends Model
 
 	function headers($dt)
 		{
-			//echo '<pre>';
-			//print_r($dt);
-			//echo '</pre>';
+			echo '<pre>';
+			print_r($dt);
+			echo '</pre>';
 			$class = $dt['concept']['c_class'];
 			$img1 = 'img/subheads/0001.png';
 
