@@ -71,7 +71,7 @@ class Cited extends Model
 			$dt = $this->where('ca_rdf',$idc)->orderBy('ca_ordem')->findAll();
 			if (count($dt) > 0)
 				{
-					$sx .= h(lang('Brapci.References'),2);
+					$sx .= h(lang('brapci.References'),2);
 				}
 			$sx .= '<ul class="list-group">';
 			for ($r=0;$r < count($dt);$r++)
