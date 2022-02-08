@@ -48,6 +48,13 @@ class SubHeaders extends Model
 			$class = $dt['concept']['c_class'];
 			$img1 = 'img/subheads/0001.png';
 
+			$idp = strzero($dt['concept']['id_cc'],10);
+			$file = 'img/subheads/'.$idp.'.png';
+			if (file_exists($file))
+				{
+					$img1 = $file;
+				}
+
 			switch($class)
 				{
 					case 'Proceeding':
@@ -71,6 +78,7 @@ class SubHeaders extends Model
 							transform: translateX(-50%); 
 							bottom: -15px;">'.$dt['section'].'</span>';
 			$top .= '</div>';	
+			$top .= bsc($idp,12);
 		return $top;			
 		}
 }
