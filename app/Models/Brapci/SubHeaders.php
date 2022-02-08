@@ -66,7 +66,7 @@ class SubHeaders extends Model
 						}		
 				}
 
-			if (($imgx = '') and (round($idp) > 0))	
+			if (($imgx == '') and (round($idp) > 0))	
 				{
 					$di = $RDF->le(round($idp));
 					echo '<pre>';
