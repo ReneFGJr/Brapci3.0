@@ -40,10 +40,37 @@ class Person extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-function viewid($id)
+function viewid($id,$loop=0)
 	{
-		$AuthorityNames = new \App\Models\Authority\AuthorityNames();		
-		$dt = $AuthorityNames->find($id);
+		$AuthorityNames = new \App\Models\Authority\AuthorityNames();
+
+		$RDF = new \App\Models\Rdf\RDF();
+		$da = $RDF->le($id);
+		
+		$use = $da['concept']['cc_use'];
+		if ($use > 0)
+			{
+				if ($loop > 4) { echo "OPS - Falhar geral LOOP"; exit;}
+				return $this->viewid($use,($loop++));
+			}
+
+		$name = $da['concept']['n_name'];
+		$idc = $da['concept']['id_cc'];
+
+		$dt = $this->where('a_brapci',$idc)->findAll();
+		if (count($da) == 0)
+			{
+				$dt['a_uri'] = 'https://brapci.inf.br/v/'.$id;
+				$dt['a_use'] = 0;
+				$dt['a_prefTerm'] = $name;
+				$dt['a_lattes'] = '';
+				$dt['a_orcid'] = '';
+				$dt['a_master'] = '';
+				$dt['a_brapci'] = $id;
+				$AuthorityNames->insert($dta);
+			} else {
+				$dt = $dt[0];
+			}
 
 		$tela = h($dt['a_prefTerm'], 1);
 		$tela .= anchor($dt['a_uri']);

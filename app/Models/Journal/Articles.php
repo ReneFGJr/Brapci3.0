@@ -71,16 +71,16 @@ class Articles extends Model
 			}
 			switch ($class) {
 				case 'hasSectionOf':
-					$sec = $RDF->le_content($line['d_r2']);
+					$sec = $RDF->c($line['d_r2']);
 					$d['section'] = $sec;
 					break;
 				case 'hasIssueOf':
-					$issue = $RDF->le_content($line['d_r1']);
+					$issue = $RDF->c($line['d_r1']);
 					$issue = anchor(URL.'res/v/'.$line['d_r1'],$issue);
 					$d['issue'] = $issue;
 					break;	
 				case 'hasIssueProceedingOf':
-					$issue = $RDF->le_content($line['d_r1']);
+					$issue = $RDF->c($line['d_r1']);
 					$issue = anchor(URL.'res/v/'.$line['d_r1'],$issue);
 					$d['issue'] = $issue;
 					break;									
@@ -99,17 +99,13 @@ class Articles extends Model
 				case 'hasId':
 					/* none */
 					break;
-				case 'hasSectionOf':
-					/* none */
-					//echo $txt.'<br>';
-					break;
 				case 'hasFileStorage':
 					$pdf = $line['n_name2'];
 					$right_side = $PDF->pdf_download($line);
 					break;
 
 				case 'hasAuthor':
-					$txt = $RDF->le_content($line['d_r2']);
+					$txt = $RDF->c($line['d_r2']);
 					$d['author'][$txt] = $line['d_r2'];
 					break;
 				case 'hasTitle':

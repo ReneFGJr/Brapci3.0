@@ -110,7 +110,13 @@ class V extends Model
 					case 'IssueProceeding':
 						$sx .= $this->Issue($th,$id,$act);
 						//$sx .= bs(bsc($RDF->view_data($id),12));
-						break;					
+						break;
+						
+					case 'Person':
+						$Articles = new \App\Models\Journal\Articles();
+						$sx .= $this->Person($th,$id,$act);
+						$sx .= bs(bsc($RDF->view_data($id),12));
+						break;
 					default:
 						//$sx = h($class,4);
 						$sx .= h(lang('rdf.class').': '.$class,6);
@@ -123,6 +129,14 @@ class V extends Model
 			$sx .= $th->cab('footer');
 			return $sx;
 		}
+
+		function Person($th,$id,$dt)
+			{
+				$sx = '';
+				$Person = new \App\Models\Authority\Index();
+				$sx .= $Person->index('viewid',$id,'','');
+				return $sx;
+			}
 
 		function Subject($th,$id,$dt)
 			{
