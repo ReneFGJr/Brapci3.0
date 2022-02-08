@@ -58,24 +58,32 @@ class SubHeaders extends Model
 					$file = 'img/subheads/'.$idp.'.png';
 					if (file_exists($file))
 						{
-							$img1 = $file;
+							$imgx = $file;
 						}		
 				}
 
 			if (($imgx == '') and (round($idp) > 0))	
 				{
-					
-					echo '<pre>';
-					print_r($issue);
-					echo '</pre>';
-
 					$di = $RDF->le(round($idp));
-					echo '<pre>';
-					print_r($di);
-					echo '</pre>';
+					$issue1 = $RDF->recover($dt,'hasIssue');
+					$issue2 = $RDF->recover($dt,'hasIssueProceeding');
+					$issue = array_merge($issue1,$issue2);
+					
+					for ($r=0;$r < count($issue);$r++)
+					{
+						$idp = strzero($issue[$r],10);
+						$file = 'img/subheads/'.$idp.'.png';
+						if (file_exists($file))
+							{
+								$imgx = $file;
+							}		
+					}
 				}
 
-
+				if (strlen($imgx) > 0)
+					{
+						$img1 = $imgx;
+					}
 
 				if (perfil("#ADM",$this))
 				{
