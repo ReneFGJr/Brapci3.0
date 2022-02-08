@@ -96,8 +96,12 @@ class Brapci extends Model
 
 		/*********************************** TITLES */
 		echo '<pre>';
-		print_r($reg);
-		$title = (string)$reg['dc.title'];
+		if (is_array($reg['dc.title']))
+			{
+				$title = (string)$reg['dc.title'][0];
+			} else {
+				$title = (string)$reg['dc.title'];
+			}
 		$lang = $Language->getTextLanguage($title);
 		$idt = $RDF->literal($title, $lang, $idc, 'brapci:hasTitle');
 
