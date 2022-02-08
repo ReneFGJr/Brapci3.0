@@ -95,7 +95,6 @@ class Brapci extends Model
 
 
 		/*********************************** TITLES */
-		echo '<pre>';
 		if (is_array($reg['dc.title']))
 			{
 				$title = (string)$reg['dc.title'][0];
