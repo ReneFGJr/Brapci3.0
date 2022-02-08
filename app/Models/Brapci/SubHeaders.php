@@ -45,6 +45,16 @@ class SubHeaders extends Model
 			echo '<pre>';
 			print_r($dt);
 			echo '</pre>';
+			$RDF = new \App\Models\Rdf\RDF();
+
+			$issue1 = $RDF->recover($dt,'hasIssue');
+			$issue2 = $RDF->recover($dt,'hasIssueProceedingOf');
+			$issue = array_merge($issue1,$issue2);
+			
+			echo '<pre>';
+			print_r($issue);
+			echo '</pre>';
+
 			$class = $dt['concept']['c_class'];
 			$img1 = 'img/subheads/0001.png';
 
