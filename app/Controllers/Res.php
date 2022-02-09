@@ -206,8 +206,10 @@ class Res extends BaseController
 
 	function a($id,$act='')
 	{
-		$V = new \App\Models\Brapci\V();
-		$tela = $V->index($this, $id,$act);
+		$RDF = new \App\Models\Rdf\RDF();
+		$tela = $this->cab();
+		$tela .= bs(bsc($RDF->form($id),12));
+		$tela .= $this->cab("footer");	
 		return $tela;
 	}
 
