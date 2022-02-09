@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class Match extends Model
 {
 	protected $DBGroup              = 'default';
-	var $table                = 'matches';
+	var $table                		= 'matches';
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;

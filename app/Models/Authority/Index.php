@@ -117,7 +117,7 @@ class Index extends Model
 	function tableview()
 	{
 		$AuthorityNames = new \App\Models\Authority\AuthorityNames();
-		$AuthorityNames->path = base_url(PATH. MODULE . '/index/');
+		$AuthorityNames->path = PATH. 'res/authoriry/';
 		$tela = tableView($AuthorityNames);
 
 		return $tela;
