@@ -47,6 +47,8 @@ class RdfForm extends Model
 function form($id, $dt) {
 		$class = $dt['cc_class'];
 
+		$this->form_import($class);
+
 		$sx = '';
 		$js1 = '';     
 
@@ -153,6 +155,23 @@ function form($id, $dt) {
 			break;
 		}		
 		return ($sx);
+	}
+
+function form_import($id_class)
+	{
+		echo h($id_class);
+		$RDF = new \App\Models\Rdf\Rdf();
+		$RDFData = new \App\Models\Rdf\RDFData();
+		$RDFConcept = new \App\Models\Rdf\RDFConcept();
+				
+		$dt = $RDFConcept
+				->select('cc_class, d_p')
+				->where('cc_class',$id_class)
+				->join('rdf_data','id_cc = d_r1')
+				->groupBy('d_p')
+				->FindAll();
+		echo $RDFData->getlastquery();
+		print_r($dt);
 	}
 	
 function le($id)
