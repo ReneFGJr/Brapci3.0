@@ -91,7 +91,7 @@ function viewid($id,$loop=0)
 			}
 			$tela .= bsc('<small>' . lang('Link do Lattes') . '</small><br>' . $link1 . $link2, 12);
 		} else {
-			$tela .= anchor(base_url(PATH . MODULE. '/admin/lattes/findid/' . $dt['a_brapci']));
+			$tela .= anchor(base_url(PATH . MODULE. '/admin/authority/findid/' . $dt['a_brapci']));
 		}
 
 		if ($dt['a_lattes'] == 0)

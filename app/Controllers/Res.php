@@ -123,8 +123,12 @@ class Res extends BaseController
 		$tela = $this->cab("user");
 		switch($d1)
 			{
+				case 'authority':
+					$Authority = new \App\Models\Authority\index();
+					$tela .= $Authority->index($d2,$d3,$d4,'');
+					break;
 				case 'lattes':
-					$Lattes = new \App\Models\Journal\Journals();
+					$Lattes = new \App\Models\Lattes\index();
 					$tela .= $Lattes->index($d2,$d3,$d4);
 					break;
 				case 'proceeding':

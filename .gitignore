@@ -134,3 +134,4 @@ nb-configuration.xml
 /.phpunit.*.cache
 
 *.1
+_csv/CVlattesASCII.csv

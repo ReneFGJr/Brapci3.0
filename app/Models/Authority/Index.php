@@ -49,10 +49,13 @@ class Index extends Model
 
 	function index($d1, $d2, $d3, $d4)
 	{
-		$this->setDatabase('brapci_authority');
+		//$this->setDatabase('brapci_authority');
 
 		$tela = '';
 		switch ($d1) {
+			case 'findid':
+				$tela .= $this->findId($d2, $d3);
+				break;
 			case 'import_lattes':
 				$tela .= $this->import_lattes($d2, $d3);
 				break;
@@ -97,6 +100,42 @@ class Index extends Model
 		$tela = bs($tela);
 		return $tela;
 	}
+
+	function findId($id)
+		{
+			$RDF = new \App\Models\Rdf\RDF();
+			$dt = $RDF->le($id);
+			$name = $dt['concept']['n_name'];
+
+			$sx = '';
+
+			$AuthorityNames = new \App\Models\Authority\AuthorityNames();
+			$dt = $AuthorityNames->get_id_by_name($name);
+			if (count($dt) > 0)
+				{
+					if (trim($dt[0]['a_lattes'])=='')
+						{
+							$LattesId = new \App\Models\Lattes\LattesId();
+							$dl = $LattesId->LattesFindID($name);
+
+							if (count($dl) > 0)
+								{
+									$t = $dl['result'];
+									foreach($t as $idlattes=>$name)
+										{
+											$AuthorityNames->set('a_lattes',$idlattes);
+											$AuthorityNames->where('id_a',$dt[0]['id_a'])->update();
+											$sx .= bsmessage('Update LattesID: '.$idlattes);
+										}
+								} else {
+									$sx .= bsmessage('Multiples LattesID');		
+								}
+						} else {
+							$sx .= bsmessage('Already Update LattesID');
+						}
+				}		
+			return $sx;
+		}
 
 	function import_lattes($d1, $ida)
 	{

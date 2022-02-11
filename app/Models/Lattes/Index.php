@@ -45,12 +45,23 @@ class Index extends Model
 			switch($d1)
 				{
 					case 'findid':
-						$Math = new \App\Models\AI\Authority\Match();
-						$txt = 'Rene Faustino Gabriel Junior';
-						$sx = $Math->check($txt);
-						echo "OK";
+						$sx = $this->findId($d1,$id);
 					break;
 				}
 				return $sx;
+		}
+	function findId($txt,$id)
+		{
+				$LattesId = new \App\Models\Lattes\LattesId();
+				$dt = $LattesId->LattesFindID($txt);
+
+				if (count($dt))
+					{
+						if (count($dt) == 1)
+							{
+								print_r($dt);
+								exit;
+							}
+					}
 		}
 }

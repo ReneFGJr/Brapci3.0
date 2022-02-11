@@ -6,9 +6,9 @@ use CodeIgniter\Model;
 
 class Match extends Model
 {
-	protected $DBGroup              = 'default';
-	var $table                		= 'matches';
-	protected $primaryKey           = 'id';
+	protected $DBGroup              = 'authority';
+	var $table                		= 'authoritynames';
+	protected $primaryKey           = 'id_a';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
@@ -84,6 +84,8 @@ class Match extends Model
 			if ($rem > 0)
 			{
 				$sx .= '<input type="submit" class="btn btn-outline-primary" value="'.lang('bapci.save').'">';
+			} else {
+				$sx .= '<span>'.lang('bapci.no_match').'</span>';
 			}
 			$sx .= '</form>';
 			return $sx;

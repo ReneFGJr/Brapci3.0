@@ -66,39 +66,5 @@ class Endpoints extends Model
 		return $tela;
 	}
 
-	function LattesFindID($q='Name for query')
-	{
-		$dt = array();
-		$file = '/home/cedap/CVlattesASCII.csv';
-		if (!file_exists(($file)))		
-			{
-				echo 'File no found - '.$file;
-				exit;
-			}
-		$handle = fopen($file, "r");
-		$q = mb_strtoupper(ascii($q));
-		$dt['query'] = $q;
-		$tot = 0;
-		$rst = array();
-		if ($handle) {
-			while (($line = fgets($handle)) !== false) {
-				// process the line read.
-				if (strpos(' ' . $line, $q)) {
-					$d = explode(';', $line);
-					$rst[$d[1]] = $d[0];
-					//$dt['result'][$d[0]] = $d[1];
-					$tot++;
-					if ($tot > 10)
-						{
-							$dt = array();
-							$dt['erro'] = 101;
-							$dt['descript'] = lang('api.multiple_results');
-						}
-				}
-			}
-			fclose($handle);
-		}
-		$dt['result'] = $rst;
-		return $dt;
-	}
+
 }
