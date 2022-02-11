@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-//define("PATH", 'Authoriry');
 define("URL",$_SERVER['app.baseURL']);
 define("MODULE",'journal');
 define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix']);

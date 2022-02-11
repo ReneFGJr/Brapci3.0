@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-//define("PATH", 'Authoriry');
 define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix'].'authority');
 
 define("LIBRARY", "202101");
