@@ -55,7 +55,6 @@ class Index extends Model
 		switch ($d1) {
 			case 'findid':
 				$tela .= h(lang('brapci.findid'),3);
-				$tela .= h($d2,3);
 				$tela .= $this->findId($d2, $d3);
 				$tela .= 'end';
 				break;
@@ -110,7 +109,12 @@ class Index extends Model
 			$dt = $RDF->le($id);
 			$name = $dt['concept']['n_name'];
 
+			echo '<pre>';
+			print_r($dt);
+			echo '</pre>';
+
 			$sx = '';
+			$sx .= h($d2,3);
 
 			$AuthorityNames = new \App\Models\Authority\AuthorityNames();
 			$dt = $AuthorityNames->get_id_by_name($name);
