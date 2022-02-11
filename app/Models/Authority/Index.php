@@ -69,6 +69,10 @@ class Index extends Model
 				$tela .= $AuthotityIds->LattesFindID($d2);
 				break;
 			case 'viewid':
+				$AuthorityNames = new \App\Models\Authority\AuthorityNames();
+				$tela .= $AuthorityNames->viewid($d2);
+				break;				
+			case 'viewidRDF':
 				$this->Person = new \App\Models\Authority\Person();
 				$tela .= $this->Person->viewid($d2);
 				break;
@@ -108,10 +112,6 @@ class Index extends Model
 			$RDF = new \App\Models\Rdf\RDF();
 			$dt = $RDF->le($id);
 			$name = $dt['concept']['n_name'];
-
-			echo '<pre>';
-			print_r($dt);
-			echo '</pre>';
 
 			$sx = '';
 			$sx .= h($d2,3);

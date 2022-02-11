@@ -132,6 +132,13 @@ class AuthorityNames extends Model
 			$sx .= bsc('<hr>',12);
 			$sx .= bsc($this->remissive($id),12);
 
+
+			$sx .= bsc(
+					$this->btn_lattes($dt) .
+					$this->btn_brapci($dt) .
+					$this->btn_orcid($dt)
+					,12);
+
 			$sx = bs($sx);			
 			return $sx;
 		}
@@ -140,6 +147,7 @@ class AuthorityNames extends Model
 		{
 			$this->where('id_a',$id);
 			$dt = $this->findAll();
+			echo $this->getlastquery();
 			$dt = $dt[0];
 			if ($dt['a_use'] > 0)
 				{
@@ -149,6 +157,35 @@ class AuthorityNames extends Model
 					$dt = $dt[0];
 				}
 			return $dt;
+		}
+
+	function btn_lattes($dt)
+		{
+			$sx = '';
+			if ($dt['a_lattes'] != '')
+				{
+					$sx = '<span class="btn btn-outline-primary">'.lang('brapci.lattes_link').'</span>';
+				}
+			return $sx;			
+		}
+		function btn_brapci($dt)
+		{
+			$sx = '';
+			if ($dt['a_brapci'] != '')
+				{
+					$link = PATH.'res/v/'.$dt['a_brapci'];
+					$sx = '<a href="'.$link.'" class="btn btn-outline-primary">'.lang('brapci.brapci_link').'</a>';
+				}
+			return $sx;			
+		}
+		function btn_orcid($dt)
+		{
+			$sx = '';
+			if ($dt['a_orcid'] != '')
+				{
+					$sx = '<span class="btn btn-outline-primary">'.lang('brapci.ordid_link').'</span>';
+				}
+			return $sx;			
 		}
 
 	function edit($id)

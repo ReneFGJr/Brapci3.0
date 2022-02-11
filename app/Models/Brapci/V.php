@@ -113,10 +113,11 @@ class V extends Model
 						break;
 						
 					case 'Person':
-						$Articles = new \App\Models\Journal\Articles();
+						//$Articles = new \App\Models\Journal\Articles();
 						$sx .= $this->Person($th,$id,$act);
 						$sx .= bs(bsc($RDF->view_data($id),12));
 						break;
+
 					default:
 						//$sx = h($class,4);
 						$sx .= h(lang('rdf.class').': '.$class,6);
