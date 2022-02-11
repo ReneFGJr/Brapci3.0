@@ -115,9 +115,9 @@ class RDFData extends Model
 			if (isset($dt['data']))
 				{
 					$dtd = $dt['data'];
-					for ($r=0;$r < count($dtd);$r++)
+					for ($qr=0;$qr < count($dtd);$qr++)
 						{
-							$line = (array)$dtd[$r];
+							$line = (array)$dtd[$qr];
 							$sx .= bsc('<small>'.lang($line['prefix_ref'].':'.
 									$line['c_class'].'</small>'),2,
 									'supersmall border-top border-1 border-secondary my-2');
@@ -157,11 +157,9 @@ class RDFData extends Model
 								if (substr($txt,0,4) == 'http')
 									{
 										$txt = '<a href="'.$line['n_name'].'" target="_blank">'.$txt.'</a>';
-									}
-								
+									}								
 								$sx .= bsc($txt,10,'border-top border-1 border-secondary my-2');
-							}
-							
+							}							
 						}
 				}
 			return bs($sx);

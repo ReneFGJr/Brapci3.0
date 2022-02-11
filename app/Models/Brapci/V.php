@@ -134,8 +134,8 @@ class V extends Model
 		function Person($th,$id,$dt)
 			{
 				$sx = '';
-				$Person = new \App\Models\Authority\Index();
-				$sx .= $Person->index('viewid',$id,'','');
+				$Person = new \App\Models\Authority\Person();
+				$sx .= $Person->viewid($id);
 				return $sx;
 			}
 
