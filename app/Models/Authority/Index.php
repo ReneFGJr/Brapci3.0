@@ -55,6 +55,7 @@ class Index extends Model
 		switch ($d1) {
 			case 'findid':
 				$tela .= h(lang('brapci.findid'),3);
+				$tela .= h($d2,3);
 				$tela .= $this->findId($d2, $d3);
 				$tela .= 'end';
 				break;
@@ -135,7 +136,9 @@ class Index extends Model
 						} else {
 							$sx .= bsmessage('Already Update LattesID');
 						}
-				}		
+				} else {
+					$sx .= bsmessage('Authority not seted!');
+				}	
 			return $sx;
 		}
 
