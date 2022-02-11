@@ -124,11 +124,11 @@ class Res extends BaseController
 		switch($d1)
 			{
 				case 'authority':
-					$Authority = new \App\Models\Authority\index();
+					$Authority = new \App\Models\Authority\Index();
 					$tela .= $Authority->index($d2,$d3,$d4,'');
 					break;
 				case 'lattes':
-					$Lattes = new \App\Models\Lattes\index();
+					$Lattes = new \App\Models\Lattes\Index();
 					$tela .= $Lattes->index($d2,$d3,$d4);
 					break;
 				case 'proceeding':
