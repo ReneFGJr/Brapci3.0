@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\Model;
 
 helper(['boostrap', 'url', 'graphs', 'sisdoc_forms', 'form', 'nbr','sessions']);
 $session = \Config\Services::session();
@@ -173,13 +174,13 @@ class Res extends BaseController
 		return $tela;
 	}	
 
-	public function authoriry($d1='',$d2='',$d3='',$d4='')
+	public function authority($d1='',$d2='',$d3='',$d4='')
 	{
-		$dt['collection'] = mb_strtoupper(lang('brapci.Authoriry'));
-		$tela = $this->cab("user",$dt);
-		//$Book = new \App\Models\Book\Books();
-		//$tela .= $Book->index($d1,$d2,$d3,$d4);
-		return $tela;
+		$Authority = new \App\Models\Authority\Index();
+		$sx = $this->cab("user");
+		$sx .= $Authority->index($d1,$d2,$d3,$d4);
+		$sx .= $this->cab("footer");
+		return $sx;
 	}	
 
 	public function book($d1='',$d2='',$d3='',$d4='')

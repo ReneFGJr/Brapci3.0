@@ -3,7 +3,7 @@
             <?php
             $menu = array();
             $menu['Books'] = URL . 'index.php/res/book/';
-            $menu['Authoriry'] = URL . 'index.php/res/authoriry/';
+            $menu['Authority'] = URL . 'index.php/res/authority/';
             $menu['Benancib'] = URL . 'index.php/res/benancib/';
             $menu['Ontology'] = URL . 'index.php/res/ontology/';
             $menu['Patent'] = URL . 'index.php/res/Patent/';

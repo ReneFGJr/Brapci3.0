@@ -57,7 +57,7 @@ class Articles extends Model
 		$right_side = '';
 	
 		$d = array();
-		$d['section'] = 'Nome da seção';
+		$d['section'] = '';
 		$d['issue'] = 'Número da edição';
 		$url = '';
 
@@ -72,7 +72,8 @@ class Articles extends Model
 			switch ($class) {
 				case 'hasSectionOf':
 					$sec = $RDF->c($line['d_r2']);
-					$d['section'] = $sec;
+					if (strlen($d['section']) > 0) { $d['section'] .= ' - '; }
+					$d['section'] .= $sec;
 					break;
 				case 'hasIssueOf':
 					$issue = $RDF->c($line['d_r1']);

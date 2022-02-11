@@ -30,7 +30,7 @@ return [
     'oai_status_2'=>'Processado',
     'oai_status_9'=>'Excluído',
     'Books'=>'Livros',
-    'Authoriry'=>'Autoridades',
+    'Authority'=>'Autoridades',
     'Benancib'=>'Benancib',
     'Home'=>'Inicial',
     'Bibliometric'=>'Ferramentas',
