@@ -54,7 +54,9 @@ class Index extends Model
 		$tela = '';
 		switch ($d1) {
 			case 'findid':
+				$tela .= h(lang('brapci.findid'),3);
 				$tela .= $this->findId($d2, $d3);
+				$tela .= 'end';
 				break;
 			case 'import_lattes':
 				$tela .= $this->import_lattes($d2, $d3);

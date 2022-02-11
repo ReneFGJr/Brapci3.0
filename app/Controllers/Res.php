@@ -149,6 +149,9 @@ class Res extends BaseController
 							$tela = $JournalIssue->check_issue($d3);
 							break;
 						}
+				default:
+						$tela = bsmessage("Comando não informado",12);
+						break;
 					
 			}
 		return $tela;
