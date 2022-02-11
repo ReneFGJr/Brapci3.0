@@ -174,11 +174,6 @@ class RDFExport extends Model
 								if (strlen($auths) > 0) { $auths .= '; '; }
 								$auths .= $RDF->c($idr);
 							}
-						/************************************************** Authors */
-						//echo '<pre>';
-						//print_r($dt);
-						//$publisher = $RDF->recovery($dt['data'],'isIssue');
-						//$publisher = $RDF->c($publisher[0][1]);
 
 						/***************************************************** Title */
 						$title = $RDF->recovery($dt['data'],'hasTitle');

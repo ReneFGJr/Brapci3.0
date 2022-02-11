@@ -43,6 +43,8 @@ class Person extends Model
 function viewid($id,$loop=0)
 	{
 		$AuthorityNames = new \App\Models\Authority\AuthorityNames();
+		$Lattes = new \App\Models\Lattes\Lattes();
+		$Brapci = new \App\Models\Brapci\Brapci();
 
 		$RDF = new \App\Models\Rdf\RDF();
 		$da = $RDF->le($id);
@@ -72,32 +74,32 @@ function viewid($id,$loop=0)
 				$dt = $dt[0];
 			}
 
-		$tela = h($dt['a_prefTerm'], 1);
-		$tela .= anchor($dt['a_uri']);
+		$tela = bs(bsc(h($dt['a_prefTerm'], 1),12));
+		$link0 = $Brapci->link($dt);
 
-		if (strlen($dt['a_lattes']) > 0) {
-			$link = 'http://lattes.cnpq.br/' . trim($dt['a_lattes']);
-			$link1 = '<a href="' . $link . '" target="_new' . $dt['a_lattes'] . '">';
-			$link1 .= '<img src="' . base_url('img/icones/lattes.png') . '" style="height: 50px">';
-			$link1 .= '</a>';
-			if ($dt['a_brapci'] != 0)
+		$link1 = '';
+
+		$link1 = $Lattes->link($dt);
+
+		if ($dt['a_brapci'] != 0)
 			{			
 				$link = base_url(PATH .MODULE . '/index/import_lattes/' . trim($dt['a_lattes']) . '/');
 				$link2 = '<a href="' . $link . '" target="_new' . $dt['a_lattes'] . '">';
 				$link2 .= '<img src="' . base_url('img/icones/import.png') . '?x=1" style="height: 50px">';
 				$link2 .= '</a>';
 			} else {
-
+				$link2 = '';
 			}
-			$tela .= bsc('<small>' . lang('Link do Lattes') . '</small><br>' . $link1 . $link2, 12);
-		} else {
-			$tela .= anchor(base_url(PATH . MODULE. '/admin/authority/findid/' . $dt['a_brapci']));
-		}
+			//brapci_200x200.png
+			
+		//} else {
+//			$tela .= anchor(base_url(PATH . MODULE. '/admin/authority/findid/' . $dt['a_brapci']));
 
 		if ($dt['a_lattes'] == 0)
 			{
 				return $tela.'no lattes';
 			}	
+		$tela .= bs(bsc(trim($link0.' '.$link1.' '.$link2),12));
 
 		/*************************************************** BRAPCI */
 		if (($dt['a_brapci'] == 0) and (strpos($dt['a_uri'],'brapci.inf.br')))

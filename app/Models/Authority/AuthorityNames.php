@@ -147,7 +147,6 @@ class AuthorityNames extends Model
 		{
 			$this->where('id_a',$id);
 			$dt = $this->findAll();
-			echo $this->getlastquery();
 			$dt = $dt[0];
 			if ($dt['a_use'] > 0)
 				{
@@ -161,10 +160,14 @@ class AuthorityNames extends Model
 
 	function btn_lattes($dt)
 		{
+			$Lattes = new \App\Models\Lattes\Lattes();
 			$sx = '';
 			if ($dt['a_lattes'] != '')
 				{
-					$sx = '<span class="btn btn-outline-primary">'.lang('brapci.lattes_link').'</span>';
+					$sx = $Lattes->link($dt);
+				} else {
+					$link = PATH.'res/admin/authority/findid/'.$dt['id_a'];
+					$sx = '<a href="'.$link.'" class="btn btn-outline-primary">'.lang('brapci.lattes_check').'</a> ';					
 				}
 			return $sx;			
 		}
@@ -174,7 +177,7 @@ class AuthorityNames extends Model
 			if ($dt['a_brapci'] != '')
 				{
 					$link = PATH.'res/v/'.$dt['a_brapci'];
-					$sx = '<a href="'.$link.'" class="btn btn-outline-primary">'.lang('brapci.brapci_link').'</a>';
+					$sx = '<a href="'.$link.'" class="btn btn-outline-primary">'.lang('brapci.brapci_link').'</a> ';
 				}
 			return $sx;			
 		}
@@ -183,7 +186,7 @@ class AuthorityNames extends Model
 			$sx = '';
 			if ($dt['a_orcid'] != '')
 				{
-					$sx = '<span class="btn btn-outline-primary">'.lang('brapci.ordid_link').'</span>';
+					$sx = '<span class="btn btn-outline-primary">'.lang('brapci.ordid_link').'</span> ';
 				}
 			return $sx;			
 		}

@@ -109,12 +109,51 @@ class Index extends Model
 
 	function findId($id)
 		{
+
+			$AuthorityNames = new \App\Models\Authority\AuthorityNames();
+			//$dt = $AuthorityNames->get_id_by_name($name);
+			$dt = $AuthorityNames->le($id);
+			$sx = '';
+			$sx .= h($dt['a_prefTerm'],3);
+
+			if (count($dt) > 0)
+				{
+					if ((trim($dt['a_lattes'])=='') or ($dt['a_lattes'] == 0))
+						{
+							$name = $dt['a_prefTerm'];
+							$LattesId = new \App\Models\Lattes\LattesId();
+							$dl = $LattesId->LattesFindID($name);
+
+							if (count($dl) > 0)
+								{
+									$t = $dl['result'];
+									foreach($t as $idlattes=>$name)
+										{
+											$AuthorityNames->set('a_lattes',$idlattes);
+											$AuthorityNames->where('id_a',$dt['id_a'])->update();
+											$sx .= bsmessage('Update LattesID: '.$idlattes);
+										}
+								} else {
+									$sx .= bsmessage('Multiples LattesID');		
+								}
+						} else {
+							$sx .= bsmessage('Already Update LattesID');
+						}
+				} else {
+					$sx .= bsmessage('Authority not seted!');
+				}	
+			return $sx;
+		}
+
+
+	function xxxfindId($id)
+		{
 			$RDF = new \App\Models\Rdf\RDF();
 			$dt = $RDF->le($id);
 			$name = $dt['concept']['n_name'];
 
 			$sx = '';
-			$sx .= h($d2,3);
+			$sx .= h($name,3);
 
 			$AuthorityNames = new \App\Models\Authority\AuthorityNames();
 			$dt = $AuthorityNames->get_id_by_name($name);
