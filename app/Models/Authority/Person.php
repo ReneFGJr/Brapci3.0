@@ -97,7 +97,8 @@ function viewid($id,$loop=0)
 
 		if ($dt['a_lattes'] == 0)
 			{
-				return $tela.'no lattes';
+				$tela .= $Lattes->link($dt);
+				return $tela;
 			}	
 		$tela .= bs(bsc(trim($link0.' '.$link1.' '.$link2),12));
 

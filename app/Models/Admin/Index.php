@@ -40,7 +40,7 @@ class Main extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function index()
+	function index($d1,$d2)
 		{
 			$menu = array();
 			$menu['news']['list'] = 'main/news/';

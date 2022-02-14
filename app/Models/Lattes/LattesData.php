@@ -226,7 +226,7 @@ class LattesData extends Model
 				//$sx .= $this->modAI($dt, $id);
 				break;
 			case 'X':
-				$sx .= h('Erro',1);
+				$sx .= h('Erro Lattes ID',1);
 				$sx .= '<p>'.file_get_contents($file).'</p>';
 				break;
 			default:

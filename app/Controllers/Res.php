@@ -139,7 +139,11 @@ class Res extends BaseController
 				case 'journal':
 					$Journal = new \App\Models\Journal\Journals();
 					$tela .= $Journal->index($d2,$d3,$d4);
-					break;		
+					break;	
+				case 'oai':
+					$Oaipmh = new \App\Models\Oaipmh\Index();
+					$tela .= $Oaipmh->index($d2,$d3,$d4);
+					break;
 				case 'issue':
 					$JournalIssue = new \App\Models\Journal\JournalIssue();
 					switch($d2)
@@ -154,6 +158,7 @@ class Res extends BaseController
 						break;
 					
 			}
+		$tela .=$this->cab('footer');
 		return $tela;
 	}	
 

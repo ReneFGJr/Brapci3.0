@@ -92,9 +92,15 @@ class Journals extends Model
 						break;
 
 					case 'harvesting':
+						$sx = 'Harvesting';
+						break;
+						
+					case 'issue_harvesting':
 						$JournalIssue = new \App\Models\Journal\JournalIssue();
 						$sx = $JournalIssue->harvesting_oaipmh($d2,$d3);
-						break;						
+						break;		
+
+										
 					/******************* Para testes ***/
 					case 'edit_issue':
 						$sx = $this->editar_issue($d2,$d3);
@@ -130,7 +136,22 @@ class Journals extends Model
 					$link = '<a href="'.PATH.MODULE.$it.'">'.$tx.'</a>';
 					$sx .= '<li>'.$link.'</li>';
 				}
+
+			$sx .= $this->resume();
 			$sx = bs(bsc($sx));
+			return $sx;
+		}
+
+	/******************************************** RESUME */
+	function resume()
+		{
+			$MOD = $this->MOD(TRUE);
+			echo $MOD;
+			//$dt = $this->get_resume();
+			$total = 0;
+			//print_r($dt);
+			$sx = '<span class="small">'.lang('brapci.total_journals').'</span>';
+			$sx .= h($total,1);
 			return $sx;
 		}
 	function le_rdf($id)
@@ -346,14 +367,16 @@ class Journals extends Model
 
 			return $sx;
 		}
-	function MOD()
+	function MOD($simple=false)
 		{
-			$url = $_SERVER['HTTP_REFERER'];
+			$url = $_SERVER['REQUEST_URI'];
 			if (strpos($url,'proceeding') > 0)
 				{
 					$MOD = 'proceeding';
+					if ($simple) { $MOD = 'EV'; }
 				} else {
 					$MOD = 'journal';
+					if ($simple) { $MOD = 'JA'; }
 				}
 			return $MOD;
 		}

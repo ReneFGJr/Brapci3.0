@@ -34,6 +34,8 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Res::index');
+$routes->add('v/(:num)', 'Res::v/$1');
+$routes->add('res/v/(:num)', 'Res::v/$1');
 //$routes->get('/social/ajax/', 'Main::social/');
 //$routes->add('/main/social/', 'Main::social/');
 //$routes->add('/v/(:num)', 'Res::v/$1');

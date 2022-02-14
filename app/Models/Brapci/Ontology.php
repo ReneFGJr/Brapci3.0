@@ -80,7 +80,6 @@ class Ontology extends Model
 		$this->where('c_type', $type)->orderBy('prefix_ref, c_class');
 		$dt = $this->findAll();
 		
-		//echo $this->getLastQuery();
 		$tela1 = '';
 		$tela2 = '';
 

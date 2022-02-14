@@ -46,7 +46,6 @@ class OaiPMHListRecord extends Model
 
 	function resume($id,$issue=0)
 		{
-			$MOD = df('MOD','/');
 			$tela = '';
 			$wh = 'lr_jnl = '.$id;
 			if ($issue > 0)
@@ -70,10 +69,10 @@ class OaiPMHListRecord extends Model
 					if ($d['lr_procees'] == 2) { $v[2] = number_format($d['total'],0,',','.'); }
 					if ($d['lr_procees'] == 9) { $v[9] = number_format($d['total'],0,',','.'); }
 				}
-			$tela .= bsc(lang('brapci.oai_status_0').'<h1><a href="'.(PATH.MODULE.$MOD.'/oai/'.$id.'/0').'">'.$v[0].'</a></h1>',2,'border');
-			$tela .= bsc(lang('brapci.oai_status_1').'<h1><a href="'.(PATH.MODULE.$MOD.'/oai/'.$id.'/1').'">'.$v[1].'</a></h1>',2,'border');
-			$tela .= bsc(lang('brapci.oai_status_2').'<h1><a href="'.(PATH.MODULE.$MOD.'/oai/'.$id.'/2').'">'.$v[2].'</a></h1>',2,'border');
-			$tela .= bsc(lang('brapci.oai_status_9').'<h1><a href="'.(PATH.MODULE.$MOD.'/oai/'.$id.'/9').'">'.$v[3].'</a></h1>',2,'border');
+			$tela .= bsc(lang('brapci.oai_status_0').'<h1><a href="'.(PATH.MODULE.'admin/oai/records/'.$id.'/0').'">'.$v[0].'</a></h1>',2,'border');
+			$tela .= bsc(lang('brapci.oai_status_1').'<h1><a href="'.(PATH.MODULE.'admin/oai/records/'.$id.'/1').'">'.$v[1].'</a></h1>',2,'border');
+			$tela .= bsc(lang('brapci.oai_status_2').'<h1><a href="'.(PATH.MODULE.'admin/oai/records/'.$id.'/2').'">'.$v[2].'</a></h1>',2,'border');
+			$tela .= bsc(lang('brapci.oai_status_9').'<h1><a href="'.(PATH.MODULE.'admin/oai/records/'.$id.'/9').'">'.$v[3].'</a></h1>',2,'border');
 			return $tela;
 		}
 
@@ -177,7 +176,63 @@ class OaiPMHListRecord extends Model
 				}
 			return true;
 		}	
+	
+	function listrecords($id,$st=-1)
+		{
+			$OaipmhRegister = new \App\Models\Oaipmh\OaipmhRegister();
+			$sx = '';
+			$this->join('source_listsets','lr_setSpec = id_ls');
+			$this->where('lr_jnl',$id);
+			if ($st != -1)
+				{
+					$this->where('lr_procees',$st);
+				}
+			$dt = $this->findAll();
 
+			$sx = '<table class="table table-striped">';
+			$sx .= '<tr>';
+			$sx .= '<th>'.lang('brapci.lr_identifier').'</th>';
+			$sx .= '<th>'.lang('brapci.lr_status').'</th>';
+			$sx .= '<th>'.lang('brapci.ls_setSpec').'</th>';
+			$sx .= '<th>'.lang('brapci.action').'</th>';
+			$sx .= '</tr>';
+
+			for ($r=0;$r < count($dt);$r++)
+				{
+					$ln = $dt[$r];
+
+					$link = PATH.MODULE.'admin/oai/record/'.$ln['id_lr'];
+					$link = '<a href="'.$link.'">';
+					$linka = '</a>';
+					$sx .= '<tr>';
+					$sx .= '<td>';
+					$sx .= $link.$ln['lr_identifier'].$linka;
+					$sx .= '</td>';
+
+					$sx .= '<td>';
+					$sx .= $ln['lr_status'];
+					$sx .= '</td>';
+
+					$sx .= '<td>';
+					$sx .= $ln['ls_setSpec'];
+					$sx .= '</td>';
+
+					$act = $OaipmhRegister->actions($ln);
+					$sx .= '<td>';
+					$sx .= $act;
+					$sx .= '</td>';					
+				}
+
+			if (count($dt) == 0)
+				{
+					$sx = $this->getlastquery();
+					$sx .= bsmessage(lang('table empty'),3);
+				}
+			$sx .= '</table>';
+			$sx = bs(bsc($sx,12));
+			return $sx;
+		}
+	
 	function status($jnl,$issue)
 		{
 			$sql = "

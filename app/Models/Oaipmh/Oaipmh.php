@@ -130,27 +130,5 @@ class Oaipmh extends Model
 				return $sx;				
 		}
 
-	function harvesting_proceedings($id)
-		{
-			$sx = '';
 
-			$JournalIssue = new \App\Models\Journal\JournalIssue();
-			$dt = $JournalIssue->find($id);
-
-			$Journal = new \App\Models\Journal\Journals();
-			$dj = $Journal->find($dt['is_source']);
-			$sx .= $Journal->journal_header($dj);
-
-			/* Identifica lista de registros */
-			$OaipmhListSetSepc = new \App\Models\Oaipmh\OaipmhListSetSepc();
-			$sx .= $OaipmhListSetSepc->harvesting($dt,'EV');
-
-			/* Identifica lista de artigos */
-			$OaipmhListRecord = new \App\Models\Oaipmh\OaipmhListRecord();
-			$sx .= $OaipmhListRecord->harvesting($dt,'EV');
-
-			$JournalIssue->update_issue($id);
-
-			return $sx;
-		}
 }

@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class OaipmhRegister extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'brapci.source_listrecords';
+	protected $table                = 'source_listrecords';
 	protected $primaryKey           = 'id_lr';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -44,12 +44,91 @@ class OaipmhRegister extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
+	function le($id)
+		{
+			$this->join('source_listsets','lr_setSpec = id_ls');
+			$dt = $this->find($id);
+			return $dt;
+		}
+
 	function set_status($id, $dt)
 	{
 		$this->set($dt);
 		$this->where('id_lr', $id);
 		$this->update();
 	}
+
+	function record($id)
+		{
+			$sx = '';
+			$dt = $this->le($id);
+
+			$sx1 = small(lang('brapci.oai_identifier'));
+			$sx1 .= h($dt['lr_identifier'],4);
+
+			$sx1 .= small(lang('brapci.oai_datastamp'),'mt-3');
+			$sx1 .= h($dt['lr_datestamp'],6);
+
+			$sx1 .= small(lang('brapci.oai_status'),'mt-3');
+			$sx1 .= h($dt['lr_status'],6);			
+
+			$sx1 .= small(lang('brapci.oai_setSpec'),'mt-3');
+			$sx1 .= h($dt['ls_setName'].' ('.$dt['ls_setSpec'].')',6);	
+
+			$sx1 .= small(lang('brapci.lr_procees'),'mt-3');
+			$sx1 .= h(lang('brapci.oai_status_'.$dt['lr_procees']),6);
+
+			$sx1 .= small(lang('brapci.lr_local_file'),'mt-3');
+			$sx1 .= h($this->file_link($dt['lr_local_file']).'&nbsp;',6);			
+
+			$sx2 = $this->actions($dt,'B');
+			
+
+			$sx .= bsc($sx1,10);
+			$sx .= bsc($sx2,2);
+
+			$sx = bs($sx);
+
+			return $sx;
+		}
+
+	function file_link($file)
+		{
+			if ($file == '') {
+				return '';
+			}
+
+			$sx = '<a href="'.URL.$file.'" target="_blank">'.$file.'</a>';
+			return $sx;
+		}
+
+	function actions($dt,$tp='L')
+		{
+			$sx = '';
+			$class = 'link-action small';
+			$sep = '';
+			if ($tp == 'L')
+				{
+					$sep = ' | ';
+				}
+			if ($tp == 'B')
+				{
+					$class = 'mb-3 btn btn-outline-primary btn-sm" style="width:100%';
+				}
+			$ret = '<a href="'.PATH.MODULE.'admin/oai/set_status/'.$dt['id_lr'].'/0'.'" class="'.$class.'">'.lang('brapci.oai_return_harvesting').'</a> ';				
+			switch ($dt['lr_procees'])
+				{
+					case 0:
+						$sx .= '<a href="'.PATH.MODULE.'admin/oai/get_record/'.$dt['id_lr'].'" class="'.$class.'">'.lang('brapci.get_oai_register').'</a> ';
+						break;	
+					case 1:
+						$sx .= '<a href="'.PATH.MODULE.'admin/oai/process_record/'.$dt['id_lr'].'" class="'.$class.'">'.lang('brapci.process_oai_register').'</a> ';
+						$sx .= $sep.$ret;
+						break;						
+				}
+			if (($sx != '') and ($tp=='B')) { $sx = small(lang('brapci.actions')) . $sx; }
+			return $sx;
+		}	
 
 	function next($id, $st = 0)
 	{
@@ -68,20 +147,39 @@ class OaipmhRegister extends Model
 		return $di['id_lr'];
 	}
 
-	function process_00($id)
+	function get_record($id)
+		{
+			$dt = $this->find($id);
+			$sx = $this->get_record_execute($dt);
+			return $sx;
+		}
+
+	function get_record_jnl($id) /******************xxxx arrumaer */
 	{
 		$OaipmhListSetSepc = new \App\Models\Oaipmh\OaipmhListSetSepc();
 		$sx = '';
 		/* recupera proximo */
 		$DI = $this->next($id, 0);
 
-		if ($DI > 0) {
-			$dz = $this
-				->where('id_lr', $DI)
-				->first();
+					/* Reload page */
+					/*
+		$sx .= '<meta http-equiv="refresh" content="1">';
+		} else {
+			$sx .= bsmessage('Process Finish', 3);
+		}
+		*/
+
+	}
+
+	function get_record_execute($dz)
+		{
+			$sx = '';
+			$id = $dz['id_lr'];
 			$ID = $dz['lr_identifier'];
+			$jnl = $dz['lr_jnl'];
+			$issue = $dz['lr_issue'];
 			
-			if ($dz['lr_issue'] == 0) {
+			if ($issue == 0) {
 				/******************************************* Le os dados do envento */
 				$Journal = new \App\Models\Journal\Journals();
 				$dt = $Journal->Find($di);
@@ -99,44 +197,38 @@ class OaipmhRegister extends Model
 
 			/* Checar se já nao foi coletado */
 			$dir = '.tmp/';
-			if (!is_dir($dir)) {
-				mkdir($dir);
-			}
+			dircheck($dir);
 			$dir .= 'oai/';
-			if (!is_dir($dir)) {
-				mkdir($dir);
-			}
+			dircheck($dir);
 			$dir .= date("y") . '/';
-			if (!is_dir($dir)) {
-				mkdir($dir);
-			}
+			dircheck($dir);
 			$dir .= date("m") . '/';
-			if (!is_dir($dir)) {
-				mkdir($dir);
-			}
+			dircheck($dir);
 			$file = str_replace(array(' ', ':', '?', '/', '\\'), '_', $ID);
+			$file = strzero($jnl,6).'_'.strzero($issue,6).'_'.$file;
+			$file .= '.xml';
 
 			/* Load Url */
 			if (file_exists($dir . $file)) {
 				$xml = file_get_contents($dir . $file);
+				$sx .= bsmessage('Already harvested OAIPMH ' . $ID);
 			} else {
 				$xml = file_get_contents($url);
 				file_put_contents($dir . $file, $xml);
+				$sx .= bsmessage('Harvested OAIPMH ' . $ID);
 			}
 			$xml = simplexml_load_string($xml);
-			$sx .= bsmessage('Process ' . $ID);
+			
 
 			/* Update register */
 			$dts['lr_procees'] = 1;
 			$dts['lr_local_file'] = $dir . $file;
-			
-			$this->set_status($DI, $dts);
 
-			/* Reload page */
-			$sx .= '<meta http-equiv="refresh" content="1">';
-		} else {
-			$sx .= bsmessage('Process Finish', 3);
-		}
+
+			$dd['lr_procees'] = 1;
+			$dd['lr_local_file'] = $dir . $file;
+			$this->set_status($id,$dd);
+
 		return $sx;
 	}
 
@@ -167,7 +259,7 @@ class OaipmhRegister extends Model
 		$sx .= '<meta http-equiv="refresh" content="1">';
 	}
 
-	function process_01($id)
+	function process_record($id)
 	{
 		$sx = '';
 		/*

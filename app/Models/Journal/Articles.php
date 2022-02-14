@@ -64,9 +64,10 @@ class Articles extends Model
 		for ($r = 0; $r < count($data); $r++) {
 			$line = $data[$r];
 			$class = trim($line['c_class']);
-			$txt = $line['n_name'];
-			$lang = $line['n_lang'];
-			if (strlen(trim($lang)) == 0) {
+			$txt = trim($line['n_name']);
+			$lang = trim($line['n_lang']);
+
+			if ((strlen(trim($lang)) == 0) or ($lang=='0')) {
 				$lang = 'pt-BR';
 			}
 			switch ($class) {

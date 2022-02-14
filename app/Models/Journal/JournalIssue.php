@@ -54,16 +54,15 @@ class JournalIssue extends Model
 	protected $afterDelete          = [];
 
 	function MOD()
-		{
-			$url = $_SERVER['HTTP_REFERER'];
-			if (strpos($url,'proceeding') > 0)
-				{
-					$MOD = 'proceeding';
-				} else {
-					$MOD = 'journal';
-				}
-			return $MOD;
-		}	
+	{
+		$url = $_SERVER['HTTP_REFERER'];
+		if (strpos($url, 'proceeding') > 0) {
+			$MOD = 'proceeding';
+		} else {
+			$MOD = 'journal';
+		}
+		return $MOD;
+	}
 
 	function view_issue($idx = 0)
 	{
@@ -74,7 +73,7 @@ class JournalIssue extends Model
 
 		if (count($dt) == 0) {
 			$sx = '';
-			$sx .= bs(bsc(lang('brapci.empty_issue'),12));
+			$sx .= bs(bsc(lang('brapci.empty_issue'), 12));
 			$sx .= bs(bsc($this->btn_check_issues($idx), 12));
 			return $sx;
 		}
@@ -83,14 +82,19 @@ class JournalIssue extends Model
 		$xyear = '';
 		for ($r = 0; $r < count($dt); $r++) {
 			$dtx = $dt[$r];
+
 			$link0 = '<a href="' . (PATH . 'res/v/' . $dtx['is_source_issue']) . '">';
-			$link1 = '<a href="' . (PATH . 'res/admin/'.$MOD.'/edit_issue/' . $dtx['id_is']) . '">';
-			$link2 = '<a href="' . PATH . 'res/admin/issue/harvesting/' . $dtx['id_is'] . '">';
+			$link1 = '<a href="' . (PATH . 'res/admin/' . $MOD . '/edit_issue/' . $dtx['id_is']) . '">';
+			if (strlen($dtx['is_url_oai']) > 0) {
+				$link2 = '<a href="' . PATH . 'res/admin/' . $MOD . '/issue_harvesting/' . $dtx['id_is'] . '">';
+			} else {
+				$link2 = '';
+			}
+
 			$linka = '</a>';
 
 			if ($dtx['is_source_issue'] <= 0) {
 				$link0 = '<a name="tag">';
-				$link2 = '<a name="tag">';
 			}
 
 			$year = $dtx['is_year'];
@@ -107,7 +111,10 @@ class JournalIssue extends Model
 
 			$ed = $link1 . bsicone('edit', 24) . $linka;
 			$ed .= ' ';
-			$ed .= $link2 . bsicone('harversting', 24) . $linka;
+			if (strlen($link2) > 0) {
+				$ed .= $link2 . bsicone('harversting', 24) . $linka;
+			}
+
 			$sx .= bsc($ed, 1, 'text-end');
 			$sx .= bsc('<hr>', 12);
 
@@ -119,26 +126,36 @@ class JournalIssue extends Model
 		return $sx;
 	}
 
-	function harvesting_oaipmh($jnl = 0, $issue = 0)
+	function harvesting_oaipmh($id)
 	{
 		$sx = '';
-		$issue = round($issue);
+		$id = round($id);
+		$dt = $this->Find($id);
 
-		if ($issue > 0) {
-			$this->where('id_is', $issue);
-		} else {
-			$this->where('is_source_issue', 0);
-			if ($jnl > 0) {
-				$this->where('is_source', $jnl);
-			}
-		}
-		$dt = $this->FindAll();
+		$url = trim($dt['is_url_oai']);
 
-		for ($r = 0; $r < count($dt); $r++) {
-			$d = $dt[$r];
+		if (strlen($url) > 0) {
+
 			$Oaipmh = new \App\Models\Oaipmh\Oaipmh();
-			$sx = $Oaipmh->index('get_proceedings', $d['id_is']);
+			//$sx = $Oaipmh->index('get_proceedings', $dt['id_is']);
+
+			$Journal = new \App\Models\Journal\Journals();
+			$dj = $Journal->find($dt['is_source']);
+			$sx .= $Journal->journal_header($dj);
+
+			/* Identifica lista de registros */
+			$OaipmhListSetSepc = new \App\Models\Oaipmh\OaipmhListSetSepc();
+			$sx .= $OaipmhListSetSepc->harvesting($dt, 'EV');
+
+			/* Identifica lista de artigos */
+			$OaipmhListRecord = new \App\Models\Oaipmh\OaipmhListRecord();
+			$sx .= $OaipmhListRecord->harvesting($dt, 'EV');
+
+			$this->update_issue($id);
+		} else {
+			$sx = bsmessage(lang("brapci.no_url_oai"), 3);
 		}
+		$sx = bs(bsc($sx, 12));
 		return $sx;
 	}
 
@@ -166,11 +183,27 @@ class JournalIssue extends Model
 			$this->path_back = (PATH . MODULE . 'admin/' . $MOD . "/viewid/" . get('is_source'));
 		}
 
-		$this->path = (PATH . MODULE . 'admin/' . $MOD . '/edit_issue/'.$reg.'/'.$idj);
+		$this->path = (PATH . MODULE . 'admin/' . $MOD . '/edit_issue/' . $reg . '/' . $idj);
 
 		$sx .= form($this);
 		$sx = bs(bsc($sx, 12));
+
+		$this->update_check();
 		return $sx;
+	}
+
+	function update_check()
+	{
+		$Journal = new \App\Models\Journal\Journals();
+		$dt = $this->where('is_source_rdf', 0)->FindAll();
+		for ($r = 0; $r < count($dt); $r++) {
+			$line = $dt[$r];
+			$dj = $Journal->find($line['is_source']);
+			$id_jnl = $dj['jnl_frbr'];
+
+			$this->set('is_source_rdf', $id_jnl);
+			$this->where('id_is', $line['id_is'])->update();
+		}
 	}
 
 	function ArticlesIssue($id)
@@ -271,8 +304,7 @@ class JournalIssue extends Model
 	{
 		$Social = new \App\Models\Socials();
 		$sx = '';
-		if ($Social->perfil("#ADM"))
-		{
+		if ($Social->perfil("#ADM")) {
 			$url = (PATH . 'res/admin/issue/check/' . $id);
 			$sx = onclick($url, 800, 200, 'btn btn-outline-primary') . lang('brapci.check_issues') . '<span>';
 			//$sx = '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_check_issue').'</a>';
@@ -282,20 +314,17 @@ class JournalIssue extends Model
 
 	function btn_new_issue($dt)
 	{
-		$MOD = df('MOD', '/');
-		if (MODULE != 'res') {
-			$MOD = '';
-		}
+		$MOD = $this->mod();
 
 		$id_rdf = $dt['jnl_frbr'];
 		$id = $dt['id_jnl'];
-		$url = (PATH . MODULE . '/index/edit_issue/0/' . $id . '/' . $id_rdf);
+		$url = (PATH . MODULE . 'admin/' . $MOD . '/edit_issue/0/' . $id);
 		$sx = '<a href="' . $url . '" class="btn btn-outline-primary">' . lang('journal_issue_new') . '</a>';
 
 		/************************************************ JOURNAL */
 		if ($MOD == '/journal') {
 			$sx .= ' ';
-			$url = (PATH . MODULE . '/index/harvesting/' . $id);
+			$url = (PATH . MODULE . '/index/' . $MOD . '/harvesting/' . $id);
 			$sx .= '<a href="' . $url . '" class="btn btn-outline-primary">' . lang('journal_issue_harvesting') . '</a>';
 
 			$sx .= ' ';

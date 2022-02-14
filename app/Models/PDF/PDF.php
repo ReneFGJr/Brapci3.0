@@ -86,7 +86,6 @@ class Pdf extends Model
 					$img = $link.'<img src="'.(URL.'img/icones/pdf.png').'" class="img-fluid">'.$linka;
 					$sx .= $img;
 				} else {
-					echo "ERRO";
 					$img = '<img src="'.(URL.'img/icones/pdf_off.png').'" class="img-fluid">';
 					$sx .= '<a href="#">'.$img.'</a>';
 					$sx .= $this->btn_inport($id);

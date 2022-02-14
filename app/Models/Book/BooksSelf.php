@@ -132,7 +132,7 @@ class BooksSelf extends Model
 			if (!isset($_FILES['file']))
 				{
 					$tela = '<div class="alert alert-danger">';
-					$tela = 'ERRO';
+					$tela = 'ERRO BOOKSELF';
 					$tela .= '</div>';
 					print_r($_FILES);
 					return $tela;

@@ -44,5 +44,11 @@ return [
     'References'=>'Referências',
     'articles'=>'Artigos',
 
-
+    'get_oai_register'=>'Ler Registro',
+    'oai_return_harvesting'=>'Recoletar',
+    'process_oai_register'=>'Processar Registro',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
 ];

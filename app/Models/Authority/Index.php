@@ -56,7 +56,7 @@ class Index extends Model
 			case 'findid':
 				$tela .= h(lang('brapci.findid'),3);
 				$tela .= $this->findId($d2, $d3);
-				$tela .= 'end';
+				$tela .= metarefresh(PATH.'res/authority/viewid/'.$d2.'/');
 				break;
 			case 'import_lattes':
 				$tela .= $this->import_lattes($d2, $d3);
