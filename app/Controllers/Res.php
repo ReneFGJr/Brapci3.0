@@ -124,6 +124,10 @@ class Res extends BaseController
 		$tela = $this->cab("user");
 		switch($d1)
 			{
+				case 'ckan':
+					$Ckan = new \App\Models\Ckan\Index();
+					$tela .= $Ckan->index($d2,$d3,$d4,'');
+					break;				
 				case 'authority':
 					$Authority = new \App\Models\Authority\Index();
 					$tela .= $Authority->index($d2,$d3,$d4,'');
