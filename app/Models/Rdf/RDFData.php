@@ -80,7 +80,7 @@ class RDFData extends Model
 			$this->update();
 
 			/* Part 3 */
-			$RDFConcept = new \App\Models\RDF\RDFConcept();
+			$RDFConcept = new \App\Models\Rdf\RDFConcept();
 			$RDFConcept->where('id_cc',$d2)->delete();
 		}
 
