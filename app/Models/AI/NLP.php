@@ -71,15 +71,29 @@ class NLP extends Model
 			$tela .= lang('ai.InputTextForm');
 			$tela .= '<textarea  class="form-control" name="dd1" rows=5>';
 			$tela .= get("dd1");
-			$tela .= '</textarea>';			
-			
-			$tela .= '<hr>';
-			$tela .= lang('ai.language').': ';
-			$tela .= '<select name="dd2">';
-			$tela .= '<option value="'.get("dd2").'">'.lang("ai.".get("dd2")).'</option>';
-			$tela .= '<option value="pt-BR">'.lang("ai.pt-BR").'</option>';
-			$tela .= '<option value="en">'.lang("ai.en").'</option>';
-			$tela .= '</select>';
+			$tela .= '</textarea>';		
+
+					
+			$ta = '<hr>';
+			$ta .= lang('ai.language').': ';
+			$ta .= '<select name="dd2">';
+			$ta .= '<option value="'.get("dd2").'">'.lang("ai.".get("dd2")).'</option>';
+			$ta .= '<option value="pt-BR">'.lang("ai.pt-BR").'</option>';
+			$ta .= '<option value="en">'.lang("ai.en").'</option>';
+			$ta .= '</select>';
+
+			$tb = '<hr>';
+
+			switch($tp)
+				{
+					case '1':
+						//$tela .= $tb;
+						break;
+					default:
+						$tela .= $ta;
+						$tela .= $tb;
+						break;
+				}
 
 			$tela .= '<hr>';
 			$tela .= '<input type="submit" value="'.lang('ai.Proceess').'" class="btn btn-outline-primary">';

@@ -139,8 +139,9 @@ class RDF extends Model
 		$idc = round($id);
 		if ($idc == 0) { 
 			print_r($id);
-			echo 'ERROR: directory ID invalid'; exit; 
-
+			echo h('ERROR: directory ID invalid -> '.$id,3); 
+			$x = $y;
+			exit; 
 			}
 		return $IO->directory($idc);
 	}
@@ -245,6 +246,7 @@ class RDF extends Model
 
 	function c($id,$export=false)
 	{
+		if ($id == 0) { return "empty"; }
 		$dir = $this->directory($id);
 		$file = $dir . 'name.nm';
 		
@@ -509,10 +511,16 @@ class RDF extends Model
 
 	function conecpt($name,$class)
 		{
-			return $this->RDP_concept($name,$class);
+			return $this->RDF_concept($name,$class);
 		}
 
-	function RDP_concept($name, $class)
+	function put_literal($name,$lg='NaN',$force = 1)
+		{
+			$RDFLiteral = new \App\Models\Rdf\RDFLiteral();	
+			return $RDFLiteral-> name($name,$lg,$force);
+		}
+
+	function RDF_concept($name, $class)
 	{
 		$RDPConcept = new \App\Models\Rdf\RDFConcept();
 

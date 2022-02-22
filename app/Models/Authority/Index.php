@@ -344,7 +344,7 @@ class Index extends Model
 				$name = substr($name, 0, strpos($name, '"'));
 				$name = nbr_author($name, 7);
 				$AuthorityWords->process($name);
-				$RDF->RDP_concept($name, 'foad:Person');
+				$RDF->RDF_concept($name, 'foad:Person');
 			}
 		}
 		$taff .= '</ul>';

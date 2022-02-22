@@ -73,6 +73,7 @@ class Index extends Model
 			$menu['list_groups'] = 'List Groups';
 			$menu['create_package'] = 'Create Package';
 			$menu['package_list'] = 'List Packages';
+			$menu['dataverse'] = 'Exporta Vitrine Dataverse';
 			foreach($menu as $url=>$label)
 				{
 					$sx .= '<li>'.'<a href="'.PATH.MODULE.'admin/ckan/'.$url.'">'.$label.'</a></li>';
@@ -89,8 +90,8 @@ class Index extends Model
 			if (!file_exists($file))
 				{
 					echo "Importando Dados do Dataverse";
-					exit;
 					$uri = 'http://vitrinedadosabertos.inep.rnp.br//api/datasets/export?exporter=ddi&persistentId=doi%3A10.80102/vtn/FVBA0I';
+					$uri = 'http://vitrinedadosabertos.inep.rnp.br//api/datasets/export?exporter=ddi&persistentId=doi%3A10.80102/vtn/UKUWHD';
 					$txt = file_get_contents($uri);
 					file_put_contents($file,$txt);
 				}
@@ -98,27 +99,33 @@ class Index extends Model
 			
 			$xml = simplexml_load_string($xmlstring);
 
-			echo '<pre>';
-
 			$xml = (array)$xml;
 			$dosDesc = (array)$xml['stdyDscr'];
 			$citation = (array)$dosDesc['citation'];
 			$titlStmt = (array)$citation['titlStmt'];			
 			$titulo = (string)$titlStmt['titl'];
 
+			$stdyInfo = (array)$dosDesc['stdyInfo'];
+
+			$desc = (string)$stdyInfo['abstract'];
+
 			$DOI = (string)$titlStmt['IDNo'][0];
 
-			$author = array();
+			//echo '<pre>';
+			//print_r($xml);
+			//exit;
+
+			
+
+			$author = '';
 			$respStmt = (array)$citation['rspStmt'];
 			$distStmt = (array)$citation['distStmt'];
 
-			array_push($author,$distStmt['depositr']);
-			array_push($author,$respStmt['AuthEnty']);
+			$author .= $distStmt['depositr'].'; ';
+			$author .= $respStmt['AuthEnty'].' ';
 
 			/* Files */
 			$files = (array)$xml['fileDscr'];
-			//print_r($files);
-
 			$resources = array();
 			
 
@@ -127,14 +134,13 @@ class Index extends Model
 					$file = (array)$files[$r];
 					$attr = (array)$file['@attributes'];
 					$fileTxt = (array($file['fileTxt']));
-					$fileTxt = $fileTxt[0];
+					$fileTxt = (array)$fileTxt[0];
 
 					$rs = array();
 					$rs['package_id'] = $attr['ID'];
 					$rs['url'] = $attr['URI'];
 					//$rs['description']='1';
 
-					echo '<hr>';
 					$filename = (string)$fileTxt['fileName'];
 					$fmt = substr($filename,strlen($filename)-5,5);
 					if (strpos($fmt,'.') > 0) 
@@ -143,7 +149,7 @@ class Index extends Model
 							$fmt = substr($fmt,$pos+1,10);
 						}
 					$rs['format'] = $fmt;
-					$rs['name'] = $filename;
+					$rs['name'] = 'Arquivo '.$filename;
 					$rs['resource_type']= $rs['format'];
 					$rs['mimetype']= (string)$fileTxt['fileType'];
 					//$rs['mimetype_inner ']='1';
@@ -152,8 +158,6 @@ class Index extends Model
 					//$rs['created  ']='1';
 					//$rs['last_modified  ']='1';
 					//$rs['last_modified  ']='1';	
-					print_r($rs);
-					exit;
 					array_push($resources,$rs);
 				}
 			
@@ -165,7 +169,7 @@ class Index extends Model
 
 			$data = array();
 			$data['name'] = troca(ascii(mb_strtolower($titulo)),' ','_');
-			$data['notes'] = 'Notes My DataSet';
+			$data['notes'] = $desc;
 			$data['owner_org'] = 'ufrgs';
 			$data['version'] = '2';
 			$data['author'] = $author;
@@ -175,17 +179,59 @@ class Index extends Model
 			$data['maintainer'] = 'INEP';
 			//$data['maintainer_email'] = array('inep@inep.gov.br');
 			//$data['tags'] = array('inep','Censo Educação Basica'); 
-			//$data['tags'] = 'INEP; Censo Educação Basica';
+			//$data['tags'] = array(0=>'INEP',1=>'Censo Educação Basica');
 			$data['resources'] = $resources;
 			$data['url'] = 'http://www.inep.gov.br/';
 			$dt['data'] = $data;
 
-			print_r($data);
+			//print_r($data);
 			//exit;
 
 			$rsp = $API->API($dt);
 			$rsp = (array)json_decode($rsp);	
-			echo '<hr>';
-			print_r($rsp);		
+			if (isset($rsp['success']))
+				{
+					if ($rsp['success'] == true)
+						{
+							$sx .= h('brapci.ckan_create_package',3);
+							$sx .= '<ul>';
+							foreach($rsp['result'] as $item)
+								{
+									if (is_array($item))
+									{
+									for ($r=0;$r < count($item);$r++)
+										{
+											//$sx .= '<li>'.$item[$r].'</li>';
+										}
+									} else {
+										//echo '<pre>';
+										//print_r($item);
+										//echo '</pre>';
+									}									
+									//print_r($item);
+									//$sx .= '<li>'.$item.'</li>';
+								}
+							$sx .= '</ul>';
+						} else {
+							$sx .= h('brapci.ckan_create_package',3);
+							$sx .= '<ul>';
+							$erros = $rsp['error'];
+							foreach($erros as $erro)
+								{
+									if (is_array($erro))
+									{
+									for ($r=0;$r < count($erro);$r++)
+										{
+											$sx .= '<li>'.$erro[$r].'</li>';
+										}
+									} else {
+										$sx .= '<li>'.$erro.'</li>';
+									}
+								}
+							$sx .= '</ul>';							
+							$sx .= bsmessage("error API CKAN",3);
+						}
+				}
+			return $sx;		
 		}
 }

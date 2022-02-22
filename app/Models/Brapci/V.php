@@ -72,6 +72,7 @@ class V extends Model
 						$Checked->check($id,100);
 						$Articles = new \App\Models\Journal\Articles();
 						$sx .= $Articles->view_articles($id);
+						$sx .= bs(bsc($RDF->view_data($id),12));						
 						break;						
 
 					case 'Proceeding':
@@ -109,7 +110,7 @@ class V extends Model
 
 					case 'IssueProceeding':
 						$sx .= $this->Issue($th,$id,$act);
-						//$sx .= bs(bsc($RDF->view_data($id),12));
+						$sx .= bs(bsc($RDF->view_data($id),12));
 						break;
 						
 					case 'Person':

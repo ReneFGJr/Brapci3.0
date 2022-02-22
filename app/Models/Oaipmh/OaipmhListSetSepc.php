@@ -7,8 +7,8 @@ use CodeIgniter\Model;
 class OaiPMHListSetSepc extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'brapci.source_listsets';
-	protected $primaryKey           = 'id_ss';
+	protected $table                = 'source_listsets';
+	protected $primaryKey           = 'id_ls';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';

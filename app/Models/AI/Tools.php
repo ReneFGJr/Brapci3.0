@@ -75,7 +75,13 @@ class Tools extends Model
 					case 'contentanalysis':
 						$tela .= $this->research($d1,$d2,$d3,$d4);
 						break;			
-					default:
+					case 'charsets_convert':
+						$tela .= h('')
+						$tela .= $NLP->formAI(1,lang('ai.Charsets'));
+						$charset = new \App\Models\AI\NLP\Charsets();
+						$tela .= $charset->convert($d1,$d2,$d3,$d4);
+						break;
+					default:					
 					$tela .= bsmessage('Service not found (Tools) - '.$d1);
 
 					/********************** Serviços */
@@ -88,7 +94,8 @@ class Tools extends Model
 						'wordcount',
 						'language_detection',
 						'scraping',
-						'bibliometric.convert'
+						'bibliometric.convert',
+						'charsets_convert',
 						);
 					$tela .= '<ul>';
 					for ($r=0;$r < count($lst);$r++)
