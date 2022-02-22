@@ -44,14 +44,14 @@ class V extends Model
 		{			
 			$Checked = new \App\Models\Brapci\Checked();
 			$RDF = new \App\Models\Rdf\RDF();
+			$dt = $RDF->le($id,1);
 
 			if ($act == 'export')
 				{
 					$RDF->c($id,true);
 				}
 
-			$sx = $th->cab();			
-			$dt = $RDF->le($id,1);
+			$sx = $th->cab();						
 
 			if (!isset($dt['concept']['c_class']))
 				{
@@ -179,11 +179,55 @@ class V extends Model
 				{				
 					$sx .= $Journal->header($dtj[0],false);
 					$sx .= $JournalIssue->header($dt);
-					$sx .= bs(bsc(h(lang('brapci.articles'),4),12));
+					$sx .= $this->bt_join_issue($dt);
+					$sx .= bs(bsc(h(lang('brapci.works'),2),12));
 					$sx .= $JournalIssue->ArticlesIssue($id);
 				}
 				return $sx;
 			}
+		function bt_join_issue($dt)
+			{
+				$RDF = new \App\Models\Rdf\RDF();
+				$sx = '';				
+
+				if (perfil("#ADMIN"))
+					{
+						$issue_a = $dt['concept']['id_cc'];
+						$jnl1 = $RDF->recover($dt,'hasIssue');
+						$jnl2 = $RDF->recover($dt,'hasIssueProceeding');
+						$jnl = array_merge($jnl1,$jnl2);
+						if (count($jnl) > 0)
+							{
+								$issue = $RDF->le($jnl[0]);
+								$issue1 = $RDF->recover($issue,'hasIssue');
+								$issue2 = $RDF->recover($issue,'hasIssueProceeding');
+								$issue = array_merge($issue1,$issue2);
+							
+								$sx .= '<form action="'.PATH.MODULE.'admin/issue/join/'.$issue_a.'" method="post">';
+								$sx .= '<div class="btn-group" role="group" aria-label="Basic example">';
+								$form = '<select width="1" name="issue">';
+								for ($r=0;$r < count($issue);$r++)
+									{
+										/* Diferente do atual Issue */
+										if ($issue[$r] != $issue_a)
+										{
+											$form .= '<option value="'.$issue[$r].'">'.$RDF->c($issue[$r]).' ('.$issue[$r].')</option>';
+										}
+									}
+								$form .= '</select>';
+								$sx .= '<span class="me-2">'.lang('brapci.join_with').'</span>';
+								$sx .= $form;
+								$sx .= '<input type="submit" value="'.lang('brapci.join').'">';
+								$sx .= '</div>';
+								$sx .= '</form>';
+
+								$sx = bs($sx);
+							} else {								
+								$sx .=  bs(bsc(bsmessage("brapci.issue_not_found"." ".'JNL: empty',3),12));
+							}
+					}
+				return $sx;
+			}		
 		function bt_export($id)
 			{
 				$link = URL.'/res/v/'.$id.'/export/';

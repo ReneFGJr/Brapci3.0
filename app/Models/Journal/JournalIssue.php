@@ -64,6 +64,18 @@ class JournalIssue extends Model
 		return $MOD;
 	}
 
+	function join_issue($issue1,$issue2)
+		{
+			$RDFData = new \App\Models\Rdf\RDFData();
+			$RDFData->change($issue1,$issue2);
+			$sx = bsmessage('brapci.joined',1);
+			$sx .= '<a href="'.(PATH.MODULE.'/v/'.$issue1).'">'.lang('brapci.return').'</a>';
+			$sx = bs(bsc($sx,12));
+
+			$this->where('is_source_issue',$issue2)->delete();
+			return $sx;			
+		}
+
 	function view_issue($idx = 0)
 	{
 		$MOD = $this->MOD();
@@ -215,8 +227,14 @@ class JournalIssue extends Model
 
 		$tps = array('hasIssueOf', 'hasIssueProceedingOf');
 
+		
+
 		for ($q = 0; $q < count($tps); $q++) {
 			$art = $RDF->recover($dt, $tps[$q]);
+			if (count($art) > 0)
+			{
+				$sx .= h(lang('brapci.articles_issue').': '.count($art).' '.lang('brapci.works'),6);
+			}
 			for ($r = 0; $r < count($art); $r++) {
 				$d = $art[$r];
 				$sx .= $RDF->c($d);

@@ -156,9 +156,21 @@ class Res extends BaseController
 							$d3 = round($d3);
 							$tela = $JournalIssue->check_issue($d3);
 							break;
+						case 'join':
+							$issue = get("issue");
+							if (round($issue) > 0)
+								{
+									$tela .= $JournalIssue->join_issue($d3,$issue);
+								} else {
+									$tela .= bs(bsc(bsmessage(lang("brapci.issue_not_found"))));
+								}
+							
+							break;
 						}
+					break;
 				default:
-						$tela = bsmessage("Comando não informado",12);
+						$sxa = bsc(bsmessage("Comando não informado ou inválido - ".$d1,3),12);
+						$tela .= bs($sxa);
 						break;
 					
 			}

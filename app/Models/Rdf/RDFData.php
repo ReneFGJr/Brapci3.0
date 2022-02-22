@@ -63,6 +63,26 @@ class RDFData extends Model
 			$id = $rst[0]['id_d'];
 			return $id;
 		}
+	function change($d1,$d2)
+		{
+			$d1= round($d1);
+			$d2= round($d2);
+
+			if (($d1==0) or ($d2==0)) { return ""; }
+			/* Part 1 */
+			$this->set('d_r1',$d1);
+			$this->where('d_r1',$d2);
+			$this->update();
+
+			/* Part 2 */
+			$this->set('d_r2',$d1);
+			$this->where('d_r2',$d2);
+			$this->update();
+
+			/* Part 3 */
+			$RDFConcept = new \App\Models\RDF\RDFConcept();
+			$RDFConcept->where('id_cc',$d2)->delete();
+		}
 
 	function propriety($id1,$prop,$id2)
 		{
