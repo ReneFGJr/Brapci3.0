@@ -152,9 +152,12 @@ class Res extends BaseController
 					$JournalIssue = new \App\Models\Journal\JournalIssue();
 					switch($d2)
 						{
+						case 'delete':
+							$tela .= $JournalIssue->issue_trash($d3,$d4);
+							break;
 						case 'check':
 							$d3 = round($d3);
-							$tela = $JournalIssue->check_issue($d3);
+							$tela .= $JournalIssue->check_issue($d3);
 							break;
 						case 'join':
 							$issue = get("issue");

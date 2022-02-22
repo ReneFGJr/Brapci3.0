@@ -75,6 +75,41 @@ class JournalIssue extends Model
 			$this->where('is_source_issue',$issue2)->delete();
 			return $sx;			
 		}
+	function issue_trash($idx,$act='')
+		{
+			$sx = h('brapci.issue.trash',1);
+			$dt = $this->find($idx);
+			$ok = false;
+
+			if ((isset($dt['is_source_issue'])) and ($dt['is_source_issue'] > 0))
+				{					
+					$sx .= 'Datas';
+					$id_rdf = $dt['is_source_rdf'];
+					$RDF = new \App\Models\Rdf\RDF();
+					$dtrdf = $RDF->le($id_rdf);
+					echo '<pre>';
+					print_r($dtrdf);		
+				} else {
+					$sx .= '<a href="'.PATH.MODULE.'v/'.$dt['is_source_rdf'].'" class="btn btn-outline-warning">'.lang('brapci.return')."</a>";
+					$ok = true;
+				}
+
+				if ($ok == true)
+					{
+						if ($act == 'confirm')
+							{
+								$sx .= bsmessage('brapci.issue_exclued',1);
+								$this->where('id_is',$idx)->delete();
+							} else {
+								$sx .= ' | ';
+								$sx .= '<a href="'.PATH.MODULE.'admin/issue/delete/'.$idx.'/confirm'.'" class="btn btn-outline-danger">'.lang('brapci.delete')."</a>";		
+							}
+					}
+
+				
+				$sx = bs(bsc($sx,12));
+			return $sx;			
+		}
 
 	function view_issue($idx = 0)
 	{
@@ -102,6 +137,7 @@ class JournalIssue extends Model
 			} else {
 				$link2 = '';
 			}
+			$link3 = '<a href="' . PATH . 'res/admin/issue/delete/' . $dtx['id_is'] . '">';
 
 			$linka = '</a>';
 
@@ -125,6 +161,9 @@ class JournalIssue extends Model
 			$ed .= ' ';
 			if (strlen($link2) > 0) {
 				$ed .= $link2 . bsicone('harversting', 24) . $linka;
+			}
+			if (strlen($link3) > 0) {
+				$ed .= $link3 . bsicone('trash', 24) . $linka;
 			}
 
 			$sx .= bsc($ed, 1, 'text-end');
@@ -186,6 +225,10 @@ class JournalIssue extends Model
 		} else {
 			$source = 'sql:id_jnl:jnl_name:brapci.source_source where jnl_collection = \'JA\' order by jnl_name';
 		}
+		if ($reg > 0)
+			{
+				$source = 'sql:id_jnl:jnl_name:brapci.source_source order by jnl_name';
+			}
 		$this->typeFields[1] = $source;
 
 		$sx = h(lang('Editar'), 1);
