@@ -53,10 +53,13 @@ class Lattes extends Model
 				//http://brapci3/index.php/res/admin/authority/findid/1
 				if ($dt['a_brapci'] > 0)
 					{
-						$link = PATH.MODULE.'/admin/authority/findid/'.$dt['id_a'];
-						$link1 = '<a href="' . $link . '" target="_new' . $dt['a_lattes'] . '">';
-						$link1 .= 'Busca <img src="' . base_url('img/icones/lattes.png') . '" style="height: 50px">';
-						$link1 .= '</a>';
+						if (isset($dt['id_a']))
+						{
+							$link = PATH.MODULE.'/admin/authority/findid/'.$dt['id_a'];
+							$link1 = '<a href="' . $link . '" target="_new' . $dt['a_lattes'] . '">';
+							$link1 .= 'Busca <img src="' . base_url('img/icones/lattes.png') . '" style="height: 50px">';
+							$link1 .= '</a>';
+						}
 					}
 			}
 			return $link1;
