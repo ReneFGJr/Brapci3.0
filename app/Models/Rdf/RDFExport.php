@@ -216,7 +216,6 @@ class RDFExport extends Model
 					case 'foaf:Person':
 						$tela .= 'ARTICLE';	
 						$name = $dt['concept']['n_name'];
-						echo '<br>==>'.$name;
 						$name = nbr_author($name,1);
 						$name = '<a href="'.(URL.'v/'.$id).'" class="author">'.$name.'</a>';
 						$this->saveRDF($id,$name,'name.nm');

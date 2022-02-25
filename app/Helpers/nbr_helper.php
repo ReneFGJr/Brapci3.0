@@ -156,10 +156,6 @@ function nbr_author($xa,$xp)
 
 
         return $name;
-        echo h($name);
-
-
-        exit;
     }
 
 function nbr_author2($xa, $tp) 
