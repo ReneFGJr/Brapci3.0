@@ -213,6 +213,9 @@ function edit($d1,$d2,$d3,$d4,$d5)
 		$dt = $this->le($id);
 		/*************************** RANGE */
 		$range = $dt['sc_range'];
+
+		echo '===>'.$range;
+		
 		$RDFClass = new \App\Models\Rdf\RDFClass();
 		$dr = $RDFClass->find($range);
 
