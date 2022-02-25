@@ -194,13 +194,19 @@ class JournalIssue extends Model
 			$dj = $Journal->find($dt['is_source']);
 			$sx .= $Journal->journal_header($dj);
 
-			/* Identifica lista de registros */
-			$OaipmhListSetSepc = new \App\Models\Oaipmh\OaipmhListSetSepc();
-			$sx .= $OaipmhListSetSepc->harvesting($dt, 'EV');
+			$action = get("action");
+			if ($action == 'harvesting')
+			{
+				/* Identifica lista de registros */
+				$OaipmhListSetSepc = new \App\Models\Oaipmh\OaipmhListSetSepc();
+				$sx .= $OaipmhListSetSepc->harvesting($dt, 'EV');
 
-			/* Identifica lista de artigos */
-			$OaipmhListRecord = new \App\Models\Oaipmh\OaipmhListRecord();
-			$sx .= $OaipmhListRecord->harvesting($dt, 'EV');
+				/* Identifica lista de artigos */
+				$OaipmhListRecord = new \App\Models\Oaipmh\OaipmhListRecord();
+				$sx .= $OaipmhListRecord->harvesting($dt, 'EV');
+			} else {
+				$sx .= '<a href="'.PATH.MODULE.'admin/journal/issue_harvesting/'.$id.'?action=harvesting" class="bnt btn-outline-primary">'.bsicone('harversting',24).'</a>';
+			}
 
 			$this->update_issue($id);
 		} else {

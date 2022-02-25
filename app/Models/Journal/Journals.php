@@ -104,8 +104,7 @@ class Journals extends Model
 					/******************* Para testes ***/
 					case 'edit_issue':
 						$sx = $this->editar_issue($d2,$d3);
-						break;
-							
+						break;							
 					case 'oai_check':				
 						$sx = $this->oai_check();
 						break;	
