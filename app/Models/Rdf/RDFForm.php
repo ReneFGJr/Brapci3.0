@@ -168,10 +168,29 @@ function form_import($id_class)
 				->select('cc_class, d_p')
 				->where('cc_class',$id_class)
 				->join('rdf_data','id_cc = d_r1')
-				->groupBy('d_p')
-				->FindAll();
-		echo $RDFData->getlastquery();
-		print_r($dt);
+				->groupBy('cc_class, d_p')
+				->FindAll();		
+
+		for ($r=0;$r < count($dt);$r++)
+			{
+				$dd['sc_class'] = $dt[$r]['cc_class'];
+				$dd['sc_propriety']  = $dt[$r]['d_p'];
+				$dd['sc_range'] = 0;
+				$dd['sc_ativo'] = 1;
+				$dd['sc_ord'] = 1;
+				$dd['sc_library'] = LIBRARY;
+				$dd['sc_group'] = '';
+				$dd['sc_global'] = LIBRARY;
+
+				$this->where('sc_propriety',$dt[$r]['d_p']);
+				$this->where('sc_class',$dt[$r]['cc_class']);
+				$da = $this->findAll();
+
+				if (count($da) == 0)
+					{
+						$this->set($dd)->insert();
+					}
+			}
 	}
 	
 function le($id)

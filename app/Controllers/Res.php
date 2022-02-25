@@ -112,6 +112,15 @@ class Res extends BaseController
 		return $tela;
 	}	
 
+	function rdf($d1='',$d2='',$d3='',$d4='',$d5='')
+		{
+			$cab = $this->cab('head');
+			$RDF = new \App\Models\Rdf\RDF();
+			$tela = $RDF->index($d1,$d2,$d3,$d4,$d5,$cab);
+			return $tela;
+		}
+
+
 	public function oai($d1='',$d2='',$d3='',$d4='',$d5='')
 		{
 			$OAI = new \App\Models\OaiPmhServer\Index();
