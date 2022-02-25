@@ -66,6 +66,8 @@ function nbr_author($xa,$xp)
         /******************************** PREPARA *******/
         $xa = troca($xa,' -','-');
         $xa = troca($xa,'- ','-');
+        while (strpos($xa,'  ')) { $xa = troca($xa,'  ',' '); }
+        $xa = trim($xa);
         /******************************* NOME SOBRENOME */
         if (strpos($xa,',') > 0)
             {
