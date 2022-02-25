@@ -276,14 +276,14 @@ class OaipmhRegister extends Model
 
 
 
-		$RDFData = new \App\Models\RDF\RDFData();
-		$RDFClass = new \App\Models\RDF\RDFClass();
-		$RDFLiteral = new \App\Models\RDF\RDFLiteral();
-		$RDFConcept = new \App\Models\RDF\RDFConcept();
+		$RDFData = new \App\Models\Rdf\RDFData();
+		$RDFClass = new \App\Models\Rdf\RDFClass();
+		$RDFLiteral = new \App\Models\Rdf\RDFLiteral();
+		$RDFConcept = new \App\Models\Rdf\RDFConcept();
 
 		$Journals = new \App\Models\Journal\Journals();
 
-		$RDFClass = new \App\Models\RDF\RDFClass();
+		$RDFClass = new \App\Models\Rdf\RDFClass();
 
 		$sx = '';
 
@@ -355,7 +355,7 @@ class OaipmhRegister extends Model
 	{
 		$sx = '';
 		$Language = new \App\Models\AI\NLP\Language();
-		$RDF = new \App\Models\RDF\RDF();
+		$RDF = new \App\Models\Rdf\RDF();
 
 		$dt = $this->find($id);
 		$rdf_work = $dt['lr_work'];
