@@ -214,8 +214,19 @@ function edit($d1,$d2,$d3,$d4,$d5)
 		/*************************** RANGE */
 		$range = $dt['sc_range'];
 
-		echo '===>'.$range;
-		
+		if ($range == 0)
+			{
+				if (perfil("#ADMIN"))
+					{
+						print_r($dt);
+						exit;
+						//$sx = $this->edit_form($id);
+					} else {
+						echo bsmessage("RANGE not defined",3);
+						exit;
+					}
+			}
+
 		$RDFClass = new \App\Models\Rdf\RDFClass();
 		$dr = $RDFClass->find($range);
 
