@@ -96,7 +96,6 @@ function nbr_author($xa,$xp)
 
             {
                 ECHO "======AQUI=======<hr>";
-                echo h($name);
                 print_r($NM);
                 echo '<hr>Mn: ';
                 print_r($Nm);
