@@ -94,6 +94,20 @@ function nbr_author($xa,$xp)
         $Ni = array();
         $Nf = array();
 
+            {
+                ECHO "======AQUI=======<hr>";
+                echo h($name);
+                print_r($NM);
+                echo '<hr>Mn: ';
+                print_r($Nm);
+                echo '<hr>Ni: ';
+                print_r($Ni);
+                echo '<hr>Nf: ';
+                print_r($Nf);
+                echo '<hr>';                
+                exit;
+            }
+
         for ($r=0;$r < count($NM);$r++)
             {
                 $Nm[$r] = mb_strtolower($NM[$r]);
@@ -143,20 +157,7 @@ function nbr_author($xa,$xp)
                 echo "Short name ".$name;;
                 exit;
             }
-        if (strpos($name,'De '))
-            {
-                ECHO "======AQUI======= ";
-                echo h($name);
-                print_r($NM);
-                echo '<hr>Mn: ';
-                print_r($Nm);
-                echo '<hr>Ni: ';
-                print_r($Ni);
-                echo '<hr>Nf: ';
-                print_r($Nf);
-                echo '<hr>';                
-                exit;
-            }
+
         return $name;
 
 
