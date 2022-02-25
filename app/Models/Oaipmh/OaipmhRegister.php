@@ -395,7 +395,7 @@ class OaipmhRegister extends Model
 		$metadata = (array)$metadata['oai_dc_dc'];
 
 		/***********************************************************************/
-		$OaipmhListSetSepc = new \App\Models\OaiPmh\OaipmhListSetSepc();
+		$OaipmhListSetSepc = new \App\Models\Oaipmh\OaipmhListSetSepc();
 		$set = $OaipmhListSetSepc->find($dt['lr_setSpec']);
 		$section = $set['ls_setName'];
 		$sx .= anchor(PATH.'res/v/'.$IDW);
