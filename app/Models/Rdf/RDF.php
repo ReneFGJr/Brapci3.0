@@ -49,6 +49,12 @@ class RDF extends Model
 		}
 	*/
 
+	function link($dt,$class='')
+		{
+			$sx = '<a href="'.(URL.'v/'.$dt['id_cc']).'" class="'.$class.'">';
+			return $sx;
+		}
+
 	function index($d1, $d2, $d3 = '', $d4 = '', $d5 = '', $cab = '')
 	{
 		$sx = '';

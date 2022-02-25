@@ -45,12 +45,17 @@ class RdfForm extends Model
 	protected $afterDelete          = [];
 
 function form($id, $dt) {
+		$RDF = new \App\Models\Rdf\RDF();
 		$class = $dt['cc_class'];
 
 		$this->form_import($class);
 
 		$sx = '';
-		$js1 = '';     
+		$js1 = '';  
+		$sx .= '<div class="small">Class</div>';
+		$sx .= h($RDF->show_class($dt),2);
+		$sx .= $RDF->link($dt,'btn btn-outline-primary btn-sm').'return'.'</a>';;
+		
 
 		/* complementos */
 		switch($class) {
