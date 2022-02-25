@@ -51,7 +51,7 @@ class RDF extends Model
 
 	function le_class($id)
 		{
-			$RDFClass = new \App\Models\RDF\RDFClass();
+			$RDFClass = new \App\Models\Rdf\RDFClass();
 			$dt = $RDFClass->le($id);
 			return $dt;
 		}
