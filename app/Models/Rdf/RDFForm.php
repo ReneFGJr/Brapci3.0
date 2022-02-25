@@ -213,18 +213,18 @@ function edit($d1,$d2,$d3,$d4,$d5)
 		$dt = $this->le($id);
 		/*************************** RANGE */
 		$range = $dt['sc_range'];
-		$RDFClass = new \App\Models\RDF\RDFClass();
+		$RDFClass = new \App\Models\Rdf\RDFClass();
 		$dr = $RDFClass->find($range);
 
 		$rclass = $dr['c_class'];
 		switch($rclass)
 			{
 				case 'Text':
-					$RDFFormText = new \App\Models\RDF\RDFFormText();
+					$RDFFormText = new \App\Models\Rdf\RDFFormText();
 					$sx .= $RDFFormText->edit(0,$d3,$d4,$d5);
 					break;
 				default:
-					$RDFFormVC = new \App\Models\RDF\RDFFormVC();
+					$RDFFormVC = new \App\Models\Rdf\RDFFormVC();
 					$sx .= $RDFFormVC->edit($d3,$d4,$d5,$rclass);					
 			}
 		return $sx;
@@ -233,7 +233,7 @@ function edit($d1,$d2,$d3,$d4,$d5)
 function exclude($id,$ac='')
 	{
 		$check = md5($id.MODULE);
-		$RDFData = new \App\Models\RDF\RDFData();
+		$RDFData = new \App\Models\Rdf\RDFData();
 		$dt = $RDFData->find($id);
 
 		$sx = '';
@@ -250,14 +250,14 @@ function exclude($id,$ac='')
 		/* Concept */
 		if ($dt['d_r2'] > 0)
 			{
-				$RDFConcept = new \App\Models\RDF\RDFConcept();
+				$RDFConcept = new \App\Models\Rdf\RDFConcept();
 				$dd = $RDFConcept->le($dt['d_r2']);
 				$sx .= '<div class="mt-2">'.lang('find.concept').'</div>';
 			}
 		/* Text */
 		if (($dt['d_r2'] == 0) and ($dt['d_literal'] > 0))
 			{
-				$RDFLiteral = new \App\Models\RDF\RDFLiteral();
+				$RDFLiteral = new \App\Models\Rdf\RDFLiteral();
 				$dd = $RDFLiteral->find($dt['d_literal']);
 				$sx .= '<div class="mt-2">'.lang('find.term').'</div>';
 			}
@@ -280,7 +280,7 @@ function exclude($id,$ac='')
 
 function form_class_edit($id,$class='')
 		{
-			$RDFPrefix = new \App\Models\RDF\RDFPrefix();
+			$RDFPrefix = new \App\Models\Rdf\RDFPrefix();
 			$sql = "
 			SELECT id_sc, sc_class, sc_propriety, sc_ord, id_sc,
 			t1.c_class as c_class, t2.prefix_ref as prefix_ref,
