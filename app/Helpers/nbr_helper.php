@@ -115,11 +115,19 @@ function nbr_author($xa,$xp)
 
                 
                 $char = substr($NM[$r],0,1);
-                if (strpos($Nf[$r],'-'))
+                if ((strpos($Nf[$r],'-')) or (strpos($Nf[$r],' ')))
                     {
                         $n = $Nf[$r];
                         $pos = strpos($n,'-');
-                        $Nf[$r] = substr($n,0,$pos+1).mb_strtoupper(substr($n,$pos+1,1)).mb_strtolower(substr($n,$pos+2,strlen($n)));;
+                        if ($pos)
+                            {
+                                $Nf[$r] = substr($n,0,$pos+1).mb_strtoupper(substr($n,$pos+1,1)).mb_strtolower(substr($n,$pos+2,strlen($n)));;
+                            }
+                        $pos = strpos($n,' ');
+                            if ($pos)
+                            {                        
+                                $Nf[$r] = substr($n,0,$pos+1).mb_strtoupper(substr($n,$pos+1,1)).mb_strtolower(substr($n,$pos+2,strlen($n)));;
+                            }
                     }
                 /********************* checa preposições */
                 if (in_array($NM[$r],$er2))
