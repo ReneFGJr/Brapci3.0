@@ -75,7 +75,12 @@ function nbr_author($xa,$xp)
             }
         /******************************* DIVIDE NOMES */
         $MN = mb_strtoupper($xa);
-        $NM = explode(' ',$MN);
+        $NMT = explode(' ',$MN);
+        $NM = array();
+        for ($r=0;$r < count($NMT);$r++)
+            {
+                if ($NMT[$r] != '') { $NM[] = $NMT[$r]; }
+            }
 
         /***************************************** SOBRENOMES FALSOS */
         $er1 = array(utf8_decode('JÚNIOR'),"JUNIOR", "NETTO", "NETO", "SOBRINHO", "FILHO", "JR.", "JR");
