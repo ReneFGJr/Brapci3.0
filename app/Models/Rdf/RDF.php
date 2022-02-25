@@ -250,18 +250,18 @@ class RDF extends Model
 			return $rst;
 		}
 
-	function c($id,$export=false)
+	function c($id,$force=false)
 	{
 		if ($id == 0) { return "empty"; }
 		$dir = $this->directory($id);
 		$file = $dir . 'name.nm';
 		
-		if ((file_exists($file)) and ($export==false)) {
+		if ((file_exists($file)) and ($force==false)) {
 			$tela = file_get_contents($file);
 		} else {
 			$tela = 'Content not found: ' . $id . '==' . $file . '<br>';
 			$RDFExport = new \App\Models\Rdf\RDFExport();
-			$RDFExport->export($id);
+			$RDFExport->export($id,$force);
 			if (file_exists($file)) {
 				$tela = file_get_contents($file);
 			} else {

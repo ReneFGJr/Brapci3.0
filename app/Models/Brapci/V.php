@@ -45,6 +45,7 @@ class V extends Model
 			$Checked = new \App\Models\Brapci\Checked();
 			$RDF = new \App\Models\Rdf\RDF();
 			$dt = $RDF->le($id,1);
+			$act .= get("action");
 
 			if ($act == 'export')
 				{
@@ -127,7 +128,7 @@ class V extends Model
 						$sx .= bs(bsc($RDF->view_data($id),12));
 					break;
 				}
-			$sx .= bs(bsc($this->bt_export($id),12));
+			$sx .= bs(bsc($this->bt_export($id).' | '.$this->bt_edit($id),12));
 			$sx .= $th->cab('footer');
 			return $sx;
 		}
@@ -230,8 +231,23 @@ class V extends Model
 			}		
 		function bt_export($id)
 			{
-				$link = URL.'/res/v/'.$id.'/export/';
-				$sx = '<a href="'.$link.'" class="btn btn-outline-primary btn-sm" onclick="export_rdf('.$id.');">'.lang('rdf.export').'</a>';
+				$sx = '';
+				if (perfil("#ADMIN"))
+				{
+					$link = PATH.MODULE.'v/'.$id.'?action=export';
+					$sx = '<a href="'.$link.'" class="btn btn-outline-primary btn-sm">'.lang('rdf.export').'</a>';
+				}
 				return $sx;
 			}
+
+			function bt_edit($id)
+			{
+				$sx = '';
+				if (perfil("#ADMIN"))
+				{
+				$link = PATH.MODULE.'a/'.$id;
+				$sx = '<a href="'.$link.'" class="btn btn-outline-primary btn-sm">'.lang('rdf.edit').'</a>';
+				}
+				return $sx;
+			}			
 }

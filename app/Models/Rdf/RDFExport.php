@@ -62,7 +62,7 @@ class RDFExport extends Model
 			$RDF = new \App\Models\RDF\RDF();
 			$dir = $RDF->directory($id);
 			$file = $dir.'name.nm';
-			if (file_exists($file))
+			if ((file_exists($file)) and ($FORCE == false))
 				{
 					return '';
 				}
@@ -99,6 +99,7 @@ class RDFExport extends Model
 						$name = $issue;
 						$this->saveRDF($id,$name,'name.nm');
 						break;
+
 					case 'dc:Journal':
 						$name = $dt['concept']['n_name'];
 						$name = '<a href="'.(URL.'v/'.$id).'" class="journal">'.$name.'</a>';
