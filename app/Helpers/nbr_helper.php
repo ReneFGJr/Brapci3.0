@@ -143,7 +143,7 @@ function nbr_author($xa,$xp)
 
                     /* Nome e Sobrenome */
                     case '7':
-                        for ($r=0;$r < ($TOT-1);$r++)
+                        for ($r=0;$r < ($TOT);$r++)
                             {
                                 $name .= $Nf[$r].' ';
                             }
