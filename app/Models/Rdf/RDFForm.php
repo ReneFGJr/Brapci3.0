@@ -204,6 +204,13 @@ function le($id)
 		return $dt;
 	}
 
+function edit_form($id)
+	{
+		$this->id = $id;
+		$sx = form($this);
+		return $sx;
+	}
+
 function edit($d1,$d2,$d3,$d4,$d5)
 	{
 		$sx = '';
@@ -218,9 +225,9 @@ function edit($d1,$d2,$d3,$d4,$d5)
 			{
 				if (perfil("#ADMIN"))
 					{
-						print_r($dt);
-						exit;
-						//$sx = $this->edit_form($id);
+						$id = $dt['id_sc'];
+						$sx = $this->edit_form($id);
+						return $sx;
 					} else {
 						echo bsmessage("RANGE not defined",3);
 						exit;
