@@ -118,7 +118,7 @@ class Res extends BaseController
 			$OAI->index($d1,$d2,$d3,$d4,$d5);
 		}
 
-	public function admin($d1='',$d2='',$d3='',$d4='')
+	public function admin($d1='',$d2='',$d3='',$d4='',$d5='')
 	{
 		//
 		$tela = $this->cab("user");
@@ -146,7 +146,7 @@ class Res extends BaseController
 					break;	
 				case 'oai':
 					$Oaipmh = new \App\Models\Oaipmh\Index();
-					$tela .= $Oaipmh->index($d2,$d3,$d4);
+					$tela .= $Oaipmh->index($d2,$d3,$d4,$d5);
 					break;
 				case 'issue':
 					$JournalIssue = new \App\Models\Journal\JournalIssue();

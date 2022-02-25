@@ -17,7 +17,7 @@ class OaipmhRegister extends Model
 	protected $allowedFields        = [
 		'id_lr', 'lr_identifier', 'lr_datestamp',
 		'lr_status', 'lr_jnl', '	lr_setSpec',
-		'lr_procees', 'lr_local_file'
+		'lr_procees', 'lr_local_file','lr_work'
 	];
 
 	// Dates
@@ -355,6 +355,11 @@ class OaipmhRegister extends Model
 		$RDF = new \App\Models\RDF\RDF();
 
 		$dt = $this->find($id);
+
+		if ($dt=='')
+			{
+				return "NOT FOUND - XXX";
+			}
 		
 		$type = $this->class_type($dt);
 		$class = $type['class'];
@@ -382,9 +387,9 @@ class OaipmhRegister extends Model
 		$OaipmhListSetSepc = new \App\Models\OaiPmh\OaipmhListSetSepc();
 		$set = $OaipmhListSetSepc->find($dt['lr_setSpec']);
 		$section = $set['ls_setName'];
-		echo '<pre>';
-		print_r($dt);
-		echo '</pre>';
+		//echo '<pre>';
+		//print_r($dt);
+		//echo '</pre>';
 		$sx .= anchor(PATH.'res/v/'.$IDW);
 
 		/********************************************* ISSUE **/
@@ -460,16 +465,11 @@ class OaipmhRegister extends Model
 			{
 				$RDF->RDF_literal($vlr, $lang, $IDW, $prop);
 			}	
-
-		echo h($titulo, 1);
-		echo h($lang, 5);
-		echo '<pre>';
-		print_r($metadata);
-
-
-		echo $IDW . ' Class:' . $class;
+		$dt['lr_procees'] = 2;
+		$dt['lr_work'] = $IDW;
+		$this->set_status($id, $dt);
+		$sx = bs(bsc($sx));
 		return $sx;
-		exit;
 
 		/*************************************************************************************** JOURNAL AND ISSUE */
 		/***********************************************************************************************************/

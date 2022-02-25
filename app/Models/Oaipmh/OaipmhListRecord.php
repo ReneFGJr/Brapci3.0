@@ -177,7 +177,7 @@ class OaiPMHListRecord extends Model
 			return true;
 		}	
 	
-	function listrecords($id,$st=-1)
+	function listrecords($id,$st=-1,$act='')
 		{
 			$OaipmhRegister = new \App\Models\Oaipmh\OaipmhRegister();
 			$sx = '';
@@ -189,12 +189,33 @@ class OaiPMHListRecord extends Model
 				}
 			$dt = $this->findAll();
 
-			$sx = '<table class="table table-striped">';
+			if (perfil("#ADMIN") == true)
+				{
+					//echo '===>'.$st;
+					if ($st == 0)
+						{
+							$sb = '<a href="'.PATH.MODULE.'admin/oai/get_record/A/'.$id.'" class="btn btn-outline-primary">'.lang('brapci.harvesting_all').'</a>';
+						}
+					if ($st == 1)
+						{
+							$sb = '<a href="'.PATH.MODULE.'admin/oai/process_record/A/'.$id.'" class="btn btn-outline-primary">'.lang('brapci.harvesting_all').'</a>';
+						}
+					if (isset($sb)) { $sx .= bsc($sb,12); }
+				}
+				
+			if ($act=='A')
+				{
+					$sx ='FIM';
+					return $sx;
+				}
+
+			$sx .= '<table class="table table-striped">';
 			$sx .= '<tr>';
 			$sx .= '<th>'.lang('brapci.lr_identifier').'</th>';
 			$sx .= '<th>'.lang('brapci.lr_status').'</th>';
 			$sx .= '<th>'.lang('brapci.ls_setSpec').'</th>';
 			$sx .= '<th>'.lang('brapci.action').'</th>';
+			$sx .= '<th>'.lang('brapci.lk').'</th>';
 			$sx .= '</tr>';
 
 			for ($r=0;$r < count($dt);$r++)
@@ -220,16 +241,33 @@ class OaiPMHListRecord extends Model
 					$act = $OaipmhRegister->actions($ln);
 					$sx .= '<td>';
 					$sx .= $act;
-					$sx .= '</td>';					
+					$sx .= '</td>';	
+
+					$sx .= '<td>';
+					$sx .= $this->link($ln);
+					$sx .= '</td>';										
 				}
 
 			if (count($dt) == 0)
 				{
-					$sx = $this->getlastquery();
+					//$sx = $this->getlastquery();
 					$sx .= bsmessage(lang('table empty'),3);
+					$sx .= '<a href="'.PATH.MODULE.'">'.lang('brapci.return').'</a>';
 				}
 			$sx .= '</table>';
 			$sx = bs(bsc($sx,12));
+			return $sx;
+		}
+
+	function link($dt)
+		{
+			$sx = '';
+			if ($dt['lr_work'] > 0)
+				{
+					$sx .= '<a href="'.PATH.MODULE.'v/'.$dt['lr_work'].'">';
+					$sx .= bsicone('link');
+					$sx .= '</a>';
+				}
 			return $sx;
 		}
 	
