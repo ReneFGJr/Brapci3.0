@@ -155,8 +155,6 @@ function nbr_author($xa,$xp)
                             {
                                 $name .= $Nf[$r].' ';
                             }
-                        echo $name;
-                        exit;
                         break;
                 default:
                     echo h($xa);
