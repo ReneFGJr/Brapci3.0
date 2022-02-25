@@ -338,8 +338,11 @@ class OaipmhRegister extends Model
 									$rsp[$xmlv[$r]] = $lang;
 								}
 						} else {
-							$lang = $Language->getTextLanguage($xmlv);
-							$rsp[$xmlv] = $lang;
+							if ($xmlv != '')
+								{
+									$lang = $Language->getTextLanguage($xmlv);
+									$rsp[$xmlv] = $lang;
+								}
 						}
 				} else {
 					echo "OPS";
@@ -355,6 +358,7 @@ class OaipmhRegister extends Model
 		$RDF = new \App\Models\RDF\RDF();
 
 		$dt = $this->find($id);
+		$rdf_work = $dt['lr_work'];
 
 		if ($dt=='')
 			{
@@ -369,9 +373,16 @@ class OaipmhRegister extends Model
 		$issue = $type['issue'];
 		$propIssue = $type['propIssue'];
 
-		/********************************************************************************************* CREATE WORK */
-		$IDW = strzero($jnl_frbr, 8) . '_' . $dt['lr_identifier'];
-		$IDW = $RDF->RDF_concept($IDW, $class);
+		/*************************************************************************** CREATE OR RECOVER WORK */
+		if ($rdf_work > 0)
+			{
+				/*************************************************************************** RECOVER WORK */
+				$IDW = $rdf_work;
+			} else {
+				/*************************************************************************** CREATE WORK */
+				$IDW = strzero($jnl_frbr, 8) . '_' . $dt['lr_identifier'];
+				$IDW = $RDF->RDF_concept($IDW, $class);		
+			}
 		
 		$xml = $this->le_xml($dt);
 
@@ -387,9 +398,6 @@ class OaipmhRegister extends Model
 		$OaipmhListSetSepc = new \App\Models\OaiPmh\OaipmhListSetSepc();
 		$set = $OaipmhListSetSepc->find($dt['lr_setSpec']);
 		$section = $set['ls_setName'];
-		//echo '<pre>';
-		//print_r($dt);
-		//echo '</pre>';
 		$sx .= anchor(PATH.'res/v/'.$IDW);
 
 		/********************************************* ISSUE **/
@@ -411,6 +419,7 @@ class OaipmhRegister extends Model
 			{
 				$titulo = nbr_title($vlr);	
 				$RDF->RDF_literal($titulo, $lang, $IDW, $prop);
+				$sx .= h($titulo,3);
 			}
 
 		/*********************************************** Section */			
@@ -420,12 +429,13 @@ class OaipmhRegister extends Model
 		$RDF->RDP_property($IDW, $propSection, $id_section);
 
 
-		/********************************************* Titulo */
+		/********************************************* Author */
 		$authors = $this->xml_read($metadata,'dc_creator');
 		$aff = array();
 
 		$classAuthor = 'brapci:Author';
 		$propAuthor = 'brapci:hasAuthor';
+		$sx .= '<ul>';
 		foreach($authors as $vlr=>$lang)
 			{
 				$nome = '';
@@ -437,10 +447,22 @@ class OaipmhRegister extends Model
 							{
 								$aff = trim($vlr[1]);
 							}
+					} else {
+						$nome = $vlr;
+						$aff = '';
 					}
 				$nome = nbr_author($nome,1);	
+				if (strpos($nome,'?') > 0)
+					{
+						echo h($vlr[0]);
+						echo h(mb_strtoupper($vlr[0]));
+						echo h($nome);
+						exit;
+					}
 				$id_author = $RDF->RDF_concept($nome, $classAuthor);
 				$RDF->RDP_property($IDW, $propAuthor, $id_author);
+
+				$sx .= '<li>'.$nome.'</li>';
 
 				if (strlen($aff) > 0)
 					{
@@ -450,7 +472,7 @@ class OaipmhRegister extends Model
 						$RDF->RDP_property($id_author, $propAff, $id_aff);
 					}
 			}			
-
+		$sx .= '</ul>';
 		/********************************************* Description */
 		$abstract = $this->xml_read($metadata,'dc_description');
 		$prop = 'dc:hasAbstract';

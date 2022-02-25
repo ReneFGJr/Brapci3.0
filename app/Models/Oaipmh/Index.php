@@ -50,8 +50,14 @@ class Index extends Model
 						if ($d2 == 'A')
 							{
 								$sx .= h('PROCESSAR');
-								$dt = $OaipmhRegister->where('lr_jnl',$d3)->where('lr_procees',1)->orderBy('id_lr','asc')->first();
-								$sx .= $this->header_journal($dt);
+								$dt = $OaipmhRegister->where('lr_jnl',$d3)->where('lr_procees',1)->orderBy('id_lr','asc')->first();								
+								if ($dt=='')
+									{
+										$sx .= metarefresh(PATH.MODULE.'v/'.$d3);
+										return $sx;
+										exit;
+									}
+								$sx .= $this->header_journal($dt);									
 								$d2a = $dt['id_lr'];
 								$sx .= $OaipmhRegister->process_record($d2a);
 								$sx .= metarefresh(PATH.MODULE.'admin/oai/process_record/A/'.$d3);

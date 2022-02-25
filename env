@@ -40,7 +40,7 @@ app.sufix = 'index.php/'
 #--------------------------------------------------------------------
 
 database.default.hostname = localhost
-database.default.database = brapci3
+database.default.database = brapci
 database.default.username = root
 database.default.password = ''
 database.default.DBDriver = MySQLi
