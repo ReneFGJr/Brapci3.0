@@ -67,6 +67,15 @@ class RDF extends Model
 		$sx = '';
 		$type = get("type");
 		switch ($d1) {
+			case 'set':
+				$RDFFormVC = new \App\Models\Rdf\RDFFormVC();
+				$sx = $RDFFormVC->ajax_save();
+				break;
+			case 'form_ed':
+				$sx = $cab;
+				$RdfForm = new \App\Models\Rdf\RdfForm();
+				$sx .= $RdfForm->form_ed($d2, $d3, $d4, $d5);
+				break;
 			case 'search':
 				$RDFFormVC = new \App\Models\Rdf\RDFFormVC();
 				$sx = '';

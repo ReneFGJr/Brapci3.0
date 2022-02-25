@@ -16,9 +16,15 @@ class RdfForm extends Model
 	protected $protectFields        = true;
 	protected $allowedFields        = [
 		'id_sc','sc_class','sc_propriety',
-		'sc_range','sx_ativo','sc_library',
+		'sc_range','sc_ativo','sc_library',
 		'sc_global','sc_group'
 	];
+
+	protected $typeFields        = [
+		'hidden','string:100','string:100',
+		'sql:id_c:c_class:rdf_class','sn','string:100',
+		'string:100','string:100'
+	];	
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -162,6 +168,14 @@ function form($id, $dt) {
 		return ($sx);
 	}
 
+function form_ed($id)
+	{
+		$this->id = $id;
+		$this->path = PATH.MODULE.'rdf/form_ed/'.$id;
+		$sx = form($this);
+		return $sx;
+	}
+
 function form_import($id_class)
 	{
 		echo h($id_class);
@@ -213,7 +227,7 @@ function edit_form($id)
 
 function edit($d1,$d2,$d3,$d4,$d5)
 	{
-		$sx = '';
+		$sx = '';		
 		$prop = $d3;
 		$id = $d4;
 		$idc = $d5;
@@ -223,10 +237,11 @@ function edit($d1,$d2,$d3,$d4,$d5)
 
 		if ($range == 0)
 			{
+				echo "OK";
 				if (perfil("#ADMIN"))
 					{
 						$id = $dt['id_sc'];
-						$sx = $this->edit_form($id);
+						$sx = metarefresh(PATH.MODULE.'rdf/form_ed/'.$id,0);
 						return $sx;
 					} else {
 						echo bsmessage("RANGE not defined",3);

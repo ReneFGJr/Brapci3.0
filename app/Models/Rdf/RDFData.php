@@ -84,6 +84,12 @@ class RDFData extends Model
 			$RDFConcept->where('id_cc',$d2)->delete();
 		}
 
+	function set_rdf_data($id1,$prop,$id2)
+		{
+			$sx = $this->propriety($id1,$prop,$id2);
+			return $sx;
+		}
+
 	function propriety($id1,$prop,$id2)
 		{
 			$RDFClass = new \App\Models\RDF\RDFClass();
