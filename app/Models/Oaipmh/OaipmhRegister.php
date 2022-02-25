@@ -433,7 +433,7 @@ class OaipmhRegister extends Model
 		$authors = $this->xml_read($metadata,'dc_creator');
 		$aff = array();
 
-		$classAuthor = 'brapci:Author';
+		$classAuthor = 'brapci:Person';
 		$propAuthor = 'brapci:hasAuthor';
 		$sx .= '<ul>';
 		foreach($authors as $vlr=>$lang)

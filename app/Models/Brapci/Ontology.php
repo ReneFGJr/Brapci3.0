@@ -46,8 +46,17 @@ class Ontology extends Model
 		$sx = '';
 		if ($d2 != '') {	
 			$this->join(PREFIX.'rdf_prefix', 'c_prefix = id_prefix', STR_PAD_LEFT);
-			$dt = $this->find($d2);
-			$sx .= view('setspec/class',$dt);
+			$dt = $this->find($d2);			
+			if ($dt['c_equivalent'] > 0)
+				{
+					$RDF->RDF_check_equivalent($dt['c_equivalent'],$d2);
+					$sx = $this->index($d1,$dt['c_equivalent'],$d3,$d4);
+				} else {
+					$dt['equivalent'] = $this->where('c_equivalent',$d2)->findAll();
+					$sx .= view('setspec/class',$dt);
+
+					
+				}			
 		} else {
 			$this->check();
 			$sx .= '';			

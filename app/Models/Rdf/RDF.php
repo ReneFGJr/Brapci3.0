@@ -49,6 +49,13 @@ class RDF extends Model
 		}
 	*/
 
+	function le_class($id)
+		{
+			$RDFClass = new \App\Models\RDF\RDFClass();
+			$dt = $RDFClass->le($id);
+			return $dt;
+		}
+
 	function link($dt,$class='')
 		{
 			$sx = '<a href="'.(URL.'v/'.$dt['id_cc']).'" class="'.$class.'">';
@@ -488,6 +495,22 @@ class RDF extends Model
 		return $tela;
 	}
 
+
+	function RDF_check_equivalent($to,$from)
+		{
+			$RDFConcept = new \App\Models\Rdf\RDFConcept();
+			$dt = $RDFConcept->select('id_cc, cc_class')->where('cc_class', $from)->findAll();
+			if (count($dt) == 0) {
+				return 0;
+			} else {
+				for ($r=0;$r < count($dt);$r++)
+					{
+						$da['cc_class'] = $to;
+						$RDFConcept->set($da);
+						$RDFConcept->where('id_cc',$dt[$r]['id_cc'])->update();
+					}
+			}
+		}
 
 
 	function show_class($dt)

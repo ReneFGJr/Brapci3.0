@@ -118,7 +118,7 @@ class V extends Model
 						//$Articles = new \App\Models\Journal\Articles();
 						$sx .= $this->Person($th,$id,$act);
 						$sx .= bs(bsc($RDF->view_data($id),12));
-						break;
+						break;				
 
 					default:
 						//$sx = h($class,4);

@@ -29,8 +29,29 @@ $type = lang('rdf.class_name');
             </td><td>
                 <?php echo lang($c_class);?>
             </td>
-        </tr>        
-    </table>
-    
+        </tr>  
+        
+        <?php
+        if (isset($equivalent))
+            {
+                $RDF  = new \App\Models\Rdf\RDF();
+                echo '<tr">';
+                $label = '<b>'.lang('rdf.equivalent').':</b>';
+                for ($r=0;$r < count($equivalent);$r++)
+                    {
+                        $idc = $equivalent[$r]['id_c'];
+                        $ln = $RDF->le_class($idc);
+                        echo '<td width="15%" align="right">'.$label.'</td>';
+                        if (strlen($label) > 0)
+                            {                        
+                                $label = '';
+                            }
+                        echo '<td>'.$RDF->show_class($ln[0]).'</td>';
+                    }
+                echo '</div>';
+            }
+    ?>        
+    </table>    
 </div>
-prefix_ref
+
+
