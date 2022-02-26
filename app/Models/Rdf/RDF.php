@@ -113,6 +113,11 @@ class RDF extends Model
 		$sx = '';
 		$type = get("type");
 		switch ($d1) {
+			case 'check_remissives':
+				$RDFConcept = new \App\Models\Rdf\RDFConcept();
+				$sx .= $cab;
+				$sx .= $RDFConcept->check_remissives();
+				break;
 			case 'set_pref_term':
 				$RDFConcept = new \App\Models\Rdf\RDFConcept();
 				$RDFConcept->set_pref_term($d2,$d3);
@@ -178,8 +183,9 @@ class RDF extends Model
 				$sx .= '<ul>';
 				$sx .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=prefix') . '">' . lang('Inport Prefix') . '</a></li>';
 				$sx .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=class') . '">' . lang('Inport Class') . '</a></li>';
-				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check') . '">' . lang('rdf.Check_class') . '</a></li>';
+				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check') . '">' . lang('rdf.Check_class_duplicate') . '</a></li>';
 				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_authors') . '">' . lang('rdf.Check_authors') . '</a></li>';
+				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_remissives') . '">' . lang('rdf.Check_remissives') . '</a></li>';
 				$sx .= '</ul>';
 		}
 		$sx = bs($sx);

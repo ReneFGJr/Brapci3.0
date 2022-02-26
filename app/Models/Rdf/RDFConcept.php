@@ -43,6 +43,32 @@ class RDFConcept extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
+	function check_remissives()
+		{
+			$sx = h(lang('brapci.rdf_remissives'));
+			$RDFData = new \App\Models\Rdf\RDFData;
+			$this->select('id_cc, cc_use, id_d, d_r1, d_p, d_r2, d_literal');
+			$this->join('rdf_data','d_r1=id_cc');
+			$this->where('cc_use > 0');
+			$dt = $this->findAll();
+
+			for ($r=0;$r < count($dt);$r++)
+				{
+					$line = $dt[$r];
+
+					$dd['d_r1'] = $line['cc_use'];
+					$RDFData->set($dd)->where('id_d',$line['id_d'])->update();
+
+					if ($r > 100) { break; }
+				}
+			if ($r > 0	) 
+				{ 
+					$sx .= metarefresh(PATH.MODULE.'rdf/check_remissives',2);
+				}
+			$sx .= bsmessage('Remissives: '.count($dt));
+			return $sx;
+		}
+
 	function like($t,$class)
 		{
 			if ($class != sonumero($class))

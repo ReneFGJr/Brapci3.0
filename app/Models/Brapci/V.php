@@ -61,7 +61,6 @@ class V extends Model
 				{
 					$id = $dt['concept']['cc_use'];
 					$dt = $RDF->le($id,1);
-					echo 'REMISSIVE';
 				}			
 
 			$act .= get("action");
@@ -77,14 +76,14 @@ class V extends Model
 			$items['home'] = PATH;
 			$items[$class] = '';
 			$sx .= breadcrumbs($items);
-			
+
 			switch ($class)
 				{
 					case 'Article':
 						$Checked->check($id,100);
 						$Articles = new \App\Models\Journal\Articles();
 						$sx .= $Articles->view_articles($id);
-						$sx .= bs(bsc($RDF->view_data($id),12));						
+						$sx .= bs(bsc($RDF->view_data($id),12));
 						break;						
 
 					case 'Proceeding':
@@ -128,7 +127,11 @@ class V extends Model
 					case 'Person':
 						//$Articles = new \App\Models\Journal\Articles();
 						$sx .= $this->Person($th,$id,$act);
-						$sx .= bs(bsc($RDF->view_data($id),12));
+						if (perfil("#ADM"))
+						{
+							$sx .= bs(bsc($RDF->view_data($id),12));
+						}
+						
 						break;				
 
 					default:
