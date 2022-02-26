@@ -45,6 +45,7 @@ class AuthotityRemissive extends Model
 			$this->join('rdf_name','rdf_name.id_n = rdf_concept.cc_pref_term','left');
 			$this->where('cc_use',$id);
 			$dt = $this->findAll();
+			echo $this->getlastquery();
 			return $dt;
 		}
 }
