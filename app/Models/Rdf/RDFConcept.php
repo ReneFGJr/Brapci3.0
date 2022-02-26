@@ -43,12 +43,12 @@ class RDFConcept extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function check_remissives()
+	function check_remissives($var='d_r1')
 		{
-			$sx = h(lang('brapci.rdf_remissives'));
+			$sx = '';
 			$RDFData = new \App\Models\Rdf\RDFData;
 			$this->select('id_cc, cc_use, id_d, d_r1, d_p, d_r2, d_literal');
-			$this->join('rdf_data','d_r1=id_cc');
+			$this->join('rdf_data',$var.'=id_cc');
 			$this->where('cc_use > 0');
 			$dt = $this->findAll();
 
@@ -56,16 +56,21 @@ class RDFConcept extends Model
 				{
 					$line = $dt[$r];
 
-					$dd['d_r1'] = $line['cc_use'];
+					$dd[$var] = $line['cc_use'];
 					$RDFData->set($dd)->where('id_d',$line['id_d'])->update();
 
 					if ($r > 100) { break; }
 				}
-			if ($r > 0	) 
+			if ($r > 0) 
 				{ 
+					$sx .= h(lang('brapci.rdf_remissives'));
+					$sx .= h('d_r1',4);
 					$sx .= metarefresh(PATH.MODULE.'rdf/check_remissives',2);
+				} else {
+					$sx .= h('d_r2',4);
+					$sx .= $this->check_remissives('d_r2');
 				}
-			$sx .= bsmessage('Remissives: '.count($dt));
+			$sx .= bsmessage('Remissives - '.$var.': '.count($dt));
 			return $sx;
 		}
 
