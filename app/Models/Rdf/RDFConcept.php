@@ -72,6 +72,8 @@ class RDFConcept extends Model
 					{
 						$sx .= h('d_r2',4);
 						$sx .= $this->check_remissives('d_r2');
+					} else {
+						$sx .= bsmessage('FIM');
 					}
 				}
 			$sx .= bsmessage('Remissives - '.$var.': '.count($dt));
