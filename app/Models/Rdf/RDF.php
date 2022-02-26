@@ -113,6 +113,11 @@ class RDF extends Model
 		$sx = '';
 		$type = get("type");
 		switch ($d1) {
+			case 'set_pref_term':
+				$RDFConcept = new \App\Models\Rdf\RDFConcept();
+				$RDFConcept->set_pref_term($d2,$d3);
+				$sx .= wclose();
+				break;
 			case 'check':
 				$sx = $cab;
 				$sx .=$this->rdf_check();

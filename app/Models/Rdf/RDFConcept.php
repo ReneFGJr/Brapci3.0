@@ -79,6 +79,46 @@ class RDFConcept extends Model
 			return($dt);
 		}
 
+	function set_pref_term($d1,$d2)
+		{
+			$RDF = new \App\Models\Rdf\RDF();
+			$RDFData = new \App\Models\Rdf\RDFData();
+			$dt1 = $this->find($d1);
+			$dt2 = $this->find($d2);
+
+			$class = 'skos:prefLabel';
+			$prop = $RDF->getClass($class,0);
+
+			/*************************************************** Update 1 */
+			$dq1 = $RDFData
+					->where('d_r1',$d1)
+					->where('d_p',$prop)
+					->findAll();
+					echo '<hr>';
+			$dq2 = $RDFData
+					->where('d_r1',$d2)
+					->where('d_p',$prop)
+					->findAll();
+			$dq1 = $dq1[0];	
+			$dq2 = $dq2[0];	
+
+			/*************************************************** Update 1 */
+			$dt['cc_pref_term'] = $dt2['cc_pref_term'];
+			$this->set($dt)->where('id_cc',$d1)->update();
+
+			/*************************************************** Update 2 */
+			$da['d_literal'] = $dt2['cc_pref_term'];
+			$RDFData->set($da)->where('id_d',$dq1['id_d'])->update();
+
+			/*************************************************** Update 3 */
+			$dt['cc_pref_term'] = $dt1['cc_pref_term'];
+			$this->set($dt)->where('id_cc',$d2)->update();
+
+			/*************************************************** Update 4 */
+			$da['d_literal'] = $dt2['cc_pref_term'];
+			$RDFData->set($da)->where('id_d',$dq2['id_d'])->update();
+		}
+
 	function concept($dt)
 		{		
 			$Language = new \App\Models\AI\NLP\Language();

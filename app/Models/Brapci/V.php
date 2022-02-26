@@ -45,20 +45,31 @@ class V extends Model
 			$Checked = new \App\Models\Brapci\Checked();
 			$RDF = new \App\Models\Rdf\RDF();
 			$dt = $RDF->le($id,1);
+
+			/************************* Header */
+			$sx = $th->cab();
+
+			/***************************** void */
+			if (!isset($dt['concept']['c_class']))
+				{
+					return $sx . "ERRO DE ACESSO - ".$id;
+					exit;
+				}			
+
+			/**************************** REMISSIVA */
+			if ($dt['concept']['cc_use'] > 0)
+				{
+					$id = $dt['concept']['cc_use'];
+					$dt = $RDF->le($id,1);
+					echo 'REMISSIVE';
+				}			
+
 			$act .= get("action");
 
 			if ($act == 'export')
 				{
 					$RDF->c($id,true);
-				}
-
-			$sx = $th->cab();						
-
-			if (!isset($dt['concept']['c_class']))
-				{
-					return "ERRO DE ACESSO - ".$id;
-					exit;
-				}
+				}			
 
 			$class = trim($dt['concept']['c_class']);
 			$name = $dt['concept']['n_name'];

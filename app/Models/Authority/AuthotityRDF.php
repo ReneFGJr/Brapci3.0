@@ -41,66 +41,28 @@ class AuthotityRDF extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
-
 	function author_check_method_2($class = "Person")
 		{
-				$sql = "SELECT 
-						R1.cc_use as use1, R2.cc_use as use2, R3.cc_use as use3,
-						R1.id_cc as id1, R2.id_cc as id2, R3.id_cc as id3
-						FROM rdf_concept as R1	
-						INNER JOIN rdf_class ON cc_class = id_c
-						INNER JOIN rdf_concept as R2 ON R1.cc_use = R2.id_cc
-						INNER JOIN rdf_concept as R3 ON R2.cc_use = R3.id_cc
-						where R1.cc_use > 0 and c_class = '$class' 
-						and R2.cc_use > 0 and R3.cc_use > 0";
-				$rlt = $this -> db -> query($sql)->getResultArray();
+			$this->select('id_cc, cc_use');
+			$this->where("cc_use > 0");
+			$dt = $this->findAll();
 
-				for ($r=0;$r < count($rlt);$r++)
-					{
-						$ln = $rlt[$r];
-						echo '<pre>';
-						print_r($ln);
-						echo '<hr>';
-
-						$n = array();
-						$n[0] = $ln['use1'];
-						$n[1] = $ln['use2'];
-						$n[2] = $ln['use2'];
-
-						if (($n[0] == $n[1]) or 
-							($n[1] == $n[2]) or
-							($n[2] == $n[0]))
+			for ($r=0;$r < count($dt);$r++)
+				{
+					$ln = $dt[$r];
+					if ($ln['id_cc'] < $ln['cc_use'])
 						{
-							echo "LOOP";
-							$min = 9*9*9*9*9*9;
-							for ($r=1;$r <= 3;$r++)
-								{
-									if ($ln['id'.$r] < $min)
-										{
-											$min = $ln['id'.$r];
-										}									
-								}
-							/**************************** UPDATE */
-							for ($r=1;$r <= 3;$r++)
-								{
-									$dt['cc_use'] = $min;
-									if ($ln['id'.$r] == $min)
-										{
-											$dt['cc_use'] = 0;
-										}
-									$this->set($dt);
-									$this->where('id_cc',$ln['id'.$r])->update();
+							$da['cc_use'] = $ln['id_cc'];
+							$this->set($da)->where('id_cc',$ln['cc_use'])->update();
 
-									echo '<hr>'.$this->getlastquery();
-								}
+							$da['cc_use'] = 0;
+							$this->set($da)->where('id_cc',$ln['id_cc'])->update();
 						}
-						exit;
+				}
 
-					}
-				echo '<pre>';
-				print_r($rlt);
-				exit;
 		}
+
+
 
 	function author_check_method_3($p = 0, $class = "Person") {
         $sql = "SELECT * FROM rdf_concept as R1

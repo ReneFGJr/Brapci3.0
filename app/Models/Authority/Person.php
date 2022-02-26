@@ -15,7 +15,7 @@ class Person extends Model
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'id_a','a_genere',
+		'id_a','a_genere','a_prefTerm'
 	];
 
 	// Dates
@@ -42,19 +42,58 @@ class Person extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
- function person_header($dt)
+function remissive($id)
+	{
+		$AuthotityRemissive = new \App\Models\Authority\AuthotityRemissive();
+		$dt = $AuthotityRemissive->remissive_author($id);
+
+		$sx = '';		
+		for ($r=0;$r < count($dt);$r++)
+			{
+				$line = $dt[$r];
+				$sx .= '<li>'.$line['n_name'];
+				if (perfil("#ADMIN"))
+					{
+						$sx .= onclick(PATH.MODULE.'rdf/set_pref_term/'.$line['cc_use'].'/'.$line['id_cc'],400,100);
+						$sx .= ' <sup>[set_prefTerm]</sup>';
+						$sx .= '</a>';
+					}
+				$sx .= '</li>';
+			}
+		if ($sx != '') { $sx = '<ul class="small">'.$sx.'</ul>'; }
+		return($sx);
+	}
+
+ function person_header($dt,$rdf)
 	{
 		$Lattes = new \App\Models\Lattes\Lattes();
 		$sx = '';
 		$sx .= '<div class="col-md-2 text-right text-end" style="border-right: 4px solid #8080FF;">
 				<tt style="font-size: 100%;">Person</tt>        
 				</div>';
+
+		$name = $rdf['concept']['n_name'];
+
+		/****************************************** Atualiza Lista */
+		if ($dt['a_prefTerm'] != $name)
+			{
+				$du['a_prefTerm'] = $name;
+				$this->set($du)->where('id_a',$dt['id_a'])->update();
+				$dt['a_prefTerm'] = $name;
+			}
+
 		$sa = h($dt['a_prefTerm'],4);
 		$sa .= $Lattes->link($dt,30);
 		if (perfil("#ADM"))
 			{
 				$sa .= $this->btn_check($dt,30);
 			}
+
+		if ($dt['a_brapci'] > 0)
+			{
+				$sa .= $this->remissive($dt['a_brapci']);
+			}
+		
 
 		$sx .= bsc($sa,8);
 
@@ -167,21 +206,20 @@ function check_genere($dt,$da)
 			}
 		if (($dg['F'] > $dg['M']) and ($dg['F'] > $dg['X']))
 			{
-				$gt = 'M';
+				$gt = 'F';
 			}
 		if ($dg['M'] == $dg['F']) 
 			{
 				$gt = 'X';
 			}
-			
 		$sx = lang('brapci.check').' '.lang('brapci.genere');
 		if ($da['a_genere'] != $gt)
 			{
 				$this->set('a_genere',$gt);
 				$this->where('id_a',$id)->update();
-				$sx .= '<span class="text-success"> <b>'.lang('brapci.update').'</b></span>';
+				$sx .= '<span class="text-success"> ['.$gt.'] <b>'.lang('brapci.update').'</b></span>';
 			} else {
-				$sx .= '<span class="text-danger"> <b>'.lang('brapci.bypass').'</b></span>';
+				$sx .= '<span class="text-danger"> ['.$gt.'] <b>'.lang('brapci.bypass').'</b></span>';
 			}
 		return $sx;
 	}
@@ -195,7 +233,7 @@ function viewid($id,$loop=0)
 
 		$RDF = new \App\Models\Rdf\RDF();
 		$da = $RDF->le($id);
-		
+
 		$use = $da['concept']['cc_use'];
 		if ($use > 0)
 			{
@@ -225,7 +263,7 @@ function viewid($id,$loop=0)
 
 
 		/************************************************************* HEADER */			
-		$tela = $this->person_header($dt);
+		$tela = $this->person_header($dt,$da);
 
 		/******************************************** RECHECK */
 		if (get("act") == 'check')
@@ -238,9 +276,7 @@ function viewid($id,$loop=0)
 		/************************************************************* Lattes */
 		$link0 = $Brapci->link($dt);
 
-		$link1 = '';
-
-		
+		$link1 = '';		
 
 		if ($dt['a_brapci'] != 0)
 			{			
