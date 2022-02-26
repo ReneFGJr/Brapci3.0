@@ -50,6 +50,7 @@ class RDFConcept extends Model
 			$this->select('id_cc, cc_use, id_d, d_r1, d_p, d_r2, d_literal');
 			$this->join('rdf_data',$var.'=id_cc');
 			$this->where('cc_use > 0');
+			$this->orderby('id_d,cc_use');
 			$dt = $this->findAll();
 
 			for ($r=0;$r < count($dt);$r++)
