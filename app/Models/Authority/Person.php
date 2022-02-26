@@ -131,6 +131,11 @@ function check_id($id)
 		return $sx;
 	}
 
+function check_loop_rdf($dt,$da)
+	{
+
+	}
+
 function check_duplicate_rdf($dt,$da)
 	{
 		$RDFData = new \App\Models\Rdf\RDFData();
@@ -251,11 +256,7 @@ function viewid($id,$loop=0)
 		//} else {
 //			$tela .= anchor(base_url(PATH . MODULE. '/admin/authority/findid/' . $dt['a_brapci']));
 
-		if ($dt['a_lattes'] == 0)
-			{
-				$tela .= $Lattes->link($dt);
-				return $tela;
-			}	
+
 		$tela .= bs(bsc(trim($link0.' '.$link1.' '.$link2),12));
 
 		/*************************************************** BRAPCI */
