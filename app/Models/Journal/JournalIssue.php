@@ -68,6 +68,7 @@ class JournalIssue extends Model
 		{
 			$RDFData = new \App\Models\Rdf\RDFData();
 			$RDFData->change($issue1,$issue2);
+			$RDFData->remove($issue2);
 			$sx = bsmessage('brapci.joined',1);
 			$sx .= '<a href="'.(PATH.MODULE.'/v/'.$issue1).'">'.lang('brapci.return').'</a>';
 			$sx = bs(bsc($sx,12));

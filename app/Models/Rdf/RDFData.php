@@ -97,9 +97,14 @@ class RDFData extends Model
 			$this->where('d_r2',$d2);
 			$this->update();
 
+			return 0;
+		}
+
+	function remove($d2)
+		{
 			/* Part 3 */
 			$RDFConcept = new \App\Models\Rdf\RDFConcept();
-			$RDFConcept->where('id_cc',$d2)->delete();
+			$RDFConcept->where('id_cc',$d2)->delete();			
 		}
 
 	function set_rdf_data($id1,$prop,$id2)

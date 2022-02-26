@@ -226,6 +226,12 @@ class RDF extends Model
 		return $sx;
 	}
 
+	function change($d1,$d2)
+		{
+			$RDFData = new \App\Models\Rdf\RDFData();
+			$RDFData->change($d1,$d2);
+		}
+
 	function remissive($d2, $d3, $d4, $d5, $cab)
 		{
 			$dt = $this->le($d2);
