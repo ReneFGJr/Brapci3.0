@@ -70,13 +70,13 @@ class RDFData extends Model
 			$sql = "select d_r1,d_r2,d_p,d_literal,count(*) as total, d_library, max(id_d) as max
 					from ".PREFIX."rdf_data 
 					group by d_r1,d_r2,d_p,d_literal, d_library 
-					having count(*) > 1
-					limit 100";
+					having count(*) > 1";
 			$dt = $this->db->query($sql)->getResultArray();
 
 			for ($r=0;$r < count($dt);$r++)
 				{
 					$this->where('id_d',$dt[$r]['max'])->delete();
+					if ($r > 100) { break; }
 				}
 			return count($dt);
 		}
