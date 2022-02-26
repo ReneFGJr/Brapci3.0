@@ -245,6 +245,14 @@ class RDF extends Model
 					$d1 = get("id_cc");
 					$d2 = get("id_use");
 
+					if ($d1 < $d2)
+						{
+							$dt['cc_use'] = $d1;
+							$this->set($dt)->where('id_cc',$d2)->update();
+						} else {
+							echo 'OPS - Ordem errada';
+						}
+
 					echo '===>'.$d1.'====>'.$d2;
 				}
 			
