@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class AuthotityRemissive extends Model
 {
-	protected $DBGroup              = 'default';
+	protected $DBGroup              = 'rdf';
 	protected $table                = 'rdf_concept';
 	protected $primaryKey           = 'id_cc';
 	protected $useAutoIncrement     = true;
