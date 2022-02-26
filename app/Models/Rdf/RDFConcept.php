@@ -58,7 +58,7 @@ class RDFConcept extends Model
 
 					$dd[$var] = $line['cc_use'];
 					$RDFData->set($dd)->where('id_d',$line['id_d'])->update();
-
+					$sx .= '<li>'.$line['id_d'].'-->'.$line['cc_use'].'</li>';
 					if ($r > 100) { break; }
 				}
 			if ($r > 0) 
