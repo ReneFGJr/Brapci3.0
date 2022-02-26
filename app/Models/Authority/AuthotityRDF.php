@@ -76,7 +76,7 @@ class AuthotityRDF extends Model
     }	
 
     function author_check_method_1() {
-		$RDF = new \App\Models\RDF\RDF();
+		$RDF = new \App\Models\Rdf\RDF();
 		$f = $RDF->getClass('Person');
 
         $sql = "
