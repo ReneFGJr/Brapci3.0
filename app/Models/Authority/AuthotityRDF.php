@@ -41,26 +41,7 @@ class AuthotityRDF extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
-	function author_check_method_2($class = "Person")
-		{
-			$this->select('id_cc, cc_use');
-			$this->where("cc_use > 0");
-			$dt = $this->findAll();
 
-			for ($r=0;$r < count($dt);$r++)
-				{
-					$ln = $dt[$r];
-					if ($ln['id_cc'] < $ln['cc_use'])
-						{
-							$da['cc_use'] = $ln['id_cc'];
-							$this->set($da)->where('id_cc',$ln['cc_use'])->update();
-
-							$da['cc_use'] = 0;
-							$this->set($da)->where('id_cc',$ln['id_cc'])->update();
-						}
-				}
-
-		}
 
 
 

@@ -49,6 +49,30 @@ class RDF extends Model
 		}
 	*/
 
+	function check_loop()
+		{
+			$sx = h('Check Loop');
+			$this->select('id_cc, cc_use');
+			$this->where("cc_use > 0");
+			$this->where("cc_use > id_cc");
+			$dt = $this->findAll();
+
+			for ($r=0;$r < count($dt);$r++)
+				{
+					$ln = $dt[$r];
+					if ($ln['id_cc'] < $ln['cc_use'])
+						{
+							$da['cc_use'] = $ln['id_cc'];
+							$this->set($da)->where('id_cc',$ln['cc_use'])->update();
+
+							$da['cc_use'] = 0;
+							$this->set($da)->where('id_cc',$ln['id_cc'])->update();
+						}
+					$sx .= '<li>'.$ln['id_cc'].' => '.$ln['cc_use'].'</li>';
+				}
+			return $sx;
+		}	
+
 	function rdf_check_authors()
 		{
 			$AuthotityRDF = new \App\Models\Authority\AuthotityRDF();
@@ -64,7 +88,7 @@ class RDF extends Model
 					case '2':
 						$sx .= h('Phase II',4);
 						/*************************************** Etapa I */				
-						$sx .= $AuthotityRDF->author_check_method_2();
+						$sx .= $AuthotityRDF->author_check_method_3();
 						break;
 				}
 
@@ -113,6 +137,10 @@ class RDF extends Model
 		$sx = '';
 		$type = get("type");
 		switch ($d1) {
+			case 'check_loop';
+				$sx .= $cab;	
+				$sx .= $this->check_loop();
+				break;
 			case 'check_remissives':
 				$RDFConcept = new \App\Models\Rdf\RDFConcept();
 				$sx .= $cab;
@@ -184,6 +212,7 @@ class RDF extends Model
 				$sx .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=prefix') . '">' . lang('Inport Prefix') . '</a></li>';
 				$sx .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=class') . '">' . lang('Inport Class') . '</a></li>';
 				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check') . '">' . lang('rdf.Check_class_duplicate') . '</a></li>';
+				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_loop') . '">' . lang('rdf.Check_loop') . '</a></li>';
 				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_authors') . '">' . lang('rdf.Check_authors') . '</a></li>';
 				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_remissives') . '">' . lang('rdf.Check_remissives') . '</a></li>';
 				$sx .= '</ul>';
