@@ -47,6 +47,9 @@ function remissive($id)
 		$AuthotityRemissive = new \App\Models\Authority\AuthotityRemissive();
 		$dt = $AuthotityRemissive->remissive_author($id);
 
+		print_r($dt);
+		echo '===>REMISSIVE';
+
 		$sx = '';		
 		for ($r=0;$r < count($dt);$r++)
 			{
