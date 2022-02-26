@@ -256,6 +256,8 @@ class RDF extends Model
 							$dt['cc_use'] = $d1;
 							$this->set($dt)->where('id_cc',$d2)->update();
 							$this->change($d2,$d1);
+							$sx = metarefresh(PATH.MODULE.'rdf/remissive/'.$d2.'/'.$d3.'/'.$d4.'/'.$d5);
+							return $sx;
 						} else {
 							echo 'OPS - Ordem errada';
 						}
