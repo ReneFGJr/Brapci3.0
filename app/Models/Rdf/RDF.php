@@ -48,6 +48,28 @@ class RDF extends Model
 			return $tela;
 		}
 	*/
+
+	function rdf_check_authors()
+		{
+			$AuthotityRDF = new \App\Models\Authority\AuthotityRDF();
+			$sx  = '';
+			$ph = get("phase");
+			switch ($ph)
+				{
+					default:
+						/*************************************** Etapa I */				
+						$sx .= $AuthotityRDF->author_check_method_1();
+						break;
+
+					case '2':
+						$sx .= h('Phase II',4);
+						/*************************************** Etapa I */				
+						$sx .= $AuthotityRDF->author_check_method_2();
+						break;
+				}
+
+			return $sx;
+		}
 	function rdf_check()
 		{
 		/********************************************** Check RDF */
@@ -94,6 +116,10 @@ class RDF extends Model
 			case 'check':
 				$sx = $cab;
 				$sx .=$this->rdf_check();
+				break;
+			case 'check_authors':
+				$sx = $cab;
+				$sx .=$this->rdf_check_authors();
 				break;
 			case 'set':
 				$RDFFormVC = new \App\Models\Rdf\RDFFormVC();
@@ -148,6 +174,7 @@ class RDF extends Model
 				$sx .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=prefix') . '">' . lang('Inport Prefix') . '</a></li>';
 				$sx .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=class') . '">' . lang('Inport Class') . '</a></li>';
 				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check') . '">' . lang('rdf.Check_class') . '</a></li>';
+				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_authors') . '">' . lang('rdf.Check_authors') . '</a></li>';
 				$sx .= '</ul>';
 		}
 		$sx = bs($sx);
@@ -255,6 +282,13 @@ class RDF extends Model
 
 		return ($dt);
 	}
+
+	function getClass($class)
+		{
+			$RDFClass = new \App\Models\Rdf\RDFClass();
+			$prop = $RDFClass->class($class);
+			return $prop;			
+		}
 	
 	function find($sr='', $class = '')
 		{
