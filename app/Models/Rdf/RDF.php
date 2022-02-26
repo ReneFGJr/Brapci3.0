@@ -48,6 +48,30 @@ class RDF extends Model
 			return $tela;
 		}
 	*/
+	function rdf_check()
+		{
+		/********************************************** Check RDF */
+		$RDFData = new \App\Models\RDF\RDFData();
+		$sx = '';
+		$sx .= '<h2>'.msg('rdf_check').'</h2>';
+		$sx .= '<ul>';
+		$sx .= '<li class="text-success">';
+		$tot = $RDFData->check_duplicates();
+		$sx .= lang('brapci.processing').' -> '.$tot.' '.lang('brapci.duplicates');
+		$sx .= '</li>';
+		$sx .= '</ul>';
+
+		if ($tot > 0)
+			{
+				$sx .= metarefresh(PATH.MODULE.'rdf/check',5);
+			} else {
+				$sx .= bsmessage(lang('brapci.rdf_check_ok'),1);
+				$sx .= '<a href="'.PATH.MODULE.'rdf" class="btn btn-outline-primary bt-2">'.lang('brapci.return').'</a>';
+			}
+
+		return $sx;
+		}
+		
 
 	function le_class($id)
 		{
@@ -67,6 +91,10 @@ class RDF extends Model
 		$sx = '';
 		$type = get("type");
 		switch ($d1) {
+			case 'check':
+				$sx = $cab;
+				$sx .=$this->rdf_check();
+				break;
 			case 'set':
 				$RDFFormVC = new \App\Models\Rdf\RDFFormVC();
 				$sx = $RDFFormVC->ajax_save();
@@ -119,6 +147,7 @@ class RDF extends Model
 				$sx .= '<ul>';
 				$sx .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=prefix') . '">' . lang('Inport Prefix') . '</a></li>';
 				$sx .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=class') . '">' . lang('Inport Class') . '</a></li>';
+				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check') . '">' . lang('rdf.Check_class') . '</a></li>';
 				$sx .= '</ul>';
 		}
 		$sx = bs($sx);

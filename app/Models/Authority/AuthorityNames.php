@@ -177,7 +177,9 @@ class AuthorityNames extends Model
 			if ($dt['a_brapci'] != '')
 				{
 					$link = PATH.'res/v/'.$dt['a_brapci'];
-					$sx = '<a href="'.$link.'" class="btn btn-outline-primary">'.lang('brapci.brapci_link').'</a> ';
+					$sx = '<a href="'.$link.'">';
+					$sx .= '<img src="'.URL.'img/logo/brapci_200x200.png" width="40" height="40" border=0>';
+					$sx .= '</a> ';
 				}
 			return $sx;			
 		}

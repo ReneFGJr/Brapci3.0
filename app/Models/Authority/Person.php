@@ -14,7 +14,9 @@ class Person extends Model
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [];
+	protected $allowedFields        = [
+		'id_a','a_genere',
+	];
 
 	// Dates
 	protected $useTimestamps        = false;
@@ -40,10 +42,150 @@ class Person extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
+ function person_header($dt)
+	{
+		$Lattes = new \App\Models\Lattes\Lattes();
+		$sx = '';
+		$sx .= '<div class="col-md-2 text-right text-end" style="border-right: 4px solid #8080FF;">
+				<tt style="font-size: 100%;">Person</tt>        
+				</div>';
+		$sa = h($dt['a_prefTerm'],4);
+		$sa .= $Lattes->link($dt,30);
+		if (perfil("#ADM"))
+			{
+				$sa .= $this->btn_check($dt,30);
+			}
+
+		$sx .= bsc($sa,8);
+
+		/*********************************************** Photo */
+		$photo = $this->image($dt);
+		$sx .= bsc($photo,2);
+
+		$sx = bs($sx);
+		return $sx;
+	}
+function btn_check($dt,$size=50)
+	{
+		if ($dt['a_brapci'] > 0)
+		{
+			$sx = '';
+			$sx .= '<a href="'.base_url(PATH.MODULE.'v/'.$dt['a_brapci'].'?act=check').'" class="btn btn-xs btn-default">';
+			$sx .= bsicone('circle',$size);
+			$sx .= '</a>';
+		}
+		return $sx;
+	}
+function image($dt)
+	{
+		$genere = $dt['a_genere'];
+
+		switch($genere)
+			{
+				case 'M':
+				$file = 'img/pics/no_image_he.jpg';
+				break;
+
+				case 'F':
+				$file = 'img/pics/no_image_she.jpg';
+				break;
+
+				default:
+				$file = 'img/pics/no_image_she_he.jpg';
+				break;
+			}
+		
+		$img = URL.$file;
+		$img = '<img src="'.$img.'" class="img-thumbnail img-fluid">';
+		return $img;
+	}
+
+function check_id($id)
+	{
+		$sx = '';
+		$this->RDF = new \App\Models\Rdf\RDF();
+		$dt = $this->RDF->le($id);
+		$da = $this->where('a_brapci',$id)->findAll();
+		if (count($da) == 0)
+			{
+				return "";
+			}
+		$da = $da[0];
+		
+
+		$sx .= h(lang('brapci.person_checklist'),4);
+		$sx .= '<ul>';
+		/********************************************** Check Genere */
+		$sx .= '<li class="text-success">';
+		$sx .= $this->check_genere($dt,$da);
+		$sx .= '</li>';
+
+		/********************************************** Check Loop */
+		$sx .= '<li class="text-success">';
+		$sx .= $this->check_loop_rdf($dt,$da);
+		$sx .= '</li>';		
+
+		$sx .= '</ul>';
+
+		$sx = bs(bsc($sx,12));
+		return $sx;
+	}
+
+function check_duplicate_rdf($dt,$da)
+	{
+		$RDFData = new \App\Models\Rdf\RDFData();
+		$tot = $RDFData->check_duplicates();
+		$sx = lang('brapci.check').' '.lang('brapci.duplicate');
+		if ($tot > 0)
+			{
+				$sx .= '<span class="text-success"> <b>'.lang('brapci.update').' </b>('.$tot.')</span>';
+			} else {
+				$sx .= '<span class="text-danger"> <b>'.lang('brapci.bypass').'</b></span>';
+			}
+		return $sx;		
+	}
+
+function check_genere($dt,$da)
+	{
+		$id = $da['id_a'];
+		$dg = array('M'=>0,'F'=>0,'X'=>0);
+		$gn = $this->RDF->recover($dt,'hasGender');
+		for ($r=0;$r < count($gn);$r++)
+			{
+				$t = $this->RDF->c($gn[$r]);;
+				$g = substr($t,0,1);
+				$dg[$g]++;
+			}
+		if (($dg['M'] > $dg['F']) and ($dg['M'] > $dg['X']))
+			{
+				$gt = 'M';
+			}
+		if (($dg['F'] > $dg['M']) and ($dg['F'] > $dg['X']))
+			{
+				$gt = 'M';
+			}
+		if ($dg['M'] == $dg['F']) 
+			{
+				$gt = 'X';
+			}
+			
+		$sx = lang('brapci.check').' '.lang('brapci.genere');
+		if ($da['a_genere'] != $gt)
+			{
+				$this->set('a_genere',$gt);
+				$this->where('id_a',$id)->update();
+				$sx .= '<span class="text-success"> <b>'.lang('brapci.update').'</b></span>';
+			} else {
+				$sx .= '<span class="text-danger"> <b>'.lang('brapci.bypass').'</b></span>';
+			}
+		return $sx;
+	}
+
+
 function viewid($id,$loop=0)
 	{
 		$AuthorityNames = new \App\Models\Authority\AuthorityNames();
-		$Lattes = new \App\Models\Lattes\Lattes();
+		
 		$Brapci = new \App\Models\Brapci\Brapci();
 
 		$RDF = new \App\Models\Rdf\RDF();
@@ -69,17 +211,31 @@ function viewid($id,$loop=0)
 				$dt['a_orcid'] = '';
 				$dt['a_master'] = '';
 				$dt['a_brapci'] = $id;
-				$AuthorityNames->insert($dt);
+				$dt['a_genere'] = 'X';
+				$rsp= $AuthorityNames->insert($dt);
+				$this->check_id($id);
 			} else {
 				$dt = $dt[0];
 			}
 
-		$tela = bs(bsc(h($dt['a_prefTerm'], 1),12));
+
+		/************************************************************* HEADER */			
+		$tela = $this->person_header($dt);
+
+		/******************************************** RECHECK */
+		if (get("act") == 'check')
+			{
+				$tela .= $this->check_id($id);
+				return $tela;
+			}
+
+
+		/************************************************************* Lattes */
 		$link0 = $Brapci->link($dt);
 
 		$link1 = '';
 
-		$link1 = $Lattes->link($dt);
+		
 
 		if ($dt['a_brapci'] != 0)
 			{			

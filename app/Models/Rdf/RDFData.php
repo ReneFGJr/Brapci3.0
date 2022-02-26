@@ -63,6 +63,24 @@ class RDFData extends Model
 			$id = $rst[0]['id_d'];
 			return $id;
 		}
+
+	function check_duplicates()
+		{
+
+			$sql = "select d_r1,d_r2,d_p,d_literal,count(*) as total, d_library, max(id_d) as max
+					from ".PREFIX."rdf_data 
+					group by d_r1,d_r2,d_p,d_literal, d_library 
+					having count(*) > 1
+					limit 100";
+			$dt = $this->db->query($sql)->getResultArray();
+
+			for ($r=0;$r < count($dt);$r++)
+				{
+					$this->where('id_d',$dt[$r]['max'])->delete();
+				}
+			return count($dt);
+		}
+
 	function change($d1,$d2)
 		{
 			$d1= round($d1);

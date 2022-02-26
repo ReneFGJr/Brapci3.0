@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models\Lattes;
+namespace App\Models\Authority;
 
 use CodeIgniter\Model;
 
-class Lattes extends Model
+class Genere extends Model
 {
 	protected $DBGroup              = 'default';
-	protected $table                = 'lattes';
+	protected $table                = 'generes';
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
@@ -39,29 +39,4 @@ class Lattes extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
-
-	function link($dt,$size=50)
-		{
-			$link1 = '';
-			if ($dt['a_lattes'] > 0)
-			{
-				$link = 'http://lattes.cnpq.br/' . trim($dt['a_lattes']);
-				$link1 = '<a href="' . $link . '" target="_new' . $dt['a_lattes'] . '" title="'.lang('brapci.link_to_lattes').'">';
-				$link1 .= '<img src="' . base_url('img/icones/lattes.png') . '" style="height:'.$size.'px">';
-				$link1 .= '</a>';
-			} else {
-				//http://brapci3/index.php/res/admin/authority/findid/1
-				if ($dt['a_brapci'] > 0)
-					{
-						if (isset($dt['id_a']))
-						{
-							$link = PATH.MODULE.'/admin/authority/findid/'.$dt['id_a'];
-							$link1 = '<a href="' . $link . '" target="_new' . $dt['a_lattes'] . '">';
-							$link1 .= 'Busca <img src="' . base_url('img/icones/lattes.png') . '" style="height: '.$size.'px">';
-							$link1 .= '</a>';
-						}
-					}
-			}
-			return $link1;
-		}
 }
