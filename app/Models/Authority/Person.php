@@ -87,6 +87,7 @@ function remissive($id)
 		if (perfil("#ADM"))
 			{
 				$sa .= $this->btn_check($dt,30);
+				$sa .= $this->btn_remissive($dt,30);
 			}
 
 		if ($dt['a_brapci'] > 0)
@@ -109,12 +110,24 @@ function btn_check($dt,$size=50)
 		if ($dt['a_brapci'] > 0)
 		{
 			$sx = '';
-			$sx .= '<a href="'.base_url(PATH.MODULE.'v/'.$dt['a_brapci'].'?act=check').'" class="btn btn-xs btn-default">';
+			$sx .= '<a href="'.(PATH.MODULE.'v/'.$dt['a_brapci'].'?act=check').'" class="btn btn-xs btn-default">';
 			$sx .= bsicone('circle',$size);
 			$sx .= '</a>';
 		}
 		return $sx;
 	}
+
+function btn_remissive($dt,$size=50)
+	{
+		if ($dt['a_brapci'] > 0)
+		{
+			$sx = '';
+			$sx .= onclick(PATH.MODULE.'rdf/remissive/'.$dt['a_brapci']);
+			$sx .= bsicone('loop',$size);
+			$sx .= '</a>';
+		}
+		return $sx;
+	}	
 function image($dt)
 	{
 		$genere = $dt['a_genere'];

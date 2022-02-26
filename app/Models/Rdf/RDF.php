@@ -139,6 +139,9 @@ class RDF extends Model
 		$sx = '';
 		$type = get("type");
 		switch ($d1) {
+			case 'remissive':
+				$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab);
+				break;
 			case 'check_loop';
 				$sx .= $cab;	
 				$sx .= $this->check_loop();
@@ -222,6 +225,59 @@ class RDF extends Model
 		$sx = bs($sx);
 		return $sx;
 	}
+
+	function remissive($d2, $d3, $d4, $d5, $cab)
+		{
+			$dt = $this->le($d2);
+			$nome = $dt['concept']['n_name'];
+			$sx = h($nome,4);
+
+			$wd = explode(' ',$nome);
+			for ($r=0;$r < count($wd);$r++)
+				{
+					$sx .= '<br>' . $wd[$r];
+				}
+
+			/******************************* SAVE */				
+			$act = get("action");
+			if ($act != '')
+				{
+					$d1 = get("id_cc");
+					$d2 = get("id_use");
+
+					echo '===>'.$d1.'====>'.$d2;
+				}
+			
+			/* Classe */
+			$class = "Person";
+			$id_class = $this->getClass($class);
+
+			$this->join('rdf_name','cc_pref_term = id_n');
+			$this->where('cc_class',$id_class);
+			$this->where('cc_use',0);
+			$this->where('id_cc <> '.$d2);
+			$this->like('n_name',$wd[0]);
+			$this->orderBy('n_name');
+			$dt = $this->FindAll();
+			
+			$sx .= form_open();
+			$sx .= '<input type="hidden" name="id_cc" value="' . $d2 . '">';
+			$sx .= count($dt).' names found';
+			$sx .= '<select name="id_use" style="width: 100%;" size=10>';
+			for ($r=0;$r < count($dt);$r++)
+				{
+					$line = $dt[$r];
+					$sx .= '<option value="'.$line['id_cc'].'">';
+					$sx .= $line['n_name'];
+					$sx .= '</option>';
+				}
+			$sx .= '</select>';
+			$sx .= '<input type="submit" name="action" value="'.lang('Join').'">';
+			$sx .= form_close();
+
+			return $sx;
+			print_r($dt);
+		}
 
 	function form($id)
 		{
