@@ -249,11 +249,10 @@ class RDF extends Model
 						{
 							$dt['cc_use'] = $d1;
 							$this->set($dt)->where('id_cc',$d2)->update();
+							$this->change($d2,$d1);
 						} else {
 							echo 'OPS - Ordem errada';
 						}
-
-					echo '===>'.$d1.'====>'.$d2;
 				}
 			
 			/* Classe */

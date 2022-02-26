@@ -68,8 +68,11 @@ class RDFConcept extends Model
 					$sx .= h('d_r1',4);
 					$sx .= metarefresh(PATH.MODULE.'rdf/check_remissives',2);
 				} else {
-					$sx .= h('d_r2',4);
-					$sx .= $this->check_remissives('d_r2');
+					if ($var != 'd_r2')
+					{
+						$sx .= h('d_r2',4);
+						$sx .= $this->check_remissives('d_r2');
+					}
 				}
 			$sx .= bsmessage('Remissives - '.$var.': '.count($dt));
 			return $sx;
