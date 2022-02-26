@@ -51,7 +51,7 @@ class RDF extends Model
 	function rdf_check()
 		{
 		/********************************************** Check RDF */
-		$RDFData = new \App\Models\RDF\RDFData();
+		$RDFData = new \App\Models\Rdf\RDFData();
 		$sx = '';
 		$sx .= '<h2>'.msg('rdf_check').'</h2>';
 		$sx .= '<ul>';
