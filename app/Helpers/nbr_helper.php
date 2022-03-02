@@ -164,7 +164,7 @@ function nbr_author($xa,$xp)
         $name = trim($name);
         if (strlen($name) < 5)
             {
-                $name = "#Short_name ".$name.'-'.date("YmdHis");
+                $name = "#SEM AUTOR#";
             }
         return $name;
     }
