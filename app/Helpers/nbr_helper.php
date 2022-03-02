@@ -164,7 +164,7 @@ function nbr_author($xa,$xp)
         $name = trim($name);
         if (strlen($name) < 5)
             {
-                $name = "#SEM AUTOR#";
+                $name = "";
             }
         return $name;
     }
