@@ -109,29 +109,35 @@ class V extends Model
 						break;								
 
 					case 'Issue':
-						$sx .= $this->Issue($th,$id,$act);
-						//$JournalIssue = new \App\Models\Journal\JournalIssue();
-						//$sx .= bs(bsc(h('Class: '.$class,2),12));
-						//$sx .= $JournalIssue->view_issue_articles($id);
-						//$sx .= bs(bsc($RDF->view_data($id),12));
+						$Bibliometric = new \App\Models\Bibliometric\Bibliometric();
+						$sx .= $this->Issue($th,$id,$act);				
+						$sx .= $Bibliometric->IssueAuthors($id);
+						$sx .= bs(bsc($RDF->view_data($id),12));
 						break;	
 					case 'Subject':
 						$sx .= $this->Subject($th,$id,$dt);
 						break;
 
 					case 'IssueProceeding':
-						$sx .= $this->Issue($th,$id,$act);
+						$Bibliometric = new \App\Models\Bibliometric\Bibliometric();						
+						$sx .= $this->Issue($th,$id,$act);						
+						$sx .= $Bibliometric->IssueAuthors($id);
 						$sx .= bs(bsc($RDF->view_data($id),12));
 						break;
+
+					case 'CorporateBody':
+						//$Articles = new \App\Models\Journal\Articles();
+						$sx .= $this->CorporateBody($th,$id,$act);
+						break;				
 						
 					case 'Person':
 						//$Articles = new \App\Models\Journal\Articles();
 						$sx .= $this->Person($th,$id,$act);
+						$sx .= $this->BibliograficProduction($th,$id,$act);
 						if (perfil("#ADM"))
 						{
 							$sx .= bs(bsc($RDF->view_data($id),12));
-						}
-						
+						}					
 						break;				
 
 					default:
@@ -147,13 +153,146 @@ class V extends Model
 			return $sx;
 		}
 
+		function BibliograficProduction($th,$id,$dt)
+			{
+				$RDF = new \App\Models\Rdf\RDF();
+				$dt = $RDF->le($id);
+				$pub = $RDF->recover($dt,'hasAuthor');
+
+				$pubs = array();	
+				$authors = array();
+				$keywords = array();
+
+				for ($r=0;$r < count($pub);$r++)
+					{
+						$ida = $pub[$r];
+						$dir = $RDF->directory($ida);
+						$txt = $RDF->c($ida);
+						
+						if (!file_exists($dir.'year.nm'))
+							{
+								echo "<br>OPS - Year not found in ".$dir.' '.$ida;
+							} else {
+								
+							}
+						/*********************** RECUPERA ANO */
+						if (file_exists($dir.'year.nm'))
+							{
+								$year = file_get_contents($dir.'year.nm');
+							} else {
+								$year = 0;
+							}
+						/******************************* YEAR */
+						if (!isset($pubs[$year]))
+							{
+								$pubs[$year] = array();
+							}						
+						array_push($pubs[$year],$txt);
+
+						/*********************** RECUPERA AUTHORS */
+						if (file_exists($dir.'authors.json'))
+							{
+								array_push($authors,(array)json_decode(file_get_contents($dir.'authors.json')));
+							}						
+						/*********************** RECUPERA AUTHORS */
+						if (file_exists($dir.'keywords.json'))
+							{
+								array_push($keywords,(array)json_decode(file_get_contents($dir.'keywords.json')));
+							}						
+					}
+				krsort($pubs);
+
+				/****************************************************************** KEYWORDS *********************/
+				$keyw = array();
+				for ($r=0;$r < count($keywords);$r++)
+					{
+						foreach($keywords[$r] as $id=>$key)
+							{
+								$key = trim($key);
+								if (!isset($keyw[$key])) 
+									{
+										$keyw[$key] = 1;
+									} else {
+										$keyw[$key]++;
+									}
+							}
+					}
+
+				/****************************************************************** COAUTORES *********************/
+				$coauthors = array();
+				$coauthorsId = array();
+				for ($r=0;$r < count($authors);$r++)
+					{
+						$authors = (array)$authors;
+						foreach($authors[$r] as $id=>$auth)
+							{
+								$auth = (array)$auth;
+								$auth_name = trim($auth['name']);
+								$auth_id = trim($auth['id']);
+
+								if (!isset($coauthors[$auth_name])) 
+									{
+										$coauthors[$auth_name] = 1;
+										$coauthorsId[$auth_name] = $auth_id;;
+									} else {
+										$coauthors[$auth_name]++;
+									}
+							}
+					}	
+				ksort($coauthors);		
+				$co = h('Coauthors',4);		
+				$co .= '<ul class="nolist">';
+				foreach($coauthors as $name=>$total)
+					{
+						$link = $RDF->link(array('id_cc'=>$coauthorsId[$name]));
+						$linka = '</a>';
+						$co .= '<li>'.$link.$name.$linka.' ('.$total.')</li>';
+					}
+				$co .= '</ul>';
+
+				$txt = '';
+				$xyear = '';
+				$tot = 0;
+				foreach($pubs as $year=>$works)
+					{
+						if ($xyear != $year)
+							{
+								$txt .= h($year,2);
+								$xyear = $year;
+							} 
+						for ($r=0;$r < count($works);$r++)
+							{
+								$txt .= '<p>'.$works[$r].'</p>';
+								$tot++;
+							}			
+					}
+
+				$txtb = h('Bibliografic Production',4);
+
+				$txt = bs(bsc($txt,8).bsc($co.$txtb,4));
+				return $txt;
+			}
+
 		function Person($th,$id,$dt)
 			{
 				$sx = '';
 				$Person = new \App\Models\Authority\Person();
+				$Bibliometric = new \App\Models\Bibliometric\Bibliometric();
 				$sx .= $Person->viewid($id);
+				$sx .= $Bibliometric->PersonAuthors($id);
 				return $sx;
 			}
+
+		function CorporateBody($th,$id,$dt)
+			{
+				$RDF = new \App\Models\Rdf\RDF();
+				$sx = '';
+				$CorporateBody = new \App\Models\Authority\CorporateBody();
+				$sx .= $CorporateBody->viewid($id);
+				$sx .= bs(bsc($RDF->view_data($id),12));
+				return $sx;
+			}
+
 
 		function Subject($th,$id,$dt)
 			{
@@ -176,7 +315,11 @@ class V extends Model
 
 				$RDF = new \App\Models\Rdf\RDF();
 				$dt = $RDF->le($id);
-				$tps = array('hasIssue','hasIssueProceeding');
+				/* Recupera Rótulo */
+				$label = $RDF->c($id);
+
+				/* Recupera Trabalhos */
+				$tps = array('hasIssue','hasIssueProceeding');				
 				$idj = 0;
 				for ($r=0;$r < count($tps);$r++)
 					{

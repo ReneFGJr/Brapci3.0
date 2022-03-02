@@ -51,74 +51,61 @@ class RDF extends Model
 		}
 	*/
 
-	function check_loop()
+	function string_array($d,$t=0,$sep = ';')
 		{
-			$sx = h('Check Loop');
-			$this->select('id_cc, cc_use');
-			$this->where("cc_use > 0");
-			$this->where("cc_use > id_cc");
-			$dt = $this->findAll();
-
-			for ($r=0;$r < count($dt);$r++)
+			$sx = '';
+			$max = count($d);
+			
+			if ($t == 1) { $max = $t; }
+			for ($r=0;$r < $max;$r++)
 				{
-					$ln = $dt[$r];
-					if ($ln['id_cc'] < $ln['cc_use'])
-						{
-							$da['cc_use'] = $ln['id_cc'];
-							$this->set($da)->where('id_cc',$ln['cc_use'])->update();
+					if (isset($d[$r]))
+					{
+						$line = $d[$r];
+						if (strlen($line[2]) > 0)
+							{
+								$sx .= '<p>'.$line[2].'</p>';
+							} else {
+								if (strlen($sx) > 0) { $sx .= $sep.' '; }
+								$dt['id_cc'] = $line[1];
+								$sx .= $this->link($dt);
+								$sx .= $this->c($line[1]);
+								$sx .= '</a>';
+							}
+					}
+				}
+			return $sx;			
+		}
 
-							$da['cc_use'] = 0;
-							$this->set($da)->where('id_cc',$ln['id_cc'])->update();
-						}
-					$sx .= '<li>'.$ln['id_cc'].' => '.$ln['cc_use'].'</li>';
+	function string($d,$t=0,$sep = ';')
+		{
+			$sx = '';
+
+			/* Retorna se for string */
+			if (!is_array($d)) { return($d); }
+			/* Array vazia */
+			if (count($d) == 0) { return ''; }
+
+			$max = count($d);
+			if ($t == 1) { $max = $t; }
+			for ($r=0;$r < $max;$r++)
+				{
+					if (isset($d[$r]))
+					{
+						if (strlen($sx) > 0) { $sx .= $sep.' '; }
+						if (is_array($d[$r]))
+							{
+								$sx .= $this->c($d[$r][1]);
+							} else {
+								$sx .= $d[$r];
+							}						
+					}
 				}
 			return $sx;
-		}	
-
-	function rdf_check_authors()
-		{
-			$AuthotityRDF = new \App\Models\Authority\AuthotityRDF();
-			$sx  = '';
-			$ph = get("phase");
-			switch ($ph)
-				{
-					default:
-						/*************************************** Etapa I */				
-						$sx .= $AuthotityRDF->author_check_method_1();
-						break;
-
-					case '2':
-						$sx .= h('Phase II',4);
-						/*************************************** Etapa I */				
-						$sx .= $AuthotityRDF->author_check_method_3();
-						break;
-				}
-
-			return $sx;
 		}
-	function rdf_check()
-		{
-		/********************************************** Check RDF */
-		$RDFData = new \App\Models\Rdf\RDFData();
-		$sx = '';
-		$sx .= '<h2>'.msg('rdf_check').'</h2>';
-		$sx .= '<ul>';
-		$sx .= '<li class="text-success">';
-		$tot = $RDFData->check_duplicates();
-		$sx .= lang('brapci.processing').' -> '.$tot.' '.lang('brapci.duplicates');
-		$sx .= '</li>';
-		$sx .= '</ul>';
 
-		if ($tot > 0)
-			{
-				$sx .= metarefresh(PATH.MODULE.'rdf/check',5);
-			} else {
-				$sx .= bsmessage(lang('brapci.rdf_check_ok'),1);
-				$sx .= '<a href="'.PATH.MODULE.'rdf" class="btn btn-outline-primary bt-2">'.lang('brapci.return').'</a>';
-			}
 
-		return $sx;
-		}
+
 		
 
 	function le_class($id)
@@ -139,17 +126,29 @@ class RDF extends Model
 		$sx = '';
 		$type = get("type");
 		switch ($d1) {
-			case 'remissive':
-				$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab);
+			case 'remissive_Person':			
+				$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab,'Person');
 				break;
+			case 'remissive_CorporateBody':
+				$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab,'CorporateBody');
+				break;
+			case 'remissive_Subject':
+				$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab,'Subject');
+				break;								
 			case 'check_loop';
-				$sx .= $cab;	
-				$sx .= $this->check_loop();
-				break;
-			case 'check_remissives':
-				$RDFConcept = new \App\Models\Rdf\RDFConcept();
+				$RDFChecks = new \App\Models\Rdf\RDFChecks();
 				$sx .= $cab;
-				$sx .= $RDFConcept->check_remissives();
+				$sx .= $RDFChecks->check_loop();
+				break;
+			case 'check_corporate_body':
+				$RDFChecks = new \App\Models\Rdf\RDFChecks();
+				$sx .= $cab;
+				$sx .= $RDFChecks->check_html('CorporateBody');
+				break;
+			case 'check_subject':
+				$RDFChecks = new \App\Models\Rdf\RDFChecks();
+				$sx .= $cab;
+				$sx .= $RDFChecks->check_html('Subject');
 				break;
 			case 'set_pref_term':
 				$RDFConcept = new \App\Models\Rdf\RDFConcept();
@@ -157,12 +156,15 @@ class RDF extends Model
 				$sx .= wclose();
 				break;
 			case 'check':
-				$sx = $cab;
-				$sx .=$this->rdf_check();
+				$RDFChecks = new \App\Models\Rdf\RDFChecks();
+				$sx .= $cab;
+				$sx .= $RDFChecks->check_duplicate();
 				break;
 			case 'check_authors':
-				$sx = $cab;
-				$sx .=$this->rdf_check_authors();
+				$RDFChecks = new \App\Models\Rdf\RDFChecks();
+				$sx .= $cab;
+				$sx .= $RDFChecks->check_authors();			
+				
 				break;
 			case 'set':
 				$RDFFormVC = new \App\Models\Rdf\RDFFormVC();
@@ -219,7 +221,8 @@ class RDF extends Model
 				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check') . '">' . lang('rdf.Check_class_duplicate') . '</a></li>';
 				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_loop') . '">' . lang('rdf.Check_loop') . '</a></li>';
 				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_authors') . '">' . lang('rdf.Check_authors') . '</a></li>';
-				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_remissives') . '">' . lang('rdf.Check_remissives') . '</a></li>';
+				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_corporate_body') . '">' . lang('rdf.Check_corporate_body') . '</a></li>';
+				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_subject') . '">' . lang('rdf.Check_subject') . '</a></li>';
 				$sx .= '</ul>';
 		}
 		$sx = bs($sx);
@@ -232,53 +235,54 @@ class RDF extends Model
 			$RDFData->change($d1,$d2);
 		}
 
-	function remissive($d2, $d3, $d4, $d5, $cab)
+	function remissive($d2, $d3, $d4, $d5, $cab,$class = "Person")
 		{
 			$dt = $this->le($d2);
 			$nome = $dt['concept']['n_name'];
-			$sx = h($nome,4);
+			$sx = $cab;
 
+			$nome = troca($nome,',','');
 			$wd = explode(' ',$nome);
+			$sa = '';
 			for ($r=0;$r < count($wd);$r++)
 				{
-					$sx .= '<br>' . $wd[$r];
+					$sa .= '<a href="'.PATH.MODULE.'rdf/remissive_'.$class.'/'.$d2.'/'.$d3.'?arg='.$wd[$r].'">'.$wd[$r].'</a> ';
 				}
+			$sx .= bsc($sa,12);
 
 			/******************************* SAVE */				
 			$act = get("action");
 			if ($act != '')
 				{
-					$d1 = get("id_cc");
-					$d2 = get("id_use");
+					$d1x = get("id_cc");
+					$d2x = get("id_use");
 
-					if ($d1 < $d2)
-						{
-							$dt['cc_use'] = $d1;
-							$this->set($dt)->where('id_cc',$d2)->update();
-							$this->change($d2,$d1);
-							$sx = metarefresh(PATH.MODULE.'rdf/remissive/'.$d2.'/'.$d3.'/'.$d4.'/'.$d5);
-							return $sx;
-						} else {
-							echo 'OPS - Ordem errada';
-						}
+					$dt['cc_use'] = $d1x;
+					$this->set($dt)->where('id_cc',$d2x)->update();
+					$this->change($d2x,$d1x);
+					$sx = metarefresh(PATH.MODULE.'rdf/remissive_'.$class.'/'.$d2.'/'.$d3.'?arg='.get('arg'));
+					return $sx;
 				}
 			
-			/* Classe */
-			$class = "Person";
+			/* Classe */			
 			$id_class = $this->getClass($class);
+
+			$nm = get("arg");
+			if (strlen($nm) == 0) { $nm = $wd[0]; }
 
 			$this->join('rdf_name','cc_pref_term = id_n');
 			$this->where('cc_class',$id_class);
 			$this->where('cc_use',0);
 			$this->where('id_cc <> '.$d2);
-			$this->like('n_name',$wd[0]);
+			$this->like('n_name',$nm);
 			$this->orderBy('n_name');
 			$dt = $this->FindAll();
 			
 			$sx .= form_open();
+			$sx .= '<input type="text" name="arg" value="'.$nm.'" size="20" class="form-control">';
 			$sx .= '<input type="hidden" name="id_cc" value="' . $d2 . '">';
 			$sx .= count($dt).' names found';
-			$sx .= '<select name="id_use" style="width: 100%;" size=10>';
+			$sx .= '<select name="id_use" style="width: 100%;" size=12>';
 			for ($r=0;$r < count($dt);$r++)
 				{
 					$line = $dt[$r];
@@ -287,11 +291,10 @@ class RDF extends Model
 					$sx .= '</option>';
 				}
 			$sx .= '</select>';
-			$sx .= '<input type="submit" name="action" value="'.lang('Join').'">';
+			$sx .= '<input type="submit" name="action" value="'.lang('Join').'" class="btn btn-outline-primary">';
 			$sx .= form_close();
 
 			return $sx;
-			print_r($dt);
 		}
 
 	function form($id)
@@ -311,14 +314,23 @@ class RDF extends Model
 			return $tela;			
 		}
 
-	function recovery($dt, $fclass = '')
+	function recovery($dt, $fclass = '',$ido = 0)
 	{
 		$rsp = array();
+		$fclass = trim($fclass);
 		for ($r = 0; $r < count($dt); $r++) {
 			$line = $dt[$r];
 			$class = trim($line['c_class']);
 			if ($class == $fclass) {
-				array_push($rsp, array($line['d_r1'], $line['d_r2'], $line['n_name']));
+				$id1 = round($line['d_r1']);
+				$id2 = round($line['d_r2']);
+				//echo '<br>=o=>'.$ido.'<br>=1=>'.$id1.'<br>=2=>'.$id2.'<br>';
+				if ($ido == $id2)
+					{
+						array_push($rsp, array($line['d_r2'], $line['d_r1'], $line['n_name'], $line['d_p']));
+					} else {
+						array_push($rsp, array($line['d_r1'], $line['d_r2'], $line['n_name'], $line['d_p']));
+					}				
 			}
 		}
 		return $rsp;

@@ -43,43 +43,6 @@ class RDFConcept extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function check_remissives($var='d_r1')
-		{
-			$sx = '';
-			$RDFData = new \App\Models\Rdf\RDFData;
-			$this->select('id_cc, cc_use, id_d, d_r1, d_p, d_r2, d_literal');
-			$this->join('rdf_data',$var.'=id_cc');
-			$this->where('cc_use > 0');
-			$this->orderby('id_d,cc_use');
-			$dt = $this->findAll();
-
-			for ($r=0;$r < count($dt);$r++)
-				{
-					$line = $dt[$r];
-
-					$dd[$var] = $line['cc_use'];
-					$RDFData->set($dd)->where('id_d',$line['id_d'])->update();
-					$sx .= '<li>'.$line['id_d'].'-->'.$line['cc_use'].'</li>';
-					if ($r > 100) { break; }
-				}
-			if ($r > 0) 
-				{ 
-					$sx .= h(lang('brapci.rdf_remissives'));
-					$sx .= h('d_r1',4);
-					$sx .= metarefresh(PATH.MODULE.'rdf/check_remissives',2);
-				} else {
-					if ($var != 'd_r2')
-					{
-						$sx .= h('d_r2',4);
-						$sx .= $this->check_remissives('d_r2');
-					} else {
-						$sx .= bsmessage('FIM');
-					}
-				}
-			$sx .= bsmessage('Remissives - '.$var.': '.count($dt));
-			return $sx;
-		}
-
 	function like($t,$class)
 		{
 			if ($class != sonumero($class))
@@ -118,15 +81,22 @@ class RDFConcept extends Model
 
 	function set_pref_term($d1,$d2)
 		{
+			$sx = '';
 			$RDF = new \App\Models\Rdf\RDF();
 			$RDFData = new \App\Models\Rdf\RDFData();
 			$dt1 = $this->find($d1);
 			$dt2 = $this->find($d2);
 
+			/************************************************************************ RDF PrefTerm */
+
+
 			$class = 'skos:prefLabel';
 			$prop = $RDF->getClass($class,0);
 
-			/*************************************************** Update 1 */
+			echo 'd1='.$d1.'<br>';
+			echo 'd2='.$d2.'<br>';
+			echo 'prop='.$prop.'<br>';
+
 			$dq1 = $RDFData
 					->where('d_r1',$d1)
 					->where('d_p',$prop)
@@ -136,24 +106,39 @@ class RDFConcept extends Model
 					->where('d_r1',$d2)
 					->where('d_p',$prop)
 					->findAll();
-			$dq1 = $dq1[0];	
-			$dq2 = $dq2[0];	
 
 			/*************************************************** Update 1 */
 			$dt['cc_pref_term'] = $dt2['cc_pref_term'];
 			$this->set($dt)->where('id_cc',$d1)->update();
 
-			/*************************************************** Update 2 */
-			$da['d_literal'] = $dt2['cc_pref_term'];
-			$RDFData->set($da)->where('id_d',$dq1['id_d'])->update();
-
 			/*************************************************** Update 3 */
 			$dt['cc_pref_term'] = $dt1['cc_pref_term'];
-			$this->set($dt)->where('id_cc',$d2)->update();
+			$this->set($dt)->where('id_cc',$d2)->update();			
+
+			/*************************************************** Update 2 */
+			if (!isset($dq1[0]))
+				{
+					echo "OPS - dq1 not found";
+				} else {
+					$dq1 = $dq1[0];	
+					$da['d_literal'] = $dt2['cc_pref_term'];
+					$RDFData->set($da)->where('id_d',$dq1['id_d'])->update();
+				}
+
+
 
 			/*************************************************** Update 4 */
-			$da['d_literal'] = $dt2['cc_pref_term'];
-			$RDFData->set($da)->where('id_d',$dq2['id_d'])->update();
+			if (!isset($dq2[0]))
+				{
+					echo "OPS - dq2 not found";
+				} else {
+					$dq2 = $dq2[0];	
+					$da['d_literal'] = $dt2['cc_pref_term'];
+					$RDFData->set($da)->where('id_d',$dq2['id_d'])->update();
+				}	
+
+			$sx .= wclose();
+			return $sx;		
 		}
 
 	function concept($dt)

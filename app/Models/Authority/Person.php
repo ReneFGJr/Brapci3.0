@@ -54,9 +54,16 @@ function remissive($id)
 				$sx .= '<li>'.$line['n_name'];
 				if (perfil("#ADMIN"))
 					{
+						$link = '<a href="'.URL.MODULE.'v/'.$line['id_cc'].'">';
+						$link .= $line['id_cc'].'=>'.$line['cc_use'];
+						$link .= '</a>';
+
 						$sx .= onclick(PATH.MODULE.'rdf/set_pref_term/'.$line['cc_use'].'/'.$line['id_cc'],400,100);
-						$sx .= ' <sup>[set_prefTerm]</sup>';
-						$sx .= '</a>';
+						$sx .= ' ';
+						$sx .= '<sup>[set_prefTerm]</sup></span>';
+						$sx .= ' ';
+						$sx .= '<sup>'.$link.'</sup>';
+						
 					}
 				$sx .= '</li>';
 			}
@@ -73,6 +80,7 @@ function remissive($id)
 				</div>';
 
 		$name = $rdf['concept']['n_name'];
+		$nameID = $rdf['concept']['id_cc'];
 
 		/****************************************** Atualiza Lista */
 		if ($dt['a_prefTerm'] != $name)
@@ -82,12 +90,13 @@ function remissive($id)
 				$dt['a_prefTerm'] = $name;
 			}
 
-		$sa = h($dt['a_prefTerm'],4);
+		$sa = h($dt['a_prefTerm'].'<sup>'.$nameID.'</sup>',4);
 		$sa .= $Lattes->link($dt,30);
 		if (perfil("#ADM"))
 			{
 				$sa .= $this->btn_check($dt,30);
 				$sa .= $this->btn_remissive($dt,30);
+				$sa .= $this->btn_change_updade($dt,30);
 			}
 
 		if ($dt['a_brapci'] > 0)
@@ -110,21 +119,33 @@ function btn_check($dt,$size=50)
 		if ($dt['a_brapci'] > 0)
 		{
 			$sx = '';
-			$sx .= '<a href="'.(PATH.MODULE.'v/'.$dt['a_brapci'].'?act=check').'" class="btn btn-xs btn-default">';
+			$sx .= '<a href="'.(PATH.MODULE.'v/'.$dt['a_brapci'].'?act=check').'" class="btn btn-xs btn-default" title="Check Remissive">';
 			$sx .= bsicone('circle',$size);
 			$sx .= '</a>';
 		}
 		return $sx;
 	}
 
+function btn_change_updade($dt,$size=50)
+	{
+		if ($dt['a_brapci'] > 0)
+		{
+			$sx = '';
+			$sx .= '<a href="'.(PATH.MODULE.'v/'.$dt['a_brapci'].'?act=change').'" class="btn btn-xs btn-default" title="Change Remissive">';
+			$sx .= bsicone('circle',$size);
+			$sx .= '</a>';
+		}
+		return $sx;
+	}	
+
 function btn_remissive($dt,$size=50)
 	{
 		if ($dt['a_brapci'] > 0)
 		{
 			$sx = '';
-			$sx .= onclick(PATH.MODULE.'rdf/remissive/'.$dt['a_brapci']);
+			$sx .= onclick(PATH.MODULE.'rdf/remissive_Person/'.$dt['a_brapci'],800,400);
 			$sx .= bsicone('loop',$size);
-			$sx .= '</a>';
+			$sx .= '</span>';
 		}
 		return $sx;
 	}	
@@ -151,6 +172,19 @@ function image($dt)
 		$img = '<img src="'.$img.'" class="img-thumbnail img-fluid">';
 		return $img;
 	}
+
+function change_id($id)
+	{
+		$RDFConcept = new \App\Models\Rdf\RDFConcept();
+		$RDF = new \App\Models\Rdf\RDF();
+		$dt = $RDFConcept->select('cc_use, id_cc')->where('cc_use',$id)->findAll();
+		for ($r=0;$r < count($dt);$r++)
+			{
+				$line = $dt[$r];
+				$RDF->change($line['cc_use'],$line['id_cc']);
+				echo '===>'.$line['id_cc'].'==>'.$line['cc_use'].'<br>';
+			}
+	}	
 
 function check_id($id)
 	{
@@ -211,6 +245,7 @@ function check_genere($dt,$da)
 			{
 				$t = $this->RDF->c($gn[$r]);;
 				$g = substr($t,0,1);
+				if ($g = '') { $g = 'X';}
 				$dg[$g]++;
 			}
 		if (($dg['M'] > $dg['F']) and ($dg['M'] > $dg['X']))
@@ -284,6 +319,15 @@ function viewid($id,$loop=0)
 				$tela .= $this->check_id($id);
 				return $tela;
 			}
+		if (get("act") == 'change')
+			{
+				$tela .= $this->change_id($id);
+				return $tela;
+			}
+
+
+		/******************************************** CHANGE */
+		//$this->
 
 
 		/************************************************************* Lattes */

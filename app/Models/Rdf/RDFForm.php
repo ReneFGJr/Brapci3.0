@@ -116,7 +116,7 @@ function form($id, $dt) {
 
 				$class = trim($line['c_class']);
 				$link = onclick(PATH.MODULE.'rdf/form/edit/'.$class.'/'.$line['id_sc'].'/'.$id,800,400);
-				$linka = '</a>';
+				$linka = '</span>';
 				$sx .= '<tr>';
 				$sx .= '<td width="25%" align="right" valign="top">';
 
@@ -237,11 +237,10 @@ function edit($d1,$d2,$d3,$d4,$d5)
 
 		if ($range == 0)
 			{
-				echo "OK";
 				if (perfil("#ADMIN"))
 					{
 						$id = $dt['id_sc'];
-						$sx = metarefresh(PATH.MODULE.'rdf/form_ed/'.$id,0);
+						$sx = metarefresh(PATH.MODULE.'rdf/form_ed/'.$id.'?msg=range_not_found',0);
 						return $sx;
 					} else {
 						echo bsmessage("RANGE not defined",3);

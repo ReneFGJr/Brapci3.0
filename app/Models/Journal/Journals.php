@@ -129,7 +129,8 @@ class Journals extends Model
 		{
 			$sx = '';
 			$items = array();
-			$items['admin/proceeding/tableview'] = 'TableView';
+			$mod = $this->MOD();
+			$items['admin/'.$mod.'/tableview'] = 'TableView';
 			foreach($items as $it=>$tx)
 				{
 					$link = '<a href="'.PATH.MODULE.$it.'">'.$tx.'</a>';
