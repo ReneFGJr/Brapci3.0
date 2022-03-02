@@ -164,14 +164,8 @@ function nbr_author($xa,$xp)
         $name = trim($name);
         if (strlen($name) < 5)
             {
-                echo "Short name ".$name;;
-                exit;
+                $name = "#Short_name ".$name.'-'.date("YmdHis");
             }
-
-        return $name;
-
-
-
         return $name;
     }
 
