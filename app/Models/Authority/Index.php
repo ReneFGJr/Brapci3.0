@@ -261,6 +261,7 @@ class Index extends Model
 	function author($name, $URI, $up = 1)
 	{
 		$tela = '';
+		$name = strip_tags($name);
 		if (strlen($name) > 0) {
 			$tela .= '<h2>' . $name . '</h2>';
 			$AuthorityNames = new \App\Models\Authority\AuthorityNames();

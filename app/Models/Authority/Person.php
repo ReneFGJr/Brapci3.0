@@ -240,14 +240,29 @@ function check_genere($dt,$da)
 	{
 		$id = $da['id_a'];
 		$dg = array('M'=>0,'F'=>0,'X'=>0);
+		echo '<pre>';
+		print_r($dt);
+		exit;
 		$gn = $this->RDF->recover($dt,'hasGender');
 		for ($r=0;$r < count($gn);$r++)
 			{
 				$t = $this->RDF->c($gn[$r]);;
 				$g = substr($t,0,1);
-				if ($g = '') { $g = 'X';}
+				if ($g == '') 
+					{ 
+						print_r($gn[$r]);
+						exit;
+						$g = 'X';
+					}
 				$dg[$g]++;
 			}
+
+		if ($dg['M']+$dg['F']+$dg['X'] == 0)
+			{
+				echo "OPS";
+				exit;
+			}
+		
 		if (($dg['M'] > $dg['F']) and ($dg['M'] > $dg['X']))
 			{
 				$gt = 'M';
