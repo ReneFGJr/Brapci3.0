@@ -1,4 +1,12 @@
 <?php
+
+function pre($dt)
+    {
+        echo '<pre>';
+        print_r($dt);
+        echo '</pre>';
+    }
+    
 function hexdump($string)
     {
         $sx = '';
