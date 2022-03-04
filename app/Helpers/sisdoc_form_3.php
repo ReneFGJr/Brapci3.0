@@ -40,6 +40,7 @@ function pre($dt)
     echo '<pre>';
     print_r($dt);
     echo '</pre>';
+    exit;
 }
 
 function hexdump($string)
