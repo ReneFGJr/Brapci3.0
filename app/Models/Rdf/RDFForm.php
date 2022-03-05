@@ -178,7 +178,6 @@ function form_ed($id)
 
 function form_import($id_class)
 	{
-		echo h($id_class);
 		$RDF = new \App\Models\Rdf\Rdf();
 		$RDFData = new \App\Models\Rdf\RDFData();
 		$RDFConcept = new \App\Models\Rdf\RDFConcept();
