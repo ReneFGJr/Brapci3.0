@@ -275,10 +275,12 @@ class V extends Model
 
 		function Person($th,$id,$dt)
 			{
+				$Production = new \App\Models\Journal\Production();
 				$sx = '';
 				$Person = new \App\Models\Authority\Person();
 				$Bibliometric = new \App\Models\Bibliometric\Bibliometric();
 				$sx .= $Person->viewid($id);
+				$sx .= $Production->person($id);
 				$sx .= $Bibliometric->PersonAuthors($id);
 				return $sx;
 			}

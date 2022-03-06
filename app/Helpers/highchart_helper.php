@@ -17,9 +17,11 @@ function load_grapho_script()
 
 function highchart_column($data)
     {
+        if (!isset($data['height'])) { $data['height'] = '500'; }
 			/************************************************************************* JAVA SCRIPTS */
 			$js = '
 					Highcharts.chart(\''.$data['id'].'\', {
+                    height: '.$data['height'].',
   					chart: {
     					type: \'column\'
   					},
@@ -46,8 +48,8 @@ function highchart_column($data)
 				}
 			},
 			legend: {
-				align: \'right\',
-				x: -30,
+				align: \'left\',
+				x: 130,
 				verticalAlign: \'top\',
 				y: 25,
 				floating: true,
@@ -76,8 +78,8 @@ function highchart_column($data)
 			$sx .= '
 				<figure class="highcharts-figure">
 				<div id="'.$data['id'].'"></div>
-				</figure>;';
-			$sx .= '<script>'.$js.'</script>';
+				</figure>';
+			$sx .= cr().'<script>'.$js.'</script>';
             return $sx;        
     }
 

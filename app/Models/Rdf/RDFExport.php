@@ -212,6 +212,7 @@ class RDFExport extends Model
 			{
 				$this->saveRDF($id,$year,'year.nm');
 			}			
+			$this->saveRDF($id,$dt['concept']['c_class'],'class.nm');
 
 			return '';
 		}
@@ -407,6 +408,11 @@ class RDFExport extends Model
 					case 'brapci:PublicationVolume':
 						$this->export_geral($dt,$id);
 						break;
+
+					/*************************************** VOLUME */
+					case 'dc:ArticleSection':
+						$this->export_geral($dt,$id);
+						break;						
 
 					/*************************************** Number */
 					case 'brapci:Number':
