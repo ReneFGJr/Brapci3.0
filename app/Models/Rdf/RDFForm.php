@@ -59,8 +59,8 @@ function form($id, $dt) {
 		$sx = '';
 		$js1 = '';  
 		$sx .= '<div class="small">Class</div>';
-		$sx .= h($RDF->show_class($dt),2);
-		$sx .= $RDF->link($dt,'btn btn-outline-primary btn-sm').'return'.'</a>';;
+		$sx .= h($RDF->show_class($dt),2,'btn-primary [bn]');
+		//$sx .= $RDF->link($dt,'btn btn-outline-primary btn-sm').'return'.'</a>';;
 		
 
 		/* complementos */

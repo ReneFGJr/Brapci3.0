@@ -334,7 +334,14 @@ function bsdivclose()
     }
 function h($t='',$s=1,$class='')
     {
-        $sx = '<h'.$s.' class="'.$class.'">'.$t.'</h'.$s.'>';
+        $style='';
+        if (strpos($class,'[bn]') > 0)
+            {
+                $style = '  border-radius: 0 150px 150px 0;
+                            padding: 0px 0px 0px 20px; ';
+                $class = troca($class,'[bn]','');
+            }
+            $sx = '<h'.$s.' class="'.$class.'" style="'.$style.'">'.$t.'</h'.$s.'>';
         return($sx);
     }  
 function p($t='',$label='',$class='')
