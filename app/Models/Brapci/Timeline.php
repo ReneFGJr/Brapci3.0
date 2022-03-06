@@ -64,17 +64,23 @@ class Timeline extends Model
 			$dir = $RDF->directory($idp);
 			$file = $dir . 'year.nm';
 			$filec = $dir . 'class.nm';
+
+			/*************************************************** Localiza Dados nos Arquivos *******/
 			if (file_exists($file)) {
 				$type = trim(file_get_contents($filec));
 				$serie[$type] = '';
 				$prod_types[$type] = '';
 				if (file_exists($file)) {
-					$year = file_get_contents($file);
+					$year = file_get_contents($file);					
 					if (isset($prod[$year][$type])) {
 						$prod[$year][$type]++;
 					} else {
-						$prod[$year] = array($type => 1);
+						if (!isset($prod[$year])) { $prod[$year] = array(); }
+						$prod[$year][$type] = 1;
 					}
+				} else {
+					echo '<br>'.$file.' not found';
+					exit;
 				}
 			}
 		}
