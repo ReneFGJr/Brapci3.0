@@ -32,6 +32,7 @@ return [
     'Books'=>'Livros',
     'Authority'=>'Autoridades',
     'Benancib'=>'Benancib',
+    'PQ'=>'BasePQ',
     'Home'=>'Inicial',
     'Bibliometric'=>'Ferramentas',
     'About'=>'Sobre',

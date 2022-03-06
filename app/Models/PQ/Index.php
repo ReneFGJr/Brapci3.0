@@ -67,6 +67,12 @@ class Index extends Model
 					break;
 				break;
 
+				case 'pq_vigentes':
+					$sx .= $this->subheader();
+					$sx .= $this->pq_vigentes($d2,$d3,$d4);
+					break;
+				break;				
+
 				default:
 				$sx .= $this->subheader();
 				$sx .= $this->resume();
@@ -86,17 +92,32 @@ class Index extends Model
 		{
 			$Bolsa = new \App\Models\PQ\Bolsa();
 			$sx = '';
-			$sx = $Bolsa->year_list();
+			$sx = $Bolsa->year_list(0);
 			return $sx;
 		}
+
+	function pq_vigentes($d2,$d3,$d4)
+		{
+			$Bolsa = new \App\Models\PQ\Bolsa();
+			$sx = '';
+			$sx = $Bolsa->year_list(1);
+			return $sx;
+		}		
 
 	function resume()
 		{
 			$Bolsa = new \App\Models\PQ\Bolsa();
 			$Bolsista = new \App\Models\PQ\Bolsista();			
 
-			$bolsas = $Bolsa->resume();
+			$sx = $Bolsa->resume();
 
-			return $bolsas;
+			$sx .= '<ul>';
+			$sx .= '<li><a href="' . PATH . MODULE . 'pq/pq_bolsas' . '">' . lang('pq.bolsista_list') . '</a></li>';
+			$sx .= '<li><a href="' . PATH . MODULE . 'pq/pq_ano' . '">' . lang('pq.bolsista_ano_list') . '</a></li>';
+			$sx .= '<li><a href="' . PATH . MODULE . 'pq/pq_vigentes' . '">' . lang('pq.bolsista_vigentes') . '</a></li>';
+			$sx .= '<li><a href="http://memoria2.cnpq.br/bolsistas-vigentes" target="_new">' . lang('pq.bolsista_ativos_cnpq') . '</a></li>';		
+			$sx .= '</ul>';			
+
+			return $sx;
 		}
 }

@@ -47,36 +47,69 @@ class Bolsa extends Model
 
 		$year = (array)$dt['year'];
 		$sx = bs(bsc($this->resume_graph_bolsa_ano($year), 12));
-
-		$sx .= '<ul>';
-		$sx .= '<li><a href="' . PATH . MODULE . 'pq/pq_bolsas' . '">' . lang('pq.bolsista_list') . '</a></li>';
-		$sx .= '<li><a href="' . PATH . MODULE . 'pq/pq_ano' . '">' . lang('pq.bolsista_ano_list') . '</a></li>';
-		$sx .= '</ul>';
 		return $sx;
 	}
 
-	function year_list()
-	{
-		$dt = $this->join('modalidades', 'modalidades.id_mod = bolsas.bs_tipo')
-			->join('bolsistas', 'bolsistas.id_bs = bolsas.bb_person')
-			->orderBy('bs_start DESC, bs_nome')
+	function year_list($tp=0)
+		{
+		$sx = '';
+		$ord = get("order");
+
+		$limit_char = 9999;
+		switch($ord)
+			{
+				case 'bs_nome':
+					$order = 'bs_nome, bs_start';
+					$class = "";
+					break;
+				case 'BS_IES':
+					$order = 'BS_IES, bs_nome';
+					$class = "BS_IES";
+					break;
+
+				default:
+					$order = 'bs_start DESC, bs_nome';
+					$class = "bs_start";
+					$limit_char = 4;
+					break;
+			}
+
+		$data = date("Y-m-y");
+		$this->join('modalidades', 'modalidades.id_mod = bolsas.bs_tipo')
+			->join('bolsistas', 'bolsistas.id_bs = bolsas.bb_person');
+			if ($tp == 1)
+				{
+					$this->where("bs_finish >= '". $data."'");
+				}					
+			$dt = $this->orderBy($order)
 			->findAll();
 
 			$xyear = '';
-			$sx = '<table class="table">';
+			$sx .= h(lang('pq.total').': ' .count($dt),6);
+			$sx .= '<table class="table">';			
 			$th = '<tr class="small">
-				<th width="2%">'.lang('pq.nr').'</th>
-				<th width="50%">'.lang('pq.bs_nome').'</th>
-				<th width="5%">'.lang('pq.mod_modalidade').'</th>
-				<th width="10%">'.lang('pq.bs_start').'</th>
-				<th width="10%">'.lang('pq.bs_finish').'</th>
-				<th width="10%">'.lang('pq.BS_IES').'</th>
+				<th width="3%">'.lang('pq.nr').'</th>
+				<th width="50%">'.'<a href="?order=bs_nome">'.lang('pq.bs_nome').'</a></th>
+				<th width="5%">'.'<a href="?order=mod_modalidade">'.lang('pq.mod_modalidade').'</a></th>
+				<th width="10%">'.'<a href="?order=bs_start">'.lang('pq.bs_start').'</a></th>
+				<th width="10%">'.'<a href="?order=bs_finish">'.lang('pq.bs_finish').'</a></th>
+				<th width="10%">'.'<a href="?order=BS_IES">'.lang('pq.BS_IES').'</a></th>
 				</tr>'.cr();
 			$nr = 0;
+
+			/********** Header */
+			if ($class == '') { $sx .= $th; }
+
 			for($r=0;$r < count($dt);$r++)
 				{
 					$line = $dt[$r];
-					$year = substr($line['bs_start'],0,4);
+					if ($class != '')
+						{
+							$year = substr($line[$class],0,$limit_char);
+						} else {
+							$year= $xyear;
+						}
+					
 					if ($year != $xyear)
 						{
 							$xyear = $year;
@@ -97,7 +130,7 @@ class Bolsa extends Model
 				}
 			$sx .= '</table>';
 		return $sx;
-	}
+	}	
 
 	function bolsista_list()
 	{

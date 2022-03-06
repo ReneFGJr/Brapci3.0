@@ -5,6 +5,7 @@
             $menu['Books'] = URL . 'index.php/res/book/';
             $menu['Authority'] = URL . 'index.php/res/authority/';
             $menu['Benancib'] = URL . 'index.php/res/benancib/';
+            $menu['PQ'] = URL . 'index.php/res/pq/';
             $menu['Ontology'] = URL . 'index.php/res/ontology/';
             $menu['Patent'] = URL . 'index.php/res/Patent/';
             if (isset($_SESSION['id']))
