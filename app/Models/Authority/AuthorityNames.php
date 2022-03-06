@@ -121,6 +121,16 @@ class AuthorityNames extends Model
 			$Country = new \App\Models\Authority\Country();
 			$dt = $this->le($id);
 
+			if ($dt['a_brapci'] > 0)
+				{
+					$sx = h($dt['a_prefTerm'],1);
+					$sx .= bsmessage(lang('brapci.redirect_brapci'));
+					$sx .= bsmessage(lang('brapci.wait'));
+					$sx .= metarefresh(PATH.'res/v/'.$dt['a_brapci']);
+					return $sx;
+					exit;
+				}
+
 			/******************************************** Instituição */
 			$sx = '';
 			$sx .= bsc(lang('brapci.prefTerm'),11,'small');
