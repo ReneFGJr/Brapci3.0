@@ -200,6 +200,17 @@ class Res extends BaseController
 		return $tela;
 	}
 
+	public function pq($d1='',$d2='',$d3='',$d4='')
+	{
+		$dt['collection'] = mb_strtoupper(lang('brapci.base_pq'));
+		$sx = $this->cab("user",$dt);
+
+		$PQ = new \App\Models\PQ\Index();
+		$sx .= $PQ->Index($d1,$d2,$d3,$d4);
+		$sx .= $this->cab("footer");
+		return $sx;
+	}
+
 	public function patent($d1='',$d2='',$d3='',$d4='')
 	{
 		$dt['collection'] = mb_strtoupper(lang('brapci.PatentBR'));

@@ -50,5 +50,6 @@ return [
     ''=>'',
     ''=>'',
     ''=>'',
-    ''=>'',
+
+    'base_pq'=>'Base de Dados PQ/CNPq',
 ];
