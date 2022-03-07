@@ -176,8 +176,8 @@ class RDF extends Model
 				break;
 			case 'form_ed':
 				$sx = $cab;
-				$RdfForm = new \App\Models\Rdf\RdfForm();
-				$sx .= $RdfForm->form_ed($d2, $d3, $d4, $d5);
+				$RDFForm = new \App\Models\Rdf\RDFForm();
+				$sx .= $RDFForm->form_ed($d2, $d3, $d4, $d5);
 				break;
 			case 'search':
 				$RDFFormVC = new \App\Models\Rdf\RDFFormVC();
