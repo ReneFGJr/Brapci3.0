@@ -133,6 +133,11 @@ class Res extends BaseController
 		$tela = $this->cab("user");
 		switch($d1)
 			{
+				case 'temp':
+					$Temp = new \App\Models\XXX\Index();
+					$tela .= $Temp->index($d2,$d3,$d4,$d5);
+					break;
+
 				case 'ckan':
 					$Ckan = new \App\Models\Ckan\Index();
 					$tela .= $Ckan->index($d2,$d3,$d4,'');

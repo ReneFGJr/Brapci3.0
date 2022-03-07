@@ -381,6 +381,9 @@ class V extends Model
 								$sx .= '</div>';
 								$sx .= '</form>';
 
+								$sx .= '<hr>';
+								$sx .= '<a href="'.PATH.MODULE.'admin/temp/convert_proceeding/'.$issue_a.'">'.lang('brapci.convert_proceeding').'</a>';
+
 								$sx = bs($sx);
 							} else {								
 								$sx .=  bs(bsc(bsmessage("brapci.issue_not_found"." ".'JNL: empty',3),12));
