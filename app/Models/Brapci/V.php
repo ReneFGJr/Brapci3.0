@@ -114,6 +114,7 @@ class V extends Model
 						$sx .= $Bibliometric->IssueAuthors($id);
 						$sx .= bs(bsc($RDF->view_data($id),12));
 						break;	
+
 					case 'Subject':
 						$sx .= $this->Subject($th,$id,$dt);
 						break;
@@ -131,13 +132,57 @@ class V extends Model
 						break;				
 						
 					case 'Person':
+						$LattesProducao = new \App\Models\Lattes\LattesProducao();
+						$AuthorityNames = new \App\Models\Authority\AuthorityNames();
+						$Bibliometric = new \App\Models\Bibliometric\Bibliometric();
+						$Person = new \App\Models\Authority\Person();
+						$sx .= $Person->viewid($id);
+						
+						$dt = $AuthorityNames->where("a_brapci",$id)->FindAll();
+						$dt = $dt[0];
+
+						$sx .= $Bibliometric->PersonAuthors($id);
+
+						
+						$st = '<span href="#" onclick="mostrar();">Show Lattes</span>';
+						$st .= '<div id="lattes_producao" style="display: none;">';
+						$st .= $LattesProducao->producao($dt['a_lattes']);
+						$sx .= '</div>';
+						$sx .= bs(bsc($st));
+
+						$sx .= '<script>';
+						$sx .= 'function mostrar() {';
+						$sx .= ' dsp = document.getElementById(\'lattes_producao\').style.display; ';
+						$sx .= 'if (dsp == "block") {';
+						$sx .= '	document.getElementById(\'lattes_producao\').style.display = "none";';
+						$sx .= '} else {';
+						$sx .= '	document.getElementById(\'lattes_producao\').style.display = "block";';
+						$sx .= '}';
+						$sx .= 'alert(ok);';
+						$sx .= '}';
+						$sx .= '</script>';
+
 						//$Articles = new \App\Models\Journal\Articles();
-						$sx .= $this->Person($th,$id,$act);
-						$sx .= $this->BibliograficProduction($th,$id,$act);
+						$sx .= $this->BibliograficProduction($th,$id,$act);						
+
 						if (perfil("#ADM"))
 						{
 							$sx .= bs(bsc($RDF->view_data($id),12));
-						}					
+						}							
+
+						return $sx;
+						
+
+						$Production = new \App\Models\Journal\Production();
+						$sx = '';
+						return $sx;
+						
+						
+						
+						//$sx .= $Production->person($id);
+						
+
+				
 						break;				
 
 					default:
@@ -271,18 +316,6 @@ class V extends Model
 
 				$txt = bs(bsc($txt,8).bsc($co.$txtb,4));
 				return $txt;
-			}
-
-		function Person($th,$id,$dt)
-			{
-				$Production = new \App\Models\Journal\Production();
-				$sx = '';
-				$Person = new \App\Models\Authority\Person();
-				$Bibliometric = new \App\Models\Bibliometric\Bibliometric();
-				$sx .= $Person->viewid($id);
-				$sx .= $Production->person($id);
-				$sx .= $Bibliometric->PersonAuthors($id);
-				return $sx;
 			}
 
 		function CorporateBody($th,$id,$dt)

@@ -409,6 +409,11 @@ class RDFExport extends Model
 						$this->export_geral($dt,$id);
 						break;
 
+					/************************************** COUTNRY */
+					case 'brapci:Country':
+						$this->export_geral($dt,$id);
+						break;					
+
 					/*************************************** VOLUME */
 					case 'dc:ArticleSection':
 						$this->export_geral($dt,$id);

@@ -120,7 +120,7 @@ function btn_check($dt,$size=50)
 		{
 			$sx = '';
 			$sx .= '<a href="'.(PATH.MODULE.'v/'.$dt['a_brapci'].'?act=check').'" class="btn btn-xs btn-default" title="Check Remissive">';
-			$sx .= bsicone('circle',$size);
+			$sx .= bsicone('flag',$size);
 			$sx .= '</a>';
 		}
 		return $sx;
@@ -132,7 +132,7 @@ function btn_change_updade($dt,$size=50)
 		{
 			$sx = '';
 			$sx .= '<a href="'.(PATH.MODULE.'v/'.$dt['a_brapci'].'?act=change').'" class="btn btn-xs btn-default" title="Change Remissive">';
-			$sx .= bsicone('circle',$size);
+			$sx .= bsicone('change',$size);
 			$sx .= '</a>';
 		}
 		return $sx;
@@ -144,7 +144,7 @@ function btn_remissive($dt,$size=50)
 		{
 			$sx = '';
 			$sx .= onclick(PATH.MODULE.'rdf/remissive_Person/'.$dt['a_brapci'],800,400);
-			$sx .= bsicone('loop',$size);
+			$sx .= bsicone('reload',$size);
 			$sx .= '</span>';
 		}
 		return $sx;
@@ -349,7 +349,7 @@ function viewid($id,$loop=0)
 
 		if ($dt['a_brapci'] != 0)
 			{			
-				$link = base_url(PATH .MODULE . '/index/import_lattes/' . trim($dt['a_lattes']) . '/');
+				$link = base_url(PATH .MODULE . '/index/lattes/import_lattes/' . trim($dt['a_lattes']) . '/');
 				$link2 = '<a href="' . $link . '" target="_new' . $dt['a_lattes'] . '">';
 				$link2 .= '<img src="' . base_url('img/icones/import.png') . '?x=1" style="height: 50px">';
 				$link2 .= '</a>';
@@ -376,8 +376,7 @@ function viewid($id,$loop=0)
 				$sql = "update ".$this->table." set a_brapci = $txt where id_a = ".$id;
 				$this->query($sql);
 				$dt['a_brapci'] = $txt;
-			}
-		$tela .= $this->PersonPublications($dt['a_lattes']);
+			}		
 		return $tela;
 	}
 
