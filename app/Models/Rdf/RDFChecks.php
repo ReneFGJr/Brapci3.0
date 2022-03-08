@@ -139,7 +139,10 @@ class RDFChecks extends Model
 
 			for ($r=0;$r < count($dt);$r++)
 				{
-					$ln = $dt[$r];					
+					$ln = $dt[$r];	
+					echo '<pre>';
+					print_r($ln);
+					echo '</pre>';
 
 					/* Method 0 */
 					if ($ln['r0idc'] == $ln['r0use'])
