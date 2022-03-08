@@ -95,7 +95,7 @@ class AuthorityNames extends Model
 				echo '</pre>';
 				if ($id_brapci == 0) {
 					if ($line['cc_use'] > 0) {
-						$id_brapci = $line['cc_user'];
+						$id_brapci = $line['cc_use'];
 					} else {
 						$id_brapci = $line['id_cc'];
 					}
