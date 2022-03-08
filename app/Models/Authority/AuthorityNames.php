@@ -56,6 +56,34 @@ class AuthorityNames extends Model
 		{
 			$RDF = new \App\Models\Rdf\RDF();
 			$RDFConcept = new \App\Models\Rdf\RDFConcept();
+			$RDFLiteral = new \App\Models\Rdf\RDFLiteral();
+			$RDFData = new \App\Models\Rdf\RDFData();
+			$sx = 'Busca '.$nome;
+			$dt = $RDFLiteral->where('n_name',$nome)->findAll();
+			$RDFConcept->select('id_cc,cc_use');
+			$ids = array();
+			for ($r=0;$r < count($dt);$r++)
+				{
+					$dd = $RDFData->where('d_literal',$dt[$r]['id_n'])->findAll();					
+					array_push($ids,$dd[$r]['d_r1']);
+				}
+			$RDFConcept->where('id_cc',$ids);
+			$da = $RDFConcept->findAll();
+			
+			if (count($da) == 1)
+				{
+					if ($da[0]['cc_use'] > 0) 
+						{ $id_brapci = $da[0]['cc_use']; }
+						else 
+						{ $id_brapci = $da[0]['id_cc']; }
+					return $id_brapci;
+				}
+			echo $RDFConcept->getlastquery();
+			pre($da);
+			echo $sx;
+			pre($dt);
+
+			/* 
 			$class = "foaf:Person";
 			$name = nbr_author($nome,1);
 			$id_brapci = $RDFConcept->getNameId($name,$class);

@@ -93,7 +93,9 @@ class Index extends Model
 			if ($dt['bs_rdf_id'] == 0)
 				{
 					$Authority = new \App\Models\Authority\AuthorityNames();
-					$id_brapci = $Authority->getBrapciId($dt['bs_nome']);
+					$nome = $dt['bs_nome'];
+					$nome = nbr_author($nome,1);
+					$id_brapci = $Authority->getBrapciId($nome);
 
 					if ($id_brapci > 0)
 						{							
