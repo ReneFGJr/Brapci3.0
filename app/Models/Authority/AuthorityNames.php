@@ -90,6 +90,9 @@ class AuthorityNames extends Model
 			$id_brapci = 0;
 			for ($r = 0; $r < count($da); $r++) {
 				$line = $da[$r];
+				echo '<pre>';
+				print_r($da);
+				echo '</pre>';
 				if ($id_brapci == 0) {
 					if ($line['cc_use'] > 0) {
 						$id_brapci = $line['cc_user'];
