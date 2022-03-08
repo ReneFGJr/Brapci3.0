@@ -52,6 +52,8 @@ class Bolsa extends Model
 
 	function year_list($tp=0)
 		{
+		$RDF = new \App\Models\Rdf\RDF();
+		
 		$sx = '';
 		$ord = get("order");
 
@@ -118,13 +120,22 @@ class Bolsa extends Model
 							$nr = 0;
 						}
 						$nr++;
+
+						$linka = '</a>';
+						if ($line['bs_rdf_id'] > 0)
+							{
+								$link = $RDF->link(array('id_cc'=>$line['bs_rdf_id']),'text-secondary');
+							} else {
+								$link = '<a href="'.PATH.MODULE.'pq/viewid/'.$line['id_bs'].'" class="text-secondary">*';
+							}
+						
 						$sx .= '<tr>';
-						$sx .= '<td>'.$nr.'</td>';
-						$sx .= '<td>'.$line['bs_nome'].'</td>';
-						$sx .= '<td>'.$line['mod_sigla'].$line['bs_nivel'].'</td>';
-						$sx .= '<td>'.$line['bs_start'].'</td>';
-						$sx .= '<td>'.$line['bs_finish'].'</td>';
-						$sx .= '<td>'.$line['BS_IES'].'</td>';
+						$sx .= '<td>'.$link.$nr.'</td>';
+						$sx .= '<td>'.$link.$line['bs_nome'].$linka.'</td>';
+						$sx .= '<td>'.$link.$line['mod_sigla'].$line['bs_nivel'].$linka.'</td>';
+						$sx .= '<td>'.$link.$line['bs_start'].$linka.'</td>';
+						$sx .= '<td>'.$link.$line['bs_finish'].$linka.'</td>';
+						$sx .= '<td>'.$link.$line['BS_IES'].$linka.'</td>';
 						$sx .= '</tr>';
 						$sx .= cr();
 				}

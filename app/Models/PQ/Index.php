@@ -55,6 +55,10 @@ class Index extends Model
 
 		switch($d1)
 			{
+				case 'viewid':
+					$sx .= $this->subheader();
+					$sx .= $this->viewid($d2);
+					break;
 				case 'pq_bolsas':
 					$sx .= $this->subheader();
 					$sx .= $this->pq_bolsas();
@@ -80,6 +84,35 @@ class Index extends Model
 		$sx = bs($sx);
 		return $sx;
 	}	
+
+	function viewid($id)
+		{
+			$RDF = new \App\Models\Rdf\RDF();
+			$Bolsistas = new \App\Models\PQ\Bolsista();
+			$dt = $Bolsistas->find($id);
+			if ($dt['bs_rdf_id'] == 0)
+				{
+					$Authority = new \App\Models\Authority\AuthorityNames();
+					$id_brapci = $Authority->getBrapciId($dt['bs_nome']);
+
+					if ($id_brapci > 0)
+						{							
+							$dt['bs_rdf_id'] = $id_brapci;
+							$Bolsistas->set($dt)->where('id_bs',$id)->update();							
+						}
+					$dt = $Bolsistas->find($id);
+				}
+				if ($id_brapci > 0)
+					{
+						$link = $RDF->link(array('id_cc'=>$id_brapci),'text-secondary');
+						$link = substr($link,strpos($link,'"')+1,strlen($link));
+						$link = substr($link,0,strpos($link,'"'));
+						echo metarefresh($link);						
+						exit;
+					}
+					echo h('Nome não localizado '.$dt['bs_nome']);
+					pre($dt);
+		}
 
 	function pq_bolsas()
 		{

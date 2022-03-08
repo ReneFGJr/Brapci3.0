@@ -6,15 +6,17 @@ use CodeIgniter\Model;
 
 class Bolsista extends Model
 {
-	protected $DBGroup              = 'default';
+	protected $DBGroup              = 'pq';
 	protected $table                = 'bolsistas';
-	protected $primaryKey           = 'id';
+	protected $primaryKey           = 'id_bs';
 	protected $useAutoIncrement     = true;
 	protected $insertID             = 0;
 	protected $returnType           = 'array';
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
-	protected $allowedFields        = [];
+	protected $allowedFields        = [
+		'bs_rdf_id','bs_nome','bs_lattes'
+	];
 
 	// Dates
 	protected $useTimestamps        = false;

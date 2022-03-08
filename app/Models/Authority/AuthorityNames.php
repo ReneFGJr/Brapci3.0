@@ -52,6 +52,16 @@ class AuthorityNames extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
+	function getBrapciId($nome)
+		{
+			$RDF = new \App\Models\Rdf\RDF();
+			$RDFConcept = new \App\Models\Rdf\RDFConcept();
+			$class = "foaf:Person";
+			$name = nbr_author($nome,1);
+			$id_brapci = $RDFConcept->getNameId($name,$class);
+			return $id_brapci;
+		}
+
 	function summaryCreate()
 		{
 			$this->select('count(*) as total');
