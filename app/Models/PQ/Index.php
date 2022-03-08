@@ -55,6 +55,10 @@ class Index extends Model
 
 		switch($d1)
 			{
+				case 'export':
+					$Export = new \App\Models\PQ\Export();
+					$sx .= $Export->brapci();
+					break;
 				case 'viewid':
 					$sx .= $this->subheader();
 					$sx .= $this->viewid($d2);
@@ -151,6 +155,11 @@ class Index extends Model
 			$sx .= '<li><a href="' . PATH . MODULE . 'pq/pq_ano' . '">' . lang('pq.bolsista_ano_list') . '</a></li>';
 			$sx .= '<li><a href="' . PATH . MODULE . 'pq/pq_vigentes' . '">' . lang('pq.bolsista_vigentes') . '</a></li>';
 			$sx .= '<li><a href="http://memoria2.cnpq.br/bolsistas-vigentes" target="_new">' . lang('pq.bolsista_ativos_cnpq') . '</a></li>';		
+			if (perfil("ADM"))
+				{
+					$sx .= '<hr>';
+					$sx .= '<li><a href="' . PATH . MODULE . 'pq/export' . '">' . lang('pq.exportar') . '</a></li>';
+				}
 			$sx .= '</ul>';			
 
 			return $sx;
