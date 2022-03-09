@@ -132,17 +132,21 @@ class V extends Model
 						break;				
 						
 					case 'Person':
+						helper('highchart');
 						$LattesProducao = new \App\Models\Lattes\LattesProducao();
 						$AuthorityNames = new \App\Models\Authority\AuthorityNames();
+						$Production = new \App\Models\Journal\Production();
 						$Bibliometric = new \App\Models\Bibliometric\Bibliometric();
 						$Person = new \App\Models\Authority\Person();
 						$sx .= $Person->viewid($id);
-						
+
+						$sx .= $Production->person_producer($id);
+
 						$dt = $AuthorityNames->where("a_brapci",$id)->FindAll();
 						$dt = $dt[0];
 
 						$sx .= $Bibliometric->PersonAuthors($id);
-
+						$sx .= $Bibliometric->SubjectAuthors($id);
 						
 						$st = '<span href="#" onclick="mostrar();">Show Lattes</span>';
 						$st .= '<div id="lattes_producao" style="display: none;">';

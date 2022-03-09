@@ -45,6 +45,59 @@ class Bibliometric extends Model
 
 		}
 
+	function SubjectAuthors($id)
+		{
+			$RDF = new \App\Models\Rdf\RDF();
+			$dt = $RDF->le($id);
+			$subject = $RDF->recover($dt,'hasAuthor');
+			$data = array();
+			$links = array();
+
+			for ($r=0;$r < count($subject);$r++)
+				{
+					$idx = $subject[$r];
+
+					$dir = $RDF->directory($idx);
+					$file = $dir.'keywords.json';
+					if (file_exists($file))
+						{
+							$txt = file_get_contents($file);
+							$txt = (array)json_decode($txt);	
+
+							for ($i=0;$i < count($txt);$i++)
+								{
+									$name = trim((string)$txt[$i]);
+									$id = substr($name,strpos($name,'/v/')+3,strlen($name));
+									$id = substr($id,0,strpos($id,'"'));
+									$name = strip_tags($name);
+									$name = $name;
+									if ($name != '')
+									{
+									if (isset($data[$name]))
+										{
+											$data[$name]++;
+										} else {
+											$data[$name] = 1;
+											$links[$name] = $id;
+										}
+									}
+								}
+						}
+				}
+			$sx = lang('brapci.total').' '.count($subject).' '.lang('brapci.subject').' with '.count($data).' works';				
+
+			$sx .= '<script>';
+			foreach($links as $name=>$id)
+				{
+					//$sx .= '$("#Word_'.$id.'_1'.$id.'").click(function() { alert("'.$id.'"); });' .cr();
+				}
+			$sx .= '</script>';
+			
+			$sx .= cloudetags($data);
+			$sx = bs(bsc($sx,12));
+			return $sx;			
+		}		
+
 	function IssueAuthors($id)
 		{
 			$RDF = new \App\Models\Rdf\RDF();

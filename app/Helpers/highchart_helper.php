@@ -1,4 +1,70 @@
 <?php
+
+function cloudetags($subject)
+    {
+        $sx = '';
+        $sx .= '<script type="text/javascript" src="'.URL.'js/jquery-3.6.0.min.js'.'"></script>';
+        $sx .= '<script type="text/javascript" src="'.URL.'js/jQWCloudv3.1.js'.'"></script>';     
+
+        $sx .= '
+            <style>
+                #wordCloud {
+                    height: 350px;
+                    width: 100%;
+                    background-color: #ffffff;
+                    border: 1px solid #0000FF;
+                }
+            </style>';
+        $sx .= bs(bsc('<div id="wordCloud"></div>'));
+
+        $sx .= '
+            <script>
+                $(document).ready(function() {
+                    $("#wordCloud").jQWCloud({
+                    words : [';
+
+        $r = 0;
+        foreach ($subject as $key => $value) 
+        {
+            if ($key != '(nc)') 
+            {
+                if ($r > 0) { $sx .= ',' . cr(); }
+            }
+            $r++;
+            $sx .= cr()."{ word : '$key', weight : '$value' }";
+        }
+                        
+            $sx .= '],
+                minFont : 12,
+                maxFont : 50,
+                //cloud_font_family: "Tahoma",
+                //verticalEnabled: false,
+                padding_left : 1,
+                //showSpaceDIV: true,
+                //spaceDIVColor: \'white\',
+                word_common_classes : \'WordClass\',
+                word_mouseEnter : function() {
+                    $(this).css("text-decoration", "underline");
+                }, word_mouseOut : function() {
+                    $(this).css("text-decoration", "none");
+                }, word_click : function() {
+                    $vlr = [1,2,3,4,5];
+                    window.location.replace("http://localhost/"+ $(this).text());
+                    alert("You have selected:" + $(this).text());
+                }, beforeCloudRender : function() {
+                    date1 = new Date();
+                }, afterCloudRender : function() {
+                    var date2 = new Date();
+                    console.log("Cloud Completed in " + (date2.getTime() - date1.getTime()) + " milliseconds");
+                }
+                });
+
+                });
+            </script>';        
+
+        return $sx;
+    }
+
 function load_grapho_script()
 {
     global $load_grapho_script;

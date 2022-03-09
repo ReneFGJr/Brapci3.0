@@ -40,7 +40,7 @@ class Production extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function person($id)
+	function person_producer($id)
 		{
 			$RDF = new \App\Models\RDF\Rdf;
 			$Timeline = new \App\Models\Brapci\Timeline();
