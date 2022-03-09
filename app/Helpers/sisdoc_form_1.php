@@ -334,6 +334,7 @@ function form_fields($typ, $fld, $vlr, $th = array(),$obg=0, $pre='')
             for ($r = 0; $r < count($opc); $r++) {
                 $sel = '';
                 $opx = explode('&',$opc[$r]);
+                if ($opx[0] == $vlr) { $sel = 'selected'; }
                 $sg .= '<option value="' . $opx[0] . '" ' . $sel . '>' . $opx[1] . '</option>' . cr();
             }
             $sg .= '</select>' . cr();
