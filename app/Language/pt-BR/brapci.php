@@ -36,6 +36,7 @@ return [
     'Home'=>'Inicial',
     'Bibliometric'=>'Ferramentas',
     'About'=>'Sobre',
+    'Indexes'=>'Índices',
     'Help'=>'Ajuda',
     'Patent'=>'PatenteBR',
     'Ontology'=>'OntologiaBrapci',

@@ -51,6 +51,125 @@ class RDF extends Model
 		}
 	*/
 
+	function index($d1, $d2, $d3 = '', $d4 = '', $d5 = '', $cab = '')
+	{
+		$sx = '';
+		$type = get("type");
+
+		switch ($d1) {
+			case 'export':
+				$RDFExport = new \App\Models\Rdf\RDFExport();
+				$sx = $cab;
+				$sx .= $RDFExport->Export($d2,$d3,$d4,$d5);
+				break;
+			case 'vc_create':
+				$sx = $this->vc_create();
+				break;
+			case 'remissive_Person':			
+				$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab,'Person');
+				break;
+			case 'remissive_CorporateBody':
+				$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab,'CorporateBody');
+				break;
+			case 'remissive_Subject':
+				$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab,'Subject');
+				break;								
+			case 'check_loop';
+				$RDFChecks = new \App\Models\Rdf\RDFChecks();
+				$sx .= $cab;
+				$sx .= $RDFChecks->check_loop();
+				break;
+			case 'check_corporate_body':
+				$RDFChecks = new \App\Models\Rdf\RDFChecks();
+				$sx .= $cab;
+				$sx .= $RDFChecks->check_html('CorporateBody');
+				break;
+			case 'check_subject':
+				$RDFChecks = new \App\Models\Rdf\RDFChecks();
+				$sx .= $cab;
+				$sx .= $RDFChecks->check_html('Subject');
+				break;
+			case 'set_pref_term':
+				$RDFConcept = new \App\Models\Rdf\RDFConcept();
+				$RDFConcept->set_pref_term($d2,$d3);
+				$sx .= wclose();
+				break;
+			case 'check':
+				$RDFChecks = new \App\Models\Rdf\RDFChecks();
+				$sx .= $cab;
+				$sx .= $RDFChecks->check_duplicate();
+				break;
+			case 'check_authors':
+				$RDFChecks = new \App\Models\Rdf\RDFChecks();
+				$sx .= $cab;
+				$sx .= $RDFChecks->check_authors();		
+				break;
+			case 'set':
+				$RDFFormVC = new \App\Models\Rdf\RDFFormVC();
+				$sx = $RDFFormVC->ajax_save();
+				break;
+			case 'form_ed':
+				$sx = $cab;
+				$RDFForm = new \App\Models\Rdf\RDFForm();
+				$sx .= $RDFForm->form_ed($d2, $d3, $d4, $d5);
+				break;
+			case 'search':
+				$RDFFormVC = new \App\Models\Rdf\RDFFormVC();
+				$sx = '';
+				$sx .= $RDFFormVC->search($d1,$d2,$d3);
+				echo $sx;
+				exit;
+				break;
+			case 'exclude':				
+				$RDFForm = new \App\Models\Rdf\RDFForm();
+				$sx = $cab;
+				$sx .= $RDFForm->exclude($d2,$d3);
+				break;				
+			case 'form':
+				$RDFForm = new \App\Models\Rdf\RDFForm();
+				$sx = $cab;				
+				$sx .= $RDFForm->edit($d1,$d2,$d3,$d4,$d5);
+				break;
+			case 'text':
+				$RDFFormText = new \App\Models\Rdf\RDFFormText();
+				$sx = $cab;
+				$sx .= $RDFFormText->edit($d2);
+				break;
+			case 'inport':
+				$sx = $cab;
+				switch ($type) {
+					case 'prefix':
+						$this->RDFPrefix = new \App\Models\RDFPrefix();
+						$sx .= $this->RDFPrefix->inport();
+						break;					
+
+					case 'class':
+						$this->RDFClass = new \App\Models\RDFClass();
+						$sx .= $this->RDFClass->inport();
+						break;
+				}
+				break;
+				/************* Default */
+			default:
+				$sx = $cab;
+				$sx .= lang('command not found') . ': ' . $d1;
+				$sx .= '<ul>';
+				$sx .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=prefix') . '">' . lang('Inport Prefix') . '</a></li>';
+				$sx .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=class') . '">' . lang('Inport Class') . '</a></li>';
+				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check') . '">' . lang('rdf.Check_class_duplicate') . '</a></li>';
+				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_loop') . '">' . lang('rdf.Check_loop') . '</a></li>';
+				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_authors') . '">' . lang('rdf.Check_authors') . '</a></li>';
+				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_corporate_body') . '">' . lang('rdf.Check_corporate_body') . '</a></li>';
+				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_subject') . '">' . lang('rdf.Check_subject') . '</a></li>';
+				$sx .= h(lang('brapci.export_rdf'),4);
+				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/export/index_authors') . '">' . lang('rdf.Export_authors') . '</a></li>';
+				$sx .= '</ul>';
+		}
+		$sx = bs($sx);
+		return $sx;
+	}
+
+
 	function string_array($d,$t=0,$sep = ';')
 		{
 			$sx = '';
@@ -121,117 +240,6 @@ class RDF extends Model
 			return $sx;
 		}
 
-	function index($d1, $d2, $d3 = '', $d4 = '', $d5 = '', $cab = '')
-	{
-		$sx = '';
-		$type = get("type");
-		switch ($d1) {
-
-			case 'vc_create':
-				$sx = $this->vc_create();
-				break;
-			case 'remissive_Person':			
-				$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab,'Person');
-				break;
-			case 'remissive_CorporateBody':
-				$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab,'CorporateBody');
-				break;
-			case 'remissive_Subject':
-				$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab,'Subject');
-				break;								
-			case 'check_loop';
-				$RDFChecks = new \App\Models\Rdf\RDFChecks();
-				$sx .= $cab;
-				$sx .= $RDFChecks->check_loop();
-				break;
-			case 'check_corporate_body':
-				$RDFChecks = new \App\Models\Rdf\RDFChecks();
-				$sx .= $cab;
-				$sx .= $RDFChecks->check_html('CorporateBody');
-				break;
-			case 'check_subject':
-				$RDFChecks = new \App\Models\Rdf\RDFChecks();
-				$sx .= $cab;
-				$sx .= $RDFChecks->check_html('Subject');
-				break;
-			case 'set_pref_term':
-				$RDFConcept = new \App\Models\Rdf\RDFConcept();
-				$RDFConcept->set_pref_term($d2,$d3);
-				$sx .= wclose();
-				break;
-			case 'check':
-				$RDFChecks = new \App\Models\Rdf\RDFChecks();
-				$sx .= $cab;
-				$sx .= $RDFChecks->check_duplicate();
-				break;
-			case 'check_authors':
-				$RDFChecks = new \App\Models\Rdf\RDFChecks();
-				$sx .= $cab;
-				$sx .= $RDFChecks->check_authors();			
-				
-				break;
-			case 'set':
-				$RDFFormVC = new \App\Models\Rdf\RDFFormVC();
-				$sx = $RDFFormVC->ajax_save();
-				break;
-			case 'form_ed':
-				$sx = $cab;
-				$RDFForm = new \App\Models\Rdf\RDFForm();
-				$sx .= $RDFForm->form_ed($d2, $d3, $d4, $d5);
-				break;
-			case 'search':
-				$RDFFormVC = new \App\Models\Rdf\RDFFormVC();
-				$sx = '';
-				$sx .= $RDFFormVC->search($d1,$d2,$d3);
-				echo $sx;
-				exit;
-				break;
-			case 'exclude':				
-				$RDFForm = new \App\Models\Rdf\RDFForm();
-				$sx = $cab;
-				$sx .= $RDFForm->exclude($d2,$d3);
-				break;				
-			case 'form':
-				$RDFForm = new \App\Models\Rdf\RDFForm();
-				$sx = $cab;				
-				$sx .= $RDFForm->edit($d1,$d2,$d3,$d4,$d5);
-				break;
-			case 'text':
-				$RDFFormText = new \App\Models\Rdf\RDFFormText();
-				$sx = $cab;
-				$sx .= $RDFFormText->edit($d2);
-				break;
-			case 'inport':
-				$sx = $cab;
-				switch ($type) {
-					case 'prefix':
-						$this->RDFPrefix = new \App\Models\RDFPrefix();
-						$sx .= $this->RDFPrefix->inport();
-						break;					
-
-					case 'class':
-						$this->RDFClass = new \App\Models\RDFClass();
-						$sx .= $this->RDFClass->inport();
-						break;
-				}
-				break;
-				/************* Default */
-			default:
-				$sx = $cab;
-				$sx .= lang('command not found') . ': ' . $d1;
-				$sx .= '<ul>';
-				$sx .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=prefix') . '">' . lang('Inport Prefix') . '</a></li>';
-				$sx .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=class') . '">' . lang('Inport Class') . '</a></li>';
-				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check') . '">' . lang('rdf.Check_class_duplicate') . '</a></li>';
-				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_loop') . '">' . lang('rdf.Check_loop') . '</a></li>';
-				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_authors') . '">' . lang('rdf.Check_authors') . '</a></li>';
-				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_corporate_body') . '">' . lang('rdf.Check_corporate_body') . '</a></li>';
-				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_subject') . '">' . lang('rdf.Check_subject') . '</a></li>';
-				$sx .= '</ul>';
-		}
-		$sx = bs($sx);
-		return $sx;
-	}
 
 	function change($d1,$d2)
 		{
@@ -301,8 +309,91 @@ class RDF extends Model
 			return $sx;
 		}
 
-	function btn_return($id,$class='')
+	function show_index($class='',$lt='')
 		{
+			$sx = '';
+			$dir = '../.tmp/indexes/'.$class;
+			if (is_dir($dir))
+				{
+					$indexes = scandir($dir);
+					$sx .= '<style> .page-item:hover { background-color: #EEE;" } </style>'.cr();
+					$sx .= '<nav aria-label="Index">';
+					$sx .= '<ul class="pagination">';
+
+					for ($r=0;$r < count($indexes);$r++)
+						{
+							$file = trim($indexes[$r]);
+							if (($file != 'index.php') and ($file != '.') and ($file != '..'))
+								{
+									$filename = $dir.'/'.$indexes[$r];
+									if (file_exists($filename))
+										{													
+											$ltr = troca($file,'index_','');
+											$ltr = troca($ltr,'.php','');
+											$link = PATH.MODULE.'indexes/'.$class.'/'.$ltr;
+											$sx .= '<li class="page-item text-center" style="width: 30px;">';
+											$sx .= '<a href="'.$link.'">'.$ltr.'</a>';
+											$sx .= '</li>';
+										}		
+								}									
+						}
+					$sx .= '</ul></nav>';	
+					
+					if ($lt != '')
+						{
+							$filename = '../.tmp/indexes/'.$class.'/index_'.$lt.'.php';
+							if (file_exists($filename))
+								{
+									$sx .= file_get_contents($filename);
+								} else {
+									$sx = bsmessage('rdf.index.file.not.found - '.$filename,3);				
+								}
+						}
+				} else {
+					$sx = bsmessage('rdf.index.dir.not.found - '.$dir,3);
+				}
+			$sx = bs(bsc($sx,12));
+			return $sx;
+			
+		}
+
+	function list_indexes()
+		{
+			$dir = '../.tmp/indexes/';
+			$ind = scandir($dir);
+			$sx = h('rdf.indexes_list');
+			$sx .= '<ul>';
+			for ($r=0;$r < count($ind);$r++)
+				{
+					if (is_dir($dir.$ind[$r]))
+						{
+							$dir_name = $ind[$r];
+							if (($dir_name == '.') or ($dir_name == '..'))
+								{
+									$sx .= '';
+								} else {
+									$sx .= '<li>';
+									$sx .= '<a href="'.PATH.MODULE.'indexes/'.$dir_name.'" class="text-secondary">';
+									$sx .= lang('rdf.index_'.$dir_name);
+									$sx .= '</a>';
+									$sx .= '</li>';
+								}
+						}
+				}
+			$sx .= '</ul>';
+			$sx = bs(bsc($sx,12));
+			return $sx;
+		}
+
+	function btn_return($id='',$class='')
+		{
+			if (($id == '') and (perfil("#ADM")))
+				{
+					$sx = '<a href="'.PATH.MODULE.'rdf/" class="btn btn-outline-primary '.$class.'">';
+					$sx .= lang('brapci.return');
+					$sx .= '</a>';
+					return $sx;		
+				}
 			if (is_array($id))
 				{
 					$id = $id['id_cc'];
