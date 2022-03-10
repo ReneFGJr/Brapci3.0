@@ -163,6 +163,7 @@ class RDF extends Model
 				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_subject') . '">' . lang('rdf.Check_subject') . '</a></li>';
 				$sx .= h(lang('brapci.export_rdf'),4);
 				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/export/index_authors') . '">' . lang('rdf.Export_authors') . '</a></li>';
+				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/export/index_subject') . '">' . lang('rdf.Export_subject') . '</a></li>';
 				$sx .= '</ul>';
 		}
 		$sx = bs($sx);
@@ -398,7 +399,7 @@ class RDF extends Model
 				{
 					$id = $id['id_cc'];
 				}
-			$sx = '<a href="'.PATH.MODULE.'v/'.$id.'" class="'.$class.'">';
+			$sx = '<a href="'.PATH.MODULE.'v/'.$id.'" class="btn btn-outline-primary '.$class.'">';
 			$sx .= lang('rdf.return');
 			$sx .= '</a>';
 			return $sx;
