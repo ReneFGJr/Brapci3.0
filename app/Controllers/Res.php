@@ -77,11 +77,15 @@ class Res extends BaseController
 
 			switch($tp)
 				{
-					case 'Person':
-						$tela .= $RDF->show_index($tp,$lt);
-						break;
 					default:
-						$tela .= $RDF->list_indexes($tp,$lt);
+						if ($tp != '')
+							{
+								$tela .= bs(bsc(h(lang('rdf.'.$tp),1),12));
+								$tela .= $RDF->show_index($tp,$lt);
+							} else {
+								$tela .= $RDF->list_indexes($tp,$lt);
+							}
+						
 						break;
 				}
 

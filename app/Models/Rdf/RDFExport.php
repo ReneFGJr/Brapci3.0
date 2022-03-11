@@ -384,10 +384,14 @@ class RDFExport extends Model
 		/*****************************************************************/
 		switch ($id) {
 			case 'index_authors':
-				$tela .= $this->export_author_index_list_all($FORCE);
+				$tela .= $this->export_index_list_all($FORCE,'Person',$id);
 				return $tela;
 				break;
-		}
+			case 'index_subject':
+				$tela .= $this->export_index_list_all($FORCE,'Subject',$id);
+				return $tela;
+				break;		
+			}
 
 		$this->RDF = new \App\Models\RDF\RDF();
 		$dir = $this->RDF->directory($id);
@@ -499,7 +503,7 @@ class RDFExport extends Model
 		return $tela;
 	}
 
-	function export_author_index_list_all($lt = 0, $class = 'Person')
+	function export_index_list_all($lt = 0, $class = 'Person',$url='')
 	{
 		$this->RDF = new \App\Models\Rdf\RDF();
 		$this->RDFConcept = new \App\Models\Rdf\RDFConcept();
@@ -519,19 +523,19 @@ class RDFExport extends Model
 
 		if (($lt >= 65) and ($lt <= 90)) {
 			$ltx = chr(round($lt));
-			$txt = $this->create_index_html($ltx, 'Person', 0);
+			$txt = $this->create_index_html($ltx, $class, 0);
 			$file = $dir . '/index_' . $ltx . '.php';
 			$hdl = fopen($file, 'w+');
 			fwrite($hdl, $txt);
 			fclose($hdl);
 			$sx .= bs_alert('success', msg('Export_author') . ' #' . $ltx . '<br>');
-			$sx .= '<meta http-equiv="refresh" content="3;' . (PATH . MODULE. 'rdf/export/index_authors/' . ($lt + 1)) . '">';
+			$sx .= '<meta http-equiv="refresh" content="3;' . (PATH . MODULE. 'rdf/export/'.$url.'/' . ($lt + 1)) . '">';
 		} else {
 			$sx .= bsmessage('rdf.export_success',1);
 			$sx .= $this->RDF->btn_return();
 		}
 		return ($sx);
-	}
+	}	
 
 	function create_index_html($lt = 'G', $class = 'Person', $nouse = 0)
 	{
