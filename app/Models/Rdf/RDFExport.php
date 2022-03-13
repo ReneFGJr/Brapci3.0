@@ -390,7 +390,11 @@ class RDFExport extends Model
 			case 'index_subject':
 				$tela .= $this->export_index_list_all($FORCE,'Subject',$id);
 				return $tela;
-				break;		
+				break;	
+			case 'index_corporatebody':
+				$tela .= $this->export_index_list_all($FORCE,'CorporateBody',$id);
+				return $tela;
+				break;					
 			}
 
 		$this->RDF = new \App\Models\RDF\RDF();
@@ -534,6 +538,7 @@ class RDFExport extends Model
 			$sx .= bsmessage('rdf.export_success',1);
 			$sx .= $this->RDF->btn_return();
 		}
+		$sx = bs(bsc($sx,12));
 		return ($sx);
 	}	
 

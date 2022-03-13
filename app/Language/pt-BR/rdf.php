@@ -17,6 +17,18 @@ return [
     'Subject'=>'Assuntos',
     'check'=>'Verificando',    
     'process_finished'=>'Processo finalizado com sucesso!',
-    'check_do'=>'Verificações e Validações',	
+    'check_do'=>'Verificações e Validações',
+    'Export_authors.index'=>'Exportar índice de autores',
+    'Export_subject.index'=>'Exportar índice de assuntos',
+    'Export_corporateboard.index'=>'Exportar índice de instituições',
+    'index_Person'=>'Autores/Pessoas',
+    'index_Subject'=>'Assuntos',
+    'index_CorporateBody'=>'Instituições',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+    ''=>'',
+
+    
     
 ];

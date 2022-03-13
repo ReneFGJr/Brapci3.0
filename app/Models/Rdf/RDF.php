@@ -171,14 +171,13 @@ class RDF extends Model
 				$sa .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_authors') . '">' . lang('rdf.Check_authors') . '</a></li>';				
 				$sa .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_corporate_body') . '">' . lang('rdf.Check_corporate_body') . '</a></li>';
 				$sa .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_subject') . '">' . lang('rdf.Check_subject') . '</a></li>';
-				$sx .= h(lang('brapci.export_rdf'),4);
-				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/export/index_authors') . '">' . lang('rdf.Export_authors') . '</a></li>';
-				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/export/index_subject') . '">' . lang('rdf.Export_subject') . '</a></li>';
+				$sa .= h(lang('brapci.export_rdf'),4);
+				$sa .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/export/index_authors') . '">' . lang('rdf.Export_authors.index') . '</a></li>';
+				$sa .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/export/index_subject') . '">' . lang('rdf.Export_subject.index') . '</a></li>';
+				$sa .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/export/index_corporatebody') . '">' . lang('rdf.Export_corporatebody.index') . '</a></li>';
 				$sa .= '</ul>';
 				$sx .= bs(bsc($sa,12));
 		}		
-		$sx = bs($sx);
-	
 		return $sx;
 	}
 
@@ -400,11 +399,18 @@ class RDF extends Model
 
 	function btn_return($id='',$class='')
 		{
-			if (($id == '') and (perfil("#ADM")))
+			if ($id == '') 
 				{
-					$sx = '<a href="'.PATH.MODULE.'rdf/" class="btn btn-outline-primary '.$class.'">';
-					$sx .= lang('brapci.return');
-					$sx .= '</a>';
+					if (perfil("#ADM"))
+					{
+						$sx = '<a href="'.PATH.MODULE.'rdf/" class="btn btn-outline-primary '.$class.'">';
+						$sx .= lang('brapci.return');
+						$sx .= '</a>';
+					} else {
+						$sx = '<a href="'.PATH.MODULE.'" class="btn btn-outline-primary '.$class.'">';
+						$sx .= lang('brapci.return');
+						$sx .= '</a>';
+					}
 					return $sx;		
 				}
 			if (is_array($id))
