@@ -69,6 +69,31 @@ class Res extends BaseController
 		return $tela;
 	}
 
+	function indexes($tp='',$lt='')
+		{
+			$RDF = new \App\Models\Rdf\RDF();
+			$tela = $this->cab("user");
+			$tela .= view('Brapci/collections');
+
+			switch($tp)
+				{
+					default:
+						if ($tp != '')
+							{
+								$tela .= bs(bsc(h(lang('rdf.'.$tp),1),12));
+								$tela .= $RDF->show_index($tp,$lt);
+							} else {
+								$tela .= $RDF->list_indexes($tp,$lt);
+							}
+						
+						break;
+				}
+
+						
+			$tela .= $this->cab("footer");
+			return $tela;			
+		}
+
 
 	public function about($d1='',$d2='',$d3='',$d4='')
 	{

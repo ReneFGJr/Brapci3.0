@@ -22,6 +22,7 @@
 
         $menu = array();
         $menu['Home'] = URL.'index.php/res/';
+        $menu['Indexes'] = URL.'index.php/res/indexes/';
         $menu['About'] = URL.'index.php/res/about/';
         $menu['Help'] = URL.'index.php/res/help/';
         if ((isset($_SESSION['id'])) and ($_SESSION['id'] > 0))
