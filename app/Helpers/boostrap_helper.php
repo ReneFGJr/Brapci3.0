@@ -164,8 +164,21 @@ function bsicone($type='',$w=16)
         return $sx;
     }
 
-function breadcrumbs($its)
+function breadcrumbs($its=array())
         {
+            if (count($its) == 0)
+                {
+                    $path = geturl();
+                    $p = explode('/', $path);
+                    $dir = '';
+                    for ($r=3;$r < count($p);$r++)
+                        {
+                            if ($dir != '') { $dir .= '/';}
+                            $dir .= $p[$r];
+                            $name = lang(troca($dir, '/', '.'));
+                            $its[$name] = PATH.MODULE.$dir;
+                        }
+                }
             $sx ='';
             $sx .= '<nav aria-label="breadcrumb">'.cr();
             $sx .= '<ol class="breadcrumb">'.cr();
@@ -178,7 +191,7 @@ function breadcrumbs($its)
                             $linka = ''; 
                             $linkl = ''; 
                         }
-                    $sx .= '<li class="breadcrumb-item active" aria-current="page">'.$linkl.lang('brapci.'.$label).$linka.'</li>';
+                    $sx .= '<li class="breadcrumb-item active" aria-current="page">'.$linkl.lang($label).$linka.'</li>';
                 }
             $sx .= ' </ol></nav>';
             $sx = bs(bsc($sx,12));
@@ -328,6 +341,22 @@ function bsclose($n=0)
                 $sx .= bsdivclose().cr();
             }
         return($sx);
+    }
+
+function bsmenu($menu,$class='')
+    {
+        $sx = '';
+        $sx .= '<ul class="nav-item '.$class.'">';
+        foreach ($menu as $link => $label) {
+            $sx .= '<li class="nav-item">';
+            $sx .= '<a class="nav-link" href="' . PATH . MODULE . $link . '">';
+            $sx .= lang($label);
+            $sx .= '</a>';
+            $sx .= '</li>';
+        }
+        $sx .= '</ul>';
+
+        return $sx;    
     }
 function bsmessage($txt,$t=0)
     {

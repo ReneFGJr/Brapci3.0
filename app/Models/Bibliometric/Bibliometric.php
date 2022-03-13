@@ -70,21 +70,30 @@ class Bibliometric extends Model
 									$id = substr($name,strpos($name,'/v/')+3,strlen($name));
 									$id = substr($id,0,strpos($id,'"'));
 									$name = strip_tags($name);
-									$name = $name;
-									if ($name != '')
+									$name = troca($name,"'",'');
+									$name = troca($name,'"','');
+									if (strlen($name) > 4)
 									{
-									if (isset($data[$name]))
+										$name = $name;
+										if ($name != '')
 										{
-											$data[$name]++;
-										} else {
-											$data[$name] = 1;
-											$links[$name] = $id;
+										if (isset($data[$name]))
+											{
+												$data[$name]++;
+											} else {
+												$data[$name] = 1;
+												$links[$name] = $id;
+											}
 										}
 									}
 								}
 						}
 				}
-			$sx = lang('brapci.total').' '.count($subject).' '.lang('brapci.subject').' with '.count($data).' works';				
+				
+			$sx = lang('brapci.total').' '.count($subject).' '.
+					lang('brapci.subject').' '.
+					lang('brapci.with').' '. 
+					count($data).' '.lang('brapci.works');				
 
 			$sx .= '<script>';
 			foreach($links as $name=>$id)

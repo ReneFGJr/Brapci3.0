@@ -70,7 +70,7 @@ class AuthotityRDF extends Model
             $m++;
         }
         if ($m == 0) {
-            $sx = msg('No_changes');
+            $sx = msg('rdf.no_changes');
         }
         return ($sx);
     }	
@@ -124,8 +124,7 @@ class AuthotityRDF extends Model
         }
         
         if ($m == 0) {
-            $sx = msg('No_changes');
-			$sx .= metarefresh(PATH.MODULE.'rdf/check_authors?phase=2');
+            $sx = msg('rdf.no_changes');
 		}
         return ($sx);
     }

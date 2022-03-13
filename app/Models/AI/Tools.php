@@ -76,7 +76,7 @@ class Tools extends Model
 						$tela .= $this->research($d1,$d2,$d3,$d4);
 						break;			
 					case 'charsets_convert':
-						$tela .= h('')
+						$tela .= h(lang('ai.tools'));
 						$tela .= $NLP->formAI(1,lang('ai.Charsets'));
 						$charset = new \App\Models\AI\NLP\Charsets();
 						$tela .= $charset->convert($d1,$d2,$d3,$d4);

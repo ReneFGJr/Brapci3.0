@@ -48,9 +48,10 @@ return [
     'get_oai_register'=>'Ler Registro',
     'oai_return_harvesting'=>'Recoletar',
     'process_oai_register'=>'Processar Registro',
-    ''=>'',
-    ''=>'',
-    ''=>'',
-
+    'wait'=>'Aguarde',
+    'total'=>'total',
+    'subject'=>'assunto(s)',
+    'work'=>'trabalho(s)',
+    'with'=>'com',
     'base_pq'=>'Base de Dados PQ/CNPq',
 ];

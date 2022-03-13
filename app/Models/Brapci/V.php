@@ -167,26 +167,12 @@ class V extends Model
 						$sx .= '</script>';
 
 						//$Articles = new \App\Models\Journal\Articles();
-						$sx .= $this->BibliograficProduction($th,$id,$act);						
+						$sx .= bsc($this->BibliograficProduction($th,$id,$act),12);
 
 						if (perfil("#ADM"))
 						{
 							$sx .= bs(bsc($RDF->view_data($id),12));
-						}							
-
-						return $sx;
-						
-
-						$Production = new \App\Models\Journal\Production();
-						$sx = '';
-						return $sx;
-						
-						
-						
-						//$sx .= $Production->person($id);
-						
-
-				
+						}	
 						break;				
 
 					default:

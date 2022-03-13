@@ -218,18 +218,28 @@ class RDF extends Model
 				/************* Default */
 			default:
 				$sx = $cab;
-				$sx .= lang('command not found') . ': ' . $d1;
-				$sx .= '<ul>';
-				$sx .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=prefix') . '">' . lang('Inport Prefix') . '</a></li>';
-				$sx .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=class') . '">' . lang('Inport Class') . '</a></li>';
-				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check') . '">' . lang('rdf.Check_class_duplicate') . '</a></li>';
-				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_loop') . '">' . lang('rdf.Check_loop') . '</a></li>';
-				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_authors') . '">' . lang('rdf.Check_authors') . '</a></li>';
-				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_corporate_body') . '">' . lang('rdf.Check_corporate_body') . '</a></li>';
-				$sx .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_subject') . '">' . lang('rdf.Check_subject') . '</a></li>';
-				$sx .= '</ul>';
-		}
-		$sx = bs($sx);
+				$sx .= breadcrumbs(array(
+					'rdf.home'=>PATH.MODULE,
+					'rdf.rdf'=>PATH.MODULE.'rdf'
+				));
+				$sa = '';
+				if ($d1 != '')
+					{
+						$sa .= bsmessage(lang('command not found') . ': ' . $d1,3);
+					}		
+				$sa .= h('rdf.MainMenu');
+				$sa .= '<ul>';
+				$sa .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=prefix') . '">' . lang('Inport Prefix') . '</a></li>';
+				$sa .= '<li><a href="' . base_url(PATH . 'rdf/inport?type=class') . '">' . lang('Inport Class') . '</a></li>';
+				$sa .= h(lang('rdf.check_do'),3);
+				$sa .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check') . '">' . lang('rdf.Check_class_duplicate') . '</a></li>';
+				$sa .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_loop') . '">' . lang('rdf.Check_loop') . '</a></li>';
+				$sa .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_authors') . '">' . lang('rdf.Check_authors') . '</a></li>';
+				$sa .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_corporate_body') . '">' . lang('rdf.Check_corporate_body') . '</a></li>';
+				$sa .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/check_subject') . '">' . lang('rdf.Check_subject') . '</a></li>';
+				$sa .= '</ul>';
+				$sx .= bs(bsc($sa,12));
+		}		
 		return $sx;
 	}
 

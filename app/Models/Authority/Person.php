@@ -251,7 +251,10 @@ function check_genere($dt,$da)
 						exit;
 						$g = 'X';
 					}
-				$dg[$g]++;
+				if (isset($dg[$g]))
+				{
+					$dg[$g]++;
+				}
 			}
 
 		if ($dg['M']+$dg['F']+$dg['X'] == 0)
