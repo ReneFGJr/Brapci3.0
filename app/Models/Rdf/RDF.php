@@ -67,7 +67,6 @@ class RDF extends Model
 				break;
 			case 'remissive_Person':			
 				$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab,'Person');
-				$sx .= $RDFChecks->check_html('Person');
 				break;
 			case 'remissive_CorporateBody':
 				$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab,'CorporateBody');
@@ -89,12 +88,13 @@ class RDF extends Model
 				$RDFChecks = new \App\Models\Rdf\RDFChecks();
 				$sx .= $cab;
 				$sx .= $RDFChecks->check_class("Person");
+				$sx .= $RDFChecks->check_html('Person');
 				break;
 			case 'check_corporate_body':
 				$RDFChecks = new \App\Models\Rdf\RDFChecks();
 				$sx .= $cab;
 				$sx .= $RDFChecks->check_class("CorporateBody");
-				//$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab,'CorporateBody');
+				$sx .= '<hr>';
 				$sx .= $RDFChecks->check_html('CorporateBody');
 				break;		
 			case 'check_subject':
