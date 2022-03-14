@@ -325,7 +325,12 @@ class V extends Model
 
 		function Subject($th,$id,$dt)
 			{
+				$sx = '';
 				$RDF = new \App\Models\Rdf\RDF();
+
+				$Subject = new \App\Models\Authority\Subject();
+				$sx .= $Subject->viewid($id);
+				return $sx;				
 				$dt = $RDF->le($id);
 
 				$sx = '';
