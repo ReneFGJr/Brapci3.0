@@ -61,8 +61,8 @@ class RDFChecks extends Model
 
 			for($r=0;$r < $total;$r++)
 				{
-					$t++;
 					if ($t > 10) { break; }
+					$t++;
 
 					$line = $dt[$r];
 
@@ -86,7 +86,7 @@ class RDFChecks extends Model
 			$sx .= 'Update '.$t.' for '.count($dt).'<br>';
 			if ($t > 0)
 				{
-					$sx .= metarefresh(PATH.MODULE.'rdf/check_corporate_body',2);
+					$sx .= metarefresh('#',3);
 				} else {
 					$sx .= bsmessage(lang('rdf.process_finished'));
 					$sx .= '<a href="'.PATH.MODULE.'rdf" class="btn btn-outline-primary">'.lang('brapci.return').'</a>';
