@@ -198,22 +198,23 @@ class RDFChecks extends Model
 			return $sx;
 		}	
 
-	function check_authors()
+	function check_class($class="Person")
 		{
 			$AuthotityRDF = new \App\Models\Authority\AuthotityRDF();
 			$sx = '';
-			$sx .= breadcrumbs(array('Home'=>PATH.MODULE,'RDF'=>PATH.MODULE.'rdf',lang('rdf.Check_authors')=>'#'));
+			$sx .= breadcrumbs(array('Home'=>PATH.MODULE,'RDF'=>PATH.MODULE.'rdf',lang('rdf.Check_'.$class)=>'#'));
 
 			/*************************************** Etapa I */				
 			$sx .= h('Method 1');
-			$sx .= $AuthotityRDF->author_check_method_1();
+			$sx .= $AuthotityRDF->check_method_1($class);
 			
 			$sx .= h('Method 3');
 			/*************************************** Etapa I */				
-			$sx .= $AuthotityRDF->author_check_method_3();
+			$sx .= $AuthotityRDF->check_method_3($class);
 			$sx .= '<br><br>';
-			$sx .= $this->btn_return();
 
+
+			$sx .= $this->btn_return();
 
 			$sx = bs(bsc($sx,12));
 			return $sx;

@@ -45,12 +45,13 @@ class AuthotityRDF extends Model
 
 
 
-	function author_check_method_3($p = 0, $class = "Person") {
+	function check_method_3($class = "Person") {
         $sql = "SELECT * FROM rdf_concept as R1
         			INNER JOIN rdf_name ON cc_pref_term = id_n
         			INNER JOIN rdf_class ON cc_class = id_c
         			INNER JOIN rdf_data ON R1.id_cc = d_r2
-        			where R1.cc_use > 0 and c_class = '$class' ";
+        			where R1.cc_use > 0 and c_class = '$class' 
+                    limit 200";
 
 	    $rlt = $this -> db -> query($sql)->getResultArray();
         $sx = '';
@@ -75,9 +76,9 @@ class AuthotityRDF extends Model
         return ($sx);
     }	
 
-    function author_check_method_1() {
+    function check_method_1($class="Person") {
 		$RDF = new \App\Models\Rdf\RDF();
-		$f = $RDF->getClass('Person');
+		$f = $RDF->getClass($class);
 
         $sql = "
 		select N1.n_name as n_name, N1.n_lang as n_lang, C1.id_cc as id_cc,
@@ -86,8 +87,10 @@ class AuthotityRDF extends Model
         INNER JOIN rdf_name as N1 ON C1.cc_pref_term = N1.id_n
         LEFT JOIN rdf_concept as C2 ON C1.cc_use = C2.id_cc
         LEFT JOIN rdf_name as N2 ON C2.cc_pref_term = N2.id_n
-        where C1.cc_class = " . $f . " and C1.cc_use = 0
-        ORDER BY N1.n_name";
+        where C1.cc_class = " . $f . " and C1.cc_use = 0        
+        ORDER BY N1.n_name
+        limit 200
+        ";
         $rlt = $this -> db -> query($sql)->getResultArray();
         
         $n2 = '';
@@ -124,8 +127,10 @@ class AuthotityRDF extends Model
         }
         
         if ($m == 0) {
-            $sx = msg('rdf.no_changes');
-		}
+            $sx = msg('rdf.no_changes',3);
+		} else {
+            $sx = metarefresh('#');
+        }
         return ($sx);
     }
 }

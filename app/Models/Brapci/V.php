@@ -42,6 +42,7 @@ class V extends Model
 
 	function index($th,$id,$act='')
 		{			
+			$this->Socials = new \App\Models\Socials();			
 			$Checked = new \App\Models\Brapci\Checked();
 			$RDF = new \App\Models\Rdf\RDF();
 			$dt = $RDF->le($id,1);
@@ -145,7 +146,10 @@ class V extends Model
 						$dt = $AuthorityNames->where("a_brapci",$id)->FindAll();
 						$dt = $dt[0];
 
+						/* Produção Científica */
 						$sx .= $Bibliometric->PersonAuthors($id);
+
+						/* Nuvem de palavras */
 						$sx .= $Bibliometric->SubjectAuthors($id);
 						
 						$st = '<span href="#" onclick="mostrar();">Show Lattes</span>';
@@ -169,7 +173,7 @@ class V extends Model
 						//$Articles = new \App\Models\Journal\Articles();
 						$sx .= bsc($this->BibliograficProduction($th,$id,$act),12);
 
-						if (perfil("#ADM"))
+						if  ($this->Socials->getAccess("#ADM"))
 						{
 							$sx .= bs(bsc($RDF->view_data($id),12));
 						}	
@@ -373,7 +377,7 @@ class V extends Model
 				$RDF = new \App\Models\Rdf\RDF();
 				$sx = '';				
 
-				if (perfil("#ADMIN"))
+				if  ($this->Socials->getAccess("#ADM"))
 					{
 						$issue_a = $dt['concept']['id_cc'];
 						$jnl1 = $RDF->recover($dt,'hasIssue');
@@ -417,7 +421,7 @@ class V extends Model
 		function bt_export($id)
 			{
 				$sx = '';
-				if (perfil("#ADMIN"))
+				if  ($this->Socials->getAccess("#ADM"))
 				{
 					$link = PATH.MODULE.'v/'.$id.'?action=export';
 					$sx = '<a href="'.$link.'" class="btn btn-outline-primary btn-sm">'.lang('rdf.export').'</a>';
@@ -428,7 +432,7 @@ class V extends Model
 			function bt_edit($id)
 			{
 				$sx = '';
-				if (perfil("#ADMIN"))
+				if  ($this->Socials->getAccess("#ADM"))
 				{
 				$link = PATH.MODULE.'a/'.$id;
 				$sx = '<a href="'.$link.'" class="btn btn-outline-primary btn-sm">'.lang('rdf.edit').'</a>';

@@ -67,6 +67,7 @@ class RDF extends Model
 				break;
 			case 'remissive_Person':			
 				$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab,'Person');
+				$sx .= $RDFChecks->check_html('Person');
 				break;
 			case 'remissive_CorporateBody':
 				$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab,'CorporateBody');
@@ -74,21 +75,6 @@ class RDF extends Model
 			case 'remissive_Subject':
 				$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab,'Subject');
 				break;								
-			case 'check_loop';
-				$RDFChecks = new \App\Models\Rdf\RDFChecks();
-				$sx .= $cab;
-				$sx .= $RDFChecks->check_loop();
-				break;
-			case 'check_corporate_body':
-				$RDFChecks = new \App\Models\Rdf\RDFChecks();
-				$sx .= $cab;
-				$sx .= $RDFChecks->check_html('CorporateBody');
-				break;
-			case 'check_subject':
-				$RDFChecks = new \App\Models\Rdf\RDFChecks();
-				$sx .= $cab;
-				$sx .= $RDFChecks->check_html('Subject');
-				break;
 			case 'set_pref_term':
 				$RDFConcept = new \App\Models\Rdf\RDFConcept();
 				$RDFConcept->set_pref_term($d2,$d3);
@@ -102,8 +88,27 @@ class RDF extends Model
 			case 'check_authors':
 				$RDFChecks = new \App\Models\Rdf\RDFChecks();
 				$sx .= $cab;
-				$sx .= $RDFChecks->check_authors();		
+				$sx .= $RDFChecks->check_class("Person");
 				break;
+			case 'check_corporate_body':
+				$RDFChecks = new \App\Models\Rdf\RDFChecks();
+				$sx .= $cab;
+				$sx .= $RDFChecks->check_class("CorporateBody");
+				//$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab,'CorporateBody');
+				$sx .= $RDFChecks->check_html('CorporateBody');
+				break;		
+			case 'check_subject':
+				$RDFChecks = new \App\Models\Rdf\RDFChecks();
+				$sx .= $cab;
+				$sx .= $RDFChecks->check_class("Subject");
+				//$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab,'Subject');
+				$sx .= $RDFChecks->check_html('Subject');
+				break;						
+			case 'check_loop';
+				$RDFChecks = new \App\Models\Rdf\RDFChecks();
+				$sx .= $cab;
+				$sx .= $RDFChecks->check_loop();
+				break;				
 			case 'set':
 				$RDFFormVC = new \App\Models\Rdf\RDFFormVC();
 				$sx = $RDFFormVC->ajax_save();
@@ -259,7 +264,7 @@ class RDF extends Model
 			$RDFData->change($d1,$d2);
 		}
 
-	function remissive($d2, $d3, $d4, $d5, $cab,$class = "Person")
+	function remissive($d2, $d3, $d4, $d5, $cab, $class = "Person")
 		{
 			$dt = $this->le($d2);
 			$nome = $dt['concept']['n_name'];
@@ -281,11 +286,27 @@ class RDF extends Model
 					$d1x = get("id_cc");
 					$d2x = get("id_use");
 
-					$dt['cc_use'] = $d1x;
-					$this->set($dt)->where('id_cc',$d2x)->update();
-					$this->change($d2x,$d1x);
-					$sx = metarefresh(PATH.MODULE.'rdf/remissive_'.$class.'/'.$d2.'/'.$d3.'?arg='.get('arg'));
-					return $sx;
+					if (is_array($d2x))
+						{
+							for ($q=0;$q < count($d2x);$q++)
+								{
+									$d2xa = $d2x[$q];
+									$dt['cc_use'] = $d1x;
+									$this->set($dt)->where('id_cc',$d2xa)->update();
+									$this->change($d2xa,$d1x);								
+								}
+							$sx = metarefresh(PATH.MODULE.'rdf/remissive_'.$class.'/'.$d2.'/'.$d3.'?arg='.get('arg'));
+							return $sx;
+						} else {
+						if ($d2x != '')
+							{
+								$dt['cc_use'] = $d1x;
+								$this->set($dt)->where('id_cc',$d2x)->update();
+								$this->change($d2x,$d1x);							
+								$sx = metarefresh(PATH.MODULE.'rdf/remissive_'.$class.'/'.$d2.'/'.$d3.'?arg='.get('arg'));
+								return $sx;
+							}
+						}					
 				}
 			
 			/* Classe */			
@@ -306,7 +327,7 @@ class RDF extends Model
 			$sx .= '<input type="text" name="arg" value="'.$nm.'" size="20" class="form-control">';
 			$sx .= '<input type="hidden" name="id_cc" value="' . $d2 . '">';
 			$sx .= count($dt).' names found';
-			$sx .= '<select name="id_use" style="width: 100%;" size=12>';
+			$sx .= '<select name="id_use[]" style="width: 100%;" size=12 multiple>';
 			for ($r=0;$r < count($dt);$r++)
 				{
 					$line = $dt[$r];
@@ -399,9 +420,10 @@ class RDF extends Model
 
 	function btn_return($id='',$class='')
 		{
+			$this->Socials = new \App\Models\Socials();
 			if ($id == '') 
 				{
-					if (perfil("#ADM"))
+					if  ($this->Socials->getAccess("#ADM"))
 					{
 						$sx = '<a href="'.PATH.MODULE.'rdf/" class="btn btn-outline-primary '.$class.'">';
 						$sx .= lang('brapci.return');
@@ -468,6 +490,7 @@ class RDF extends Model
 		if ($idc == 0) { 
 			print_r($id);
 			echo h('ERROR: directory ID invalid -> '.$id,3); 
+
 			$x = $y;
 			exit; 
 			}

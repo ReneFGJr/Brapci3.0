@@ -44,15 +44,21 @@ class Person extends Model
 
 function remissive($id)
 	{
+		$this->Socials = new \App\Models\Socials();
 		$AuthotityRemissive = new \App\Models\Authority\AuthotityRemissive();
 		$dt = $AuthotityRemissive->remissive_author($id);
 
-		$sx = '';		
+		$sx = '';	
+		if (count($dt) > 0)
+		{
+			$sx .= lang('rdf.there_are') . ' ' . count($dt) . ' ' . lang('rdf.remissive_author');
+			$sx .= '<hr>';
+		}	
 		for ($r=0;$r < count($dt);$r++)
 			{
 				$line = $dt[$r];
 				$sx .= '<li>'.$line['n_name'];
-				if (perfil("#ADMIN"))
+				if  ($this->Socials->getAccess("#ADM"))
 					{
 						$link = '<a href="'.URL.MODULE.'v/'.$line['id_cc'].'">';
 						$link .= $line['id_cc'].'=>'.$line['cc_use'];
@@ -73,6 +79,7 @@ function remissive($id)
 
  function person_header($dt,$rdf)
 	{
+		$this->Socials = new \App\Models\Socials();
 		$Lattes = new \App\Models\Lattes\Lattes();
 		$sx = '';
 		$sx .= '<div class="col-md-2 text-right text-end" style="border-right: 4px solid #8080FF;">
@@ -92,7 +99,7 @@ function remissive($id)
 
 		$sa = h($dt['a_prefTerm'].'<sup>'.$nameID.'</sup>',4);
 		$sa .= $Lattes->link($dt,30);
-		if (perfil("#ADM"))
+		if  ($this->Socials->getAccess("#ADM"))
 			{
 				$sa .= $this->btn_check($dt,30);
 				$sa .= $this->btn_remissive($dt,30);

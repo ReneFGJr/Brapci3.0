@@ -189,7 +189,7 @@ class OaiPMHListRecord extends Model
 				}
 			$dt = $this->findAll();
 
-			if (perfil("#ADMIN") == true)
+			if  ($this->Socials->getAccess("#ADM"))
 				{
 					//echo '===>'.$st;
 					if ($st == 0)

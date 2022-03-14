@@ -370,9 +370,9 @@ class JournalIssue extends Model
 
 	function btn_check_issues($id)
 	{
-		$Social = new \App\Models\Socials();
+		$this->Socials = new \App\Models\Socials();
 		$sx = '';
-		if ($Social->perfil("#ADM")) {
+		if  ($this->Socials->getAccess("#ADM")) {
 			$url = (PATH . 'res/admin/issue/check/' . $id);
 			$sx = onclick($url, 800, 200, 'btn btn-outline-primary') . lang('brapci.check_issues') . '<span>';
 			//$sx = '<a href="'.$url.'" class="btn btn-outline-primary">'.lang('journal_check_issue').'</a>';

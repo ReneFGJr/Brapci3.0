@@ -17,12 +17,12 @@ define("PREFIX",'brapci.');
 
 $this->Socials = new \App\Models\Socials();
 
+
 class Res extends BaseController
 {
 	public function __construct()
 	{
-		$this->Search = new \App\Models\Search\Search();
-		$this->Socials = new \App\Models\Socials();
+		$this->Search = new \App\Models\Search\Search();		
 	}
 
 	function cab($tp = '',$dt=array())
@@ -312,6 +312,7 @@ class Res extends BaseController
 
 	public function social($d1 = '', $id = '')
 	{
+		$this->Socials = new \App\Models\Socials();
 		$cab = $this->cab('all');
 		$dt = array();
 		$sx = $this->Socials->index($d1, $id, $dt, $cab);

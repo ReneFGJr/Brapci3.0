@@ -91,6 +91,7 @@ class CorporateBody extends Model
 
 	function corporate_header($dt, $rdf)
 	{
+		$this->Socials = new \App\Models\Socials();
 		$sx = '';
 		$sx .= '<div class="col-md-2 text-right text-end" style="border-right: 4px solid #8080FF;">
 				<tt style="font-size: 100%;">Corporate Body</tt>        
@@ -107,7 +108,7 @@ class CorporateBody extends Model
 		}
 
 		$sa = h($dt['a_prefTerm'] . '<sup>' . $nameID . '</sup>', 4);
-		if (perfil("#ADM")) {
+		if ($this->Socials->getAccess("#ADM")) {
 			//$sa .= $this->btn_check($dt,30);
 			$sa .= $this->btn_remissive($dt, 30);
 			//$sa .= $this->btn_change_updade($dt,30);
@@ -146,6 +147,7 @@ class CorporateBody extends Model
 
 	function remissive($id)
 	{
+		$this->Socials = new \App\Models\Socials();
 		$AuthotityRemissive = new \App\Models\Authority\AuthotityRemissive();
 		$dt = $AuthotityRemissive->remissive_author($id);
 
@@ -153,7 +155,7 @@ class CorporateBody extends Model
 		for ($r = 0; $r < count($dt); $r++) {
 			$line = $dt[$r];
 			$sx .= '<li>' . $line['n_name'];
-			if (perfil("#ADMIN")) {
+			if  ($this->Socials->getAccess("#ADM")) {
 				$link = '<a href="' . URL . MODULE . 'v/' . $line['id_cc'] . '">';
 				$link .= $line['id_cc'] . '=>' . $line['cc_use'];
 				$link .= '</a>';

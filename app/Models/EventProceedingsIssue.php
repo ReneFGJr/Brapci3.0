@@ -223,7 +223,7 @@ class EventProceedingsIssue extends Model
 
 				$sx .= bsc($data,2);
 
-				if ($this->Socials->perfil("#ADM"))
+				if  ($this->Socials->getAccess("#ADM"))
 				{
 					$btns = '';
 
