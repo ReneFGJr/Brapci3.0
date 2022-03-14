@@ -94,7 +94,6 @@ class RDF extends Model
 				$RDFChecks = new \App\Models\Rdf\RDFChecks();
 				$sx .= $cab;
 				$sx .= $RDFChecks->check_class("CorporateBody");
-				$sx .= '<hr>';
 				$sx .= $RDFChecks->check_html('CorporateBody');
 				break;		
 			case 'check_subject':

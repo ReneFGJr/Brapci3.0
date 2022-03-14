@@ -45,8 +45,7 @@ class RDFChecks extends Model
 	function check_html($class)
 		{
 			$sx = '';
-			$sx .= breadcrumbs(array('Home'=>PATH.MODULE,'RDF'=>PATH.MODULE.'rdf','Check '.$class=>'#'));
-			$sx .= h(lang('rdf.check').' '.lang('rdf.'.$class));
+			$sx .= h('Method 4');
 			$RDF = new \App\Models\Rdf\RDF();
 			$RDFLiteral = new \App\Models\Rdf\RDFLiteral();
 			$class = $RDF->getClass($class);
@@ -82,13 +81,13 @@ class RDFChecks extends Model
 					$sx .= '<li>'.$nome.' <b>Update</b></li>';
 				}
 				$sx .= '</ul>';
-
-			$sx .= 'Update '.$t.' for '.count($dt).'<br>';
+			
 			if ($t > 0)
 				{
+					$sx .= 'Update '.$t.' for '.count($dt).'<br>';
 					$sx .= metarefresh('#',3);
 				} else {
-					$sx .= bsmessage(lang('rdf.process_finished'));
+					$sx = msg('rdf.no_changes',3);
 					$sx .= '<a href="'.PATH.MODULE.'rdf" class="btn btn-outline-primary">'.lang('brapci.return').'</a>';
 				}
 
