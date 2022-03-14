@@ -87,7 +87,7 @@ class RDFChecks extends Model
 					$sx .= 'Update '.$t.' for '.count($dt).'<br>';
 					$sx .= metarefresh('#',3);
 				} else {
-					$sx = msg('rdf.no_changes',3);
+					$sx .= msg('rdf.no_changes',3);
 					$sx .= '<a href="'.PATH.MODULE.'rdf" class="btn btn-outline-primary">'.lang('brapci.return').'</a>';
 				}
 
