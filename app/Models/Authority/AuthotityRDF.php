@@ -67,8 +67,10 @@ class AuthotityRDF extends Model
             $sql = "update rdf_data set 
             		d_o = " . $line['d_r2'] . ",
             		d_r2 = $idt,
-            		d_update = 1
-            	where id_d = " . $line['id_d'];
+            		d_update = 1 ";
+            $sql .= " where d_r2 = ".$line['d_r2'];
+
+            	/* where id_d = " . $line['id_d']; */
             $this -> db -> query($sql);
             $m++;
         }
