@@ -90,21 +90,21 @@ class RDF extends Model
 				$sx .= $cab;
 				$sx .= $RDFChecks->check_class("Person");
 				$sx .= $RDFChecks->check_html('Person');
-				$sx .= $RDFChecks->btn_return();
+				$sx .= bs(bsc($RDFChecks->btn_return(),12));
 				break;
 			case 'check_corporate_body':
 				$RDFChecks = new \App\Models\Rdf\RDFChecks();
 				$sx .= $cab;
 				$sx .= $RDFChecks->check_class("CorporateBody");
 				$sx .= $RDFChecks->check_html('CorporateBody');
-				$sx .= $RDFChecks->btn_return();
+				$sx .= bs(bsc($RDFChecks->btn_return(),12));
 				break;		
 			case 'check_subject':
 				$RDFChecks = new \App\Models\Rdf\RDFChecks();
 				$sx .= $cab;
 				$sx .= $RDFChecks->check_class("Subject");
 				$sx .= $RDFChecks->check_html('Subject');
-				$sx .= $RDFChecks->btn_return();
+				$sx .= bs(bsc($RDFChecks->btn_return(),12));
 				break;						
 			case 'check_loop';
 				$RDFChecks = new \App\Models\Rdf\RDFChecks();
