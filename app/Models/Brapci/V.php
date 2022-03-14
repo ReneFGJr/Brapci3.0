@@ -118,6 +118,7 @@ class V extends Model
 
 					case 'Subject':
 						$sx .= $this->Subject($th,$id,$dt);
+						$sx .= bs(bsc($RDF->view_data($id),12));
 						break;
 
 					case 'IssueProceeding':
@@ -130,6 +131,7 @@ class V extends Model
 					case 'CorporateBody':
 						//$Articles = new \App\Models\Journal\Articles();
 						$sx .= $this->CorporateBody($th,$id,$act);
+						$sx .= bs(bsc($RDF->view_data($id),12));
 						break;				
 						
 					case 'Person':
