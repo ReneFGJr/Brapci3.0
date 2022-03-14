@@ -145,6 +145,7 @@ class Index extends Model
 
 	function resume()
 		{
+			$this->Socials = new \App\Models\Socials();
 			$Bolsa = new \App\Models\PQ\Bolsa();
 			$Bolsista = new \App\Models\PQ\Bolsista();			
 
