@@ -79,6 +79,7 @@ function remissive($id)
 
  function person_header($dt,$rdf)
 	{
+		$AuthorityNames = new \App\Models\Authority\AuthorityNames();
 		$this->Socials = new \App\Models\Socials();
 		$Lattes = new \App\Models\Lattes\Lattes();
 		$sx = '';
@@ -93,7 +94,7 @@ function remissive($id)
 		if ($dt['a_prefTerm'] != $name)
 			{
 				$du['a_prefTerm'] = $name;
-				$this->set($du)->where('id_a',$dt['id_a'])->update();
+				$AuthorityNames->set($du)->where('id_a', $dt['id_a'])->update();
 				$dt['a_prefTerm'] = $name;
 			}
 

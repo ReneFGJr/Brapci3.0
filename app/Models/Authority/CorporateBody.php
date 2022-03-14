@@ -91,6 +91,7 @@ class CorporateBody extends Model
 
 	function corporate_header($dt, $rdf)
 	{
+		$AuthorityNames = new \App\Models\Authority\AuthorityNames();
 		$this->Socials = new \App\Models\Socials();
 		$sx = '';
 		$sx .= '<div class="col-md-2 text-right text-end" style="border-right: 4px solid #8080FF;">
@@ -103,7 +104,7 @@ class CorporateBody extends Model
 		/****************************************** Atualiza Lista */
 		if ($dt['a_prefTerm'] != $name) {
 			$du['a_prefTerm'] = $name;
-			$this->set($du)->where('id_a', $dt['id_a'])->update();
+			$AuthorityNames->set($du)->where('id_a', $dt['id_a'])->update();
 			$dt['a_prefTerm'] = $name;
 		}
 
