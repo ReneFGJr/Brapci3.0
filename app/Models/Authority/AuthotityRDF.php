@@ -77,7 +77,7 @@ class AuthotityRDF extends Model
         if ($m == 0) {
             $sx = msg('rdf.no_changes');
         } else {
-            $sx = metarefresh('#',3);
+            $sx .= metarefresh('#',3);
         }
         return ($sx);
     }	
@@ -135,7 +135,7 @@ class AuthotityRDF extends Model
         if ($m == 0) {
             $sx = msg('rdf.no_changes',3);
 		} else {
-            $sx = metarefresh('#',3);
+            $sx .= metarefresh('#',3);
         }
         return ($sx);
     }
