@@ -51,7 +51,7 @@ class AuthotityRDF extends Model
         			INNER JOIN rdf_class ON cc_class = id_c
         			INNER JOIN rdf_data ON R1.id_cc = d_r2
         			where R1.cc_use > 0 and c_class = '$class' 
-                    and strlen(n_name) > 0
+                    and length(n_name) > 0
                     limit 100";
 
 	    $rlt = $this -> db -> query($sql)->getResultArray();
