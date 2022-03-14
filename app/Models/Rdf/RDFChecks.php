@@ -88,7 +88,6 @@ class RDFChecks extends Model
 					$sx .= metarefresh('#',3);
 				} else {
 					$sx .= msg('rdf.no_changes',3);
-					$sx .= '<a href="'.PATH.MODULE.'rdf" class="btn btn-outline-primary">'.lang('brapci.return').'</a>';
 				}
 
 			$sx = bs(bsc($sx,12));
@@ -210,10 +209,7 @@ class RDFChecks extends Model
 			$sx .= h('Method 3');
 			/*************************************** Etapa I */				
 			$sx .= $AuthotityRDF->check_method_3($class);
-			$sx .= '<br><br>';
-
-
-			$sx .= $this->btn_return();
+			$sx .= '<br><br>';			
 
 			$sx = bs(bsc($sx,12));
 			return $sx;

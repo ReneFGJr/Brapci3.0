@@ -83,25 +83,28 @@ class RDF extends Model
 				$RDFChecks = new \App\Models\Rdf\RDFChecks();
 				$sx .= $cab;
 				$sx .= $RDFChecks->check_duplicate();
+				$sx .= $RDFChecks->btn_return();
 				break;
 			case 'check_authors':
 				$RDFChecks = new \App\Models\Rdf\RDFChecks();
 				$sx .= $cab;
 				$sx .= $RDFChecks->check_class("Person");
 				$sx .= $RDFChecks->check_html('Person');
+				$sx .= $RDFChecks->btn_return();
 				break;
 			case 'check_corporate_body':
 				$RDFChecks = new \App\Models\Rdf\RDFChecks();
 				$sx .= $cab;
 				$sx .= $RDFChecks->check_class("CorporateBody");
 				$sx .= $RDFChecks->check_html('CorporateBody');
+				$sx .= $RDFChecks->btn_return();
 				break;		
 			case 'check_subject':
 				$RDFChecks = new \App\Models\Rdf\RDFChecks();
 				$sx .= $cab;
 				$sx .= $RDFChecks->check_class("Subject");
-				//$sx .= $this->remissive($d2, $d3, $d4, $d5, $cab,'Subject');
 				$sx .= $RDFChecks->check_html('Subject');
+				$sx .= $RDFChecks->btn_return();
 				break;						
 			case 'check_loop';
 				$RDFChecks = new \App\Models\Rdf\RDFChecks();
