@@ -68,6 +68,7 @@ class V extends Model
 
 			if ($act == 'export')
 				{
+					echo "EXPORT ".$id.'<br>';
 					$RDF->c($id,true);
 				}			
 
@@ -332,16 +333,9 @@ class V extends Model
 
 				$Subject = new \App\Models\Authority\Subject();
 				$sx .= $Subject->viewid($id);
-				return $sx;				
 				$dt = $RDF->le($id);
-
-				$sx = '';
-				$sx .= bsc(h($dt['concept']['c_class'],6),12);
-				$sx .= bsc(h($dt['concept']['n_name'],1),12);
 				$sx .= bsc(lang('brapci.total').' <b>'.count($dt['data']).' '.lang('brapci.records').'</b>',12);
 				$sx = bs($sx);
-				
-				$sx .= bs(bsc($RDF->view_data($id),12));
 				return $sx;
 			}
 		function Issue($th,$id,$act)

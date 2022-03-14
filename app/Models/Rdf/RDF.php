@@ -295,7 +295,7 @@ class RDF extends Model
 									$d2xa = $d2x[$q];
 									$dt['cc_use'] = $d1x;
 									$this->set($dt)->where('id_cc',$d2xa)->update();
-									$this->change($d2xa,$d1x);								
+									$this->change($d1x,$d2xa);								
 								}
 							$sx = metarefresh(PATH.MODULE.'rdf/remissive_'.$class.'/'.$d2.'/'.$d3.'?arg='.get('arg'));
 							return $sx;
@@ -304,7 +304,7 @@ class RDF extends Model
 							{
 								$dt['cc_use'] = $d1x;
 								$this->set($dt)->where('id_cc',$d2x)->update();
-								$this->change($d2x,$d1x);							
+								$this->change($d1x,$d2x);
 								$sx = metarefresh(PATH.MODULE.'rdf/remissive_'.$class.'/'.$d2.'/'.$d3.'?arg='.get('arg'));
 								return $sx;
 							}
@@ -613,7 +613,6 @@ class RDF extends Model
 		if ((file_exists($file)) and ($force==false)) {
 			$tela = file_get_contents($file);
 		} else {
-			$tela = 'Content not found: ' . $id . '==' . $file . '<br>';
 			$RDFExport = new \App\Models\Rdf\RDFExport();
 			$RDFExport->export($id,$force);
 			if (file_exists($file)) {

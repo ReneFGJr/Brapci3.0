@@ -180,13 +180,24 @@ class AuthorityNames extends Model
 	function viewid($id)
 	{
 		$Country = new \App\Models\Authority\Country();
-		$dt = $this->le($id);
+		$RDF = new \App\Models\Rdf\RDF();
+
+		$dt = $this->le($id);		
 
 		if ($dt['a_brapci'] > 0) {
+			$dr = $RDF->le($dt['a_brapci']);
+			if ($dr['concept']['cc_use'] > 0)
+				{
+					$dt['a_brapci'] = $dr['concept']['cc_use'];
+					$dt['a_prefTerm'] = $dr['concept']['n_name'];
+					$dt['a_uri'] = $RDF->link($dr);
+					$this->set($dt)->where('id_a', $id)->update();
+				}
+
 			$sx = h($dt['a_prefTerm'], 1);
 			$sx .= bsmessage(lang('brapci.redirect_brapci'));
 			$sx .= bsmessage(lang('brapci.wait'));
-			$sx .= metarefresh(PATH . 'res/v/' . $dt['a_brapci']);
+			$sx .= metarefresh(PATH . 'res/v/' . $dt['a_brapci'],0);
 			return $sx;
 			exit;
 		}
