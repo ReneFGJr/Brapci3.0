@@ -182,6 +182,8 @@ class RDF extends Model
 				$sa .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/export/index_authors') . '">' . lang('rdf.Export_authors.index') . '</a></li>';
 				$sa .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/export/index_subject') . '">' . lang('rdf.Export_subject.index') . '</a></li>';
 				$sa .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/export/index_corporatebody') . '">' . lang('rdf.Export_corporatebody.index') . '</a></li>';
+				$sa .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/export/index_journal') . '">' . lang('rdf.Export_journal.index') . '</a></li>';
+				$sa .= '<li><a href="' . base_url(PATH . MODULE. 'rdf/export/index_proceeding') . '">' . lang('rdf.Export_proceeding.index') . '</a></li>';
 				$sa .= '</ul>';
 				$sx .= bs(bsc($sa,12));
 		}		

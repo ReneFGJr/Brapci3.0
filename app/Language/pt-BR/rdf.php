@@ -25,7 +25,7 @@ return [
     'index_Subject'=>'Assuntos',
     'index_CorporateBody'=>'Instituições',
     'there_are'=>'Existe(m)',
-    'remissive_author'=>'remissiva(s) de autor(es)',
+    'remissive'=>'remissiva(s)',
     ''=>'',
     ''=>'',
 

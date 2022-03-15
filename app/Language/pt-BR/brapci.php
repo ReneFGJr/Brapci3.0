@@ -55,4 +55,5 @@ return [
     'work'=>'trabalho(s)',
     'with'=>'com',
     'base_pq'=>'Base de Dados PQ/CNPq',
+    'works'=>'trabalhos',
 ];

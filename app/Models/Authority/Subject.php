@@ -137,30 +137,8 @@ function viewid($id)
 
 	function remissive($id)
 	{
-		$this->Socials = new \App\Models\Socials();
 		$AuthotityRemissive = new \App\Models\Authority\AuthotityRemissive();
-		$dt = $AuthotityRemissive->remissive_author($id);
-
-		$sx = '';
-		for ($r = 0; $r < count($dt); $r++) {
-			$line = $dt[$r];
-			$sx .= '<li>' . $line['n_name'];
-			if  ($this->Socials->getAccess("#ADM")) {
-				$link = '<a href="' . URL . MODULE . 'v/' . $line['id_cc'] . '">';
-				$link .= $line['id_cc'] . '=>' . $line['cc_use'];
-				$link .= '</a>';
-
-				$sx .= onclick(PATH . MODULE . 'rdf/set_pref_term/' . $line['cc_use'] . '/' . $line['id_cc'], 400, 100);
-				$sx .= ' ';
-				$sx .= '<sup>[set_prefTerm]</sup></span>';
-				$sx .= ' ';
-				$sx .= '<sup>' . $link . '</sup>';
-			}
-			$sx .= '</li>';
-		}
-		if ($sx != '') {
-			$sx = '<ul class="small">' . $sx . '</ul>';
-		}
-		return ($sx);
+		$sx = $AuthotityRemissive->remissive($id);
+		return($sx);
 	}	
 }

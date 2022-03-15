@@ -160,6 +160,9 @@ class AuthorityNames extends Model
 
 		return $sx;
 	}
+
+	
+
 	function remissive($id)
 	{
 		$dt = $this->le($id);
