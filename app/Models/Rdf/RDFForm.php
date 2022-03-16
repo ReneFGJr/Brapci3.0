@@ -86,7 +86,6 @@ function form($id, $dt) {
 			where sc_class = $class and (sc_library = ".LIBRARY." OR sc_library = 0)
 			order by sc_ord, id_sc, t0.c_order";
 
-
 			$rlt =  (array)$this->db->query($sql)->getResult();
 
 			$sx .= '<table width="100%" cellpadding=5>';
@@ -176,7 +175,7 @@ function form_ed($id)
 		return $sx;
 	}
 
-function form_import($id_class)
+function form_import($id_class,$force=false)
 	{
 		$RDF = new \App\Models\Rdf\Rdf();
 		$RDFData = new \App\Models\Rdf\RDFData();
@@ -202,11 +201,13 @@ function form_import($id_class)
 
 				$this->where('sc_propriety',$dt[$r]['d_p']);
 				$this->where('sc_class',$dt[$r]['cc_class']);
+				$this->where('sc_library',LIBRARY);
 				$da = $this->findAll();
 
 				if (count($da) == 0)
 					{
 						$this->set($dd)->insert();
+						echo "NOVO";
 					}
 			}
 	}
