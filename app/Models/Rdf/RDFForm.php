@@ -56,10 +56,20 @@ function form($id, $dt) {
 
 		$this->form_import($class);
 
+		if (get("action") == "DEL")
+			{
+				$check = md5($id.MODULE);
+				$this->exclude($id,$check);
+			}
+
 		$sx = '';
 		$js1 = '';  
 		$sx .= '<div class="small">Class</div>';
 		$sx .= h($RDF->show_class($dt),2,'btn-primary [bn]');
+		$sx .= '<a href="'.URL.MODULE.'/v/'.$id.'" class="small">'.lang('rdf.return').'</a>';
+		$sx .= ' | ';
+		$sx .= onclick(URL.MODULE.'/rdf/exclude/'.$id,800,400,'text-danger');
+		$sx .= lang('rdf.delete').'</span>';
 		//$sx .= $RDF->link($dt,'btn btn-outline-primary btn-sm').'return'.'</a>';;
 		
 
@@ -271,6 +281,7 @@ function exclude($id,$ac='')
 		$dt = $RDFData->find($id);
 
 		$sx = '';
+		$dd = array();
 
 		/* Confirm */
 		if ($ac == $check)
@@ -296,6 +307,13 @@ function exclude($id,$ac='')
 				$sx .= '<div class="mt-2">'.lang('find.term').'</div>';
 			}
 		/* Mostra Nome */
+
+		if (count($dd) == 0)
+			{
+				echo h(lang('rdf.404'),1);
+				echo h(lang('rdf.concept_not_found'),3);
+				exit;
+			}
 		
 		$sx .= h($dd['n_name'],3).'<hr>';
 
