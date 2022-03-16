@@ -207,7 +207,6 @@ function form_import($id_class,$force=false)
 				if (count($da) == 0)
 					{
 						$this->set($dd)->insert();
-						echo "NOVO";
 					}
 			}
 	}
