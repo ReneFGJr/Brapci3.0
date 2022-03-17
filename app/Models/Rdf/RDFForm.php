@@ -242,6 +242,7 @@ function edit_form($id)
 
 function edit($d1,$d2,$d3,$d4,$d5)
 	{
+		$this->Socials = new \App\Models\Socials();
 		$sx = '';		
 		$prop = $d3;
 		$id = $d4;
