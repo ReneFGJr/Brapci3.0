@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class BooksSelf extends Model
 {
-	protected $DBGroup              = 'default';
+	protected $DBGroup              = 'books';
 	protected $table                = 'book_self';
 	protected $primaryKey           = 'id_bs';
 	protected $useAutoIncrement     = true;

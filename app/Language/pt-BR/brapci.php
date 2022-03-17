@@ -52,8 +52,9 @@ return [
     'wait'=>'Aguarde',
     'total'=>'total',
     'subject'=>'assunto(s)',
-    'work'=>'trabalho(s)',
+    'work'=>'Trabalho(s)',
     'with'=>'com',
     'base_pq'=>'Base de Dados PQ/CNPq',
     'works'=>'trabalhos',
+    'articles_issue'=>'Trabalhos desta edição'
 ];

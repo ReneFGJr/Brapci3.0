@@ -7,6 +7,7 @@ if (!isset($subtitle)) {
 $items = array();
 $items['main/'] = 'Main';
 $items['res/rdf'] = 'Painel RDF';
+$items['res/elasctic'] = 'ElasticSearch';
 $items['res/admin/journal/menu'] = 'Journal';
 $items['book'] = 'Book';
 $items['res/admin/proceeding/menu'] = 'Proceeding';

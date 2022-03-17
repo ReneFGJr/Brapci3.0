@@ -152,6 +152,14 @@ class Res extends BaseController
 			$OAI->index($d1,$d2,$d3,$d4,$d5);
 		}
 
+	public function ai($d1='',$d2='',$d3='',$d4='',$d5='')
+		{
+			$AI = new \App\Models\AI\Index();
+			$sx = $this->cab();
+			$sx .= $AI->index($d1,$d2,$d3,$d4,$d5);
+			return $sx;
+		}		
+
 	public function admin($d1='',$d2='',$d3='',$d4='',$d5='')
 	{
 		//
@@ -162,7 +170,6 @@ class Res extends BaseController
 					$Temp = new \App\Models\XXX\Index();
 					$tela .= $Temp->index($d2,$d3,$d4,$d5);
 					break;
-
 				case 'ckan':
 					$Ckan = new \App\Models\Ckan\Index();
 					$tela .= $Ckan->index($d2,$d3,$d4,'');
@@ -329,6 +336,14 @@ class Res extends BaseController
 					return 0;
 				}
 		}
+
+	function elasctic($d1='',$d2='',$d3='',$d4='')
+	{
+		$sx = $this->cab();
+		$ElastichSerach = new \App\Models\ElasticSearch\Index();
+		$sx .= $ElastichSerach->index($d1,$d2,$d3,$d4);
+		return $sx;
+	}		
 
 	function painel($p = '')
 	{

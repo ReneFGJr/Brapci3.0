@@ -45,6 +45,9 @@ class Index extends Model
 			$tela = '';
 			switch($d1)
 				{
+					case 'ws':
+						$tela .= $this->ws($d2,$d3);
+						break;
 					case 'syllables':
 						$AI = new \App\Models\AI\NLP\Syllables();
 						$tela .= $this->formAI(1,lang('ai.Sillables'));
@@ -63,6 +66,12 @@ class Index extends Model
 			return $tela;		
 		}	
 
+	function ws()
+		{
+			$sx = 'xx';
+			return $sx;
+		}
+
 	function services()
 		{
 			$tela = '';
@@ -73,10 +82,18 @@ class Index extends Model
 			$s['ai.content_analysis'] = 'ai/research/contentanalysis';
 			$s['ai.roboti_task'] = 'ai/roboti';
 			$s['ai.pq'] = 'ai/research/pq';
+			$s['<hr>'] = '';
+			$s['ai.ws'] = 'res/ai/ws';
+			$s['ai.thesa'] = 'res/ai/thesa';
 			$tela .= '<ul>';
 			foreach($s as $service=>$url)
 				{
-					$tela .= '<li><a href="'.base_url(PATH.$url).'">'.$service.'</a></li>';
+					if ($url == '')
+					{
+						$tela .= '<hr>';
+					} else {
+						$tela .= '<li><a href="'.base_url(PATH.$url).'">'.$service.'</a></li>';
+					}
 				}
 			$tela .= '</ul>';
 			return $tela;

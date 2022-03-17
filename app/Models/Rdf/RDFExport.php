@@ -359,6 +359,7 @@ class RDFExport extends Model
 		$this->saveRDF($id, json_encode($dc), 'issue.json');
 		return "";
 	}
+	
 	function export_geral($dt, $id)
 	{
 		$name = trim($dt['concept']['n_name']);

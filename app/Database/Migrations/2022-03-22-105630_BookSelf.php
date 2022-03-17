@@ -4,43 +4,42 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Downloaded2 extends Migration
+class BookSelf extends Migration
 {
-	protected $DBGroup = 'click';
+    protected $DBGroup = 'books';
 
 	public function up()
 	{
-		// php spark db:create brapci_click
-		// $this->forge->createDatabase('brapci_click');
-
  		$this->forge->addField([
-            'id_dw' => [
+            'id_bs' => [
                 'type' => 'INT',
                 'auto_increment' => true
             ],
-            'dw_ip' => [
-                'type' => 'VARCHAR',
-                'constraint' => '20'
+            'bs_title' => [
+                'type' => 'TEXT',
             ], 
-            'dw_rdf' => [
+            'bs_rdf' => [
                 'type' => 'INT',
 				'default' => 0
             ], 			
-            'dw_download' => [
+            'bs_status' => [
                 'type' => 'INT',
 				'default' => 0
             ], 			
-            'dw_type' => [
+            'bs_user' => [
                 'type' => 'INT',
+				'default' => 0
+            ], 			
+			'bs_agree' => [
+				'type' => 'INT',
 				'default' => 0
             ], 			
             'created_at datetime default current_timestamp',
             'updated_at datetime default current_timestamp on update current_timestamp'
         ]);
 		
-		$this->forge->addKey('id_dw', true);
-		$this->forge->addKey('dw_rdf', true);
-        $this->forge->createTable('download');
+		$this->forge->addKey('id_bs', true);
+        $this->forge->createTable('book_self');
 	}
 
 	public function down()
