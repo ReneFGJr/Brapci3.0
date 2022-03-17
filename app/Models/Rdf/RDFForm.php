@@ -54,6 +54,12 @@ function form($id, $dt) {
 		$RDF = new \App\Models\Rdf\RDF();
 		$class = $dt['cc_class'];
 
+		if ($dt['cc_class'] < 0)
+			{
+				$sx = $RDF->E404();
+				return $sx;
+			}
+
 		$this->form_import($class);
 
 		if (get("action") == "DEL")
@@ -68,7 +74,7 @@ function form($id, $dt) {
 		$sx .= h($RDF->show_class($dt),2,'btn-primary [bn]');
 		$sx .= '<a href="'.URL.MODULE.'/v/'.$id.'" class="small">'.lang('rdf.return').'</a>';
 		$sx .= ' | ';
-		$sx .= onclick(URL.MODULE.'/rdf/exclude/'.$id,800,400,'text-danger');
+		$sx .= onclick(URL.MODULE.'/rdf/exclude_concept/'.$id,800,400,'text-danger');
 		$sx .= lang('rdf.delete').'</span>';
 		//$sx .= $RDF->link($dt,'btn btn-outline-primary btn-sm').'return'.'</a>';;
 		

@@ -53,7 +53,8 @@ class V extends Model
 			/***************************** void */
 			if (!isset($dt['concept']['c_class']))
 				{
-					return $sx . "ERRO DE ACESSO - ".$id;
+					$sx .= bs(bsc($RDF->E404(),12));
+					return $sx;
 					exit;
 				}			
 

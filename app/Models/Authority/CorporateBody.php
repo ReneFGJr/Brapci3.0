@@ -116,7 +116,8 @@ class CorporateBody extends Model
 		}
 
 		if ($dt['a_brapci'] > 0) {
-			$sa .= $this->remissive($dt['a_brapci']);
+		$AuthotityRemissive = new \App\Models\Authority\AuthotityRemissive();
+		$sx .= $AuthotityRemissive->remissive($nameID);
 		}
 
 

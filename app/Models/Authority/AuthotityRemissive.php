@@ -56,8 +56,33 @@ class AuthotityRemissive extends Model
 		$dt = $AuthotityRemissive->remissive_author($id);
 		if (count($dt) > 0) 
 		{
-			$sx .= lang('rdf.there_are') . ' ' . count($dt) . ' ' . lang('rdf.remissive');
-			$sx .= ' '.'<span class="text-primary" onclick="toogle(\'remissive\');" title="'.lang('rdf.see_list').'">'.bsicone('list').'</span>';	
+			$sx .= '<br>'.lang('rdf.there_are') . ' ' . count($dt) . ' ' . lang('rdf.remissive');
+			$sx .= ' '.'<span class="text-primary" onclick="toogle(\'remissive\');" title="'.lang('rdf.see_list').'">'.bsicone('list').'</span>';
+
+			$sx .= '<div id="remissive" style="display: none;" style="width: 90%;">';
+			$si = '';
+			for ($r = 0; $r < count($dt); $r++) 
+			{
+				$line = $dt[$r];
+				$si .= '<li>' . $line['n_name'];
+				if ($this->Socials->getAccess("#ADM")) {
+					$link = '<a href="' . URL . MODULE . 'v/' . $line['id_cc'] . '">';
+					$link .= $line['id_cc'] . '=>' . $line['cc_use'];
+					$link .= '</a>';
+
+					$si .= onclick(PATH . MODULE . 'rdf/set_pref_term/' . $line['cc_use'] . '/' . $line['id_cc'], 400, 100);
+					$si .= ' ';
+					$si .= '<sup>[set_prefTerm]</sup></span>';
+					$si .= ' ';
+					$si .= '<sup>' . $link . '</sup>';
+				}
+				$si .= '</li>';
+			}
+			if ($si != '') {
+				$sx .= '<br><ul class="small">' . $si . '</ul>';
+			}
+			$sx .= '</div>';
+		}
 			$sx .= '<script>
 				function toogle(id) 
 				{ 
@@ -69,32 +94,6 @@ class AuthotityRemissive extends Model
 					  }
 				} 
 				</script>'.cr();		
-
-			$sx .= '<div id="remissive" style="display: none;">';
-			$sx .= '<hr>';
-
-			for ($r = 0; $r < count($dt); $r++) 
-			{
-				$line = $dt[$r];
-				$sx .= '<li>' . $line['n_name'];
-				if ($this->Socials->getAccess("#ADM")) {
-					$link = '<a href="' . URL . MODULE . 'v/' . $line['id_cc'] . '">';
-					$link .= $line['id_cc'] . '=>' . $line['cc_use'];
-					$link .= '</a>';
-
-					$sx .= onclick(PATH . MODULE . 'rdf/set_pref_term/' . $line['cc_use'] . '/' . $line['id_cc'], 400, 100);
-					$sx .= ' ';
-					$sx .= '<sup>[set_prefTerm]</sup></span>';
-					$sx .= ' ';
-					$sx .= '<sup>' . $link . '</sup>';
-				}
-				$sx .= '</li>';
-			}
-			if ($sx != '') {
-				$sx = '<ul class="small">' . $sx . '</ul>';
-			}
-			$sx .= '</div>';
-		}
 		return ($sx);
 	}
 }

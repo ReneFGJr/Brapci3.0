@@ -127,6 +127,10 @@ class RDF extends Model
 				echo $sx;
 				exit;
 				break;
+			case 'exclude_concept':
+				$sx = $cab;
+				$sx .= $this->exclude_conecpt($d2,$d3);			
+				break;
 			case 'exclude':				
 				$RDFForm = new \App\Models\Rdf\RDFForm();
 				$sx = $cab;
@@ -189,6 +193,52 @@ class RDF extends Model
 		}		
 		return $sx;
 	}
+
+	function exclude($id)
+		{
+			$RDFConcept = new \App\Models\Rdf\RDFConcept();
+			$RDFData = new \App\Models\Rdf\RDFData();
+
+			$RDFData->exclude($id);
+			$RDFConcept->exclude($id);
+		}
+
+	function E404()
+		{
+			$sx = '<h1>' . 'ERROR: 404' . '</h1>';
+			$sx .= '<p>' . lang('rdf.concept_was_deleted') . '</p>';
+			$sx .= '<button onclick="history.back()">Go Back</button>';
+			return($sx);
+		}
+
+	function exclude_conecpt($id,$chk)
+		{
+		$sx = '';
+		
+		$check = md5(MODULE.$id);
+		if ($check == $chk)
+			{
+				$this->exclude($id);
+				$sx .= wclose();
+				return $sx;
+			}
+		$dt = $this->le($id,1);
+		
+		$sx .= 'class:'.$dt['concept']['c_class'];
+		$sx .= '<br>';
+		$sx .= h($dt['concept']['n_name'],4);
+		$sx .= '<hr>';
+		/* Mostra mensagem de exclusão */
+		$sx .= '<center>'.h(msg('find.rdf_exclude_confirm'),4,'text-danger').'</center>';
+		$sx .= '
+			</div>		
+			<div class="modal-footer">
+			<button type="button" class="btn btn-default" onclick="wclose();" data-dismiss="modal">'.lang('find.cancel').'</button>
+			<a href="'.(PATH.MODULE.'rdf/exclude_concept/'.$id.'/'.$check).'" class="btn btn-warning" id="submt">'.lang('find.confirm_exclude').'</a>
+			</div>                  
+		';
+		return $sx;
+		}
 
 
 	function string_array($d,$t=0,$sep = ';')
