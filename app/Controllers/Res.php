@@ -304,7 +304,7 @@ class Res extends BaseController
 
 	function ontology($d1='',$d2='',$d3='',$d4='')
 	{
-		$Ontology = new \App\Models\Brapci\Ontology();
+		$Ontology = new \App\Models\Rdf\RDFOntology();
 		$tela = $this->cab();		
 		$tela .= bs($Ontology->index($d1,$d2,$d3,$d4));
 		$tela .= $this->cab("footer");		

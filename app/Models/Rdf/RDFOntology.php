@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models\Brapci;
+namespace App\Models\RDF;
 
 use CodeIgniter\Model;
 
-class Ontology extends Model
+class RDFOntology extends Model
 {
-	protected $DBGroup              = 'brapci';
+	var $DBGroup              		= 'default';
 	protected $table                = PREFIX.'rdf_class';
 	protected $primaryKey           = 'id_c';
 	protected $useAutoIncrement     = true;
@@ -60,10 +60,44 @@ class Ontology extends Model
 		} else {
 			$this->check();
 			$sx .= '';			
-			$sx .= view('setspec/header_title');
+			$sx .= '
+			<hr>
+			<h1>Brapci Metadata Terms</h1>
+			<hr>
+			<table width="100%" border="0" cellpadding="2">
+			  <tr>
+				  <td width="15%" style="text-align:right"><b>Title:</td>
+				  <td>Brapci Metadata Term</td>
+			  </tr>
+			  <tr>
+				  <td width="15%" style="text-align:right"><b>Creator:</td>
+				  <td>Rene Faustino Gabriel Junior &lt;renefgj@gmail.com&gt;</td>
+			  </tr>
+			  <tr>
+				  <td width="15%" style="text-align:right"><b>Identifier:</td>
+				  <td>brapci</td>
+			  </tr>
+			  <tr>
+				  <td width="15%" style="text-align:right"><b>Date Issued:</td>
+				  <td>2021-12-11</td>
+			  </tr>
+			  <tr>
+				  <td width="15%" style="text-align:right"><b>Latest Version:</td>
+				  <td>'.URL.'</td>
+			  </tr>
+			  <tr>
+				  <td width="15%" style="text-align:right"><b>Description:</td>
+				  <td>under construction</td>
+			  </tr>
+			  <tr>
+				  <td width="15%" style="text-align:right"><b>Title:</td>
+				  <td>Brapci Metadata Term</td>
+			  </tr>            
+			</table>			
+			';
 			$sx .= bsc($this->list('C'), 6);
 			$sx .= bsc($this->list('P'), 6);
-			$this->publish();
+			//$this->publish();
 		}
 		return $sx;
 	}
@@ -77,9 +111,62 @@ class Ontology extends Model
 	{
 		//dircheck('setspec');
 		$dir = 'setsepc';
-
+		$sx = '';
 		$url_rdf = URL . 'setspec/brapci-core-' . date("Ymd") . '.rdf';
-		$head = view('setspec/header');
+		$uri = URL;
+		$type = lang('rdf.class_name');
+		$sx .= '
+		<div class="row">
+			<div class="col-md-12" style="background-color: #CCC; border-top: 3px solid #333;">
+				<span style="font-size: 150%;">'.'<b>'.$type.': '.$c_class.'</b>'.'</span>
+			</div>
+			<table width="100%" cellpadding=2>
+				<tr>
+					<td width="15%" align="right">
+						<b>URI:</b>
+					</td><td>
+						<?php echo $uri;?>
+					</td>
+				</tr>
+		
+				<tr>
+					<td width="15%" align="right">
+						<b>Prefix:</b>
+					</td><td>
+						<?php echo lang($prefix_ref);?> (<?php echo anchor($prefix_url);?>)
+					</td>
+				</tr>        
+		
+				<tr>
+					<td width="15%" align="right">
+						<b>Label:</b>
+					</td><td>
+						<?php echo lang($c_class);?>
+					</td>
+				</tr>  
+				';
+				if (isset($equivalent))
+					{
+						$RDF  = new \App\Models\Rdf\RDF();
+						echo '<tr>';
+						$label = '<b>'.lang('rdf.equivalent').':</b>';
+						for ($r=0;$r < count($equivalent);$r++)
+							{
+								$idc = $equivalent[$r]['id_c'];
+								$ln = $RDF->le_class($idc);
+								echo '<td width="15%" align="right">'.$label.'</td>';
+								if (strlen($label) > 0)
+									{                        
+										$label = '';
+									}
+								echo '<td>'.$RDF->show_class($ln[0]).'</td>';
+							}
+						echo '</div>';
+					}
+			$sx .= '</table></div>';
+			return $sx;
+
+		
 	}
 
 	function list($type = 'C')
