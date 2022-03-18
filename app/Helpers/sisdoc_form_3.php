@@ -43,6 +43,23 @@ function pre($dt)
     exit;
 }
 
+if (!function_exists("current_url")) {
+    function current_url()
+    {
+        $url = getenv('app.baseURL');
+        return $url;    
+    }
+}
+
+if (!function_exists("site_url")) {
+    function site_url()
+    {
+        $url = getenv('app.baseURL');
+        return $url;    
+    }
+}
+
+
 function hexdump($string)
 {
     $sx = '';
