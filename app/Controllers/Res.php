@@ -311,6 +311,15 @@ class Res extends BaseController
 		return $tela;
 	}	
 
+	function dataverse($d1='',$d2='',$d3='',$d4='')
+	{
+		$Dataverse = new \App\Models\Dataverse\Index();
+		$tela = $this->cab();		
+		$tela .= bs($Dataverse->index($d1,$d2,$d3,$d4));
+		$tela .= $this->cab("footer");		
+		return $tela;
+	}	
+
 	function download($id = 0)
 	{
 		$PDF = new \App\Models\PDF\PDF();
