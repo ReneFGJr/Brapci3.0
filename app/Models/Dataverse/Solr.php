@@ -59,23 +59,56 @@ class Solr extends Model
 	function updateSchema()
 		{
 			//$url = 'curl "http://localhost:8080/api/admin/index/solr/schema"';
-			$url = 'http://localhost/api/admin/index/solr/schema';
-			$file = 'D:\Projeto\www\LattesData\_Documentação\PerfilAplicação\schema_dv.xml';
-			$txt = file_get_contents($file);
-			$txt = troca($txt,'<','&lt;');
-			$txt = explode(chr(10),$txt);
+			$url = 'http://localhost/api/admin/index/solr/schema';			
+			$dir = 'D:\Projeto\www\LattesData\_Documentação\PerfilAplicação\\';
+			$file = $dir.'schema_dv.xml';
+			if (file_exists($file))
+				{
+					echo "OK";
+				} else {
+					$file = 'D:\Projetos\www\LattesData\_Documentação\PerfilAplicação\schema_dv.xml';
+					if (file_exists($file))
+					{
+						$dir = 'D:\Projetos\www\LattesData\_Documentação\PerfilAplicação\\';
+					} else {
+						echo "File not found - ".$file;
+						exit;
+					}	
+				}
+			
+			$orig = file_get_contents($file);
+			//$txt = troca($txt,'<','&lt;');
+			//$orig = explode(chr(10),$orig);
+			$orig_field = substr($orig,0,strpos($orig,'---'));
+			$orig_copy = substr($orig,strpos($orig,'---')+5,strlen($orig_field));
 
-			/*************************************************************************/
-			$file = 'D:\Projeto\www\LattesData\_Documentação\PerfilAplicação\schema.xml';
+			/******************************************************************** SOLR SCHEMA *****/
+			$file = $dir.'schema.xml';
 			$solr = file_get_contents($file);
-			$solr = troca($solr,'<','&lt;');
-			$solr = explode(chr(10),$solr);
 
 			/* SUBS */
-			$tta = '---';
 			$txa = '<!-- Dataverse copyField from http://localhost:8080/api/admin/index/solr/schema -->';
 			$txb = '<!-- End: Dataverse-specific -->';
+			
+			$solr_start = substr($solr,0,strpos($solr,$txa)+strlen($txa)).chr(10);
+			$solr_end = substr($solr,strpos($solr,$txb),strlen($solr));
+		
+			/******************************* NEW SOLR FILE */
+			$solr = $solr_start . $orig_copy . $solr_end;
 
-			pre($txt);
+			/*********************************************************** SOLR DATAVERSE SCHEMA *****/
+			$file = $dir.'schema_dv_mdb_fields.xml';
+			$dv = '<fields>'.chr(10);
+			$dv .= $orig_field;
+			$dv .= '</fields>';
+
+			/*********************************************************** RESULT ********************/
+			dircheck($dir.'solr');
+			$file = $dir.'solr\\schema.xml';
+			file_put_contents($file,$solr);
+			$file = $dir.'solr\\schema_dv_mdb_fields.xml';
+			file_put_contents($file,$dv);
+			$sx = 'Exported';
+			return $sx;
 		}
 }
