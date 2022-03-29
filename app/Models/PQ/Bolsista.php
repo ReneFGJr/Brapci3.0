@@ -44,6 +44,7 @@ class Bolsista extends Model
 
 	function bolsista_list()
 	{
+		$RDF = new \App\Models\Rdf\RDF();
 		$sx = '';
 		$ord = get("order");
 
