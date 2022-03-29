@@ -130,7 +130,7 @@ class Bolsa extends Model
 							}
 						
 						$sx .= '<tr>';
-						$sx .= '<td>'.$link.$nr.'</td>';
+						$sx .= '<td>'.$nr.'</td>';
 						$sx .= '<td>'.$link.$line['bs_nome'].$linka.'</td>';
 						$sx .= '<td>'.$link.$line['mod_sigla'].$line['bs_nivel'].$linka.'</td>';
 						$sx .= '<td>'.$link.$line['bs_start'].$linka.'</td>';

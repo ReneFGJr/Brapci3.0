@@ -15,7 +15,7 @@ class Bolsista extends Model
 	protected $useSoftDeletes       = false;
 	protected $protectFields        = true;
 	protected $allowedFields        = [
-		'bs_rdf_id','bs_nome','bs_lattes'
+		'bs_rdf_id', 'bs_nome', 'bs_lattes'
 	];
 
 	// Dates
@@ -41,4 +41,42 @@ class Bolsista extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
+
+	function bolsista_list()
+	{
+		$sx = '';
+		$ord = get("order");
+
+		$dt = $this->orderBy($ord)->findAll();
+
+		echo $this->getlastquery();
+
+		$sx .= h(lang('pq.total') . ': ' . count($dt), 6);
+		$sx .= '<table class="table">';
+		$sx .= '<tr class="small">
+				<th width="3%">' . lang('pq.nr') . '</th>
+				<th width="50%">' . '<a href="?order=bs_nome">' . lang('pq.bs_nome') . '</a></th>
+				<th width="10%">' . '<a href="?order=bs_lattes">' . lang('pq.bs_lattes') . '</a></th>
+				</tr>' . cr();
+		$nr = 0;
+
+		for ($r = 0; $r < count($dt); $r++) {
+			$line = $dt[$r];
+			$linka = '</a>';
+			if ($line['bs_rdf_id'] > 0) {
+				$link = $RDF->link(array('id_cc' => $line['bs_rdf_id']), 'text-secondary');
+			} else {
+				$link = '<a href="' . PATH . MODULE . 'pq/viewid/' . $line['id_bs'] . '" class="text-secondary">*';
+			}
+			$nr++;
+			$sx .= '<tr>';
+			$sx .= '<td>' . $nr . '</td>';
+			$sx .= '<td>' . $link . $line['bs_nome'] . $linka . '</td>';
+			$sx .= '<td>' . $link . $line['bs_lattes'] . $linka . '</td>';
+			$sx .= '</tr>';
+			$sx .= cr();
+		}
+		$sx .= '</table>';
+		return $sx;
+	}
 }

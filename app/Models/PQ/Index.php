@@ -69,6 +69,11 @@ class Index extends Model
 					break;
 				break;
 
+				case 'pq_bolsasistas':
+					$sx .= $this->subheader();
+					$sx .= $this->pq_bolsistas();
+					break;
+
 				case 'pq_ano':
 					$sx .= $this->subheader();
 					$sx .= $this->pq_ano();
@@ -120,6 +125,14 @@ class Index extends Model
 					pre($dt);
 		}
 
+	function pq_bolsistas()
+		{
+			$Bolsista = new \App\Models\PQ\Bolsista();
+			$sx = '';
+			$sx = $Bolsista->bolsista_list();
+			return $sx;
+		}		
+
 	function pq_bolsas()
 		{
 			$Bolsa = new \App\Models\PQ\Bolsa();
@@ -152,6 +165,7 @@ class Index extends Model
 			$sx = $Bolsa->resume();
 
 			$sx .= '<ul>';
+			$sx .= '<li><a href="' . PATH . MODULE . 'pq/pq_bolsasistas' . '">' . lang('pq.bolsista') . '</a></li>';
 			$sx .= '<li><a href="' . PATH . MODULE . 'pq/pq_bolsas' . '">' . lang('pq.bolsista_list') . '</a></li>';
 			$sx .= '<li><a href="' . PATH . MODULE . 'pq/pq_ano' . '">' . lang('pq.bolsista_ano_list') . '</a></li>';
 			$sx .= '<li><a href="' . PATH . MODULE . 'pq/pq_vigentes' . '">' . lang('pq.bolsista_vigentes') . '</a></li>';
