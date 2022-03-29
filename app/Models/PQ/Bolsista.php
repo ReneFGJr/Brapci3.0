@@ -50,8 +50,6 @@ class Bolsista extends Model
 
 		$dt = $this->orderBy($ord)->findAll();
 
-		echo $this->getlastquery();
-
 		$sx .= h(lang('pq.total') . ': ' . count($dt), 6);
 		$sx .= '<table class="table">';
 		$sx .= '<tr class="small">
