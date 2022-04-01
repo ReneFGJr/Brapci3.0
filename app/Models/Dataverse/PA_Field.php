@@ -31,7 +31,8 @@ class PA_Field extends Model
         'op:&none:#VALUE&#VALUE',
         'sn','sn','sn',
         'sn','sn','sn',
-        'string:100','string:100'
+        //'string:100','sql:m_name:m_name:dataverse_tsv_metadata','string:100'
+        'string:100','string:100','string:100'
     ];    
 
     // Dates
@@ -96,6 +97,21 @@ class PA_Field extends Model
 
     function viewid($id)
     {
+
+        if (get("reorder") != '')
+        {
+            $ini = 0;
+            $red = round(get("reorder"));
+            $dt = $this->where('m_schema', $id)->orderBy('m_displayOrder')->findAll();
+            for ($r=0;$r < count($dt);$r++)
+            {                
+                $dd['m_displayOrder'] = $ini;
+                $this->set($dd)->where('id_m',$dt[$r]['id_m'])->update();
+                $ini = $ini + $red;
+            }
+        }
+        
+
         $dt = $this->where('m_schema', $id)->orderBy('m_displayOrder')->findAll();
         $sx = '<table class="table table-sm table-striped">';
         $sx .= '<thead>';
@@ -132,9 +148,14 @@ class PA_Field extends Model
                 $stla = '';
             }
 
+            $parent = '';
+            if (strlen($ln['m_parent']) > 0) {
+                $parent = '<br><span class="supersmall">=><i>'.$ln['m_parent'].'</i></span>';
+            }
+
             $sx .= '<tr>';
-            $sx .= '<td>' . ($r + 1) . '</td>';
-            $sx .= '<td>' . $stl.$link.$ln['m_name'] .$linka. $stla.'</td>';
+            $sx .= '<td>' . ($ln['m_displayOrder']) . '</td>';
+            $sx .= '<td>' . $stl.$link.$ln['m_name'] .$linka. $parent.$stla.'</td>';
             $sx .= '<td>' . $stl.$ln['m_title'] . $stla.'</td>';
             if (($ln['m_required'] == 1) and ($ln['m_active'] == 1))
                 {
@@ -162,9 +183,10 @@ class PA_Field extends Model
             } else {
                 $sx .= '<td>-</td>';
             }            
-            $sx .= '<td>';
+            $sx .= '<td><nobr>';
             $sx .= btn_edit(PATH . MODULE . 'dataverse/pa/datafieldEd/' . $ln['id_m']);
             $sx .= btn_trash_popup(PATH . MODULE . 'dataverse/pa/datafieldDel/' . $ln['id_m']);
+            $sx .= '</nobr>';
             $sx .= '</td>';           
             $sx .= '</tr>';
         }

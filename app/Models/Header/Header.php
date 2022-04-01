@@ -53,8 +53,8 @@ class Header extends Model
 			switch($nm)
 				{
 					case 'Authority':
-						$it['list'] = base_url(PATH.'/index/list');
-						$it['import'] = base_url(PATH.'/index/import');
+						$it['list'] = (PATH.'/index/list');
+						$it['import'] = (PATH.'/index/import');
 						break;
 				}
 			/************* Mostra Menu */
