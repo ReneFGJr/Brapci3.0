@@ -74,7 +74,7 @@ class Solr extends Model
 			{
 				if (is_dir($dir.$dire))
 					{
-						$comp = 'server/solr/collection1/conf/';
+						$comp = 'server/solr/collection1/conf/';	
 						$file = $dir.$dire.'/conf/schema.xml';
 					}
 			}
