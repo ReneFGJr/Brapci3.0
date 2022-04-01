@@ -64,15 +64,17 @@ class Licences extends Model
 
 	function getLicences($d1,$d2,$d3)
 		{
+			$cmd = '';
 			$Dataverse = new \App\Models\Dataverse\Index();
 			$url = $Dataverse->server();
-			$url .= 'api/licenses';
+			$url .= '/api/licenses';
 
 			$sx = h($url,6);
 			$txt = file_get_contents($url);
+			$cmd = 'curl '.$url;
 			$txt = (array)json_decode($txt,true);
 
-			$link = '<a href="'.PATH.MODULE.'dataverse/licences/0/add">'.lang('dataverse.licence_add').'</a>';
+			$link = '<a href="'.PATH.MODULE.'dataverse/licences/0/add" class="btn btn-outline-primary">'.lang('dataverse.licence_add').'</a>';
 			$sx .= bsc($link,12);
 
 			$sx .= bsc(lang('dataverse.license'),2);
@@ -81,8 +83,6 @@ class Licences extends Model
 			$sx .= bsc(lang('dataverse.active'),1);
 			$sx .= bsc(lang('dataverse.default'),1);
 			$sx .= bsc(lang('dataverse.trash'),1);
-
-			
 
 			if (isset($txt['data']))
 				{
@@ -118,29 +118,28 @@ class Licences extends Model
 							
 						}
 				}
-			$cmd = '';
+			
 			switch($d3)
 				{
 					case 'add':
 						$sx .= h(lang('dataverse.licence_add'),4);
 						$sx .= $this->select_licence_type();
 						break;
+
 					case 'addx':
 						$dt = $this->licenses();
 						$link = '<a href="https://guides.dataverse.org/en/5.10/installation/config.html#id117" target="_blank">'.'add-license.json'.'</a>';
-						while (strpos($FILE,'/'))						
-							{
-								$FILE = substr($FILE,strpos($FILE,'/')+1,strlen($FILE));
-							}
-						$FILE = '@';
-						if (isset($dt[$d2]))
-							{
-								$url = $dt[$d2];
-							}
-						$cmd = '';
+						
+						$F = explode('/',$dt[$d2]);
+
+						$url = $dt[$d2];
+						
+						$FILE = $F[count($F)-1];
+						$FILE = '@'.$FILE;
+
 						$cmd .= 'echo \'************************** Remove json files\'';
 						$cmd .= '<br>';
-						$cmd .= 'rm *.json';
+						$cmd .= 'rm *.json -f';
 						$cmd .= '<br>';
 						$cmd .= 'echo \'************************** Download the licence in Dataverse Source Repository\'';
 						$cmd .= '<br>';
@@ -150,49 +149,55 @@ class Licences extends Model
 						$cmd .= '<br>';
 						$cmd .= 'export API_TOKEN='.$Dataverse->token();
 						$cmd .= '<br>';
-						$cmd .= 'export SERVER_URL='.$Dataverse->server();
+						$cmd .= 'export SERVER_URL='.troca($Dataverse->server(),'//','/');
 						$cmd .= '<br>';
-						$cmd .= 'export FILE='.$Dataverse->server();
+						$cmd .= 'export FILE='.$FILE;
 						$cmd .= '<br>';
 						$cmd .= 'echo \'************************** Send configurations\'';
 						$cmd .= '<br>';
 						$cmd .= 'curl -X POST -H \'Content-Type: application/json\' -H X-Dataverse-key:$API_TOKEN --data-binary $FILE $SERVER_URL/api/licenses';
+						$cmd .= '<br>';
+						$cmd .= 'echo \'************************** End proccess\'';
+						$cmd .= '<br>';
 						break;
 					case 'trash':
-						$cmd = '';
-						$cmd .= 'export API_TOKEN=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.'<br>';
+						
+						$cmd .= 'export API_TOKEN='.$Dataverse->token();
 						$cmd .= '<br>';
 						$cmd .= 'export SERVER_URL='.$Dataverse->server().'<br>';
 						$cmd .= 'export ID='.$d2.'<br>';
-						$cmd .= '<br>';
 						$cmd .= 'curl -X DELETE -H X-Dataverse-key:$API_TOKEN $SERVER_URL/api/licenses/$ID';
+						$cmd .= '<br>';
 						break;
 					case 'setdefault':
-						$cmd = '';
-						$cmd .= 'export API_TOKEN=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.'<br>';
+						
+						$cmd .= 'export API_TOKEN='.$Dataverse->token();
 						$cmd .= '<br>';
 						$cmd .= 'export SERVER_URL='.$Dataverse->server().'<br>';
 						$cmd .= 'export STATE=true'.'<br>';
 						$cmd .= 'export ID='.$d2.'<br>';
 						$cmd .= 'curl -X PUT -H \'Content-Type: application/json\' -H X-Dataverse-key:$API_TOKEN $SERVER_URL/api/licenses/default/$ID'.'<br>';
+						$cmd .= '<br>';
 						break;
 					case 'setactive':						
-						$cmd = '';
-						$cmd .= 'export API_TOKEN=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.'<br>';
+						
+						$cmd .= 'export API_TOKEN='.$Dataverse->token();
 						$cmd .= '<br>';
 						$cmd .= 'export SERVER_URL='.$Dataverse->server().'<br>';
 						$cmd .= 'export STATE=true'.'<br>';
 						$cmd .= 'export ID='.$d2.'<br>';
 						$cmd .= 'curl -X PUT -H \'Content-Type: application/json\' -H X-Dataverse-key:$API_TOKEN $SERVER_URL/api/licenses/$ID/:active/$STATE'.'<br>';
+						$cmd .= '<br>';
 						break;
 					case 'setdesactive':
-						$cmd = '';
-						$cmd .= 'export API_TOKEN=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.'<br>';
+						
+						$cmd .= 'export API_TOKEN='.$Dataverse->token();
 						$cmd .= '<br>';
 						$cmd .= 'export SERVER_URL='.$Dataverse->server().'<br>';						
 						$cmd .= 'export STATE=false'.'<br>';
 						$cmd .= 'export ID='.$d2.'<br>';
 						$cmd .= 'curl -X PUT -H \'Content-Type: application/json\' -H X-Dataverse-key:$API_TOKEN $SERVER_URL/api/licenses/$ID/:active/$STATE'.'<br>';
+						$cmd .= '<br>';
 						break;						
 					default:
 						$sx .= bsc('Command: '.$d3,12);
