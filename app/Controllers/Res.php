@@ -51,6 +51,7 @@ class Res extends BaseController
 			default:
 				$tela .= view('Header/header',$dt);
 				$tela .= view('Brapci/menu_top',$dt);
+				$tela .= cookies_acept();
 
 				//$tela .= view('Pages/_aside');
 				//$tela .= view('Pages/_main_00');
