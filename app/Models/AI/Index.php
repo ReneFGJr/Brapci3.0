@@ -45,6 +45,11 @@ class Index extends Model
 			$tela = '';
 			switch($d1)
 				{
+					case 'charset':
+						$Charset = new \App\Models\AI\Charset\Index();
+						$tela .= $Charset->formAI($d1,$d2,$d3);
+						$tela .= $Charset->formAIFile($d1,$d2,$d3);
+						break;					
 					case 'ws':
 						$tela .= $this->ws($d2,$d3);
 						break;
@@ -82,6 +87,8 @@ class Index extends Model
 			$s['ai.content_analysis'] = 'ai/research/contentanalysis';
 			$s['ai.roboti_task'] = 'ai/roboti';
 			$s['ai.pq'] = 'ai/research/pq';
+			$s['ai.#CHARSET'] = '';
+			$s['ai.utf8'] = 'res/ai/charset/utf8';
 			$s['<hr>'] = '';
 			$s['ai.ws'] = 'res/ai/ws';
 			$s['ai.thesa'] = 'res/ai/thesa';

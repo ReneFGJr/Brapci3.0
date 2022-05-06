@@ -110,12 +110,38 @@ class Socials extends Model
 		}
 
 		switch ($cmd) {
+			case 'session':
+				if ($_SERVER['CI_ENVIRONMENT'] == 'development') {
+				$id = 1;
+				echo '<pre>';
+				print_r($_SESSION);
+				echo '</pre>';
+				$newdata = [
+					'id'  => $id,
+					'email'     => 'Usuário Test (ADMIN)',
+					'access' => $this->putPerfil(array(0 => '#ADM'), $id),
+					'time' => time()
+				];
+				$session = session();
+				$session->set($newdata);
+
+				echo '<pre>';
+				print_r($_SESSION);
+				echo '</pre>';
+
+				}
+				break;
 			case 'test':
 				if ($_SERVER['CI_ENVIRONMENT'] == 'development') {
 					$id = 1;
-					$_SESSION['id'] = $id;
-					$_SESSION['email'] = 'Usuário Test (ADMIN)';
-					$_SESSION['access'] = $this->putPerfil(array(0 => '#ADM'), $id);
+
+					$newdata = [
+						'id'  => $id,
+						'email'     => 'Usuário Test (ADMIN)',
+						'access' => $this->putPerfil(array(0 => '#ADM'), $id)
+					];
+					$session = session();
+					$session->set($newdata);
 					$this->log_insert($id);
 					echo metarefresh(PATH);
 					exit;
@@ -802,6 +828,7 @@ class Socials extends Model
 				$_SESSION['email'] = $dt[0]['us_email'];
 				$_SESSION['access'] = substr(md5('#ADMIN'), 6, 6);
 				$_SESSION['check'] = substr($_SESSION['id'] . $_SESSION['id'], 0, 10);
+
 				$sx .= '<h2>' . lang('social.success') . '<h2>';
 				$sx .= '<meta http-equiv="refresh" content="2;URL=\'' . PATH . MODULE . '\'">';
 				$this->log_insert($dt[0]['id_us']);
