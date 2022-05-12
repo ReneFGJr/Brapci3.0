@@ -85,13 +85,14 @@ class Index extends Model
 			$s['ai.wordcount'] = 'ai/nlp/wordcount';
 			$s['ai.systematic_review'] = 'ai/research/systematic_review';
 			$s['ai.content_analysis'] = 'ai/research/contentanalysis';
+			$s['ai.content_candidatesTerms'] = 'ai/nlp/findTermsCandidates';
 			$s['ai.roboti_task'] = 'ai/roboti';
 			$s['ai.pq'] = 'ai/research/pq';
 			$s['ai.#CHARSET'] = '';
 			$s['ai.utf8'] = 'res/ai/charset/utf8';
 			$s['<hr>'] = '';
 			$s['ai.ws'] = 'res/ai/ws';
-			$s['ai.thesa'] = 'res/ai/thesa';
+			$s['ai.thesa'] = 'ai/thesa';
 			$tela .= '<ul>';
 			foreach($s as $service=>$url)
 				{

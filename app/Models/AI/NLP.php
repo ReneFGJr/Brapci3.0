@@ -54,9 +54,28 @@ class NLP extends Model
 					case 'wordmatch':
 						$AI = new \App\Models\AI\NLP\WordMatch();
 						$tela .= $this->formAI(1,lang('ai.Wordmatch'));
-						$tela .= $AI->WordMatch(get("dd1"),get("dd2"));						
-						break;						
+						$tela .= $AI->analyse(get("dd1"),get("dd2"));						
+						break;	
+					case 'findTermsCandidates':
+						$AI = new \App\Models\AI\NLP\WordMatch();
+						$TextPrepare = new \App\Models\AI\NLP\TextPrepare();
+						
+						$tela .= $this->formAI(1,lang('ai.Wordmatch'));
+						$tela .= $TextPrepare->JoinSentences(get("dd1"),get("dd2"));
+						$dir = '../_documments/IA/Treino/';
+						$id = '1';
+						$file = $dir.'000'.$id.'C.txt';
+						$txt = file_get_contents($file);
+						$vc = array(
+							'tipo de'=>'tipo de',
+							'são chamdos'=>'são chamdos',
+							'é constituído por'=>'é constituído por',
+							'artigos'=>'artigos',
+						);
+						$txt = $AI->analyse($txt,$vc);
+						$tela .= $AI->show($txt);
 
+						break;	
 					default:
 						$tela .= bsmessage('Service notefound: '.$d1,2);
 						break;
