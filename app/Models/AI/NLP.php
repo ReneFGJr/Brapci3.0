@@ -57,8 +57,11 @@ class NLP extends Model
 						$tela .= $AI->analyse(get("dd1"),get("dd2"));						
 						break;	
 					case 'findTermsCandidates':
-						$AI = new \App\Models\AI\NLP\WordMatch();
-						$TextPrepare = new \App\Models\AI\NLP\TextPrepare();
+						$AI = new \App\Models\AI\NLP\TermsCandidates();
+						$TextPrepare = new \App\Models\AI\NLP\TermsCandidates();
+
+						$sx = $AI->painel();
+						return $sx;
 						
 						$tela .= $this->formAI(1,lang('ai.Wordmatch'));
 						$tela .= $TextPrepare->JoinSentences(get("dd1"),get("dd2"));

@@ -44,6 +44,9 @@ class Res extends BaseController
 			case 'menu':
 				$tela .= $hd->menu($dt);
 				break;
+			case 'header':
+				$tela .= view('Header/header',$dt);
+				break;
 			case 'user':
 				$tela .= view('Header/header',$dt);
 				$tela .= view('Brapci/menu_top',$dt);
@@ -61,12 +64,36 @@ class Res extends BaseController
 		return $tela;
 	}
 
+	/***************************************************************** PRIVATE */
+		private function header()
+			{
+
+			}
+
+		private function navbar()
+			{
+
+			}
+
+		private function logo()
+			{
+				$IV = new \App\Models\_VisualIdentify\Brapci();
+				$height = 150;
+				$sx = '<div style="height: '.$height.'px;" class="text-center">'.$IV->logo_animage($height).'</div>';				
+				$sx = bs(bsc($sx,12));
+				return $sx;
+			}			
+	
+
 	public function index()
 	{
+		$Services = new \App\Models\Brapci\Services();
 		//
 		$tela = $this->cab("user");
 		$tela .= view('Brapci/collections');
+		$tela .= $this->logo();
 		$tela .= $this->Search->formSearch();
+		$tela .= $Services->index();
 		return $tela;
 	}
 
@@ -146,7 +173,23 @@ class Res extends BaseController
 			return $tela;
 		}
 
-
+	function popup($d1='',$d2='',$d3='',$d4='',$d5='')
+	{	
+		$sx = '';
+		$cab = $this->cab('header');
+		switch($d1)
+			{
+				case 'myfiles':
+					$MyFiles = new \App\Models\Brapci\MyFiles();
+					$sx .= $MyFiles->upload($cab,$d2,$d3,$d4,$d5);
+					break;
+				default:
+					$sx = $cab;
+					$sx .= bsmessage('Popup não encontrado - '.$d1);
+					break;
+			}
+		return $sx;
+	}
 	public function oai($d1='',$d2='',$d3='',$d4='',$d5='')
 		{
 			$OAI = new \App\Models\OaiPmhServer\Index();
@@ -155,9 +198,19 @@ class Res extends BaseController
 
 	public function ai($d1='',$d2='',$d3='',$d4='',$d5='')
 		{
-			$AI = new \App\Models\AI\Index();
 			$sx = $this->cab();
-			$sx .= $AI->index($d1,$d2,$d3,$d4,$d5);
+			$sx .= breadcrumbs();
+			switch($d1)
+				{
+					case 'nlp':
+						$AI = new \App\Models\AI\NLP();
+						$sa = $AI->index($d2,$d3,$d4,$d5);
+						break;
+					default:
+						$sa = bsmessage(lang('ai.not_found ' .$d1),3);
+				}	
+			$sx .= bs(bsc($sa,12));
+			$sx .= $this->cab("footer");
 			return $sx;
 		}		
 
