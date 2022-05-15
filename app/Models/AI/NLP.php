@@ -60,7 +60,7 @@ class NLP extends Model
 						$AI = new \App\Models\AI\NLP\TermsCandidates();
 						$TextPrepare = new \App\Models\AI\NLP\TermsCandidates();
 
-						$sx = $AI->painel();
+						$sx = $AI->painel($d2,$d3);
 						return $sx;
 						
 						$tela .= $this->formAI(1,lang('ai.Wordmatch'));

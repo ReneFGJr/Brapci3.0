@@ -14,27 +14,27 @@ class Brapci extends Model
                 animation: col 1s alternate infinite;				 
              } 
              #logoR {
-                animation: col 1.1s alternate infinite;				 
+                animation: col 1s alternate infinite;				 
             } 
              #logoA {
-                animation: col 1.2s alternate infinite;
+                animation: col 1s alternate infinite;
              } 
              #logoP {
-                animation: col 1.3s alternate infinite;
+                animation: col 1s alternate infinite;
              } 
              #logoC {
                 fill: brown;
-                animation: col 1.4s alternate infinite;
+                animation: col 1s alternate infinite;
              } 
              #logoI {
                 fill: green;
-                animation: col 1.5s alternate infinite;			
+                animation: col 1s alternate infinite;			
              }
 
              @keyframes col 
              {
                 from { fill: #0d6efd; }
-                to { fill: #4daefd; }
+                to { fill: #2daefd; }
              }					 
             
              } 

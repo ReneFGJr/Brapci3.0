@@ -212,6 +212,12 @@ class Res extends BaseController
 			$sx .= bs(bsc($sa,12));
 			$sx .= $this->cab("footer");
 			return $sx;
+		}
+
+	public function file($d1=0,$d2='',$d3='',$d4='')
+		{
+			$My = new \App\Models\Brapci\MyFiles();
+			$My->preview($d1,$d2,$d3,$d4);
 		}		
 
 	public function admin($d1='',$d2='',$d3='',$d4='',$d5='')

@@ -40,63 +40,94 @@ class TermsCandidates extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
-	function painel()
+	function painel($d1='',$d2='',$d3='')
 		{
 			$sx = '';
 			$MyFiles = new \App\Models\Brapci\MyFiles();
 			$Socials = new \App\Models\Socials();
 			$user = $Socials->getID();
+			if (round($user) == 0)
+				{ echo metarefresh(PATH.MODULE); exit; }
 
-			$sx = h(lang('ai.my_files_area'));
+			/*********************************************************** */
 
-			$sa = $MyFiles->list($user);
+			switch($d1)
+				{
+					case 'prepare':
+						
+						
+						$TextPrepare = new \App\Models\AI\NLP\TextPrepare();
+						$dt = $MyFiles->where('id_file',$d2)->where('file_own',$user)->findAll();
+						$filename = $dt[0]['file_full'].'.txt';
+						$sa = '<iframe src="'.base_url(PATH.MODULE.'file/'.$d2.'/txt').'" width="100%" height="600"></iframe>';
+						$sb = '';
 
-			$sx .= $sa;
-			
+						$txt = $TextPrepare->JoinSentences($filename);
+						if ((get("action") == 'save') and (strlen($txt) > 100))
+							{
+								file_put_contents($filename,$txt);
+								file_put_contents($filename.'.2',$txt);
+								$sb .= bsmessage("Arquivo salvo com sucesso!",1);
+							}
+
+						if ($txt == '')
+							{
+								$sb .= bsmessage("Arquivo não encontrado! ".$filename,1);
+							}
+						
+						$sb .= '<a href="?action=save" class="btn btn-primary">Salvar</a>';
+						$sb .= ' | ';
+						$sb .= '<a href="'.PATH.MODULE.'ai/nlp/findTermsCandidates/file/'.$d2.'" class="btn btn-primary">Return</a>';
+						$sb .= '<hr>';
+						$sb .= troca($txt,chr(13),'<hr>');						
+
+						$sa = bsc($sa,6);
+						$sb = bsc($sb,6);					
+						$sx = bs($sa.$sb);
+						break;
+
+					case 'file':
+						$dt = $MyFiles->where('id_file',$d2)->where('file_own',$user)->findAll();
+						$ext = '';
+						$filename = $dt[0]['file_full'];
+						if (file_exists($filename.'.txt'))
+							{
+								$ext = 'txt';
+							}
+
+						$sa = '<iframe src="'.base_url(PATH.MODULE.'file/'.$d2.'/'.$ext).'" width="100%" height="600"></iframe>';
+						if ($d3 != 0)
+							{
+								$sb = '<iframe src="'.base_url(PATH.MODULE.'file/'.$d2).'" width="100%" height="600"></iframe>';
+							} else {
+
+								/* Ext */
+								switch($ext)
+									{
+										case 'txt':
+											$sb = 'TXT';
+											$mn[PATH.MODULE.'ai/nlp/findTermsCandidates/prepare/'.$d2] = 'Preparar TXT: Unir frases/parágrafos';
+											$sb .= menu($mn);
+										break;
+
+										default:
+											$sb = '<iframe src="'.base_url(PATH.MODULE.'file/'.$d2.'/actions').'" width="100%" height="600">xxx</iframe>';
+										break;
+									}
+						}						
+						$sa = bsc($sa,6);
+						$sb = bsc($sb,6);
+						$sx = bs($sa.$sb);				
+						break;
+					default:
+						$sx .= h(lang('ai.my_files_area'));
+						$sa = $MyFiles->list($user,'ai/nlp/findTermsCandidates');
+						$sx .= $sa;
+						break;
+				}			
 			return $sx;
-
-			
-
 		}
 
-	function JoinSentences($txt)
-	{
-		$dir = '../_documments/IA/Treino/';
-		$d = scandir($dir);
-		$id = '1';
-		$file = $dir.'000'.$id.'.txt';
-		$file_dest = $dir.'000'.$id.'C.txt';
-		$txtd = '';
-		$ln = '';
-		if (file_exists($file))
-			{
-				$handle = fopen($file, "r");
-				if ($handle) {
-					while (($line = fgets($handle)) !== false) {
-						$line = trim($line);
-						$lastChar = substr($line,strlen($line)-1,1);
-						$line = troca($line,chr(255),' ');
-						switch($lastChar)
-							{
-								case '-':
-									$line = substr($line,0,strlen($line)-1);	
-									$ln .= $line;							
-									break;
-								case '.';
-									$txtd .= $ln.cr();
-									$ln = '';
-									break;
-								default:
-									$ln .= $line.' ';
-									break;
-									
-							} 								
-						}
-					}					
-					fclose($handle);
-					file_put_contents($file_dest,$txtd);
-			} else {
-				echo "File not found - ".$file;
-			}
-	}
+
+	
 }
