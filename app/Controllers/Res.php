@@ -218,6 +218,15 @@ class Res extends BaseController
 		{
 			$My = new \App\Models\Brapci\MyFiles();
 			$My->preview($d1,$d2,$d3,$d4);
+		}
+
+	public function tools($d1='',$d2='',$d3='',$d4='')
+		{
+			$cab = $this->cab("user");
+			$My = new \App\Models\Brapci\MyFiles();
+			$sa = $My->tools($d1,$d2,$d3,$d4);			
+			$sx = $cab.$sa.$this->cab("footer");
+			return $sx;
 		}		
 
 	public function admin($d1='',$d2='',$d3='',$d4='',$d5='')

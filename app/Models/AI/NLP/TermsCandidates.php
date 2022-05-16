@@ -53,9 +53,7 @@ class TermsCandidates extends Model
 
 			switch($d1)
 				{
-					case 'prepare':
-						
-						
+					case 'prepare':					
 						$TextPrepare = new \App\Models\AI\NLP\TextPrepare();
 						$dt = $MyFiles->where('id_file',$d2)->where('file_own',$user)->findAll();
 						$filename = $dt[0]['file_full'].'.txt';
@@ -107,6 +105,7 @@ class TermsCandidates extends Model
 										case 'txt':
 											$sb = 'TXT';
 											$mn[PATH.MODULE.'ai/nlp/findTermsCandidates/prepare/'.$d2] = 'Preparar TXT: Unir frases/parágrafos';
+											$mn[PATH.MODULE.'ai/nlp/findTermsCandidates/utf8/'.$d2] = 'Preparar TXT: Converter para UTF-8';
 											$sb .= menu($mn);
 										break;
 
@@ -122,7 +121,8 @@ class TermsCandidates extends Model
 					default:
 						$sx .= h(lang('ai.my_files_area'));
 						$sa = $MyFiles->list($user,'ai/nlp/findTermsCandidates');
-						$sx .= $sa;
+						$sb brapci.content_candidatesTerms= $MyFiles->tools();
+						$sx .= bs(bsc($sa,6).bsc($sb,6));
 						break;
 				}			
 			return $sx;

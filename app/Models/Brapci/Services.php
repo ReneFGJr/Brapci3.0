@@ -49,7 +49,8 @@ class Services extends Model
 			$Socials = new \App\Models\Socials();
 			$user = $Socials->user();
 
-			$sv['res/ai/nlp/findTermsCandidates'] = 'brapci.content_candidatesTerms ';
+			$sv['res/ai/nlp/findTermsCandidates'] = 'brapci.content_candidatesTerms';
+			$sv['res/tools'] = 'brapci.files';
 
 			$sx = menu($sv);
 

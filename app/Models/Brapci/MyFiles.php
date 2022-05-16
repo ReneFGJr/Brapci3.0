@@ -49,7 +49,6 @@ class MyFiles extends Model
 
 	function insert_file($dd)
 	{
-
 		$dd['file_type'] = '';
 		$dd['file_size'] = '';
 
@@ -135,12 +134,110 @@ class MyFiles extends Model
 		return $os;
 	}
 
+	function ajax()
+		{
+			$Social = new \App\Models\Socials();
+			$user = $Social->getID();
+			$dir = '.tmp/';
+			dircheck($dir);
+			$dir = '.tmp/.user/';
+			dircheck($dir);
+			$dir = '.tmp/.user/'.$user.'/';
+			dircheck($dir);
+
+			$arr_file_types = ['application/octet-stream'];
+
+			$file = $_FILES['file']['name'];
+			$type = $_FILES['file']['type'];
+
+			if (ajax($dir,$arr_file_types))
+				{
+					$tela = '';
+					$tela .= $this->process_file($dir.$file);
+					$tela = bs(bsc(bsmessage(lang('bacpci.saved '.$file. ' - '.$type),1),12));
+				} else {
+					$tela = bs(bsc(bsmessage(lang('bacpci.save_save_error - '.$type),3),12));
+				}
+			echo $tela;
+			exit;
+		}	
+
+	function tools($d1,$d2,$d3,$d4)
+		{			
+			$sx = '';
+			switch($d1)
+				{
+					case 'upload_ajax':
+						print_r($$_FILES);
+						exit;
+						$this->ajax();
+						exit;
+					break;
+
+					case 'uft8':
+						$sa = h(lang('brapci.convert_utf8'),3);
+						$url = base_url(PATH.MODULE.'tools/upload_ajax');
+						//$sa .= upload($url);
+						$sa .= upload_form();	
+						if (isset($_FILES['file']))
+						{				
+							if (isset($_FILES['file']['tmp_name']))
+								{
+									$file = $_FILES['file']['name'];
+									$filename = $_FILES['file']['tmp_name'];
+									$txt = file_get_contents($filename);
+
+									header('Content-Description: File Transfer');
+									header('Content-Disposition: attachment; filename='.basename($file));
+									header('Expires: 0');
+									header('Cache-Control: must-revalidate');
+									header('Pragma: public');
+									header('Content-Length: ' . strlen($filename));
+									header("Content-Type: text/plain");	
+									echo utf8_decode($txt);
+									exit;								
+								} else {
+									$sa .= bs_alert('danger','ERRO');
+								}
+						}
+						$sx = bs(bsc($sa,12));
+					break;
+
+					default:
+						$sx .= bs(bsc(h(lang('brapci.my_files'),3),12));
+						$dv[PATH.MODULE.'tools/uft8'] = lang('brapci.file_convert_utf8');
+
+						$sa = '';
+						$sb = '';
+						$sc = menu($dv);
+						$sx .= bs(bsc($sa,4).bsc($sb,4).bsc($sc,4));
+						break;
+				}
+			return $sx;
+		}
+
 	function preview($id, $ac, $tp)
 	{
 		$dt = $this->find($id);
 		$sx = '';
 
 		switch ($ac) {
+			case 'utf8':
+				$action = get("action");
+				$txt = file_get_contents($dt['file_full']);
+				$txt = utf8_encode($txt);
+				if ($action == 'save') {
+					file_put_contents($dt['file_full'].'.txt', $txt);
+					echo "==>SAVED ".$dt['file_full'].'.txt';
+					exit;
+				}
+				
+				$sx .= 'Encoding:'. mb_detect_encoding($txt);
+				$sx .= '<hr>';
+				$txt = utf8_encode($txt);
+				$sx .= '<a href="'.PATH.MODULE.'file/'.$id.'/'.$ac.'?action=save" class="btn btn-primary">'.lang('ai.save').'</a>';
+				$sx .= '<pre>'.$txt.'</pre>';
+				break;
 			case 'txt':
 				echo '<pre>';
 				readfile($dt['file_full'].'.txt');
@@ -159,6 +256,14 @@ class MyFiles extends Model
 
 			default:
 				switch ($dt['file_ext']) {
+					case 'txt':
+						$filename = $dt['file_full'];
+						$file = $dt['file_name'];
+						header("Content-type:text/plain");
+						header("Content-Disposition:inline;filename='$file");
+						readfile($filename);
+						exit;
+						break;
 					case 'pdf':
 						$filename = $dt['file_full'];
 						$file = $dt['file_name'];
@@ -210,9 +315,11 @@ class MyFiles extends Model
 		switch ($so) {
 			case 'Windows':
 				$mn[PATH . MODULE . 'file/' . $id . '/pdf2txt'] = lang('ai.convert_pdf_to_txt');
+				$mn[PATH . MODULE . 'file/' . $id . '/utf8'] = lang('ai.convert_utf8');
 				break;
 			default:
 				$mn[PATH . MODULE] = lang('ai.convert_pdf_to_txt');
+				$mn[PATH . MODULE . 'file/' . $id . '/utf8'] = lang('ai.convert_utf8');
 				break;
 		}
 		$sx = menu($mn);
