@@ -115,7 +115,7 @@ function form($id, $dt) {
 				{
 					$sx .= '<tr>';
 					$sx .= '<td colspan=3 class="middle" style="border-top: 1px solid #000000; border-bottom: 1px solid #000000;" align="center">';
-					$sx .= msg($grp);
+					$sx .= lang('rdf.'.$grp);
 					$sx .= '</td>';
 					$sx .= '</tr>';
 					$xgrp = $grp;
