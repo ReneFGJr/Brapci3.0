@@ -919,8 +919,9 @@ class Socials extends Model
 		$session = \Config\Services::session();
 		$url = \Config\Services::url();
 		$session->destroy();
-
-		return (redirect()->to('/'));
+		helper('url');
+		//redirect(PATH.MODULE, 'refresh');
+		return redirect()->to('/');
 	}
 
 	function nav_user()
