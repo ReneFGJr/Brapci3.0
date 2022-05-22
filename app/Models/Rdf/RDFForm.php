@@ -136,7 +136,7 @@ function form($id, $dt) {
 				$sx .= '<td width="25%" align="right" valign="top">';
 
 				if ($xcap != $cap) {
-					$sx .= '<nobr><i>' . msg($line['c_class']) . '</i></nobr>';
+					$sx .= '<nobr><i>' . lang('rdf.'.$line['c_class']) . '</i></nobr>';
 					$sx .= '<td width="1%" valign="top">' . $link . '[+]' . $linka . '</td>';
 					$xcap = $cap;
 				} else {
@@ -310,14 +310,14 @@ function exclude($id,$ac='')
 			{
 				$RDFConcept = new \App\Models\Rdf\RDFConcept();
 				$dd = $RDFConcept->le($dt['d_r2']);
-				$sx .= '<div class="mt-2">'.lang('find.concept').'</div>';
+				$sx .= '<div class="mt-2">'.lang('rdf.concept').'</div>';
 			}
 		/* Text */
 		if (($dt['d_r2'] == 0) and ($dt['d_literal'] > 0))
 			{
 				$RDFLiteral = new \App\Models\Rdf\RDFLiteral();
 				$dd = $RDFLiteral->find($dt['d_literal']);
-				$sx .= '<div class="mt-2">'.lang('find.term').'</div>';
+				$sx .= '<div class="mt-2">'.lang('rdf.term').'</div>';
 			}
 		/* Mostra Nome */
 
