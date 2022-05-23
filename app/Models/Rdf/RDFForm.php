@@ -50,6 +50,41 @@ class RdfForm extends Model
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
 
+function forms()
+	{
+		$dt = $this->select("*")
+			->Join('rdf_class','sc_propriety = id_c','left')
+			->where('sc_library', LIBRARY)
+			->OrWhere('sc_library', 0)
+			->orderBy('sc_class, sc_group, c_class','asc')
+			->FindAll();
+
+		$sx = '';
+		$xgr = '';
+		for ($r=0;$r < count($dt);$r++)
+			{
+				$line = $dt[$r];
+				$id = $line['sc_class'];
+				$gr = $line['sc_group'];
+				if ($gr != $xgr)
+					{
+						$sx .= '<h3>Grupo: '.lang('rdf.'.$gr).'</h3>';
+						$xgr = $gr;
+					}
+				$link = onclick(PATH.MODULE.'rdf/form_ed/'.$line['id_sc'],800,600);
+				$linka = '</span>';
+				$act = '';
+				$acta = '';
+				if ($line['sc_ativo'] = 0)
+					{
+						$act = '<s>';
+						$acta = '</s>';
+					}
+				$sx .= '<li>'.$act.$link.$line['c_class'].$linka.$acta. ' ('.$line['sc_library'].')</li>';
+			}
+		return $sx;
+	}
+
 function form($id, $dt) {
 		$RDF = new \App\Models\Rdf\RDF();
 		$class = $dt['cc_class'];
