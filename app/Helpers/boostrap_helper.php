@@ -459,16 +459,19 @@ function small($text)
 
 function bscol($c,$class='')
     {
+        $sx = '';
         switch($c)
             {
 
                 case '1':
-                    $sx = '';
-                    $sx .= ' col-4';        /* < 756px  */
+                    $sx .= 'cm4';
+                    $sx .= ' col-1';
+                    $sx .= ' col-xs-6';     /* < 576px  */
                     $sx .= ' col-sm-3';     /* > 576px  */
-                    $sx .= ' col-md-3';     /* > 768px  */
+                    $sx .= ' col-md-1';     /* > 768px  */
                     $sx .= ' col-lg-1';     /* > 992px  */
                     $sx .= ' col-xl-1';     /* > 1200px */
+                    $sx .= ' col-xxl-1';    /* > 1400px */                    
                 break;                 
 
                 case '2':
@@ -481,20 +484,26 @@ function bscol($c,$class='')
                 break;   
 
                 case '3':
-                    $sx = 'col-md-3';
-                    $sx .= ' col-3';
-                    $sx .= ' col-sm-6';
-                    $sx .= ' col-lg-3';
+                    $sx .= 'cm3';
+                    $sx .= ' col-6';
+                    $sx .= ' col-xs-12';
+                    $sx .= ' col-sm-12';
+                    $sx .= ' col-md-6';                    
+                    $sx .= ' col-lg-4';
                     $sx .= ' col-xl-3';
+                    $sx .= ' col-xxl-2';
                 break; 
 
                 case '4':
-                    $sx = '';
-                    $sx .= ' col-6';        /* < 756px  */
+                    $sx .= 'cm4';
+                    $sx .= ' col-6';
+                    $sx .= ' col-xs-6';     /* < 576px  */
                     $sx .= ' col-sm-6';     /* > 576px  */
                     $sx .= ' col-md-4';     /* > 768px  */
                     $sx .= ' col-lg-4';     /* > 992px  */
                     $sx .= ' col-xl-4';     /* > 1200px */
+                    $sx .= ' col-xxl-3';    /* > 1400px */
+
                 break;                  
 
                 case '5':
