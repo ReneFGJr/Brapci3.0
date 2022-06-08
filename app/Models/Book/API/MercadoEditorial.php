@@ -128,7 +128,7 @@ class MercadoEditorial extends Model
 		$cover = (array)$cover['imagem_primeira_capa'];
 		if (isset($cover['grande']))
 		{
-			$cover = $cover['grande'];
+			$cover = $cover['media'];
 		}		
 		$rsp['cover'] = $cover;
 
