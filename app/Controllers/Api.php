@@ -37,4 +37,24 @@ class Api extends BaseController
             $tela .= bs(bsc(h('API',1),12));
             return $tela;
         }
+
+    function book($id='')
+        {
+            $ISBN = new \App\Models\Book\Isbn();
+            $API = new \App\Models\Book\API\Index();
+            $dd = $ISBN->isbns($id);
+            
+            $isbn = $dd['isbn13'];
+            $dd['status'] = '200';
+            $dd['error'] = '';
+
+            /************************ Consulta */
+            $dm = $API->index($isbn);
+            $dd = array_merge($dd,$dm);
+            
+            header("Content-Type: application/json");
+            http_response_code(200);
+            echo json_encode($dd);
+            exit;            
+        }
 }
