@@ -125,6 +125,7 @@ class MercadoEditorial extends Model
 
 		/********** IMAGENS **************************/
 		$cover = (array)$w['imagens'];
+		pre($cover);
 		$cover = (array)$cover['imagem_primeira_capa'];
 		if (isset($cover['grande']))
 		{
