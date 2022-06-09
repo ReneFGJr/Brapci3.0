@@ -49,7 +49,8 @@ class MercadoEditorial extends Model
 	function __construct()
 	{
 		$this->api_key = getenv("api_key_mercadoeditorial");
-		$this->URL = 'https://sandbox.mercadoeditorial.org/api/v1.2/book';
+		//$this->URL = 'https://sandbox.mercadoeditorial.org/api/v1.2/book';
+		$this->URL = 'https://api.mercadoeditorial.org/api/v1.2/book';
 	}
 
 	function cacheFile($isbn)
