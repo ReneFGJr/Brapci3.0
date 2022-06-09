@@ -57,4 +57,14 @@ class Api extends BaseController
             echo json_encode($dd);
             exit;            
         }
+
+    function bookcover($isbn='')
+        {
+            $Covers = new \App\Models\Book\API\Covers();
+
+            /************************ Busca */
+            $Covers->index($isbn);            
+            http_response_code(404);
+            exit;            
+        }        
 }
