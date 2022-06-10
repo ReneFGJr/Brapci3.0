@@ -51,6 +51,7 @@ class Index extends Model
 			} else {
 				$dd['count'] = 0;
 			}
+			
 		return ($dd);
 	}
 
