@@ -106,6 +106,7 @@ class Api extends BaseController
                             $dd['url'] = URL.'img/cover/'.$isbn13.'.jpg';
                         } else {
                             $dd['status'] = '404';
+                            $dd['path'] = $file;
                             $dd['error'] = 'ISBN not found';
                         }
                 }
