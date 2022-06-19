@@ -98,7 +98,7 @@ class Api extends BaseController
                     $dd['status'] = '500';
                     $dd['error'] = 'ISBN invalid';
                 } else {
-                    $file = getenv("apiFind").'Find/cover/'.$isbn13.'.jpg';
+                    $file = getenv("apiFind").$isbn13.'.jpg';
                     if (file_exists($file))
                         {
                             $dd['status'] = '200';
