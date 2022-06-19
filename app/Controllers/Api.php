@@ -101,10 +101,9 @@ class Api extends BaseController
                     $file = getenv("apiFind").'Find/cover/'.$isbn13.'.jpg';
                     if (file_exists($file))
                         {
-                            $fullpath =  URL.'img/cover/'.$isbn13.'.jpg';
-                            header('Content-type:image/png');
-                            readfile($fullpath);
-                            exit;
+                            $dd['status'] = '200';
+                            $dd['path'] = $file;
+                            $dd['url'] = URL.'img/cover/'.$isbn13.'.jpg';
                         } else {
                             $dd['status'] = '404';
                             $dd['error'] = 'ISBN not found';
