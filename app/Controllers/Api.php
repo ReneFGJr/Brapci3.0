@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix']);
+define("URL",$_SERVER['app.baseURL']);
 
 define("LIBRARY", "202101");
 helper(['boostrap', 'url', 'graphs', 'sisdoc_forms', 'form', 'nbr']);
@@ -102,6 +103,7 @@ class Api extends BaseController
                         {
                             $dd['status'] = '200';
                             $dd['path'] = $file;
+                            $dd['url'] = URL.'img/cover/'.$isbn13.'.jpg';
                         } else {
                             $dd['status'] = '404';
                             $dd['error'] = 'ISBN not found';
