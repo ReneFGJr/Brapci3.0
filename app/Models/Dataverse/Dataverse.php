@@ -65,7 +65,6 @@ class Dataverse extends Model
 					echo '<hr>'.$file.'</hr>';				
 					if (file_exists($file))
 						{							
-							echo "OK";
 							$txt = file_get_contents($file);
 							$txt = json_decode($txt);
 							echo '<pre>';

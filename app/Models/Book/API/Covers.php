@@ -60,7 +60,6 @@ class Covers extends Model
 		$file = '_covers/image/' . $isbn . '.jpg';
 
 		if (file_exists($file)) {
-			echo "OK";
 			exit;
 		} else {
 			echo "ERRO";

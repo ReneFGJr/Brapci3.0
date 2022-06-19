@@ -107,7 +107,7 @@ class Solr extends Model
 		$file = $dir . 'schema_dv.xml';
 
 		if (file_exists($file)) {
-			echo "OK";
+
 		} else {
 			echo "ERRO2";
 			exit;

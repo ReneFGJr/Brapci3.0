@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix'].'authority');
+define("PATH",$_SERVER['app.baseURL'].$_SERVER['app.sufix']);
 
 define("LIBRARY", "202101");
 helper(['boostrap', 'url', 'graphs', 'sisdoc_forms', 'form', 'nbr']);
@@ -16,6 +16,10 @@ $hd = new \App\Models\Header\Header();
 
 class Api extends BaseController
 {
+    function __construct()
+    {
+        define("MODULE", "api");
+    }
 	public function index($d1='',$d2='',$d3='',$d4='')
 	{
         $API = new \App\Models\Api\Endpoints();
@@ -26,16 +30,31 @@ class Api extends BaseController
         {
             $hd = new \App\Models\Header\Header();
             $dt['title'] = 'API';
-            $tela = $hd->cab($dt);
-			$tela .= $hd->navbar($dt);
-            return $tela;
+            $sx = $hd->cab($dt);
+			$sx .= $hd->navbar($dt);
+            return $sx;
         }
 
     function doc()
         {
-            $tela = $this->cab();
-            $tela .= bs(bsc(h('API',1),12));
-            return $tela;
+            $sx = $this->cab();
+            $sx .= '<link rel="preconnect" href="https://fonts.googleapis.com">'.cr();
+            $sx .= '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'.cr();
+            $sx .= '<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&display=swap" rel="stylesheet">';
+            $sx .= '<style> body { font-family: "Ubuntu", sans-serif; } </style>';            
+            $sx .= bs(bsc(h('API',1),12));
+
+            $dd['book'] = 'Busca metadados de livros com ISBN, para acessar utilize o link: <a href="'.PATH.MODULE.'/book/#ISBN#">/api/book/#ISBN</a>';
+            $dd['bookcover'] = 'Busca capas de livros com ISBN, para acessar utilize o link: <a href="'.PATH.MODULE.'/bookcover/ISBN#">/api/bookcover/#ISBN</a>';
+            $dd['cutter'] = 'Retorna o CUTTER pelo nome do autor: <a href="'.PATH.MODULE.'/cutter/?q=NOME DO AUTOR">/api/cutter/NOME_DO_AUTOR</a>';
+
+            foreach($dd as $title => $text)
+                {
+                    $sa = h(lang('api.'.$title),4);
+                    $sa .= '<p>'.$text.'</p>';
+                    $sx .= bs(bsc($sa,12));
+                }
+            return $sx;
         }
 
     function book($id='')
@@ -60,11 +79,41 @@ class Api extends BaseController
 
     function bookcover($isbn='')
         {
-            $Covers = new \App\Models\Book\API\Covers();
+            $isbn = troca($isbn,'.','');
+            $isbn = troca($isbn,'-','');
 
-            /************************ Busca */
-            $Covers->index($isbn);            
-            http_response_code(404);
+            $ISBN = new \App\Models\Book\Isbn();
+            $API = new \App\Models\Book\API\Index();
+            $dd = $ISBN->isbns($isbn);
+
+            $isbn13 = $dd['isbn13'];
+            $isbn10 = $dd['isbn10'];
+
+            $dd = array();
+            $dd['query'] = $isbn;
+
+            if (($isbn13 != $isbn) and ($isbn10 != $isbn))
+                {
+                    $dd['status'] = '500';
+                    $dd['error'] = 'ISBN invalid';
+                } else {
+                    $file = getenv("apiFind").'Find/cover/'.$isbn13.'.jpg';
+                    if (file_exists($file))
+                        {
+                            $dd['status'] = '200';
+                            $dd['path'] = $file;
+                        } else {
+                            $dd['status'] = '404';
+                            $dd['error'] = 'ISBN not found';
+                        }
+                }
+            echo json_encode($dd);
             exit;            
-        }        
+        }   
+
+    function cutter($author='')
+        {
+            http_response_code(200);
+            exit;            
+        }              
 }
