@@ -102,10 +102,11 @@ class Api extends BaseController
                     if (file_exists($file))
                         {
                             $dd['status'] = '200';
-                            $dd['path'] = $file;
+                            //$dd['path'] = $file;
                             $dd['url'] = URL.'img/cover/'.$isbn13.'.jpg';
                         } else {
                             $dd['status'] = '404';
+                            //$dd['path'] = $file;
                             $dd['error'] = 'ISBN not found';
                         }
                 }
