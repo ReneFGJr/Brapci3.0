@@ -887,7 +887,7 @@ class Socials extends Model
 	function log_insert($id)
 		{
 			$ip = ip();
-			$sql = "insert into brapci_click.users_log 
+			$sql = "insert into users_log 
 				(ul_user, ul_ip)
 				values
 				($id,'$ip')";
