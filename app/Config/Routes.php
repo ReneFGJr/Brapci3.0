@@ -37,8 +37,8 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 
 /********** DEFAULT */
-$routes->get('/', 'Main::index');
-$routes->post('/', 'Main::index');
+$routes->get('/', 'Pgcd::index');
+$routes->post('/', 'Pgcd::index');
 
 /********* PGCD */
 $routes->get('/pgcd/', 'Pgcd::index/');
@@ -55,42 +55,15 @@ $routes->post('/social/ajax/(:any)', 'Social::ajax/$1');
 $routes->get('/social/(:any)', 'Social::index/$1');
 $routes->post('/social/(:any)', 'Social::index/$1');
 
-
-/********* BENANCIB */
-$routes->get('/benancib/(:any)/(:any)', 'Benancib::index/$1/$2');
-$routes->post('/benancib/(:any)/(:any)', 'Benancib::index/$1/$2');
-$routes->get('/benancib/(:any)', 'Benancib::index/$1');
-$routes->post('/benancib/(:any)', 'Benancib::index/$1');
-$routes->get('/benancib', 'Benancib::index');
-
-/********* TOOLS */
-$routes->get('/elasticsearch/(:any)/(:any)', 'Elasticsearch::index/$1/$2');
-$routes->get('/elasticsearch/(:any)/', 'Elasticsearch::index/$1');
-$routes->get('/elasticsearch', 'Elasticsearch::index');
-
-$routes->post('/elasticsearch/(:any)/(:any)', 'Elasticsearch::index/$1/$2');
-$routes->post('/elasticsearch/(:any)/', 'Elasticsearch::index/$1');
-
 /********* POPUP */
 $routes->get('/popup/(:any)', 'Popup::index/$1');
 $routes->post('/popup/(:any)', 'Popup::index/$1');
 
-/********* POPUP */
-$routes->get('/admin/(:any)', 'Admin::index/$1');
-$routes->post('/admin/(:any)', 'Admin::index/$1');
-$routes->get('/admin/(:any)/(:any)', 'Admin::index/$1/$2');
-$routes->post('/admin/(:any)/(:any)', 'Admin::index/$1/$2');
-$routes->get('/admin', 'Admin::index');
-
-/********* PQ */
-$routes->get('/pq/(:any)', 'Pq::index/$1');
-$routes->get('/pq', 'Pq::index');
-
 /********** Others */
 //$routes->get('(:any)', 'MainPages::index/$1');
-$routes->get('(:any)', 'MainPages::index/$1');
-$routes->get('(:any)/(:any)', 'MainPages::index/$1/$2');
-$routes->get('(:any)/(:any)/(:any)', 'MainPages::index/$1/$2/$3');
+$routes->get('(:any)', 'Pgcd::index/$1');
+$routes->get('(:any)/(:any)', 'MainPagesPgcd::index/$1/$2');
+$routes->get('(:any)/(:any)/(:any)', 'MainPagesPgcd::index/$1/$2/$3');
 
 
 /*

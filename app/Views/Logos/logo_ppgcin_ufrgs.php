@@ -1,1 +1,0 @@
-<img src="/img/logo/logo_ppgcin_ufrgs.png" height="<?= $height; ?>" class="img-fluid">
