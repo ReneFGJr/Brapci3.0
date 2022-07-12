@@ -1,16 +1,17 @@
 <?php
-
-return [
-    'BasePQ' => 'Base PQ/CNPq',
-    'nr'=>'#',
-    'bs_nome'=>'Nome pesquisador',
-    'mod_modalidade'=>'Modal.',
-    'bs_start'=>'Dt.início',
-    'bs_finish'=>'Dt.final',
-    'BS_IES'=>'IES',
-    'bolsista_list'=>'Bolsistas PQ/Bolsas',
-    'bolsista_ano_list'=>'Ano/Bolsistas',
-    'bolsista_vigentes'=>'Bolsas ativas Ano/Bolsistas',
-    'bolsista_ativos_cnpq'=>'Página do banco de dados do CNPq',
-    'bolsista'=>'Bolsistas'
+return[
+        'bolsista' => "Bolsista PQ",
+        'year'=>'Ano',
+        'bs_lattes'=>'ID do Lattes',
+        'bolsista_vigentes' =>'Bolsistas PQ Vigentes',
+        'bolsista_list'=>'Lista de todos os Bolsistas PQ e Bolsas',
+        'bs_nome'=>'Nome do bolsista',
+        'mod_modalidade	'=>'Modalidade',
+        'bs_start'=>'Início',
+        'bs_finish'=>'Fim',
+        'BS_IES'=>'Vínculo',
+        ''=>'',
+        ''=>'',
+        ''=>'',
+        ''=>'',
 ];

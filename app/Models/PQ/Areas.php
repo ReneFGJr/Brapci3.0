@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class Areas extends Model
 {
-	protected $DBGroup              = 'default';
+	protected $DBGroup              = 'pq';
 	protected $table                = 'areas';
 	protected $primaryKey           = 'id';
 	protected $useAutoIncrement     = true;
