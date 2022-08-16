@@ -7,23 +7,25 @@ $routes = Services::routes();
 
 // Load the system's routing file first, so that the app and ENVIRONMENT
 // can override as needed.
-if (file_exists(SYSTEMPATH . 'Config/Routes.php'))
-{
-	require SYSTEMPATH . 'Config/Routes.php';
+if (is_file(SYSTEMPATH . 'Config/Routes.php')) {
+    require SYSTEMPATH . 'Config/Routes.php';
 }
 
-/**
+/*
  * --------------------------------------------------------------------
  * Router Setup
  * --------------------------------------------------------------------
  */
 $routes->setDefaultNamespace('App\Controllers');
-$routes->setDefaultController('Res');
+$routes->setDefaultController('Main');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
-$routes->setAutoRoute(true);
-
+// The Auto Routing (Legacy) is very dangerous. It is easy to create vulnerable apps
+// where controller filters or CSRF protection are bypassed.
+// If you don't want to define all routes, please use the Auto Routing (Improved).
+// Set `$autoRoutesImproved` to true in `app/Config/Feature.php` and set the following to true.
+//$routes->setAutoRoute(false);
 
 /*
  * --------------------------------------------------------------------
@@ -33,14 +35,35 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Res::index');
-$routes->add('v/(:num)', 'Res::v/$1');
-$routes->add('res/v/(:num)', 'Res::v/$1');
-//$routes->get('/social/ajax/', 'Main::social/');
-//$routes->add('/main/social/', 'Main::social/');
-//$routes->add('/v/(:num)', 'Res::v/$1');
-//$routes->add('/download/(:num)', 'Res::download/$1');
-//$routes->add('/res/v/', 'Main::v');
+
+/********** DEFAULT */
+$routes->get('/', 'Pgcd::index');
+$routes->post('/', 'Pgcd::index');
+
+/********* PGCD */
+$routes->get('/pgcd/', 'Pgcd::index/');
+$routes->get('/pgcd/(:any)', 'Pgcd::index/$1');
+$routes->post('/pgcd/(:any)', 'Pgcd::index/$1');
+
+/********* AJAX */
+$routes->get('/ajax/(:any)', 'Ajax::index/$1');
+$routes->post('/ajax/(:any)', 'Ajax::index/$1');
+
+/********* SOCIAL */
+$routes->get('/social', 'Social::index');
+$routes->post('/social/ajax/(:any)', 'Social::ajax/$1');
+$routes->get('/social/(:any)', 'Social::index/$1');
+$routes->post('/social/(:any)', 'Social::index/$1');
+
+/********* POPUP */
+$routes->get('/popup/(:any)', 'Popup::index/$1');
+$routes->post('/popup/(:any)', 'Popup::index/$1');
+
+/********** Others */
+//$routes->get('(:any)', 'MainPages::index/$1');
+$routes->get('(:any)', 'Pgcd::index/$1');
+$routes->get('(:any)/(:any)', 'MainPagesPgcd::index/$1/$2');
+$routes->get('(:any)/(:any)/(:any)', 'MainPagesPgcd::index/$1/$2/$3');
 
 
 /*
@@ -56,7 +79,6 @@ $routes->add('res/v/(:num)', 'Res::v/$1');
  * You will have access to the $routes object within that file without
  * needing to reload it.
  */
-if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php'))
-{
-	require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
+if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
+    require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }

@@ -39,19 +39,31 @@ class API extends Model
 	protected $afterFind            = [];
 	protected $beforeDelete         = [];
 	protected $afterDelete          = [];
-	protected $index = 'brp2';
+	protected $index = 'brapci2022';
     protected $server = 'http://143.54.114.150:9200';
 	protected $sz = 25;
 
-	private function call($path, $method = 'GET', $data = null) {
+	function showList($dt)
+		{
+			$sx = '';
+			foreach($dt as $label=>$value)
+				{
+					$sx .= bsc(lang('elastic.'.$label),2,'text-start text_50');
+					$sx .= bsc(lang('elastic.'.$value).'&nbsp',10);
+				}
+			$sx = bs($sx);
+			return $sx;
+		}
+
+	function call($path, $method = 'GET', $data = null) {
+
         if (strlen($this -> index) == 0) {
             echo('index needs a value');
             return ( array());
         }
 
         $url = $this -> server . '/' . $path;     
-		echo $url;           
-        $headers = array('Accept: application/json', 'Content-Type: application/json', );
+		$headers = array('Accept: application/json', 'Content-Type: application/json', );
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -65,7 +77,7 @@ class API extends Model
                 break;
             case 'POST' :
                 curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
                 break;
             case 'PUT' :
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
@@ -79,7 +91,6 @@ class API extends Model
         $response = curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         //exit;
-
         return json_decode($response, true);
     }	
 
